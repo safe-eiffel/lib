@@ -1,0 +1,62 @@
+<?xml version="1.0"?>
+
+<project name="epdf" default="help">
+
+	<description>
+		system: "EPDF parent project file."
+		copyright: "Copyright (c) 2002, Paul G. Crismer"
+		license: "Eiffel Forum Freeware License v1 (see forum.txt)"
+		date: "$Date$"
+		revision: "$Revision$"
+	</description>
+
+	<inherit>
+		<parent location="${GOBO}/misc/eiffel.eant">
+			<redefine target="init"/>
+			<redefine target="install"/>
+		</parent>
+	</inherit>
+
+
+<!-- Implementation -->
+
+	<target name="init">
+		<precursor/>
+		<geant target="check_epdf_variables"/>
+	</target>
+
+	<target name="check_epdf_variables">
+		<echo message="WARNING: SAFE_KERNEL variable must point to the SAFE project kernel library." unless="${SAFE_KERNEL}"/>
+		<echo message="WARNING: EPDF variable must point to the path of the 'ePDF' library." unless="${EPDF}"/>
+		<echo message="WARNING: ZLIB variable not point to path of the 'zlib' library." unless="${ZLIB}"/>
+		<echo message="WARNING: LIBPNG variable must point to path of the 'libpng' include files." unless="${LIBPNG}"/>
+		<echo message="WARNING: ZLIB_LIB variable must point to full filename of 'zlib' library to be linked." unless="${ZLIB_LIB}"/>
+		<echo message="WARNING: LIBPNG_LIB variable must point to full filename of 'libpng' library to be linked." unless="${LIBPNG_LIB}"/>
+		<echo message="WARNING: GOBO_CC variable not set. Must be msc|bcc|gcc|lcc" unless="${GOBO_CC}"/>
+		<echo message="WARNING: GOBO_OS variable not set." unless="${GOBO_OS}"/>
+		<echo message="WARNING: GOBO_EIFFEL variable not set." unless="${GOBO_EIFFEL}"/>
+		<echo message="WARNING: BCC_DIR variable not set." if="${GOBO_CC}=bcc" unless="${BCC_DIR}"/>
+		<set name="eiffel" value="${GOBO_EIFFEL}"/>
+ZLIB, ZLIB_LIB, LIBPNG, LIBPNG_LIB,%
+	</target>
+
+	<target name="install" depend="init">
+		<description>
+			Prepare compilation : check for C libraries, and compile them if necessary
+		</description>
+		<!-- Check for C libraries -->
+		
+		<!-- Compile them if necessary -->
+
+		
+		<!-- <available resource="${EPDF}/src/spec/${eiffel}/${GOBO_OS}/epdf_${GOBO_CC}.lib" variable="epdf_lib_exists" if="${GOBO_OS}=windows"/> -->
+		<exec executable="nmake -f makefile.mak" dir="${EPDF}\src\spec\${eiffel}\${GOBO_OS}" if="${GOBO_CC}=msc" unless="${epdf_lib_exists}"/>
+		<exec executable="make -f makefile.bcc" dir="${EPDF}/src/spec/${eiffel}/${GOBO_OS}" if="${GOBO_CC}=bcc" unless="${epdf_lib_exists}"/>
+		<exec executable="make -f makefile.lcc ZLIB=${ZLIB} LIBPNG=${LIBPNG} epdf_lcc.lib" dir="${EPDF}/src/spec/${eiffel}/${GOBO_OS}" if="${GOBO_CC}=lcc" unless="${epdf_lib_exists}"/>
+		<exec executable="make -f makefile.gcc" dir="${EPDF}/src/spec/${eiffel}/${GOBO_OS}" if="${GOBO_CC}=gcc" unless="${epdf_lib_exists}"/>
+		
+		<!-- Precursor -->
+		<precursor/>
+	</target>
+
+</project>
