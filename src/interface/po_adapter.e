@@ -117,7 +117,7 @@ feature -- Status report
 		require
 			some_pid_not_void: some_pid /= Void
 		do
-			Result := some_pid.class_name.is_equal (class_name)
+			Result := some_pid.persistent_class_name.is_equal (persistent_class_name)
 		end
 	
 	no_data_found : BOOLEAN is

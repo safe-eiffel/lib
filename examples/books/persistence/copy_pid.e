@@ -10,9 +10,13 @@ class
 inherit
 	PO_PID
 	
+	COPY_PERSISTENT_CLASS_NAME
+		undefine
+			is_equal
+		end
+
 creation
 
-	--{COPY_ADAPTER} 
 	make
 	
 feature -- Initialization
@@ -32,8 +36,6 @@ feature -- Initialization
 	
 feature -- Access
 
-	class_name : COPY_PERSISTENT_CLASS_NAME is once create Result.make end
-	
 	isbn : STRING
 	
 	serial : INTEGER

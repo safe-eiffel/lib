@@ -13,6 +13,11 @@ class BOOK_PID
 inherit
 
 	PO_PID
+	
+	BOOK_PERSISTENT_CLASS_NAME
+		undefine
+			is_equal
+		end
 
 creation
 
@@ -34,8 +39,6 @@ feature -- Initialization
 	
 feature -- Access
 
-	class_name : BOOK_PERSISTENT_CLASS_NAME is once create Result.make end
-	
 	isbn : STRING
 	
 feature -- Basic operations

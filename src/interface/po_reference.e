@@ -110,7 +110,7 @@ feature {NONE} -- Implementation
 		local
 			persistent_adapter : PO_ADAPTER[G]
 		do
-			persistence_manager.search_adapter (pid.class_name)
+			persistence_manager.search_adapter (pid.persistent_class_name)
 			if persistence_manager.found then
 				persistent_adapter ?= persistence_manager.last_adapter
 				check

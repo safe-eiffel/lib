@@ -8,7 +8,7 @@ indexing
 	license: "Eiffel Forum License v2 (see forum.txt)"
 	date: "$Date$"
 
-class PO_PERSISTENT
+deferred class PO_PERSISTENT
 
 inherit
 
@@ -37,8 +37,7 @@ feature -- Access
 		-- Name of class for persistence. 
 		-- To be redefined when a single adapter takes care of
 		-- a whole class hierarchy (different classes, same persistent class name)
-		do
-			Result := generator
+		deferred
 		end
 		
 feature -- Status report
@@ -137,12 +136,12 @@ feature  {PO_ADAPTER } -- Element change
 			-- set `pid' to `p'
 		require
 			p_not_void: p /= Void
-			pid_ok : p.class_name.is_equal (persistent_class_name)
+			same_persistent_class_names : p.persistent_class_name.is_equal (persistent_class_name)
 		do
 			pid := p
 		ensure
 			shared_pid: pid = p
-			same_class_names: equal (persistent_class_name, pid.class_name)
+			same_class_names: equal (persistent_class_name, pid.persistent_class_name)
 		end
 
 feature -- Basic operations
@@ -247,7 +246,7 @@ feature {NONE} -- Implementation
 			if pid = Void then
 				persistent_name := persistent_class_name
 			else
-				persistent_name := pid.class_name
+				persistent_name := pid.persistent_class_name
 			end
 			persistence_manager.search_adapter (persistent_name)			
 			if persistence_manager.found then

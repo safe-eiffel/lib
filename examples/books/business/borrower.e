@@ -17,6 +17,8 @@ inherit
 			persistent_class_name
 		end
 	
+	BORROWER_PERSISTENT_CLASS_NAME
+	
 creation
 
 	make
@@ -51,11 +53,6 @@ feature -- Access
 	borrowed_copies : DS_LIST [COPY] is
 		do
 			--|FIXME: TODO
-		end
-
-	persistent_class_name : STRING is
-		do
-			create {BORROWER_PERSISTENT_CLASS_NAME}Result.make
 		end
 		
 invariant

@@ -17,6 +17,8 @@ inherit
 			persistent_class_name
 		end
 	
+	BOOK_PERSISTENT_CLASS_NAME
+	
 creation
 
 	make
@@ -45,11 +47,6 @@ feature -- Access
 	title : STRING
 	
 	author : STRING
-	
-	persistent_class_name : STRING is
-		do
-			create {BOOK_PERSISTENT_CLASS_NAME}Result.make
-		end
 		
 invariant
 

@@ -25,7 +25,13 @@ inherit
 feature -- Access			
 
 	class_name: STRING is
-			-- Class name of object this PID identifies
+		obsolete "[2004-08-26] Use `persistent_class_name' instead."
+		do
+			Result := persistent_class_name
+		end
+
+	persistent_class_name: STRING is
+			-- Name of class for persistence that this PID identifies
 			-- Used by PO_REFERENCE to obtain an adapter
 		deferred
 		end

@@ -14,6 +14,11 @@ inherit
 
 	PO_PID
 	
+	BORROWER_PERSISTENT_CLASS_NAME
+		undefine
+			is_equal
+		end
+		
 creation
 
 	{BORROWER_ADAPTER} make
@@ -31,8 +36,6 @@ feature -- Initialization
 		end
 		
 feature -- Access
-
-	class_name : BORROWER_PERSISTENT_CLASS_NAME is once create Result.make end
 	
 	id : INTEGER
 	

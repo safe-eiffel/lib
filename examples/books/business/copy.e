@@ -17,6 +17,8 @@ inherit
 			persistent_class_name
 		end
 	
+	COPY_PERSISTENT_CLASS_NAME
+
 creation
 
 	make
@@ -79,10 +81,6 @@ feature -- Access
 			end
 		end
 
-	persistent_class_name : STRING is
-		do
-			create {COPY_PERSISTENT_CLASS_NAME}Result.make
-		end
 		
 feature -- Status report
 
