@@ -511,6 +511,7 @@ feature {NONE} -- Implementation
 		local
 			size_name : PDF_NAME
 			root_name : PDF_NAME
+			info_name : PDF_NAME
 		do 
 			medium.put_string ("trailer%N")
 			!!size_name.make ("Size")
@@ -519,7 +520,8 @@ feature {NONE} -- Implementation
 			medium.put_string (dictionary_entry (size_name, count.out))
 			medium.put_string (dictionary_entry (root_name, catalog.indirect_reference))
 			if not document_information.is_empty then
-				medium.put_string (dictionary_entry (create {PDF_NAME}.make ("Info"), document_information.indirect_reference))
+				create info_name.make ("Info")
+				medium.put_string (dictionary_entry (info_name, document_information.indirect_reference))
 			end
 			medium.put_string (">>%N")
 			-- startxref

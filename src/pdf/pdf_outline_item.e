@@ -19,8 +19,6 @@ inherit
 	PDF_OUTLINE_NODE
 		rename
 			make as make_node
-		redefine
-			node_anchor
 		end
 		
 creation

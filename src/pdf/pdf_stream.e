@@ -17,7 +17,7 @@ inherit
 			put_pdf
 		end
 
---	PDF_TEXT_STATE
+	EPDF_IMPORTED_MATH
 	
 creation
 	
@@ -264,7 +264,6 @@ feature -- Basic operations
 	rotate (theta : DOUBLE) is
 			-- 
 		local
-			math : expanded EPDF_MATH
 			c, s : DOUBLE
 		do
 			c := math.cosine (theta)
@@ -275,7 +274,6 @@ feature -- Basic operations
 	skew (alpha, beta : DOUBLE) is
 			-- 
 		local
-			math : expanded EPDF_MATH
 		do
 			concatenate_to_ctm (1, math.tangent (alpha), math.tangent (beta), 1, 0, 0)
 		end
@@ -340,11 +338,6 @@ feature -- Basic operations
 			-- 
 		do
 			set_text_matrix (1, 0, 0, 1, a_tx, a_ty)
---			text_origin_x := a_tx
---			text_origin_y := a_ty
---		ensure
---			text_origin_x = a_tx
---			text_origin_y = a_ty
 		end
 
 	set_text_matrix (a, b, c, d, e, f : DOUBLE) is
@@ -353,35 +346,6 @@ feature -- Basic operations
 			content_append_transformation_matrix (a, b, c, d, e, f)
 			content.append_string (" Tm%N")
 		end
-
---	scale_text (sx, sy : DOUBLE) is
---			-- 
---		do
---			set_text_matrix (sx, 0, 0, sy, 0, 0)
---		end
---		
---	rotate_text (theta : DOUBLE) is
---			-- 
---		local
---			math : expanded EPDF_MATH
---		do
---			set_text_matrix (math.cosine(theta), math.sine(theta), -math.sine(theta), math.cosine(theta), 0, 0)
---		end
---	
---	skew_text (alpha, beta : DOUBLE) is
---			-- 
---		local
---			math : expanded EPDF_MATH
---		do
---			set_text_matrix (1, math.tangent (alpha), math.tangent (beta), 1, 0, 0)
---		end
---
---	reset_text_matrix  is
---			--
---		do
---			set_text_matrix (1, 0, 0, 1, 0, 0)
---		end
-
 
 	set_gray (gray : DOUBLE) is
 		do

@@ -25,9 +25,10 @@
 			<option name="link" value="${EPDF}\src\spec\${GOBO_EIFFEL}\${GOBO_OS}\epdf_${GOBO_CC}.lib"/>
 			<option name="link" value="${LIBPNG_LIB}"/>
 			<option name="link" value="${ZLIB_LIB}"/>
+			<option name="linker" value="microsoft" if="${GOBO_EIFFEL}=ve"/>
 		</option>
+		<option name="include_dir" value="${ZLIB}"/>
+		<option name="include_dir" value="${LIBPNG}"/>
 	</cluster>	
 	<mount location="${SAFE_KERNEL}/library.xace"/>
-	<option name="include_dir" value="${ZLIB}"/>
-	<option name="include_dir" value="${LIBPNG}"/>
 </library>

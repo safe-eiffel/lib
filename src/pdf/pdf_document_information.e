@@ -161,32 +161,42 @@ feature -- Conversion
 		
 	put_pdf (medium: PDF_OUTPUT_MEDIUM) is
 			-- Put Current as PDF into `medium'
+		local
+			name : PDF_NAME
 		do
 			medium.put_string (object_header)
 			medium.put_string (Begin_dictionary)
 			if title /= Void then
-				medium.put_string (dictionary_entry (create {PDF_NAME}.make ("Title"), pdf_string(title)))
+				create name.make ("Title")
+				medium.put_string (dictionary_entry (name, pdf_string(title)))
 			end
 			if author /= Void then
-				medium.put_string (dictionary_entry (create {PDF_NAME}.make ("Author"), pdf_string(author)))
+				create name.make ("Author")
+				medium.put_string (dictionary_entry (name, pdf_string(author)))
 			end
 			if subject /= Void then
-				medium.put_string (dictionary_entry (create {PDF_NAME}.make ("Subject"), pdf_string(subject)))
+				create name.make ("Subject")
+				medium.put_string (dictionary_entry (name, pdf_string(subject)))
 			end
 			if keywords /= Void then
-				medium.put_string (dictionary_entry (create {PDF_NAME}.make ("Keywords"), pdf_string(keywords)))
+				create name.make ("Keywords")
+				medium.put_string (dictionary_entry (name, pdf_string(keywords)))
 			end
 			if creator /= Void then
-				medium.put_string (dictionary_entry (create {PDF_NAME}.make ("Creator"), pdf_string(creator)))
+				create name.make ("Creator")
+				medium.put_string (dictionary_entry (name, pdf_string(creator)))
 			end
 			if producer /= Void then
-				medium.put_string (dictionary_entry (create {PDF_NAME}.make ("Producer"), pdf_string(producer)))
+				create name.make ("Producer")
+				medium.put_string (dictionary_entry (name, pdf_string(producer)))
 			end
 			if creation_date /= Void then
-				medium.put_string (dictionary_entry (create {PDF_NAME}.make ("CreationDate"), pdf_date (creation_date)))
+				create name.make ("CreationDate")
+				medium.put_string (dictionary_entry (name, pdf_date (creation_date)))
 			end
 			if modification_date /= Void then
-				medium.put_string (dictionary_entry (create {PDF_NAME}.make ("ModDate"), pdf_date(modification_date)))
+				create name.make ("ModDate")
+				medium.put_string (dictionary_entry (name, pdf_date(modification_date)))
 			end
 			medium.put_string (End_dictionary)
 			medium.put_string (Object_footer)

@@ -12,6 +12,7 @@
 
 	<root class="SHOW_EPDF" creation="make"/>
 	<cluster name="show_epdf" location="${EPDF}/examples/show_epdf"/>
+	<option name="msil_generation" value="true" if="${GOBO_DOTNET}"/>
 	<option unless="${DEBUG}">
 		<option name="assertion" value="none"/>
 		<option name="finalize" value="true" unless="${GOBO_EIFFEL}=ve"/>
@@ -19,9 +20,11 @@
 	<option if="${DEBUG}">
 		<option name="assertion" value="all"/>
 		<option name="finalize" value="false"/>
-	</option>
-
-	<mount location="${SAFE}/lib/epdf/library.xace"/>
+	</option>	
+	<mount location="${EPDF}/library.xace"/>
 	<mount location="${GOBO}/library/library.xace"/>
 	<mount location="${GOBO}/library/kernel.xace"/>
+	<option if="${GOBO_OS}=windows">
+		<option name="link" value="libc.lib" if="${GOBO_EIFFEL}=ve"/>
+	</option>
 </system>

@@ -11,8 +11,6 @@ inherit
 	PDF_OBJECT
 		undefine
 			put_pdf
-		redefine
-			to_pdf
 		end
 		
 feature -- Access

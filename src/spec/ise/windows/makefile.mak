@@ -9,12 +9,10 @@ all:: epdf_var epdf_msc.lib
 	$(CC) $(CFLAGS) ..\..\C\$< 
 
 epdf_msc.lib: $(OBJ) ..\..\C\epdf_c.h
-	-del $@
 	lib /OUT:$@ $(OBJ)
 
 epdf_msc.obj: epdf_var ..\..\C\epdf_c.c ..\..\C\epdf_c.h
 	$(CC) $(CFLAGS) /Foepdf_msc.obj ..\..\C\epdf_c.c
-#	-rename epdf_c.obj epdf_msc.obj
 
 clean:
 	-del *.obj

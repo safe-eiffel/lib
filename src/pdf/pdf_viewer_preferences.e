@@ -152,33 +152,40 @@ feature -- Conversion
 	put_pdf (medium: PDF_OUTPUT_MEDIUM) is
 		local
 			pdf_true : STRING
+			name : PDF_NAME
 		do
 			pdf_true := "true"
 			medium.put_string (object_header)
 			medium.put_string (Begin_dictionary)
 			--HideToolbar
 			if is_hide_tool_bar then
-				medium.put_string (dictionary_entry (create {PDF_NAME}.make ("HideToolbar"), pdf_true))
+				create name.make ("HideToolbar")
+				medium.put_string (dictionary_entry (name, pdf_true))
 			end
 			--HideMenubar
 			if is_hide_menu_bar then
-				medium.put_string (dictionary_entry (create {PDF_NAME}.make ("HideMenubar"), pdf_true))
+				create name.make ("HideMenubar")
+				medium.put_string (dictionary_entry (name, pdf_true))
 			end
 			--HideWindowUI
 			if is_hide_window_ui then
-				medium.put_string (dictionary_entry (create {PDF_NAME}.make ("HideWindowUI"), pdf_true))
+				create name.make ("HideWindowUI")
+				medium.put_string (dictionary_entry (name, pdf_true))
 			end
 			--FitWindow
 			if is_fit_window then
-				medium.put_string (dictionary_entry (create {PDF_NAME}.make ("FitWindow"), pdf_true))
+				create name.make ("FitWindow")
+				medium.put_string (dictionary_entry (name, pdf_true))
 			end
 			--CenterWindow
 			if is_center_window then
-				medium.put_string (dictionary_entry (create {PDF_NAME}.make ("CenterWindow"), pdf_true))
+				create name.make ("CenterWindow")
+				medium.put_string (dictionary_entry (name, pdf_true))
 			end
 			--DisplayDocTitle
 			if is_display_document_title then
-				medium.put_string (dictionary_entry (create {PDF_NAME}.make ("DisplayDocTitle"), pdf_true))
+				create name.make ("DisplayDocTitle")
+				medium.put_string (dictionary_entry (name, pdf_true))
 			end
 			medium.put_string (End_dictionary)
 			medium.put_string (Object_footer)

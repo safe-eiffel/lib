@@ -56,7 +56,7 @@ feature -- Basic operations
 			-- set font + size
 			page.set_font (document.last_font, 36)		
 			-- move text origin to (left edge + 1 inch, upper edge - 1 inch - fontsize)
-			page.move_text_origin ((page.mediabox.width - image.width) //2 , page.mediabox.height // 2)			
+			page.move_text_origin ((page.mediabox.width - image.width - 4) //2 , page.mediabox.height // 2 + 2)			
 			-- show text
 			page.put_string ("Hello World !")		
 			-- end text mode
@@ -67,8 +67,8 @@ feature -- Basic operations
 			page.put_image (image)
 			page.grestore
 			page.gsave
-			page.translate ((page.mediabox.width - image2.width)  //2 - 20, (page.mediabox.height - image.height) // 2 + (image2.height // 4))
-			page.scale (image2.width,image2.height)
+			page.translate ((page.mediabox.width - image2.width // 2)  //2 - 20, (page.mediabox.height - image.height // 2) // 2 + (image2.height // 3))
+			page.scale (image2.width / 2 ,image2.height / 2)
 			page.put_image (image2)
 			page.grestore
 			
@@ -84,7 +84,6 @@ feature -- Basic operations
 			until
 				i > images.upper
 			loop
-				--create png.make (images.item (i))
 				document.create_png_image (images.item (i))
 				image := document.last_image
 				page.gsave
