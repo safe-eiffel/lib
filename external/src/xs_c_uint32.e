@@ -64,10 +64,6 @@ feature -- Access
 			s_exists: s /= Void
 			s_hexadecimal: STRING_.is_hexadecimal (s)
 			count_less_8: s.count >= 1 and s.count <= 8
-		local
-			s_index, byte_index, current_byte, zero_code, a_code : INTEGER
-			nibbles : INTEGER
-			c : CHARACTER
 		do
 			make
 			put (STRING_.hexadecimal_to_integer (s))
