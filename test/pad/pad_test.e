@@ -100,8 +100,8 @@ end -- class PAD_TEST
 -- Released under the Eiffel Forum free license
 -------------------------------------------------------
 -- $Log$
--- Revision 1.1  2000/01/07 11:33:35  pgcrism
--- Initial revision
+-- Revision 1.1.1.1  2000/01/07 11:33:35  pgcrism
+-- Initial checkin
 --
 --
 	

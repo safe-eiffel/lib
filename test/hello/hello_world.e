@@ -30,8 +30,8 @@ end -- class BASIC_TEST
 -- Released under the Eiffel Forum free license
 -------------------------------------------------------
 -- $Log$
--- Revision 1.1  2000/01/07 11:33:32  pgcrism
--- Initial revision
+-- Revision 1.1.1.1  2000/01/07 11:33:32  pgcrism
+-- Initial checkin
 --
 --
 	
