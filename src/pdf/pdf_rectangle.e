@@ -18,7 +18,7 @@ inherit
 		end
 		
 creation
-		make, make_a4, make_letter
+		make, make_a4, make_letter, set
 
 feature -- Initialization
 
@@ -37,6 +37,7 @@ feature -- Initialization
 				set (0, 0, 595, 842)
 				is_constant := True
 			ensure
+				constant: is_constant
 				ll_corner: llx = 0 and lly = 0
 				ur_corner: urx=595 and ury = 842
 			end
@@ -48,6 +49,7 @@ feature -- Initialization
 				set (0, 0, 612, 792)
 				is_constant := True
 			ensure
+				constant: is_constant
 				ll_corner: llx = 0 and lly = 0
 				ur_corner: urx=595 and ury = 842
 			end
@@ -80,9 +82,19 @@ feature -- Access
 
 feature -- Measurement
 	
-	width : DOUBLE is do Result := urx - llx end
+	width : DOUBLE is 
+		do 
+			Result := urx - llx 
+		ensure
+			definition: Result = urx - llx
+		end
 	
-	height : DOUBLE is do Result := ury - lly end
+	height : DOUBLE is 
+		do 
+			Result := ury - lly 
+		ensure
+			definition: Result = ury - lly
+		end
 	
 feature -- Status report
 
@@ -115,16 +127,23 @@ feature -- Element change
 			-- set rectangle points
 		require
 			modifiable: not is_constant
+			lower_x_smaller_upper_x: a_llx < a_urx
+			lower_y_smaller_upper_y: a_lly < a_ury
 		do
 			put (a_llx, 1)
 			put (a_lly, 2)
 			put (a_urx, 3)
 			put (a_ury, 4)
 		ensure
-			llx = a_llx
-			lly = a_lly
-			urx = a_urx
-			ury = a_ury
+			llx_set: llx = a_llx
+			lly_set: lly = a_lly
+			urx_set: urx = a_urx
+			ury_set: ury = a_ury
 		end
 
+invariant
+	
+	x_constraint: llx < urx
+	y_constraint: lly < ury
+	
 end -- class PDF_RECTANGLE

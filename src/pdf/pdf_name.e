@@ -9,6 +9,9 @@ class
 
 inherit
 	PDF_SERIALIZABLE
+		redefine
+			is_equal
+		end
 	
 creation
 
@@ -40,6 +43,13 @@ feature -- Conversion
 			Result.append_string (value)
 		end
 
+feature -- Comparison
+
+	is_equal (other : like Current) : BOOLEAN is
+		do
+			Result := value.is_equal (other.value)
+		end
+		
 feature {NONE} -- Implementation
 
 	number : INTEGER is do end

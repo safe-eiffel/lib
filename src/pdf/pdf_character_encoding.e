@@ -7,6 +7,12 @@ indexing
 deferred class
 
 	PDF_CHARACTER_ENCODING
+	
+inherit
+	ANY
+		redefine
+			is_equal
+		end
 		
 feature -- Access
 
@@ -32,6 +38,13 @@ feature -- Status Report
 			glyph_name_not_void: glyph_name /= Void
 		do
 			Result := name_to_code.has (glyph_name)
+		end
+		
+feature -- Comparison
+
+	is_equal (other : like Current) : BOOLEAN is
+		do
+			Result := name.is_equal (other.name)
 		end
 		
 feature {NONE} -- Implementation

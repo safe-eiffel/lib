@@ -11,6 +11,9 @@ deferred class
 inherit
 
 	PDF_OBJECT
+		redefine
+			is_equal
+		end
 		
 feature -- Access
 
@@ -105,6 +108,24 @@ feature -- Access
 			Result := current_width
 		end
 
+	character_width (character : CHARACTER; a_font_size, a_character_spacing, a_word_spacing, a_horizontal_scaling : DOUBLE) : DOUBLE is
+			-- width of `character' using current font, sized to `a_font_size' and saled by `a_horizontal_scaling'/100
+			-- spaced using `a_character_spacing', `a_word_spacing'
+		do
+			Result := horizontal_displacement (character, a_font_size, a_character_spacing, a_word_spacing, 0.0, a_horizontal_scaling)
+		end
+
+feature -- Comparison
+
+	is_equal (other : like Current) : BOOLEAN is
+		do
+			if other /= Current then
+				Result := basefont.is_equal (other.basefont) and then encoding.is_equal (other.encoding) and then firstchar = other.firstchar and then lastchar = other.lastchar
+			else
+				Result := True
+			end
+		end
+		
 feature {PDF_FONT} -- Implementation
 
 	widths : PDF_ARRAY[INTEGER] is
