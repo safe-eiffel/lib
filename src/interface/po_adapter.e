@@ -4,7 +4,7 @@ indexing
 
 		"Objects that handle all accesses to persistent objects of type G on a datastore.%N%
 		% %
-		%The persistent objects all have `class_name' as persistence name.%N%
+		%The persistent objects all have `persistent_class_name' as persistence name.%N%
 		% %
 		%Adapters are factories for read objects, which are put into `last_cursor'."
 		

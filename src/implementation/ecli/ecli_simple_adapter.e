@@ -123,7 +123,7 @@ feature -- Status setting
 
 	disable_cache_on_write is
 		do 
-			is_enabled_cache_on_write := True 
+			is_enabled_cache_on_write := False 
 		end
 		
 feature -- Measurement

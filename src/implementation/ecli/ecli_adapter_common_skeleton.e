@@ -122,7 +122,7 @@ feature -- Basic operations
 
 	disable_cache_on_write is
 		do 
-			is_enabled_cache_on_write := True 
+			is_enabled_cache_on_write := False 
 		end
 	
 feature {PO_ADAPTER} -- Basic operations
