@@ -77,37 +77,37 @@ feature -- Access
 			-- The page mode to be used when the document is opened
 			
 	default_mediabox : PDF_RECTANGLE
-			-- Default media box for each page
-			-- A page mediabox can be set individually
+			-- Media box for pages without specific media box
 
 	last_page : PDF_PAGE
-			-- last created page; set by `add_page'
+			-- Last created page; set by `add_page'
 	
 	last_font : PDF_FONT
-			-- last found font; set by `find_font'
+			-- Last found font; set by `find_font'
 
 	last_encoding : PDF_CHARACTER_ENCODING
-			-- last character encoding; set by `find_encoding'
+			-- Last character encoding; set by `find_encoding'
 
 	last_image : PDF_IMAGE
-			-- last image created by `create_image' or `create_png_image'
+			-- Last image created by `create_image' or `create_png_image'
 	
 	last_outline_item : PDF_OUTLINE_ITEM
-			-- last outline item created
+			-- Last outline item created
 	
 	outlines : PDF_OUTLINES is
-			-- outlines entry; root of outline items
+			-- Outlines entry; root of outline items
 		do
 			Result := catalog.outlines
 		end
 
 	information : PDF_DOCUMENT_INFORMATION is
-			-- metadata about current document
+			-- Metadata about current document
 		do
 			Result := document_information
 		end
 
 	viewer_preferences : PDF_VIEWER_PREFERENCES
+			-- UI preferences for PDF Viewer
 	
 feature {NONE} -- Measurement
 
@@ -120,7 +120,7 @@ feature {NONE} -- Measurement
 feature -- Element change
 
 	add_page is
-			-- add page
+			-- create a new page and add it to Current
 		do
 			create_page
 			last_page.add_stream (Current)
@@ -170,6 +170,12 @@ feature -- Element change
 		end
 
 	create_image (image_width, image_height, sample_colors, color_precision: INTEGER) is
+			-- Create an image, `image_width' large, `image_height' high, with `sample_colors' color count and `color_precision' bits per sample
+		require
+			image_width_positive: image_width >= 1
+			image_height_positive: image_height >= 1
+			valid_sample_colors: sample_colors = 1 or else sample_colors = 3
+			valid_color_precision: color_precision = 1 or else color_precision = 4 or else color_precision = 8
 		do
 			create last_image.make (xref.count, image_width, image_height, sample_colors, color_precision)
 			xref.add_entry (last_image)

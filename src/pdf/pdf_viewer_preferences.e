@@ -150,6 +150,7 @@ feature -- Conversion
 		end
 		
 	put_pdf (medium: PDF_OUTPUT_MEDIUM) is
+			-- put PDF code on `medium'
 		local
 			pdf_true : STRING
 			name : PDF_NAME

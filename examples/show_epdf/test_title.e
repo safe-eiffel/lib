@@ -1,7 +1,7 @@
 indexing
 	description: 
 		
-		"Objects that show the title page for PDeiFfel"
+		"Objects that show the title page for ePDF"
 
 	author: 	"Paul G. Crismer"
 	licencing: 	"See notice at end of class"
