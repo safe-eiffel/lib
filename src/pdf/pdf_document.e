@@ -23,7 +23,11 @@ inherit
 		undefine
 			put_pdf
 		end
-		
+
+	PDF_LAYOUT_CONSTANTS
+	
+	PDF_ENCODING_CONSTANTS
+	
 creation
 	make
 	
@@ -176,34 +180,6 @@ feature -- Element change
 		end
 
 feature -- Constants
-
-	Encoding_winansi : STRING is "WinAnsiEncoding"
-			-- ANSI encoding for Latin languages
-
-	Encoding_mac : STRING is "MacRomanEncoding"
-			-- Latin text in western European languages
-	
-	Encoding_standard : STRING is "StandardEncoding"
-			-- standard encoding.
-			-- Use it for Symbol and ZapfDingbats fonts
-
-	Encoding_pdf : STRING is "PDFDocEncoding"
-			-- Encoding used outside of stream objects
-			-- Not intented to be used.
-
-	Layout_single_page : STRING is "SinglePage" 
-			-- Display one page at a time.
-
-	Layout_one_column : STRING is "OneColumn" 
-			-- Display the pages in one column.
-
-	Layout_two_column_left : STRING is "TwoColumnLeft"
-			-- Display the pages in two columns, with oddnumbered
-			-- pages on the left.
-
-	Layout_two_column_right : STRING is "TwoColumnRight"
-			-- Display the pages in two columns, with oddnumbered
-			-- pages on the right.
 
 	Mediabox_letter : PDF_RECTANGLE is
 			-- letter format
