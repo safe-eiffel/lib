@@ -2,7 +2,7 @@ SHELL = /bin/sh
 CC = cc
 AR = ar
 RANLIB = ranlib
-CFLAGS =  -O -I$(EIFFEL4)/bench/spec/$(PLATFORM)/include -I. -I/usr/local/include
+CFLAGS = -O  -I${EIFFEL4}/bench/spec/${PLATFORM}/include -I. -I/usr/local/include 
 LIBS = -lnsl -lm
 RM = /bin/rm -f
 SRC= $(ECURSES)/spec/Clib
@@ -43,12 +43,11 @@ ecurses_system_api.o : $(SRC)/ecurses_system_api.c
 	$(CC) $(CFLAGS) -c $<
  
 
-.PHONY: all clean ecursesvar
 
 clean:
 	$(RM) libecurses_c.a $(OBJ)
 
-all:eclivar libecurses_c.a
+all:ecuresevar libecurses_c.a
  
 ecursesvar:
 	@if test -z "$(ECURSES)" ; then \

@@ -44,12 +44,11 @@ ecurses_system_api.o : $(SRC)/ecurses_system_api.c
 	$(CC) $(CFLAGS) -c $<
  
 
-.PHONY: all clean ecursesvar
 
 clean:
 	$(RM) libecurses_c.a $(OBJ)
 
-all:eclivar libecurses_c.a
+all:ecuresevar libecurses_c.a
  
 ecursesvar:
 	@if test -z "$(ECURSES)" ; then \
