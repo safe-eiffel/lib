@@ -33,7 +33,7 @@ feature -- Resizing
 
 feature -- Transformation
 
-feature -- Conversion
+feature {PDF_OBJECT} -- Conversion
 
 	to_pdf : STRING is
 			-- 

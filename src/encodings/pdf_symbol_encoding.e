@@ -1,6 +1,6 @@
 indexing
 
-	description: "Character Encoding.  Uses Adobe character names."
+	description: "Symbol Character Encodings."
 	author: "Paul G. Crismer"
 	licence: "Release under the Eiffel Forum licence.  See file 'forum.txt'."
 	

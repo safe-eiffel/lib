@@ -162,25 +162,25 @@ feature -- Conversion
 			!!sresources.make ("Resources")
 			!!smediabox.make ("MediaBox")
 			!!Result.make (0)
-			Result.append (object_header)
-			Result.append (begin_dictionary)
+			Result.append_string (object_header)
+			Result.append_string (begin_dictionary)
 			-- Type
-			Result.append (dictionary_entry (stype, "/Page"))
+			Result.append_string (dictionary_entry (stype, "/Page"))
 			-- Parent
-			Result.append (dictionary_entry (sparent, parent.indirect_reference))
+			Result.append_string (dictionary_entry (sparent, parent.indirect_reference))
 			-- Resources can be empty : <<>>
 			if resources = Void then
-				Result.append (dictionary_entry (sresources, "<< >>"))
+				Result.append_string (dictionary_entry (sresources, "<< >>"))
 			else
-				Result.append (dictionary_entry (sresources, resources.to_pdf))
+				Result.append_string (dictionary_entry (sresources, resources.to_pdf))
 			end
 			-- MediaBox
-			Result.append (dictionary_entry (smediabox, mediabox.to_pdf))
+			Result.append_string (dictionary_entry (smediabox, mediabox.to_pdf))
 			-- contents (optional)			
 			if contents.count > 0 then
-				Result.append ("/Contents ")
+				Result.append_string ("/Contents ")
 				if contents.count > 1 then
-					Result.append ("[ ")					
+					Result.append_string ("[ ")					
 				end
 				from 
 					contents_cursor := contents.new_cursor
@@ -188,22 +188,22 @@ feature -- Conversion
 				until
 					contents_cursor.off
 				loop
-					Result.append (contents_cursor.item.indirect_reference)
+					Result.append_string (contents_cursor.item.indirect_reference)
 					Result.append_character (' ')
 					contents_cursor.forth
 				end
 				if contents.count > 1 then
-					Result.append (" ]%N")
+					Result.append_string (" ]%N")
 				end
 			end
 			-- medium_rotation
 			if medium_rotation /= 0 then
-				Result.append ("/Rotate ")
-				Result.append (medium_rotation.out)
-				Result.append ("%N")
+				Result.append_string ("/Rotate ")
+				Result.append_string (medium_rotation.out)
+				Result.append_string ("%N")
 			end
-			Result.append (end_dictionary)
-			Result.append (object_footer)
+			Result.append_string (end_dictionary)
+			Result.append_string (object_footer)
 		end
 		
 feature -- Basic operations - Graphics
@@ -697,8 +697,8 @@ feature {NONE} -- Implementation
 			fname : STRING
 		do
 			!!fname.make (0)
-			fname.append ("F")
-			fname.append ((fonts.count + 1).out)
+			fname.append_string ("F")
+			fname.append_string ((fonts.count + 1).out)
 			fonts.add_entry (fname, a_font)
 		end
 

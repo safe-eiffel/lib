@@ -1,6 +1,6 @@
 indexing 
 
-	description: "Transformation matrix. 3x3 matrix organized like this : %N%
+	description: "Transformation matrixes. 3x3 matrix organized like this : %N%
 		% 	| a  b  0 |%N%
 		% 	| c  d  0 |%N%
 		% 	| e  f  1 |%N%

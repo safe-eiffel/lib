@@ -40,8 +40,8 @@ feature {NONE} -- Access
 	object_header : STRING is
 		do
 			!!Result.make (0)
-			Result.append (object_identification)
-			Result.append (" obj%N")
+			Result.append_string (object_identification)
+			Result.append_string (" obj%N")
 		end
 
 	object_footer : STRING is
@@ -64,9 +64,9 @@ feature {NONE} -- Implementation
 	object_identification : STRING is
 		do
 			!!Result.make (0)
-			Result.append (number.out)
-			Result.append (" ")
-			Result.append (generation.out)
+			Result.append_string (number.out)
+			Result.append_string (" ")
+			Result.append_string (generation.out)
 		end			
 	
 	dictionary_entry (name : PDF_NAME; value : STRING) : STRING is
@@ -75,9 +75,9 @@ feature {NONE} -- Implementation
 			value_exists: value /= Void
 		do
 			!!Result.make (0)
-			Result.append (name.to_pdf)
+			Result.append_string (name.to_pdf)
 			Result.append_character (' ')
-			Result.append (value)
+			Result.append_string (value)
 			Result.append_character ('%N')			
 		end
 		
@@ -86,8 +86,8 @@ feature -- Conversion
 	indirect_reference : STRING is
 		do
 			!!Result.make(0)
-			Result.append (object_identification)
-			Result.append (" R")
+			Result.append_string (object_identification)
+			Result.append_string (" R")
 		end
 
 invariant

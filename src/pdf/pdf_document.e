@@ -31,7 +31,6 @@ feature {NONE} -- Initialization
 	
 	make is
 			-- creates a document
-			-- 
 		do
 			-- create non PDF-objects
 			!!xref.make
@@ -179,32 +178,32 @@ feature -- Element change
 feature -- Constants
 
 	Encoding_winansi : STRING is "WinAnsiEncoding"
-				-- ANSI encoding for Latin languages
-	
+			-- ANSI encoding for Latin languages
+
 	Encoding_mac : STRING is "MacRomanEncoding"
-				-- Latin text in western European languages
-				
+			-- Latin text in western European languages
+	
 	Encoding_standard : STRING is "StandardEncoding"
-				-- standard encoding.
-				-- Use it for Symbol and ZapfDingbats fonts
-	
+			-- standard encoding.
+			-- Use it for Symbol and ZapfDingbats fonts
+
 	Encoding_pdf : STRING is "PDFDocEncoding"
-				-- Encoding used outside of stream objects
-				-- Not intented to be used.
-	
+			-- Encoding used outside of stream objects
+			-- Not intented to be used.
+
 	Layout_single_page : STRING is "SinglePage" 
-				-- Display one page at a time.
-				
+			-- Display one page at a time.
+
 	Layout_one_column : STRING is "OneColumn" 
-				-- Display the pages in one column.
-				
+			-- Display the pages in one column.
+
 	Layout_two_column_left : STRING is "TwoColumnLeft"
-				-- Display the pages in two columns, with oddnumbered
-				-- pages on the left.
-				
+			-- Display the pages in two columns, with oddnumbered
+			-- pages on the left.
+
 	Layout_two_column_right : STRING is "TwoColumnRight"
-				-- Display the pages in two columns, with oddnumbered
-				-- pages on the right.
+			-- Display the pages in two columns, with oddnumbered
+			-- pages on the right.
 
 	Mediabox_letter : PDF_RECTANGLE is
 			-- letter format
@@ -221,36 +220,15 @@ feature -- Constants
 feature -- Conversion
 
 	to_pdf : STRING is
-			-- 
+			-- Current converted to PDF format - 'put_pdf' is preferred.
 		local
 			string_stream : KL_STRING_OUTPUT_STREAM
 			output_medium : PDF_OUTPUT_MEDIUM
-			pdf_string : STRING
 		do
 			!!string_stream.make_empty
 			!!output_medium.make (string_stream)
 			put_pdf (output_medium)
 			Result := string_stream.string
---			!!Result.make (256)
---			pdf_count := 0
---			-- build pages tree
---			build_pages_tree
---			-- header
---			pdf_string := pdf_header
---			pdf_count := pdf_count + pdf_string.count
---			Result.append (pdf_string)
---			-- body
---			pdf_string := pdf_body
---			Result.append (pdf_string)
---			-- cross reference
---			xref_index := pdf_count
---			pdf_string := xref.to_pdf
---			pdf_count := pdf_count + pdf_string.count
---			Result.append (pdf_string)
---			-- trailer
---			pdf_string := pdf_trailer
---			pdf_count := pdf_count + pdf_string.count
---			Result.append (pdf_string)
 		end
 
 	put_pdf (medium : PDF_OUTPUT_MEDIUM) is
@@ -269,7 +247,7 @@ feature -- Conversion
 			-- trailer
 			put_pdf_trailer (medium)
 		end
-		
+
 feature {PDF_PAGE} -- Factory
 	
 	create_stream is
@@ -353,7 +331,7 @@ feature {NONE} -- Implementation
 	create_pdf_encoding is
 			--
 		do
-				!PDF_PDF_ENCODING!last_encoding			
+				!PDF_PDF_ENCODING!last_encoding
 		end
 
 	
@@ -458,14 +436,16 @@ feature {NONE} -- Implementation
 	new_font_key (font_name, encoding_name : STRING) : STRING is
 		do
 			!!Result.make (font_name.count+encoding_name.count+1)
-			Result.append (font_name)
+			Result.append_string (font_name)
 			Result.append_character (',')
-			Result.append (encoding_name)
+			Result.append_string (encoding_name)
 		end
 
 	page_list : DS_LIST[PDF_PAGE]
 
 	build_pages_tree is
+			-- Build pages tree using PDF_PAGE_TREE_NODEs, hierachical organization
+			-- of pages; Each PDF_PAGES_TREE_NODE having at most 'kids_count' kids.
 		local
 			nodes_count : INTEGER
 			nodes_list : DS_LIST[PDF_PAGE_TREE_NODE]
@@ -500,7 +480,7 @@ feature {NONE} -- Implementation
 		end
 		
 	give_a_parent (nodes : DS_LIST[PDF_PAGE_TREE_NODE]) is
-			-- 
+			-- Give a parent to 'nodes'; parent can be found in 'last_parent'
 		local
 			node_count : INTEGER
 			nodes_list_cursor : DS_LIST_CURSOR [PDF_PAGE_TREE_NODE]
@@ -526,10 +506,15 @@ feature {NONE} -- Implementation
 				node_count := node_count + 1
 				nodes_list_cursor.forth
 			end		
+		ensure
+			result_in_last_parent_list: last_parent_list /= Void 
+				-- and each parent p in last_parent_list
+				-- has at most 'kids_count' kids from nodes
+				-- foreach n in nodes : n.parent /= Void : each node in nodes has a parent
 		end
 		
 	last_parent_list : DS_LIST[PDF_PAGE_TREE_NODE]
 	
-	kids_count : INTEGER is 2
+	kids_count : INTEGER is 10
 	
 end -- class PDF_DOCUMENT

@@ -236,7 +236,7 @@ feature {NONE} -- Implementation
 
 end -- class PDF_SYMBOL_FONT
 --
--- Copyright: 2001, Paul G. Crismer, <pgcrism@pi.be>
+-- Copyright: 2001, 2003 Paul G. Crismer, <pgcrism@users.sf.net>
 -- Released under the Eiffel Forum License <www.eiffel-forum.org>
 -- See file <forum.txt>
 --

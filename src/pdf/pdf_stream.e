@@ -61,27 +61,27 @@ feature -- Element change
 			content_append_double (x)
 			content.append_character (' ')
 			content_append_double (y)
-			content.append (" Td%N")
+			content.append_string (" Td%N")
 		end
 
 	put_string (s : STRING) is
 			-- 
 		do
 			content_append_literal_string (s)
-			content.append (" Tj%N") 
+			content.append_string (" Tj%N") 
 		end
 
 	put_new_line is
 			-- go to next line 
 		do
-			content.append (" T*%N")
+			content.append_string (" T*%N")
 		end
 
 	put_new_line_string (s : STRING) is
 			-- 
 		do
 			content_append_literal_string (s)
-			content.append (" '%N")
+			content.append_string (" '%N")
 		end
 
 	set_text_leading (l : DOUBLE) is
@@ -125,7 +125,7 @@ feature {PDF_PAGE} --
 			content_append_space
 			content_append_double (size)
 			content_append_space
-			content.append (" Tf%N")
+			content.append_string (" Tf%N")
 		end
 
 feature -- Removal
@@ -143,24 +143,24 @@ feature -- Conversion
 			length : PDF_NAME
 		do
 			!!Result.make (0)
-			Result.append (object_header)
+			Result.append_string (object_header)
 			-- dictionary
-			Result.append (begin_dictionary)
+			Result.append_string (begin_dictionary)
 			!!length.make ("Length")
-			Result.append (length.to_pdf)
+			Result.append_string (length.to_pdf)
 			Result.append_character (' ')
 			
-			Result.append (content.count.out)
-			Result.append (end_dictionary)
+			Result.append_string (content.count.out)
+			Result.append_string (end_dictionary)
 			-- stream
-			Result.append ("stream%N")
+			Result.append_string ("stream%N")
 			-- content
-			Result.append (content)
+			Result.append_string (content)
 			Result.append_character ('%N')
 			-- endstream
-			Result.append ("endstream%N")
+			Result.append_string ("endstream%N")
 			-- endobj
-			Result.append (object_footer)
+			Result.append_string (object_footer)
 		end
 
 	put_pdf (medium : PDF_OUTPUT_MEDIUM) is
@@ -196,26 +196,26 @@ feature -- Basic operations
 		do
 --			text_origin_x := 0
 --			text_origin_y := 0
-			content.append ("BT%N")
+			content.append_string ("BT%N")
 			text_mode := True
 		end
 		
 	end_text is
 		do
-			content.append ("ET%N")
+			content.append_string ("ET%N")
 			text_mode := False
 		end
 
 	gsave is
 			-- 
 		do
-			content.append ("q%N")
+			content.append_string ("q%N")
 		end
 		
 	grestore is
 			-- 
 		do
-			content.append ("Q%N")
+			content.append_string ("Q%N")
 		end
 		
 	translate (a_tx, a_ty : DOUBLE) is
@@ -252,13 +252,13 @@ feature -- Basic operations
 	stroke is
 			-- 
 		do
-			content.append ("S%N")
+			content.append_string ("S%N")
 		end
 	
 	fill (path_fill_heuristics : INTEGER) is
 			-- 
 		do
-			content.append (" f")
+			content.append_string (" f")
 			if path_fill_heuristics > 0 then
 				content.append_character ('*')
 			end
@@ -268,7 +268,7 @@ feature -- Basic operations
 	fill_then_stroke  (path_fill_heuristics : INTEGER) is
 			-- 
 		do
-			content.append (" B")
+			content.append_string (" B")
 			if path_fill_heuristics > 0 then
 				content.append_character ('*')
 			end
@@ -278,7 +278,7 @@ feature -- Basic operations
 	clip  (path_fill_heuristics : INTEGER) is
 			-- 
 		do
-			content.append (" W")
+			content.append_string (" W")
 			if path_fill_heuristics > 0 then
 				content.append_character ('*')
 			end
@@ -288,7 +288,7 @@ feature -- Basic operations
 	end_path is
 			--
 		do
-			content.append (" n%N")
+			content.append_string (" n%N")
 		end
 		
 	rectangle (x, y, w, h : DOUBLE) is
@@ -302,7 +302,7 @@ feature -- Basic operations
 			content_append_space
 			content_append_double (h)
 			content_append_space
-			content.append ("re%N")
+			content.append_string ("re%N")
 		end
 		
 	set_text_origin (a_tx, a_ty : DOUBLE) is
@@ -320,7 +320,7 @@ feature -- Basic operations
 			-- 
 		do
 			content_append_transformation_matrix (a, b, c, d, e, f)
-			content.append (" Tm%N")
+			content.append_string (" Tm%N")
 		end
 
 --	scale_text (sx, sy : DOUBLE) is
@@ -356,14 +356,14 @@ feature -- Basic operations
 		do
 			content_append_double (gray)
 			content_append_space
-			content.append (" g%N")
+			content.append_string (" g%N")
 		end
 
 	set_gray_stroke (gray : DOUBLE) is
 		do
 			content_append_double (gray)
 			content_append_space
-			content.append (" G%N")
+			content.append_string (" G%N")
 		end
 		
 	set_rgb_color (r, g, b : DOUBLE) is
@@ -374,7 +374,7 @@ feature -- Basic operations
 			content_append_space
 			content_append_double (b)
 			content_append_space
-			content.append (" rg%N")
+			content.append_string (" rg%N")
 		end
 		
 	set_rgb_color_stroke (r, g, b : DOUBLE) is
@@ -385,7 +385,7 @@ feature -- Basic operations
 			content_append_space
 			content_append_double (b)
 			content_append_space
-			content.append (" RG%N")
+			content.append_string (" RG%N")
 		end
 
 	set_line_width (w : DOUBLE) is
@@ -422,7 +422,7 @@ feature -- Basic operations
 			until
 				index > pattern.upper
 			loop
-				content.append (pattern.item (index).out)
+				content.append_string (pattern.item (index).out)
 				content_append_space
 				index := index + 1
 			end
@@ -434,7 +434,7 @@ feature -- Basic operations
 	set_line_solid is
 			-- unset line_dash
 		do
-			content.append ("[] 0 d%N")
+			content.append_string ("[] 0 d%N")
 		end
 
 	move (x, y : DOUBLE) is
@@ -458,11 +458,11 @@ feature -- Basic operations
 			-- close current subpath by drawing a straight line from current
 			-- path position to subpath origin
 		do
-			content.append (" h%N")
+			content.append_string (" h%N")
 		end
 		
 	bezier_1 (cx1, cy1, cx2, cy2, px, py : DOUBLE) is
-			-- append a bezier curve to current subpath, with current position
+			-- append_string a bezier curve to current subpath, with current position
 			-- as starting point, (px, py) as end point, and control points
 			-- (cx1, cy1) attached to starting point and (cx2,cy2) attached to end point
 			-- (px, py) is the new current position
@@ -479,11 +479,11 @@ feature -- Basic operations
 			content_append_space
 			content_append_double (py)
 			content_append_space
-			content.append ("c%N")			
+			content.append_string ("c%N")			
 		end
 		
 	bezier_2 (cx2, cy2, px, py : DOUBLE) is
-			-- append a bezier curve to current subpath, with current position
+			-- append_string a bezier curve to current subpath, with current position
 			-- as starting point, (px, py) as end point, and control point
 			-- (cx2,cy2) attached to end point. (px, py) is the new current position
 		do
@@ -495,11 +495,11 @@ feature -- Basic operations
 			content_append_space
 			content_append_double (py)
 			content_append_space
-			content.append ("v%N")			
+			content.append_string ("v%N")			
 		end
 		
 	bezier_3 (cx1, cy1, px, py : DOUBLE) is
-			-- append a bezier curve to current subpath, with current position
+			-- append_string a bezier curve to current subpath, with current position
 			-- as starting point, (px, py) as end point, and control point
 			-- (cx1,cy1) attached to starting point. (px, py) is the new current position
 		do
@@ -511,7 +511,7 @@ feature -- Basic operations
 			content_append_space
 			content_append_double (py)
 			content_append_space
-			content.append ("y%N")			
+			content.append_string ("y%N")			
 		end
 
 feature {NONE} -- Implementation
@@ -561,17 +561,17 @@ feature {NONE} -- Implementation
 			if integral = 0 and sign = - 1 then
 				content.append_character ('-')
 			end
-			content.append (integral.out)
+			content.append_string (integral.out)
 			if fraction > 0 then
 				content.append_character ('.')
 				if fraction < 10 then
-					content.append ("000")
+					content.append_string ("000")
 				elseif fraction < 100 then
-					content.append ("00")
+					content.append_string ("00")
 				elseif fraction < 1000 then
-					content.append ("0")
+					content.append_string ("0")
 				end
-				content.append (fraction.out)
+				content.append_string (fraction.out)
 			end
 		end
 		
@@ -579,14 +579,14 @@ feature {NONE} -- Implementation
 			-- 
 		do
 			content.append_character ('/')
-			content.append (s)
+			content.append_string (s)
 		end
 
 	concatenate_to_ctm (a, b, c, d, e, f : DOUBLE) is
 			--
 		do
 			content_append_transformation_matrix (a, b, c, d, e, f)
-			content.append (" cm%N")			
+			content.append_string (" cm%N")			
 		end
 
 	content_append_transformation_matrix (a, b, c, d, e, f : DOUBLE) is
@@ -611,16 +611,16 @@ feature {NONE} -- Implementation
 		do
 			content_append_double (n)
 			content_append_space
-			content.append (op)
+			content.append_string (op)
 			content.append_character ('%N')
 		end
 
 	content_append_intop (i : INTEGER; op : STRING) is
 			-- "int op%N"
 		do
-			content.append (i.out)
+			content.append_string (i.out)
 			content_append_space
-			content.append (op)
+			content.append_string (op)
 			content.append_character ('%N')
 		end
 		

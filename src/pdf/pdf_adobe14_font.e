@@ -69,18 +69,18 @@ feature -- Conversion
 			!!nbasefont.make ("BaseFont")
 			!!nencoding.make ("Encoding")
 			!!nname.make ("Name")
-			Result.append (object_header)
-			Result.append (begin_dictionary)
+			Result.append_string (object_header)
+			Result.append_string (begin_dictionary)
 			-- Type
-			Result.append (dictionary_entry (ntype, type.to_pdf))
+			Result.append_string (dictionary_entry (ntype, type.to_pdf))
 			-- SubType
-			Result.append (dictionary_entry (nsubtype, subtype.to_pdf))			
+			Result.append_string (dictionary_entry (nsubtype, subtype.to_pdf))			
 			-- BaseFont 
-			Result.append (dictionary_entry (nbasefont, basefont.to_pdf))
+			Result.append_string (dictionary_entry (nbasefont, basefont.to_pdf))
 			-- Encoding
-			Result.append (dictionary_entry (nencoding, encoding.name.to_pdf))
-			Result.append (end_dictionary)
-			Result.append (object_footer)
+			Result.append_string (dictionary_entry (nencoding, encoding.name.to_pdf))
+			Result.append_string (end_dictionary)
+			Result.append_string (object_footer)
 		end
 		
 feature {NONE} -- Implementation

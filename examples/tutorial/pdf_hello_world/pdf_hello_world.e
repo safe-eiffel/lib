@@ -15,7 +15,6 @@ feature -- Initialization
 	make is
 			-- Creation procedure.
 		local
-			pdf_file : RAW_FILE
 			page : PDF_PAGE
 			medium : PDF_OUTPUT_MEDIUM
 			file : KI_TEXT_OUTPUT_FILE
@@ -51,7 +50,7 @@ feature -- Initialization
 				
 end -- class PDF_HELLO_WORLD
 --
--- Copyright: 2001, Paul G. Crismer, <pgcrism@pi.be>
+-- Copyright: 2001, 2003 Paul G. Crismer, <pgcrism@users.sf.net>
 -- Released under the Eiffel Forum License <www.eiffel-forum.org>
 -- See file <forum.txt>
 --

@@ -31,22 +31,17 @@ feature -- Access
 		end
 		
 	firstchar : INTEGER is
-			-- FirstChar * first character code defined in font widths array
+			-- First character code defined in font widths array
 		deferred
 		end
 		
 	lastchar : INTEGER is
-			-- LastChar * last character code defined in font widths array
-		deferred
-		end
-		
-	widths : PDF_ARRAY[INTEGER] is
-			-- Widths *  indirect reference to 
+			-- Last character code defined in font widths array
 		deferred
 		end
 		
 	encoding : PDF_CHARACTER_ENCODING is
-			-- supported encoding
+			-- Current encoding
 		deferred
 		end
 
@@ -67,9 +62,9 @@ feature -- Access
 			Result := 1000
 		end
 
-
 	horizontal_displacement (c : CHARACTER; a_font_size, a_character_spacing, a_word_spacing, a_position_adjustment, a_horizontal_scaling : DOUBLE) : DOUBLE is
-			-- character horizontal displacement
+			-- horizontal displacement for character `c' where font size `a_font_size' points, scaled by `a_horizontal_scaling'/100
+			-- given `a_character_spacing', `a_word_spacing', `a_position_adjustment'
 			-- position_adjustment is used with TJ
 		do
 			Result := ((wx (c.code) - a_position_adjustment) / 1000) * a_font_size + a_character_spacing
@@ -90,7 +85,8 @@ feature -- Access
 		end
 
 	string_width (string : STRING; a_font_size, a_character_spacing, a_word_spacing, a_horizontal_scaling : DOUBLE) : DOUBLE is
-			-- string width for current font
+			-- width of `string' using current font, sized to `a_font_size' and saled by `a_horizontal_scaling'/100
+			-- spaced using `a_character_spacing', `a_word_spacing'
 		local
 			i_begin, i_end : INTEGER
 			current_width, current_char_width : DOUBLE
@@ -108,7 +104,14 @@ feature -- Access
 			end
 			Result := current_width
 		end
-		
+
+feature {PDF_FONT} -- Implementation
+
+	widths : PDF_ARRAY[INTEGER] is
+			-- Widths of characters, indexed by character code
+		deferred
+		end
+
 invariant
 	type_set: type /= Void
 	subtype_set: subtype /= Void

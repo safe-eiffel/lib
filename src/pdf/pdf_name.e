@@ -37,7 +37,7 @@ feature -- Conversion
 		do
 			!!Result.make (value.count+1)
 			Result.append_character ('/')
-			Result.append (value)
+			Result.append_string (value)
 		end
 
 end -- class PDF_NAME

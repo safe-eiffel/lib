@@ -6,6 +6,9 @@ indexing
 class
 	GRAPHVIZ_PDF
 
+inherit
+	KL_SHARED_STANDARD_FILES
+	
 creation
 	make
 
@@ -13,17 +16,15 @@ feature -- Initialization
 
 	make is
 		local
-			file_name : STRING
-			f : PLAIN_TEXT_FILE
-			node_count, edge_count : INTEGER
-			r : RAW_FILE
+			file : KL_TEXT_INPUT_FILE
+			stream : KI_TEXT_INPUT_STREAM
+			r : KL_BINARY_OUTPUT_FILE
 			tx, ty : DOUBLE
 			npages_x, npages_y : INTEGER
 			page_width, page_height : DOUBLE
 			document_width, document_height : DOUBLE
 			page_rectangle : PDF_RECTANGLE
 			row_index, column_index : INTEGER
-			fd : FORMAT_DOUBLE
 			p : PDF_PAGE
 			exception : EXCEPTIONS
 		do
@@ -32,16 +33,24 @@ feature -- Initialization
 			if args_ok then
 					
 				if input_file_name /= Void then
-					!!f.make_open_read (input_file_name)
+					create file.make (input_file_name)
+					file.open_read
+					stream := file
 				else
-					f := io.input
+					stream := std.input
 				end
-				if f.is_open_read then
-					!!reader.make (f)
+				if stream.is_open_read then
+					create reader.make (stream)
 				else
 					io.put_string ("File cannot be read!%N")
 					exception.die (1)
-				end					
+				end
+				print ("graphviz_pdf application%N")
+				print ("   input file : "); print (stream.name); print ("%N")
+				print ("   output file: "); print (output_file_name); print ("%N")
+				print ("   page margin: "); print (page_margin.truncated_to_integer.out); print (" points%N")
+				print ("   scaling    : "); print ((scaling * 100).truncated_to_integer.out); print (" %%%N")
+				
 				-- 
 				-- page dimensions
 				--
@@ -89,7 +98,8 @@ feature -- Initialization
 					end
 					row_index := row_index + 1
 				end
-				!!r.make_open_write (output_file_name)
+				create r.make (output_file_name)
+				r.open_write
 				if r.is_open_write then
 					r.put_string (document.to_pdf)
 					r.close
@@ -159,14 +169,17 @@ feature -- Initialization
 		end
 	
 	draw_pdf (p : PDF_PAGE; l : DS_LIST[GRAPHVIZ_FIGURE]) is
+		local
+			c : DS_LIST_CURSOR [GRAPHVIZ_FIGURE]
 		do
 			from
-				l.start
+				c := l.new_cursor
+				c.start
 			until
-				l.off
+				c.off
 			loop
-				l.item.draw_pdf (p)
-				l.forth
+				c.item.draw_pdf (p)
+				c.forth
 			end		
 		end
 

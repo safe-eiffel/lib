@@ -46,9 +46,9 @@ feature -- Initialization
 				theta := math.arc_tangent (slope)
 			else
 				if dy > 0 then
-					theta := pi / 2
+					theta := math.pi / 2
 				elseif dy < 0 then
-					theta := - pi / 2
+					theta := - math.pi / 2
 				end
 			end
 			length := math.sqrt (dx^2 + dy^2)
@@ -58,10 +58,12 @@ feature -- Initialization
 			-- 
 		local
 			halfpidivided : DOUBLE
+			halfpi : DOUBLE
 		do
 			theta := a_theta
 			length := a_length
-			halfpidivided := theta / (pi/2)
+			halfpi := math.Pi / 2.0
+			halfpidivided := theta / halfpi
 			if (halfpidivided - (halfpidivided.truncated_to_integer)).abs < 0.0000001  then
 				infinite_slope := True
 			else
@@ -119,8 +121,6 @@ feature {NONE} -- Implementation
 		once
 			!!Result
 		end
-
-	pi : DOUBLE is 3.1415927	
 
 invariant
 	invariant_clause: True -- Your invariant here

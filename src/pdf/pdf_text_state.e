@@ -1,5 +1,8 @@
 indexing
-
+	description: "PDF text states.  They are modified by text operations."
+	author: "Paul G. Crismer"
+	library: "ePDF"
+	
 class
 
 	PDF_TEXT_STATE
@@ -142,8 +145,10 @@ feature -- Duplication
 			copy_text_state (other)
 		end
 		
+feature {PDF_TEXT_STATE} -- Implementation
+
 	copy_text_state (other : PDF_TEXT_STATE) is
-			-- 
+			-- copy text_state
 		require
 			text_state_exists: other /= Void
 		do

@@ -44,9 +44,9 @@ feature -- Conversion
 			index : INTEGER
 		do
 			!!Result.make (0)
-			Result.append (object_header)
-			Result.append (Precursor)
-			Result.append (object_footer)
+			Result.append_string (object_header)
+			Result.append_string (Precursor)
+			Result.append_string (object_footer)
 		end
 			
 end -- class PDF_ARRAY_OBJECT

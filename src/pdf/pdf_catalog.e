@@ -63,15 +63,15 @@ feature -- Conversion
 			!!ntype.make ("Type")
 			!!npages.make ("Pages")
 			!!nlayout.make ("PageLayout")
-			Result.append (object_header)
-			Result.append (begin_dictionary)
-			Result.append (dictionary_entry (ntype, "/Catalog"))
-			Result.append (dictionary_entry (npages, pages.indirect_reference))
+			Result.append_string (object_header)
+			Result.append_string (begin_dictionary)
+			Result.append_string (dictionary_entry (ntype, "/Catalog"))
+			Result.append_string (dictionary_entry (npages, pages.indirect_reference))
 			if page_layout /= Void and then not page_layout.value.is_empty then
-				Result.append (dictionary_entry (nlayout, page_layout.to_pdf))
+				Result.append_string (dictionary_entry (nlayout, page_layout.to_pdf))
 			end
-			Result.append (end_dictionary)
-			Result.append (object_footer)
+			Result.append_string (end_dictionary)
+			Result.append_string (object_footer)
 		end
 		
 feature {NONE} -- Implementation

@@ -8,7 +8,7 @@ deferred class
 
 	PDF_SERIALIZABLE
 			
-feature -- Conversion
+feature {PDF_OBJECT, PDF_CONVERSION_ACCESS, PDF_SERIALIZABLE} -- Conversion
 
 	to_pdf : STRING is
 			-- convert to PDF format

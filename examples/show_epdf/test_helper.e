@@ -54,7 +54,10 @@ feature {NONE} -- Implementation
 
 	show_control_point (p : PDF_PAGE; x, y : DOUBLE) is
 		do
+			p.gsave
+			p.set_line_width (0)
 			box_centered (p, x, y, 3)
+			p.grestore
 		end
 		
 	box_centered (p: PDF_PAGE; x, y, w : DOUBLE) is
@@ -111,7 +114,7 @@ invariant
 
 end -- class TEST_HELPER
 --
--- Copyright: 2001, Paul G. Crismer, <pgcrism@pi.be>
+-- Copyright: 2001, 2003 Paul G. Crismer, <pgcrism@users.sf.net>
 -- Released under the Eiffel Forum License <www.eiffel-forum.org>
 -- See file <forum.txt>
 --

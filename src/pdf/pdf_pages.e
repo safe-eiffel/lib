@@ -92,32 +92,32 @@ feature -- Conversion
 			!!scount.make ("Count")
 			!!sparent.make ("Parent")
 			!!Result.make (256)
-			Result.append (object_header)
-			Result.append (begin_dictionary)
+			Result.append_string (object_header)
+			Result.append_string (begin_dictionary)
 			-- Type
-			Result.append (dictionary_entry (stype, "/Pages"))
+			Result.append_string (dictionary_entry (stype, "/Pages"))
 			-- Parent
 			if parent /= Void then
-				Result.append (dictionary_entry (sparent, parent.indirect_reference))
+				Result.append_string (dictionary_entry (sparent, parent.indirect_reference))
 			end
 			-- Kids (array of object references)
-			Result.append (skids.to_pdf)
-			Result.append (" [%N")
+			Result.append_string (skids.to_pdf)
+			Result.append_string (" [%N")
 			from 
 				kids_cursor := kids.new_cursor
 				kids_cursor.start
 			until
 				kids_cursor.off
 			loop
-				Result.append (kids_cursor.item.indirect_reference)
+				Result.append_string (kids_cursor.item.indirect_reference)
 				Result.append_character ('%N')
 				kids_cursor.forth
 			end
-			Result.append ("]%N")
+			Result.append_string ("]%N")
 			-- Count
-			Result.append (dictionary_entry (scount, count.out))
-			Result.append (end_dictionary)
-			Result.append (object_footer)
+			Result.append_string (dictionary_entry (scount, count.out))
+			Result.append_string (end_dictionary)
+			Result.append_string (object_footer)
 		end
 
 feature {NONE} -- Implementation

@@ -92,20 +92,20 @@ feature -- Conversion
 			index : INTEGER
 		do
 			!!Result.make (0)
-			Result.append ("<< ")
+			Result.append_string ("<< ")
 			from 
 				index := 1
 			until
 				index > count
 			loop
 				Result.append_character ('/')
-				Result.append (key (index))
+				Result.append_string (key (index))
 				Result.append_character (' ')
-				Result.append (value (index).indirect_reference)
+				Result.append_string (value (index).indirect_reference)
 				Result.append_character ('%N')
 				index := index + 1
 			end
-			Result.append (">> ") 
+			Result.append_string (">> ") 
 		end
 		
 feature {NONE} -- Implementation

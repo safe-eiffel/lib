@@ -1,5 +1,5 @@
 indexing
-	description: "Objects that ..."
+	description: "PDF page states relative to text and graphics operations"
 	author: ""
 	date: "$Date$"
 	revision: "$Revision$"
@@ -25,7 +25,7 @@ inherit
 		select
 			copy
 		end
-create
+creation
 	make
 
 feature -- Access

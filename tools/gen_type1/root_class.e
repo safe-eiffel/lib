@@ -72,7 +72,7 @@ feature -- Initialization
 			class_file_name := clone (class_name)
 			class_file_name.to_lower
 			class_file_name.prepend ("pdf_")
-			class_file_name.append ("_font.e")
+			class_file_name.append_string ("_font.e")
 			-- create file
 			!!fclass.make_open_write (class_file_name)
 			--

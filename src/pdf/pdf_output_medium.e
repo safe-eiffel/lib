@@ -85,7 +85,7 @@ feature -- Basic operations
 					end
 				end
 			end
-		ensure then
+		ensure
 			not s.is_empty implies (count >= old count + s.count)
 		end
 		
@@ -98,21 +98,21 @@ feature -- Basic operations
 			!!s.make (0)
 			integral := d.truncated_to_integer
 			fraction := ((d - integral) * 10000).truncated_to_integer
-			s.append (integral.out)
+			s.append_string (integral.out)
 			if fraction > 0 then
 				s.append_character ('.')
 				if fraction < 10 then
-					s.append ("000")
+					s.append_string ("000")
 				elseif fraction < 100 then
-					s.append ("00")
+					s.append_string ("00")
 				elseif fraction < 1000 then
-					s.append ("0")
+					s.append_string ("0")
 				end
-				s.append (fraction.out)
+				s.append_string (fraction.out)
 			end
 			medium.put_string (s)
 			increment_count (s.count)
-		ensure then
+		ensure
 			count > old count
 		end
 
@@ -121,7 +121,7 @@ feature -- Basic operations
 		do
 			medium.put_new_line
 			increment_count (medium.eol.count)
-		ensure then
+		ensure
 			count > old count
 		end
 

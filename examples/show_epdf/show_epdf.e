@@ -22,58 +22,62 @@ feature -- Initialization
 			medium : PDF_OUTPUT_MEDIUM
 			file : KI_TEXT_OUTPUT_FILE
 			page : PDF_PAGE
-			ti : TEST_TITLE
-			tf : TEST_FONTS
-			tt : TEST_TEXT_ATTRIBUTES
-			tc : TEST_TEXT_CLIP
-			tl : TEST_LINES
-			tla : TEST_LINE_ATTRIBUTES
-			tp : TEST_PAINT
-			tm : TEST_MATRIX
-			tx : TEST_TEXT
+			title : TEST_TITLE
+			fonts : TEST_FONTS
+			text_attributes : TEST_TEXT_ATTRIBUTES
+			text_clip : TEST_TEXT_CLIP
+			lines : TEST_LINES
+			line_attributes : TEST_LINE_ATTRIBUTES
+			paint : TEST_PAINT
+			matrix : TEST_MATRIX
+			text : TEST_TEXT
 		do
+			print ("show_epdf application%N")
 			!!document.make
 			document.find_font ("Helvetica", document.Encoding_winansi)
 			page := document.last_page
-			!!ti
-			ti.do_test (document)
+			!!title
+			title.do_test (document)
 			document.add_page
-			!!tf
-			tf.do_test (document)
+			!!fonts
+			fonts.do_test (document)
 			document.add_page
-			!!tt
-			tt.do_test (document)
+			!!text_attributes
+			text_attributes.do_test (document)
 			document.add_page
-			!!tc
-			tc.do_test (document)
+			!!text_clip
+			text_clip.do_test (document)
 			document.add_page
-			!!tl
-			tl.do_test (document)
+			!!lines
+			lines.do_test (document)
 			document.add_page
-			!!tla
-			tla.do_test (document)
+			!!line_attributes
+			line_attributes.do_test (document)
 			document.add_page
-			!!tp
-			tp.do_test (document)
+			!!paint
+			paint.do_test (document)
 			document.add_page
-			!!tm
-			tm.do_test (document)
+			!!matrix
+			matrix.do_test (document)
 			document.add_page
-			!!tx
-			tx.do_test (document)
+			!!text
+			text.do_test (document)
 
 			file := file_system.new_output_file ("pdf_show.pdf")
 			file.open_write
 			!! medium.make (file)
 			document.put_pdf (medium)
 			file.close
+			print ("file '")
+			print (file.name)
+			print ("' has been generated%N")
 		end
 
 	document : PDF_DOCUMENT
 				
 end -- class SHOW_EPDF
 --
--- Copyright: 2001, Paul G. Crismer, <pgcrism@pi.be>
+-- Copyright: 2001, 2003 Paul G. Crismer, <pgcrism@users.sf.net>
 -- Released under the Eiffel Forum License <www.eiffel-forum.org>
 -- See file <forum.txt>
 --

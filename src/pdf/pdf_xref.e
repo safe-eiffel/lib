@@ -124,26 +124,26 @@ feature -- Conversion
 			index : INTEGER
 		do
 			!!Result.make (0)
-			Result.append ("xref%N")
+			Result.append_string ("xref%N")
 			-- Output xref-section header
 			-- first object number in cross reference section
-			Result.append (xref_section.lower.out)
-			Result.append (" ")
+			Result.append_string (xref_section.lower.out)
+			Result.append_string (" ")
 			-- count of objects
-			Result.append (count.out)
-			Result.append ("%N")
+			Result.append_string (count.out)
+			Result.append_string ("%N")
 			-- Output each entry in xref-section
 			from
 				index := 0
 			until
 				index = count
 			loop
-				Result.append (xref_section.item(index).to_pdf)
+				Result.append_string (xref_section.item(index).to_pdf)
 				index := index + 1
 			end
 			--
 			-- End of cross reference
-			Result.append ("%N")
+			Result.append_string ("%N")
 		end
 	
 	put_pdf (medium : PDF_OUTPUT_MEDIUM) is

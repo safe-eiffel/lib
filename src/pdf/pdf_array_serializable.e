@@ -1,6 +1,6 @@
 indexing
 
-	description: "PDF Array of PDF_SERIALIZABLE objects"
+	description: "PDF Array of PDF_SERIALIZABLE objects. When serialized, `to_pdf' is used for each item."
 	author: "Paul G. Crismer"
 	licence: "Release under the Eiffel Forum licence.  See file 'forum.txt'."
 
@@ -13,7 +13,12 @@ inherit
 			redefine
 				to_pdf_item
 			end
-			
+	
+	PDF_CONVERSION_ACCESS
+		undefine
+			copy,is_equal
+		end
+	
 creation
 	
 	make

@@ -280,7 +280,7 @@ feature -- Path construction operators
 		end
 		
 	bezier_1 (cx1, cy1, cx2, cy2, px, py : DOUBLE) is
-			-- append a cubic bezier curve to current subpath, with current position
+			-- append_string a cubic bezier curve to current subpath, with current position
 			-- as starting point, (px, py) as end point, and control points
 			-- (cx1, cy1) attached to starting point and (cx2,cy2) attached to end point
 			-- (px, py) is the new current position.
@@ -296,7 +296,7 @@ feature -- Path construction operators
 		end
 		
 	bezier_2 (cx2, cy2, px, py : DOUBLE) is
-			-- append a bezier curve to current subpath, with current position
+			-- append_string a bezier curve to current subpath, with current position
 			-- as starting point, (px, py) as end point, and control point
 			-- (cx2,cy2) attached to end point. (px, py) is the new current position
 		require
@@ -308,7 +308,7 @@ feature -- Path construction operators
 		end
 		
 	bezier_3 (cx1, cy1, px, py : DOUBLE) is
-			-- append a bezier curve to current subpath, with current position
+			-- append_string a bezier curve to current subpath, with current position
 			-- as starting point, (px, py) as end point, and control point
 			-- (cx1,cy1) attached to starting point. (px, py) is the new current position
 		require

@@ -23,4 +23,10 @@ feature
 			do
 				Result := d.atan
 			end
+			
+		sqrt (d : DOUBLE) : DOUBLE is
+			do
+				Result := d.sqrt
+			end
+			
 end -- class EPDF_MATH

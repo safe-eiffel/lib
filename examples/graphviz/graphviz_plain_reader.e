@@ -1,6 +1,6 @@
 indexing
-	description: "Objects that ..."
-	author: ""
+	description: "Objects that read Graphviz-generated plain format."
+	author: "Paul G. Crismer"
 	date: "$Date$"
 	revision: "$Revision$"
 
@@ -12,7 +12,7 @@ creation
 
 feature -- Initialization
 
-	make (medium : FILE) is
+	make (medium : KI_TEXT_INPUT_STREAM) is
 			--
 		require
 			medium /= Void and then medium.is_open_read
@@ -22,7 +22,7 @@ feature -- Initialization
 			from
 				
 			until
-				stop_reading or else medium.end_of_file
+				stop_reading or else medium.end_of_input
 			loop
 				read_line (medium)
 				debug ("reading")
@@ -38,8 +38,8 @@ feature -- Initialization
 			
 feature -- Access
 
-	nodes : LINKED_LIST [GRAPHVIZ_NODE]
-	edges : LINKED_LIST [GRAPHVIZ_EDGE]
+	nodes : DS_LINKED_LIST [GRAPHVIZ_NODE]
+	edges : DS_LINKED_LIST [GRAPHVIZ_EDGE]
 
 	graph_width   : DOUBLE
 	graph_height  : DOUBLE
@@ -242,12 +242,12 @@ feature {NONE} -- Implementation
 			when 'n' then
 				read_node (s)
 				if last_node /= Void then
-					nodes.extend (last_node)
+					nodes.put_last (last_node)
 				end
 			when 'e' then
 				read_edge (s)
 				if last_edge /= Void then
-					edges.extend (last_edge)
+					edges.put_last (last_edge)
 				end
 			when 'g' then
 				read_graph (s)
@@ -261,7 +261,7 @@ feature {NONE} -- Implementation
  	
  	last_line : STRING
  	
- 	read_line (f : FILE) is
+ 	read_line (f : KI_TEXT_INPUT_STREAM) is
  			-- 
  		require
  			f /= void and f.is_open_read
@@ -270,7 +270,7 @@ feature {NONE} -- Implementation
  				!!last_line.make (256)
  				f.read_character
  			until
- 				f.end_of_file or else f.last_character = '%N'
+ 				f.end_of_input or else f.last_character = '%N'
  			loop
  				inspect f.last_character
  				when  '%R' then

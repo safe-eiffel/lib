@@ -37,18 +37,18 @@ feature {NONE} -- Initialization
 			make_array (a_lower, an_upper)
 		end
 		
-	make_from_array (array : ARRAY[G]) is
+	make_from_array (an_array : ARRAY[G]) is
 			-- make from existing array
 		local
 			i : INTEGER
 		do
-			make (array.lower, array.upper)
+			make (an_array.lower, an_array.upper)
 			from 
-				i := array.lower
+				i := an_array.lower
 			until
-				i > array.upper
+				i > an_array.upper
 			loop
-				put (array.item (i), i)
+				put (an_array.item (i), i)
 				i := i + 1
 			end
 		end
@@ -60,19 +60,19 @@ feature -- Conversion
 			index : INTEGER
 		do
 			!!Result.make (0)
-			--Result.append (object_header)
-			Result.append ("[ ")
+			--Result.append_string (object_header)
+			Result.append_string ("[ ")
 			from
 				index := lower
 			until
 				index > upper
 			loop
-				Result.append  (item_separator (index))
-				Result.append (to_pdf_item (index))
+				Result.append_string  (item_separator (index))
+				Result.append_string (to_pdf_item (index))
 				index := index + 1
 			end
-			Result.append (" ]%N")
-			--Result.append (object_footer)
+			Result.append_string (" ]%N")
+			--Result.append_string (object_footer)
 		end
 
 feature {NONE} -- Implementation

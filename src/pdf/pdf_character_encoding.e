@@ -1,6 +1,6 @@
 indexing
 
-	description: "Character Encodings.  Use Adobe character names. This is not an 'encoding dictionary'."
+	description: "Character Encodings.  Map glyph names to character codes. Use Adobe character names."
 	author: "Paul G. Crismer"
 	licence: "Release under the Eiffel Forum licence.  See file 'forum.txt'."
 	

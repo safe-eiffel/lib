@@ -114,7 +114,7 @@ feature -- Conversion
 			scount := temp_string.count
 			zero_count := 10 - scount
 			snumber := zero_string.substring (1, zero_count)
-			snumber.append (temp_string)
+			snumber.append_string (temp_string)
 			check
 				snumber_count: snumber.count = 10
 			end
@@ -123,23 +123,23 @@ feature -- Conversion
 			scount := temp_string.count
 			zero_count := 5 - scount
 			sgeneration := zero_string.substring (1, zero_count)
-			sgeneration.append (temp_string)
+			sgeneration.append_string (temp_string)
 			check
 				sgeneration_count: sgeneration.count = 5
 			end
 			-- format
-			Result.append (snumber)
-			Result.append (" ")
-			Result.append (sgeneration)
+			Result.append_string (snumber)
+			Result.append_string (" ")
+			Result.append_string (sgeneration)
 			if is_free then
-				Result.append (" f")
+				Result.append_string (" f")
 			else
-				Result.append (" n")
+				Result.append_string (" n")
 			end
 			if eol_bytes_count = 1 then
-				Result.append (" %N")
+				Result.append_string (" %N")
 			else
-				Result.append ("%N")
+				Result.append_string ("%N")
 			end	
 		ensure then
 			format_size_eol1: (eol_bytes_count = 1) implies Result.count = 20
