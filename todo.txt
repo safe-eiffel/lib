@@ -1,0 +1,36 @@
+TODO:
+
+* Allow for image inclusion (even if limited support of image formats, eg jpg or png)
+
+2002-03-20
+* (DONE) GOBOnize
+* (DONE) Port to SmallEifel
+* Documentation - start
+
+2001-11-21
+* (DONE) set_text_matrix
+
+
+2001-11-20
+
+* review indexing rules
+* (DONE) path-construction rule : non-zero winding / even-odd rule
+* (DONE) clipping operators
+* (DONE) circle/arc
+
+
+2001-11-06
+
+* (DONE for letter and a4) Various page formats: a4, etc... (see in PostScript documentation?!)
+* (DONE) indexing clauses
+* (DONE) review PDF_DOCUMENT interface
+* basic drawings
+- (DONE)line drawing
+- (DONE) begin_path, end_path
+- (DONE)filling, stroking
+- (DONE) color/gray?
+
+* renommer text_renderer en text_format
+
+* (DONE) concept of page tree node
+

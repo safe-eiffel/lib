@@ -1,0 +1,74 @@
+EPDF
+
+Eiffel Library for Producing PDF Documents
+
+
+Abstract 
+Section 0 : Current Status 
+Section 1 : Design choices 
+Section 2 : Implementation notes 
+Section 3 : Architecture Diagram 
+Section 4 : Installation and sample applications 
+
+
+Abstract
+
+EPDF is is simple Eiffel library that allows creating PDF documents.
+By "simple" we mean "limited".  This library is not a full encapsulation of the PDF specification.
+
+The basic requirements of this library is to allow creation of PDF documents with
+* Text
+* 14 standard fonts
+* Major line graphics operators : draw some lines, pies, etc...
+
+Library usage : GOBO ( > 2.0, use from CVS archive on Sourceforge)
+Eiffel compilers : all
+
+Section 0 : Current Status 
+
+The library is in beta state.
+
+EPDF has been compiled using
+* ISE Eiffel 5.0, ISE Eiffel 5.1
+* SmallEiffel 0.74beta20
+
+At this date, EPDF does not allow using
+- sampled images
+- thumbnails, outlines
+- patterns
+- other advanced features like rendering hints, interactive features (hyperlinks, ...)
+
+Section 1 : Concepts
+
+EPDF implements a kind of streaming interface, by contrast to some DOM-like interface.
+
+1.0 Abstractions
+
+The major abstractions are :
+
+Class name	Description
+PDF_DOCUMENT	PDF document objects; fonts, encodings, and page factory; pages container; serialization.
+PDF_PAGE	Page objects that can be drawn : coordinate transormations, text and graphics drawing
+		Page objects have other properties like mediabox, and orientation when shown in a viewer.
+PDF_CHARACTER_ENCODING	Correspondence between a glyph name and a code
+PDF_FONT	Set of glyphs.  A glyph is the shape of a character that has a name, widths, and a code within a specific encoding.
+
+A PDF_DOCUMENT object contains a sequence of pages.  It also associated with a set of resources like fonts.
+It has properties that define the way a document is viewed or printed :
+* default mediabox -- size of page medium, 
+* page layout -- the way pages are visually organized when document is viewed
+A document object contains at least one page.  After adding a new page, the previous page(s) cannot be accessed.
+This is why we say it is a streaming interface.
+
+A PDF_PAGE object is a rectangular area that can be drawn.  A page object has a graphics state that determines the
+set of operations that can be used at a particular time.  
+Preconditions document what states are allowed for state-sensitive operations.
+
+
+Section 2 : Implementation notes
+
+Section 3 : Architecture Diagram 
+
+Section 4 : Installation and sample applications 
+
+Samples applications:

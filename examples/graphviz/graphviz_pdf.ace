@@ -1,0 +1,60 @@
+system
+	graphviz_pdf
+
+root
+	GRAPHVIZ_PDF: make
+
+default
+	assertion(require)
+	arguments("-output toto.pdf < C:\User\Eiffel\work\graphviz_pdf2\EIFGEN\W_code\shells.pln")
+	arguments("-output c:\graphviz.pdf -input c:\jsort.pln -margin 36 ")
+	arguments("-file c:\jsort.pln -margin 36 ")
+	arguments("-file c:\jsort.pln -margin 18 ")
+	arguments("-file c:\grammar.pln -margin 36")
+	arguments("-file c:\jsort.pln -margin 18 -scaling 0.5")
+	arguments("-file c:\jsort.pln -margin 72 -scaling 0.5")
+	arguments("-file c:\jsort.pln -margin 72 -scale 0.5")
+	arguments(" ")
+	disabled_debug(yes)
+	debug("reading")
+	debug(no)
+	line_generation(no)
+	profile(no)
+	trace(no)
+	il_verifiable(yes)
+	msil_generation_type("exe")
+	check_vape(yes)
+	console_application(yes)
+	address_expression(no)
+	array_optimization(yes)
+	dead_code_removal(yes)
+	dynamic_runtime(no)
+	exception_trace(no)
+	inlining(yes)
+	inlining_size("6")
+	multithreaded(no)
+
+
+-- EiffelBase
+
+cluster
+	root_cluster:		"$EPDF\examples\graphviz"
+
+
+	all base:		"$ISE_EIFFEL\library\base"
+		exclude
+			"desc"; "table_eiffel3"; 
+		end
+
+	thread:		"$ISE_EIFFEL\library\thread"
+
+	epdf:		"$EPDF"
+
+	pdf (epdf):		"$\src\pdf"
+
+	fonts (epdf):		"$\src\fonts"
+
+	encodings (epdf):		"$\src\encodings"
+
+
+end

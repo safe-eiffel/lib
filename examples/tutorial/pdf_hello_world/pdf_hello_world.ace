@@ -1,0 +1,57 @@
+system
+	show_epdf
+
+root
+	PDF_HELLO_WORLD: make
+
+default
+	assertion(ensure)
+	arguments(" ")
+	disabled_debug(yes)
+	debug(no)
+	line_generation(no)
+	profile(no)
+	trace(no)
+	il_verifiable(yes)
+	msil_generation_type("exe")
+	check_vape(yes)
+	console_application(yes)
+	address_expression(no)
+	array_optimization(no)
+	dead_code_removal(yes)
+	dynamic_runtime(no)
+	exception_trace(no)
+	inlining(no)
+	multithreaded(no)
+
+cluster
+	root_cluster:		"$EPDF\examples\tutorial\pdf_hello_world"
+
+
+	all base:		"$ISE_EIFFEL\library\base"
+		exclude
+			"desc"; "table_eiffel3"; 
+		end
+
+	epdf : "$EPDF"
+	
+	pdf (epdf):		"$\src\pdf"
+
+	fonts (epdf):		"$\src\fonts"
+
+	encodings (epdf):	"$\src\encodings"
+	
+	helpers (epdf):		"$\src\helpers"
+
+	gobo :	"$GOBO\library";
+	
+	all kernel (gobo) : "$/kernel"
+		exclude
+			"spec"
+		end
+	
+	kernel_ise (gobo) : "$\kernel\spec\ise"
+	
+	all gobo_structure (gobo) : "$\structure"
+	
+end

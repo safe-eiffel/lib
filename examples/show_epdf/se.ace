@@ -1,0 +1,59 @@
+system
+
+	SHOW_EPDF
+
+root
+
+	SHOW_EPDF: make
+
+default
+
+	no_style_warning (yes)
+	collect (no)
+	assertion (boost)
+
+cluster
+
+	show_epdf: "${EPDF}/examples/show_epdf";
+	epdf: "${EPDF}";
+	epdf_src_encodings: "${EPDF}/src/encodings";
+	epdf_src_fonts: "${EPDF}/src/fonts";
+	epdf_src_pdf: "${EPDF}/src/pdf";
+	epdf_src_spec: "${EPDF}/src/spec";
+	epdf_src_spec_se: "${EPDF}/src/spec/se";
+	smalleiffel_lib: "${SMALLEIFFEL_DIR}/lib";
+	smalleiffel_lib_base: "${SMALLEIFFEL_DIR}/lib/base";
+	smalleiffel_lib_io: "${SMALLEIFFEL_DIR}/lib/io";
+	smalleiffel_lib_iterator: "${SMALLEIFFEL_DIR}/lib/iterator";
+	smalleiffel_lib_kernel: "${SMALLEIFFEL_DIR}/lib/kernel";
+	smalleiffel_lib_number: "${SMALLEIFFEL_DIR}/lib/number";
+	smalleiffel_lib_random: "${SMALLEIFFEL_DIR}/lib/random";
+	smalleiffel_lib_sorting: "${SMALLEIFFEL_DIR}/lib/sorting";
+	smalleiffel_lib_time: "${SMALLEIFFEL_DIR}/lib/time";
+	gobo: "${GOBO}/library";
+	gobo_kernel: "${GOBO}/library/kernel";
+	gobo_kernel_elks: "${GOBO}/library/kernel/elks";
+	gobo_kernel_io: "${GOBO}/library/kernel/io";
+	gobo_kernel_misc: "${GOBO}/library/kernel/misc";
+	gobo_kernel_support: "${GOBO}/library/kernel/support";
+	gobo_kernel_spec: "${GOBO}/library/kernel/spec";
+	gobo_kernel_spec_se: "${GOBO}/library/kernel/spec/se";
+	gobo_structure: "${GOBO}/library/structure";
+	gobo_structure_container: "${GOBO}/library/structure/container";
+	gobo_structure_dispenser: "${GOBO}/library/structure/dispenser";
+	gobo_structure_list: "${GOBO}/library/structure/list";
+	gobo_structure_set: "${GOBO}/library/structure/set";
+	gobo_structure_sort: "${GOBO}/library/structure/sort";
+	gobo_structure_support: "${GOBO}/library/structure/support";
+	gobo_structure_table: "${GOBO}/library/structure/table";
+	gobo_utility: "${GOBO}/library/utility";
+	gobo_utility_command: "${GOBO}/library/utility/command";
+	gobo_utility_error: "${GOBO}/library/utility/error";
+	gobo_utility_formatter: "${GOBO}/library/utility/formatter";
+	gobo_utility_support: "${GOBO}/library/utility/support";
+
+generate
+
+	no_split (yes)
+
+end

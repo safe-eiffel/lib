@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<cluster name="epdf" location="${EPDF}">
+	<description>
+		description: "ePDF ACE file"
+
+	</description>
+	
+	<cluster name="src" abstract="True">
+		<cluster name="encodings"/>
+		<cluster name="fonts"/>
+		<cluster name="pdf"/>
+		<cluster name="spec">
+			<cluster name="se" if="${GOBO_EIFFEL}=se"/>
+			<cluster name="ise" if="${GOBO_EIFFEL}=ise"/>
+		</cluster>
+	</cluster>
+</cluster>

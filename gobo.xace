@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+
+<cluster name="gobo" location="${GOBO}/library" >
+	<description>
+		description: "GOBO Library"
+	</description>
+	<cluster name="kernel"> 
+		<cluster name="elks"/>
+		<cluster name="io"/>
+		<cluster name="misc"/>
+		<cluster name="support"/>
+		<cluster name="spec">
+			<cluster name="se"/>
+		</cluster>
+	</cluster>
+	
+	<cluster name="structure">
+		<cluster name="container"/>
+		<cluster name="dispenser"/>
+		<cluster name="list"/>
+		<cluster name="set"/>
+		<cluster name="sort"/>
+		<cluster name="support"/>
+		<cluster name="table"/>
+	</cluster>
+	<cluster name="utility">
+		<cluster name="command"/>
+		<cluster name="error"/>
+		<cluster name="formatter"/>
+		<cluster name="support"/>	
+	</cluster>
+	
+</cluster>

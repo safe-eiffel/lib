@@ -1,0 +1,38 @@
+<?xml version="1.0"?>
+
+<system name="graphviz_pdf">
+	<description>
+		system:      "Show application for ePDF"
+		author:      "Paul G. Crismer"
+		copyright:   "Copyright (c) 2001, Paul G. Crismer and others"
+		license:     "Eiffel Forum Freeware License v1 (see forum.txt)"
+		date:        "$Date$"
+		revision:    "$Revision$"
+	</description>
+
+	<root class="GRAPHVIZ_PDF" creation="make"/>
+	<cluster>
+		<option unless="${DEBUG}">
+			<require enable="False"/>
+			<ensure enable="False"/>
+			<invariant enable="False"/>
+			<loop enable="False"/>
+			<check enable="False"/>
+			<optimize enable="True"/>
+		</option>
+		<option if="${DEBUG}">
+			<require enable="True"/>
+			<ensure enable="True"/>
+			<invariant enable="True"/>
+			<loop enable="True"/>
+			<check enable="True"/>
+			<optimize enable="False"/>
+		</option>
+
+		<cluster name="show_epdf" location="${EPDF}/examples/graphviz"/>
+		<mount location="${EPDF}/epdf.xace"/>
+		<mount location="${EPDF}/smalleiffel.xace"/>
+		<mount location="${EPDF}/gobo.xace"/>
+	
+	</cluster>
+</system>

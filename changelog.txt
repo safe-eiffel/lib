@@ -1,0 +1,4 @@
+* 2002-03-19 Rework of public interfaces. Start of documentation
+* 2001-12-05 Cluster reorganization
+* 2001-12-03 Graphviz visualizer
+* 2001-11-19 Changed argument types of rectangle to DOUBLE
