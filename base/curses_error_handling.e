@@ -14,6 +14,10 @@ inherit
 
 	ANY --| Needed To avoid SE errors about is_equal that is not visible in invariant of GENERAL due to export {NONE} all
 
+	CURSES_ERROR_API
+	    export {NONE} all
+	    end
+
 	EXCEPTIONS
 	    export {NONE} all
 	    end
@@ -58,16 +62,6 @@ feature {NONE} -- helper procedure
 			raise (message)
 		end
 	    end
-
-feature {NONE} -- C interface
-
-    c_ecurses_err: INTEGER is
-	external "C"
-	end
-
-    c_ecurses_ok: INTEGER is
-	external "C"
-	end
 
 end -- class CURSES_ERROR_HANDLING
 -----------------------------------------------------------
