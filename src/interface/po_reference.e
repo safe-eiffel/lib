@@ -98,7 +98,7 @@ feature {PO_ADAPTER, PO_PERSISTENT, PO_REFERENCE_ACCESS} -- Element change
 			-- reset reference
 		do
 			pid := Void
-			object := Void
+			set_object (Void)
 		end
 		
 feature {NONE} -- Implementation
@@ -144,5 +144,13 @@ feature {NONE} -- Implementation
 				end
 			end
 		end
-	
+
+	set_object (an_object : G) is
+			-- Set `object' to `an_object'.
+		do
+			object := an_object
+		ensure
+			object_set: object = an_object
+		end
+		
 end
