@@ -26,7 +26,7 @@ feature {NONE} -- Initialization
 
 	make_graphics_state is
 		do
-			!!ctm.set_identity
+			create ctm.set_identity
 			color_space := Color_space_gray
 			line_width := 1
 			line_cap := Butt_cap
@@ -266,12 +266,12 @@ feature -- Copy
 			elseif other.color_space = Color_space_rgb then
 				--rgb := other.rgb
 				if rgb = Void then
-					!!impl_rgb.make (other.rgb.lower, other.rgb.upper)
+					create impl_rgb.make (other.rgb.lower, other.rgb.upper)
 				end
 				from index := rgb.lower until index > rgb.upper loop rgb.put (other.rgb.item (index), index); index := index + 1 end
 				--rgb_stroke := other.rbg_stroke
 				if rgb_stroke = Void then
-					!!impl_rgb_stroke.make (other.rgb_stroke.lower, other.rgb_stroke.upper)
+					create impl_rgb_stroke.make (other.rgb_stroke.lower, other.rgb_stroke.upper)
 				end
 				from index := rgb_stroke.lower until index > rgb_stroke.upper loop rgb_stroke.put (other.rgb_stroke.item (index), index); index := index + 1 end							
 			end
@@ -281,7 +281,7 @@ feature -- Copy
 			miter_limit := other.miter_limit
 			if other.line_dash_array /= Void then
 				--line_dash_array := other.line_dash_array
-				!!line_dash_array.make_from_array (other.line_dash_array)
+				create line_dash_array.make_from_array (other.line_dash_array)
 			end
 			line_dash_phase := other.line_dash_phase
 			path_fill_heuristics := other.path_fill_heuristics			

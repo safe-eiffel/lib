@@ -17,6 +17,8 @@ feature -- Basic operations
 		local
 			p : PDF_PAGE
 			old_leading : DOUBLE
+			destination : PDF_DESTINATION
+			outline_chapter : PDF_OUTLINE_ITEM
 		do
 			p := d.last_page
 			-- move to top of page
@@ -26,8 +28,18 @@ feature -- Basic operations
 			p.set_font (d.last_font, 12)
 			p.set_text_leading (14)
 			p.move_text_origin (100, p.mediabox.ury - 100)
+			outline_chapter := d.last_outline_item
+			create {PDF_DESTINATION_XY_ZOOM}destination.make (p, p.text_x, p.text_y, 0)
+			d.create_outline_item_with_destination ("Names", destination)
+			outline_chapter.put_last (d.last_outline_item)
 			test_font_names (d, p)
+			create {PDF_DESTINATION_XY_ZOOM}destination.make (p, p.text_x, p.text_y, 0)
+			d.create_outline_item_with_destination ("Sizes", destination)
+			outline_chapter.put_last (d.last_outline_item)
 			test_sizes (d,p)
+			create {PDF_DESTINATION_XY_ZOOM}destination.make (p, p.text_x, p.text_y, 0)
+			d.create_outline_item_with_destination ("Render modes", destination)
+			outline_chapter.put_last (d.last_outline_item)
 			test_render_modes (d,p)
 			p.set_text_leading (old_leading)
 			p.end_text

@@ -67,7 +67,7 @@ feature -- Conversion
 			digit : INTEGER
 			multiplier : INTEGER
 		do
-			!!Result.make (0)
+			create Result.make (0)
 			from
 				octal := o
 			until

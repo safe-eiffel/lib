@@ -29,7 +29,7 @@ feature -- Initialization
 			-- 
 		do
 			make_object (a_number)
-			!!content.make (0)
+			create content.make (0)
 			page := a_page
 			debug ("debug_stream")
 				unencoded := True
@@ -152,11 +152,11 @@ feature -- Conversion
 		local
 			length : PDF_NAME
 		do
-			!!Result.make (0)
+			create Result.make (0)
 			Result.append_string (object_header)
 			-- dictionary
 			Result.append_string (begin_dictionary)
-			!!length.make ("Length")
+			create length.make ("Length")
 			Result.append_string (length.to_pdf)
 			Result.append_character (' ')
 			

@@ -19,14 +19,14 @@ feature -- Access
 
 	basefont : PDF_NAME is
 		once
-			!!Result.make ("Courier")
+			create Result.make ("Courier")
 		end
 
 feature {NONE} -- Implementation
 
 	name_to_width : DS_HASH_TABLE[INTEGER,STRING] is
 		once
-			!!Result.make (315)
+			create Result.make (315)
 			Result.force (600, "Tcommaaccent")
 			Result.force (600, "acute")
 			Result.force (600, "tcommaaccent")

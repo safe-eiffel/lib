@@ -214,7 +214,6 @@ feature {NONE} -- Conversion
 			n_length, n_filter,n_smask : PDF_NAME
 			encoded_stream : STRING
 			encoded_stream_length : INTEGER
-			zlib_stream : STRING
 			zlib_format : ZLIB_FORMAT
 		do
 			create zlib_format
@@ -326,5 +325,8 @@ feature {NONE} -- Implementation
 			samples_exist: samples /= Void
 			samples_capacity: samples.capacity = (the_width * the_height * the_sample_colors)
 		end
-		
+
+invariant
+	samples_exist: samples /= Void
+	
 end -- class PDF_IMAGE

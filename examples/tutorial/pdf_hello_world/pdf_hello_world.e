@@ -25,7 +25,7 @@ feature -- Initialization
 			png : PDF_PNG_IMAGE
 			images_outline : PDF_OUTLINE_ITEM
 		do			
-			!!document.make
+			create document.make
 			document.find_font ("Helvetica", document.Encoding_winansi)
 			document.create_outlines
 			page := document.last_page
@@ -121,7 +121,7 @@ feature -- Initialization
 			end
 			file := file_system.new_output_file ("pdf_hello_world.pdf")
 			file.open_write
-			!! medium.make (file)
+			create  medium.make (file)
 			document.put_pdf (medium)
 			file.close
 		end

@@ -18,8 +18,8 @@ feature -- Initialization
 	make is
 			-- 
 		do
-			!!impl_keys.make (1, 0)
-			!!impl_values.make (1, 0)
+			create impl_keys.make (1, 0)
+			create impl_values.make (1, 0)
 			count := 0
 		end
 		
@@ -124,7 +124,7 @@ feature -- Conversion
 		local
 			index : INTEGER
 		do
-			!!Result.make (0)
+			create Result.make (0)
 			Result.append_string ("<< ")
 			from 
 				index := 1

@@ -452,7 +452,7 @@ feature -- Math constants
 	math : EPDF_MATH is
 			-- portable math constants and operations
 		once
-			!!Result
+			create Result
 		end
 		
 feature {NONE} -- Implementation

@@ -26,8 +26,8 @@ feature {NONE} -- Initialization
 	make_text_state is
 			-- 
 		do
-			!!tm.set_identity
-			!!tlm.set_identity
+			create tm.set_identity
+			create tlm.set_identity
 			line_x := 0
 			line_y := 0
 			text_x := 0

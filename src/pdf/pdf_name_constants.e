@@ -13,7 +13,7 @@ feature
 			create Result.make ("AA")
 		end
  
-	ABSOLUTECALORIMETRIC : PDF_NAME is
+	ABSOLUTECOLORIMETRIC : PDF_NAME is
 		once
 			create Result.make ("AbsoluteColorimetric")
 		end

@@ -28,8 +28,8 @@ feature -- Initialization
 		local
 			an_entry : PDF_XREF_ENTRY
 		do
-			!!xref_section.make (0, 20) -- prevent too much resizing
-			!!an_entry.make_free (0, 65535)
+			create xref_section.make (0, 20) -- prevent too much resizing
+			create an_entry.make_free (0, 65535)
 			xref_section.force (an_entry, entry_count)
 			entry_count := entry_count + 1
 		end
@@ -83,7 +83,7 @@ feature {PDF_DOCUMENT} -- Element change
 		local
 			an_entry : PDF_XREF_ENTRY
 		do
-			!!an_entry.make (an_object)
+			create an_entry.make (an_object)
 			xref_section.force (an_entry, count)
 			entry_count := entry_count + 1
 		ensure
@@ -99,7 +99,7 @@ feature {PDF_DOCUMENT} -- Element change
 			object_number : INTEGER
 		do
 			object_number := xref_section.upper + 1
-			!!an_entry.make_free (object_number, 0)
+			create an_entry.make_free (object_number, 0)
 			xref_section.force(an_entry, count)
 			entry_count := entry_count + 1
 		ensure
@@ -123,7 +123,7 @@ feature -- Conversion
 		local
 			index : INTEGER
 		do
-			!!Result.make (0)
+			create Result.make (0)
 			Result.append_string ("xref%N")
 			-- Output xref-section header
 			-- first object number in cross reference section

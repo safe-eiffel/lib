@@ -16,14 +16,14 @@ feature -- Access
 
 	name : PDF_NAME is
 		once
-			!!Result.make ("StandardEncoding")
+			create Result.make ("StandardEncoding")
 		end
 		
 feature {NONE} -- Implementation
 
 	name_to_code : DS_HASH_TABLE[INTEGER, STRING] is
 		once
-			!!Result.make (256)
+			create Result.make (256)
 			Result.put (65, "A")	 -- 'A'
 			Result.put (225, "AE")	 -- 'Æ'
 			Result.put (-1, "Aacute")	 -- 'Á'

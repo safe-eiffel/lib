@@ -74,8 +74,8 @@ feature -- Basic operations
 			end
 			p.grestore
 			label_width := p.string_width (label)
---			!!m.set (1, 0, 0, 1,x+label_width/2, y-p.text_leading/2)
-			!!m.set (1, 0, 0, 1,x-label_width/2, y)
+--			create m.set (1, 0, 0, 1,x+label_width/2, y-p.text_leading/2)
+			create m.set (1, 0, 0, 1,x-label_width/2, y)
 			p.begin_text
 			p.set_text_matrix (m)
 			p.put_string (label)

@@ -55,7 +55,7 @@ feature -- Element change
 			read_until ("StartCharMetrics")
 			file.read_line
 			widths_count := file.last_string.to_integer
-			!!widths.make (widths_count)
+			create widths.make (widths_count)
 			from
 				index := 1
 			until

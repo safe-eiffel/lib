@@ -15,14 +15,14 @@ feature -- Initialization
 		local
 			lines : INTEGER
 		do
-			!!of.make
+			create of.make
 			io.put_string ("Enter input filename : ")
 			io.read_line
-			!!f.make_open_read (clone (io.last_string))
-			!!fstd.make_open_write ("c:\isolatin1_std.txt")
-			!!fmac.make_open_write ("c:\iso_latin1_mac.txt")
-			!!fwin.make_open_write ("c:\isolatin1_win.txt")
-			!!fpdf.make_open_write ("c:\iso_latin1_pdf.txt")
+			create f.make_open_read (clone (io.last_string))
+			create fstd.make_open_write ("c:\isolatin1_std.txt")
+			create fmac.make_open_write ("c:\iso_latin1_mac.txt")
+			create fwin.make_open_write ("c:\isolatin1_win.txt")
+			create fpdf.make_open_write ("c:\iso_latin1_pdf.txt")
 			if f.is_open_read then
 				from
 					done := False

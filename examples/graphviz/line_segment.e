@@ -119,7 +119,7 @@ feature {NONE} -- Implementation
 	math : EPDF_MATH is
 			-- 
 		once
-			!!Result
+			create Result
 		end
 
 invariant

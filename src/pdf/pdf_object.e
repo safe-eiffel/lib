@@ -18,7 +18,7 @@ inherit
 feature {NONE} -- Initialization
 
 	make (a_number : INTEGER) is
-			--
+			-- make object referenced as `a_number'
 		require
 			number_positive: a_number >= 0
 		do
@@ -39,7 +39,7 @@ feature {NONE} -- Access
 
 	object_header : STRING is
 		do
-			!!Result.make (0)
+			create Result.make (0)
 			Result.append_string (object_identification)
 			Result.append_string (" obj%N")
 		end
@@ -63,7 +63,7 @@ feature {NONE} -- Implementation
 	
 	object_identification : STRING is
 		do
-			!!Result.make (0)
+			create Result.make (0)
 			Result.append_string (number.out)
 			Result.append_string (" ")
 			Result.append_string (generation.out)
@@ -74,7 +74,7 @@ feature {NONE} -- Implementation
 			name_exists: name /= Void
 			value_exists: value /= Void
 		do
-			!!Result.make (0)
+			create Result.make (0)
 			Result.append_string (name.to_pdf)
 			Result.append_character (' ')
 			Result.append_string (value)
@@ -153,7 +153,7 @@ feature -- Conversion
 	indirect_reference : STRING is
 			-- Indirect reference to Current
 		do
-			!!Result.make(0)
+			create Result.make(0)
 			Result.append_string (object_identification)
 			Result.append_string (" R")
 		end

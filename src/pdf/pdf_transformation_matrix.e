@@ -101,7 +101,7 @@ feature -- Basic operations
 
 		    re := e * n.a + f * n.c + n.e;
 		    rf := e * n.b + f * n.d + n.f;
-		    !!Result.set (ra, rb, rc, rd, re, rf)			
+		    create Result.set (ra, rb, rc, rd, re, rf)			
 		ensure
 			-- Result = Current X n
 		end
@@ -127,7 +127,7 @@ feature -- Basic operations
 			rd := a/det;
 			re := -(e * ra + f * rc) -- re = -(e * (d/det) + f * (-c/det))
 			rf := -(e * rb + f * rd) -- rf = -(e * (-b/det) + f * (a/det))
-			!!Result.set (ra, rb, rc, rd, re, rf)
+			create Result.set (ra, rb, rc, rd, re, rf)
 		end
 
 end -- class PDF_TRANSFORMATION_MATRIX	

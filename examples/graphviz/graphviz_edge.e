@@ -84,11 +84,11 @@ feature -- Basic operations
 					bindex := bindex + 3
 				end
 				p.stroke
-				!!edge.make_2_points (bezier_x.item (bcount-1), bezier_y.item (bcount - 1),
+				create edge.make_2_points (bezier_x.item (bcount-1), bezier_y.item (bcount - 1),
 									bezier_x.item (bcount), bezier_y.item (bcount))
-				!!a0.make_polar (arrow_length, edge.theta)
-				!!a1.make_polar (arrow_length/4, edge.theta + p.math.Pi /2)
-				!!a2.make_polar (arrow_length/4, edge.theta - p.math.Pi /2)
+				create a0.make_polar (arrow_length, edge.theta)
+				create a1.make_polar (arrow_length/4, edge.theta + p.math.Pi /2)
+				create a2.make_polar (arrow_length/4, edge.theta - p.math.Pi /2)
 				
 				p.gsave
 				if color /= Void then
@@ -107,7 +107,7 @@ feature -- Basic operations
 			--
 			if label /= Void then
 				label_width := p.string_width (label)
-				!!m.set (1, 0, 0, 1, label_x-label_width /2, label_y)
+				create m.set (1, 0, 0, 1, label_x-label_width /2, label_y)
 				p.begin_text
 				p.set_text_matrix (m)
 				p.put_string (label)
@@ -123,7 +123,7 @@ invariant
 	invariant_clause: -- Your invariant here
 			-- draw arrow
 			--
---			!!math
+--			create math
 --			x1 := bezier_x.item (bezier_x.count)
 --			x0 := bezier_x.item (bezier_x.count-1)
 --			y1 := bezier_y.item (bezier_y.count)

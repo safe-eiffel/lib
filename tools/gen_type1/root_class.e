@@ -15,13 +15,11 @@ feature -- Initialization
 		local
 			arg : ARGUMENTS
 		do
-			--io.put_string ("Enter file name : ")
-			--io.read_line
-			!!arg
+			create arg
 			file_name := clone (arg.argument (1))
-			!!file.make_open_read (file_name)
+			create file.make_open_read (file_name)
 			if file.is_open_read then
-				!!reader.make (file)				
+				create reader.make (file)				
 			end
 			create_class
 		end
@@ -48,7 +46,7 @@ feature -- Initialization
 			index : INTEGER
 		do
 			from
-				!!Result.make(s.count)
+				create Result.make(s.count)
 				index := 1
 			until
 				index > s.count
@@ -74,7 +72,7 @@ feature -- Initialization
 			class_file_name.prepend ("pdf_")
 			class_file_name.append_string ("_font.e")
 			-- create file
-			!!fclass.make_open_write (class_file_name)
+			create fclass.make_open_write (class_file_name)
 			--
 			fclass.put_string ("indexing%N%Tdescription: %"")
 			fclass.put_string (reader.font_name)
@@ -87,7 +85,7 @@ feature -- Initialization
 			-- font name
 			fclass.put_string ("%Tbasefont : PDF_NAME is%N")
 			fclass.put_string ("%T%Tonce%N")
-			fclass.put_string ("%T%T%T!!Result.make (%"")
+			fclass.put_string ("%T%T%Tcreate Result.make (%"")
 			fclass.put_string (reader.font_name)
 			fclass.put_string ("%")%N")
 			fclass.put_string ("%T%Tend%N%N")
@@ -95,7 +93,7 @@ feature -- Initialization
 			fclass.put_string ("feature {NONE} -- Implementation%N%N")
 			fclass.put_string ("%Tname_to_width : DS_HASH_TABLE[INTEGER,STRING] is%N")
 			fclass.put_string ("%T%Tonce%N")
-			fclass.put_string ("%T%T%T!!Result.make (")
+			fclass.put_string ("%T%T%Tcreate Result.make (")
 			fclass.put_string (reader.widths.count.out)
 			fclass.put_string (")%N")
 			-- put each character

@@ -107,7 +107,7 @@ feature -- Conversion
 			temp_string : STRING
 			zero_count : INTEGER
 		do
-			!!Result.make (0)
+			create Result.make (0)
 			zero_string := "0000000000"
 			-- format number : 10 digits
 			temp_string := impl_value.out

@@ -34,14 +34,14 @@ feature -- Access
 
 	basefont : PDF_NAME is
 		once
-			!!Result.make ("Symbol")
+			create Result.make ("Symbol")
 		end
 
 feature {NONE} -- Implementation
 
 	name_to_width : DS_HASH_TABLE[INTEGER,STRING] is
 		once
-			!!Result.make (190)
+			create Result.make (190)
 			Result.force (1042, "arrowdblboth")
 			Result.force (556, "Rho")
 			Result.force (494, "lozenge")

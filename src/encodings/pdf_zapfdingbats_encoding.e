@@ -16,7 +16,7 @@ feature -- Access
 
 	name : PDF_NAME is
 		once
-			!!Result.make ("ZapfDingbatsEncoding")
+			create Result.make ("ZapfDingbatsEncoding")
 		end
 		
 		
@@ -24,7 +24,7 @@ feature {NONE} -- Implementation
 
 	name_to_code : DS_HASH_TABLE[INTEGER, STRING] is
 		once
-			!!Result.make (256)
+			create Result.make (256)
 			name_to_code.put (33, "a1")	 -- '.'
 			name_to_code.put (34, "a2")	 -- '.'
 			name_to_code.put (36, "a3")	 -- '.'

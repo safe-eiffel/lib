@@ -16,7 +16,7 @@ feature -- Access
 
 	name : PDF_NAME is
 		once
-			!!Result.make ("WinAnsiEncoding")
+			create Result.make ("WinAnsiEncoding")
 		end
 		
 		
@@ -24,7 +24,7 @@ feature {NONE} -- Implementation
 
 	name_to_code : DS_HASH_TABLE[INTEGER, STRING] is
 		once
-			!!Result.make (256)
+			create Result.make (256)
 			Result.put (65, "A")	 -- 'A'
 			Result.put (198, "AE")	 -- 'Æ'
 			Result.put (193, "Aacute")	 -- 'Á'

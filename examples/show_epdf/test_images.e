@@ -57,18 +57,18 @@ feature -- Basic operations
 			-- set font + size
 			page.set_font (document.last_font, 36)		
 			-- move text origin to (left edge + 1 inch, upper edge - 1 inch - fontsize)
-			page.move_text_origin ((page.mediabox.width - image.width - 4) //2 , page.mediabox.height // 2 + 2)			
+			page.move_text_origin ((page.mediabox.width - image.width - 4) /2 , page.mediabox.height / 2 + 2)			
 			-- show text
 			page.put_string ("Hello World !")		
 			-- end text mode
 			page.end_text
 			page.gsave
-			page.translate ((page.mediabox.width - image.width)  //2 , page.mediabox.height // 2 )
+			page.translate ((page.mediabox.width - image.width)  /2 , page.mediabox.height / 2 )
 			page.scale (80,80)
 			page.put_image (image)
 			page.grestore
 			page.gsave
-			page.translate ((page.mediabox.width - image2.width // 2)  //2 - 20, (page.mediabox.height - image.height // 2) // 2 + (image2.height // 3))
+			page.translate ((page.mediabox.width - image2.width / 2)  /2 - 20, (page.mediabox.height - image.height / 2) / 2 + (image2.height / 3))
 			page.scale (image2.width / 2 ,image2.height / 2)
 			page.put_image (image2)
 			page.grestore
@@ -81,7 +81,7 @@ feature -- Basic operations
 			page.set_font (document.last_font, 12)
 			from
 				i := 1
-				j := document.default_mediabox.ury - 100
+				j := document.default_mediabox.ury.truncated_to_integer - 100
 			until
 				i > images.upper
 			loop

@@ -16,7 +16,7 @@ feature -- Access
 
 	name : PDF_NAME is
 		once
-			!!Result.make ("SymbolEncoding")
+			create Result.make ("SymbolEncoding")
 		end
 		
 		
@@ -24,7 +24,7 @@ feature {NONE} -- Implementation
 
 	name_to_code : DS_HASH_TABLE[INTEGER, STRING] is
 		once
-			!!Result.make (256)
+			create Result.make (256)
 			name_to_code.put (65, "Alpha")	 -- '.'
 			name_to_code.put (66, "Beta")	 -- '.'
 			name_to_code.put (67, "Chi")	 -- '.'

@@ -17,7 +17,7 @@ feature -- Access
 	type : PDF_NAME is
 			-- Type name
 		once
-			!!Result.make ("Font")
+			create Result.make ("Font")
 		end
 		
 	subtype : PDF_NAME is

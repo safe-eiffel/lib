@@ -40,20 +40,20 @@ feature {NONE} -- Initialization
 			procname : PDF_NAME
 		do
 			Precursor (an_object)
-			!!fonts.make
-			!!images.make
-			!!procset.make (1,2)
-			!!procname.make ("PDF")
+			create fonts.make
+			create images.make
+			create procset.make (1,2)
+			create procname.make ("PDF")
 			procset.put (procname, 1)
-			!!procname.make ("Text")
+			create procname.make ("Text")
 			procset.put (procname, 2)
-			!!resources.make
+			create resources.make
 			resources.add_entry ("ProcSet", procset)
 			resources.add_entry ("Font", fonts)
-			!!mediabox.make_a4
+			create mediabox.make_a4
 			make_text_state
 			make_graphics_state
-			!!state_stack.make
+			create state_stack.make
 		ensure then 
 			procset /= Void
 			resources /= Void
@@ -163,11 +163,11 @@ feature -- Conversion
 			stype, sparent, sresources, smediabox, procname : PDF_NAME
 			contents_cursor : DS_LIST_CURSOR [PDF_OBJECT]
 		do
-			!!stype.make ("Type")
-			!!sparent.make ("Parent")
-			!!sresources.make ("Resources")
-			!!smediabox.make ("MediaBox")
-			!!Result.make (0)
+			create stype.make ("Type")
+			create sparent.make ("Parent")
+			create sresources.make ("Resources")
+			create smediabox.make ("MediaBox")
+			create Result.make (0)
 			Result.append_string (object_header)
 			Result.append_string (begin_dictionary)
 			-- Type
@@ -251,7 +251,7 @@ feature -- Basic operations - Graphics
 	set_line_dash (array : ARRAY[INTEGER]; phase : INTEGER) is
 			-- set `line_dash_array', and `line_dash_phase' to `array' and `phase'
 		do
-			!!line_dash_array.make_from_array(array)
+			create line_dash_array.make_from_array(array)
 			line_dash_phase := phase
 			current_stream.set_line_dash (array, phase)
 		end
@@ -273,7 +273,7 @@ feature -- Basic operations
 		do
 			current_stream.gsave
 			--| FIXME push state on stack
-			!!state.make
+			create state.make
 			state.copy_text_state (Current)
 			state.copy_graphics_state (Current)
 			state_stack.put (state)
@@ -519,7 +519,7 @@ feature -- Basic operations - Text
 			line_y := line_y + y
 			text_x := line_x
 			text_y := line_y
-			!!m.set (1,0,0,1,x,y)
+			create m.set (1,0,0,1,x,y)
 			tlm := tlm * m
 			tm := tm * m
 		end
@@ -550,7 +550,7 @@ feature -- Basic operations - Text
 		do
 			current_stream.put_string (s)
 			w := string_width (s)
-			!!m.set(1,0,0,1,w,0)
+			create m.set(1,0,0,1,w,0)
 			tm := tm * m
 			text_x := text_x + w
 		end
@@ -564,7 +564,7 @@ feature -- Basic operations - Text
 			line_y := line_y - text_leading
 			text_x := line_x
 			text_y := line_y
-			!!m.set (1,0,0,1,0,-text_leading)
+			create m.set (1,0,0,1,0,-text_leading)
 			tm := tlm * m
 			tlm := tlm * m
 		end
@@ -580,9 +580,9 @@ feature -- Basic operations - Text
 			line_y := line_y - text_leading
 			text_x := line_x + w
 			text_y := line_y
-			!!m.set (1,0,0,1,0,-text_leading)
+			create m.set (1,0,0,1,0,-text_leading)
 			tm := tlm * m
-			!!m.set (1,0,0,1,w,0)
+			create m.set (1,0,0,1,w,0)
 			tlm := tm * m
 		end
 
@@ -770,7 +770,7 @@ feature {NONE} -- Implementation
 		local
 			fname : STRING
 		do
-			!!fname.make (0)
+			create fname.make (0)
 			fname.append_string ("F")
 			fname.append_string ((fonts.count + 1).out)
 			fonts.add_entry (fname, a_font)
@@ -784,7 +784,7 @@ feature {NONE} -- Implementation
 		local
 			name : STRING
 		do
-			!!name.make (0)
+			create name.make (0)
 			name.append_string ("Im")
 			name.append_string ((images.count + 1).out)
 			images.add_entry (name, image)

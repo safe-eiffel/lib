@@ -10,7 +10,8 @@ class
 	
 inherit 
 	KL_SHARED_FILE_SYSTEM
-
+	DT_SHARED_SYSTEM_CLOCK
+	
 creation
 	make
 
@@ -90,7 +91,6 @@ feature -- Basic operations
 		local
 			layout : PDF_LAYOUT_CONSTANTS
 			mode : PDF_PAGE_MODE_CONSTANTS
-			date : DT_DATE_TIME
 		do
 			create layout
 			create mode
@@ -101,8 +101,11 @@ feature -- Basic operations
 			document.information.set_author ("Paul G. Crismer")
 			document.information.set_title ("PDF Show")
 			document.information.set_creator ("Eiffel PDF library")
-			create date.make (2003, 8, 14, 18, 52, 20)
-			document.information.set_creation_date (date)
+			document.information.set_creation_date (System_clock.date_time_now)
+			document.information.set_modification_date (System_clock.date_time_now)
+			document.information.set_keywords ("PDF, Eiffel, EPDF, SAFE")
+			document.information.set_producer ("Eiffel Application")
+			document.information.set_subject ("A small demonstration of EPDF capabilities")
 			document.create_viewer_preferences
 			document.viewer_preferences.fit_window
 			document.viewer_preferences.display_document_title
@@ -186,7 +189,7 @@ feature -- Basic operations
 			document.create_outline_item ("Images", page, page.mediabox.llx, page.mediabox.ury)
 			root_outline.put_last (document.last_outline_item)
 			images_outline := document.last_outline_item
-			document.create_outline_item ("Nice Image", page, page.mediabox.llx, page.mediabox.ury // 2)
+			document.create_outline_item ("Nice Image", page, page.mediabox.llx, page.mediabox.ury / 2 + 80)
 			images_outline.put_last (document.last_outline_item)
 			document.last_outline_item.set_open
 			--
@@ -203,7 +206,7 @@ feature -- Access
 	current_section : PDF_OUTLINE_ITEM
 
 	top : DOUBLE
-	
+
 end -- class SHOW_EPDF
 --
 -- Copyright: 2001, 2003 Paul G. Crismer, <pgcrism@users.sf.net>

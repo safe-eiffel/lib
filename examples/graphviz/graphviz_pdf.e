@@ -28,7 +28,7 @@ feature -- Initialization
 			p : PDF_PAGE
 			exception : EXCEPTIONS
 		do
-			!!exception
+			create exception
 			process_arguments
 			if args_ok then
 					
@@ -59,7 +59,7 @@ feature -- Initialization
 				--
 				-- determine number of pages
 				--
-				!!page_rectangle.make_a4			
+				create page_rectangle.make_a4			
 				page_width := page_rectangle.urx - 2 * page_margin
 				page_height := page_rectangle.ury - 2 * page_margin
 --				npages_x := (document_width / page_width - 0.01).truncated_to_integer + 1
@@ -67,7 +67,7 @@ feature -- Initialization
 				npages_x := (document_width * scaling / page_width - 0.01).truncated_to_integer + 1
 				npages_y := (document_height * scaling / page_height - 0.01).truncated_to_integer + 1			
 	
-				!!document.make
+				create document.make
 				from
 					row_index := 0
 				until
@@ -134,7 +134,7 @@ feature -- Initialization
 			page_margin := 36
 			scaling := 1
 			-- process arguments
-			!!a
+			create a
 			from
 				index := 1
 				args_ok := False

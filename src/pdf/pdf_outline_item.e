@@ -22,7 +22,7 @@ inherit
 		end
 		
 creation
-	{PDF_DOCUMENT} make
+	{PDF_DOCUMENT} make, make_with_destination
 
 feature {NONE} -- Initialization
 
@@ -37,29 +37,38 @@ feature {NONE} -- Initialization
 			make_node (object_number)
 			create list.make
 			title := item_title
-			page := referenced_page
-			left := referenced_left
-			top := referenced_top
+			create {PDF_DESTINATION_XY_ZOOM} destination.make (referenced_page, referenced_left, referenced_top, 0)
 		ensure
-			page_set: page = referenced_page
-			left_set: left = referenced_left
-			top_set: top = referenced_top
+			title_set: title /= Void
+			destination_set: destination /= Void
+			page_referenced: destination.page = referenced_page
+		end
+
+	make_with_destination (object_number : INTEGER; item_title : STRING; referenced_destination : PDF_DESTINATION) is		
+		require
+			object_number_not_negative: object_number >= 0
+			item_title_exists: item_title /= Void
+			referenced_destination_exists: referenced_destination /= Void
+		do
+			make_node (object_number)
+			create list.make
+			title := item_title
+			destination := referenced_destination
+		ensure
+			title_set: title = item_title
+			object_number_set: number = object_number
+			destination_set: destination = referenced_destination
 		end
 		
 feature -- Access
 
 	node_anchor : PDF_OUTLINE_ITEM
-	
-	page : PDF_PAGE
-	
-	left : DOUBLE
-			-- left position in page corresponding to this outline item
-			
-	top : DOUBLE
-			-- top position in page corresponding to this outline item
+
+	destination : PDF_DESTINATION
+			-- destination referenced by outline item
 			
 	title : STRING
-			-- title of outline item
+			-- title appearing in the outline tree
 			
 feature -- Measurement
 
@@ -124,13 +133,8 @@ feature -- Conversion
 				medium.put_string (recursive_open_count.out)
 			end
 			-- dest
-			medium.put_string (" /Dest [ ")
-			medium.put_string (page.indirect_reference)
-			medium.put_string (" /XYZ ")
-			medium.put_double (left)
-			medium.put_string (" ")
-			medium.put_double (top)
-			medium.put_string (" null ]")
+			medium.put_string (" /Dest ")
+			medium.put_string (destination.to_pdf)
 			medium.put_string (End_dictionary)
 			medium.put_string (Object_footer)
 		end
@@ -148,6 +152,7 @@ feature -- Inapplicable
 feature {NONE} -- Implementation
 
 invariant
-	invariant_clause: True -- Your invariant here
+	title_exists: title /= Void
+	destination_exists: destination /= Void
 
 end -- class PDF_OUTLINE_ITEM

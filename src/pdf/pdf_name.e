@@ -35,7 +35,7 @@ feature -- Conversion
 	to_pdf : STRING is
 			-- 
 		do
-			!!Result.make (value.count+1)
+			create Result.make (value.count+1)
 			Result.append_character ('/')
 			Result.append_string (value)
 		end

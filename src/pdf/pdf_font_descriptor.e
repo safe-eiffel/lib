@@ -14,7 +14,7 @@ feature
 		-- Type name (Required) The type of PDF object that this dictionary describes; must be
 		-- FontDescriptor for a font descriptor.
 		once
-			!!Result.make ("FontDescriptor")
+			create Result.make ("FontDescriptor")
 		end
 		
 	ascent : INTEGER

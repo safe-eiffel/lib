@@ -15,13 +15,13 @@ feature -- Initialization
 		local
 			lines : INTEGER
 		do
-			!!of.make
+			create of.make
 			io.put_string ("Enter input filename : ")
 			io.read_line
-			!!f.make_open_read (clone (io.last_string))
+			create f.make_open_read (clone (io.last_string))
 			io.put_string ("Enter output filename : ")
 			io.read_line
-			!!fstd.make_open_write (clone (io.last_string))
+			create fstd.make_open_write (clone (io.last_string))
 			if f.is_open_read then
 				from
 					done := False

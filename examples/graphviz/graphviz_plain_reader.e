@@ -17,8 +17,8 @@ feature -- Initialization
 		require
 			medium /= Void and then medium.is_open_read
 		do
-			!!nodes.make
-			!!edges.make
+			create nodes.make
+			create edges.make
 			from
 				
 			until
@@ -73,7 +73,7 @@ feature {NONE} -- Implementation
 				if words.count = 10 then
 					scolor := colors.by_name (words.item (10))
 				elseif words.count = 12 then						
-					!!scolor.make_rgb (words.item (10).to_double,
+					create scolor.make_rgb (words.item (10).to_double,
 									words.item (11).to_double,
 									words.item (12).to_double)
 				end
@@ -98,7 +98,7 @@ feature {NONE} -- Implementation
 					error := True
 				end
 				if not error then
-					!!last_node.make (sname, x, y, width, height, slabel, sline, sshape,scolor)
+					create last_node.make (sname, x, y, width, height, slabel, sline, sshape,scolor)
 				else
 					last_node := Void
 				end
@@ -124,8 +124,8 @@ feature {NONE} -- Implementation
 				sn := words.item (4)
 				if sn.is_integer then
 					coord_count := sn.to_integer
-					!!ax.make (1, coord_count)
-					!!ay.make (1, coord_count)
+					create ax.make (1, coord_count)
+					create ay.make (1, coord_count)
 					check
 						words.count >= 4 + coord_count * 2
 					end
@@ -163,7 +163,7 @@ feature {NONE} -- Implementation
 						if remaining_count = 2 then
 							scolor := colors.by_name (words.item (line_index + 1))						
 						else
-							!!scolor.make_rgb (words.item (line_index+1).to_double,
+							create scolor.make_rgb (words.item (line_index+1).to_double,
 								words.item (line_index+2).to_double,
 								words.item (line_index+3).to_double)
 						end
@@ -183,7 +183,7 @@ feature {NONE} -- Implementation
 --						end
 
 						
-						!!last_edge.make (stail, shead, ax, ay, slabel, lx, ly, sline, scolor)
+						create last_edge.make (stail, shead, ax, ay, slabel, lx, ly, sline, scolor)
 				else
 					last_edge := Void
 				end
@@ -194,7 +194,7 @@ feature {NONE} -- Implementation
 		local
 			w : WORDER2
 		do
-			!!w.make (s)
+			create w.make (s)
 			w.start
 			if w.last_word.is_equal ("graph") then
 				if not w.off then
@@ -214,8 +214,8 @@ feature {NONE} -- Implementation
  		local
  			w : WORDER2
  		do
- 			!!w.make (s)
- 			!!words.make (1,0)
+ 			create w.make (s)
+ 			create words.make (1,0)
  			from
  				w.start
  			until
@@ -232,7 +232,7 @@ feature {NONE} -- Implementation
  	colors : GRAPHVIZ_COLORS is
  			-- 
  		once
- 			!!Result
+ 			create Result
  		end
  	
  	process_line (s : STRING) is
@@ -267,7 +267,7 @@ feature {NONE} -- Implementation
  			f /= void and f.is_open_read
  		do
  			from 
- 				!!last_line.make (256)
+ 				create last_line.make (256)
  				f.read_character
  			until
  				f.end_of_input or else f.last_character = '%N'

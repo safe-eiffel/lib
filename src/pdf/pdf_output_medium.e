@@ -103,7 +103,7 @@ feature -- Basic operations
 			integral, fraction : INTEGER
 			s : STRING
 		do
-			!!s.make (0)
+			create s.make (0)
 			integral := d.truncated_to_integer
 			fraction := ((d - integral) * 10000).truncated_to_integer
 			s.append_string (integral.out)

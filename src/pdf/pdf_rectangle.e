@@ -9,7 +9,7 @@ class
 
 inherit
 	
-	PDF_ARRAY[INTEGER]
+	PDF_ARRAY[DOUBLE]
 		rename
 			make as make_pdf_array
 		export 
@@ -54,25 +54,25 @@ feature -- Initialization
 			
 feature -- Access
 
-	llx : INTEGER is
+	llx : DOUBLE is
 			-- lower left
 		do
 			Result := item (1)
 		end
 		
-	lly : INTEGER is
+	lly : DOUBLE is
 			-- lower left x
 		do
 			Result := item (2)
 		end
 			
-	urx : INTEGER is
+	urx : DOUBLE is
 			-- upper right x
 		do
 			Result := item (3)
 		end
 			
-	ury : INTEGER is
+	ury : DOUBLE is
 			-- upper right y
 		do
 			Result := item (4)
@@ -80,24 +80,38 @@ feature -- Access
 
 feature -- Measurement
 	
-	width : INTEGER is do Result := urx - llx end
+	width : DOUBLE is do Result := urx - llx end
 	
-	height : INTEGER is do Result := ury - lly end
+	height : DOUBLE is do Result := ury - lly end
 	
 feature -- Status report
 
 	is_constant : BOOLEAN
 			-- is this rectangle constant ?
 
-	has_point (x, y : INTEGER) : BOOLEAN is
+	has_point (x, y : DOUBLE) : BOOLEAN is
 			-- has Current the point at (x,y) ?
 		do
 			Result := (x >= llx and x <= urx) and then (y >= lly and y <= ury)
 		end
+
+	contains (other : PDF_RECTANGLE) : BOOLEAN is
+			-- does Current contain `other'?
+		do
+			Result := llx <= other.llx
+			Result := Result and then lly <= other.lly
+			Result := Result and then urx >= other.urx
+			Result := Result and then ury >= other.ury
+		ensure
+			definition_left: Result implies llx <= other.llx
+			definition_bottom: Result implies lly <= other.lly
+			definition_right: Result implies urx >= other.urx
+			definition_top: Result implies ury >= other.ury
+		end
 		
 feature -- Element change
 
-	set (a_llx, a_lly, a_urx, a_ury : INTEGER) is
+	set (a_llx, a_lly, a_urx, a_ury : DOUBLE) is
 			-- set rectangle points
 		require
 			modifiable: not is_constant

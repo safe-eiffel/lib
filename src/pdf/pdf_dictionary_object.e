@@ -39,7 +39,7 @@ feature -- Conversion
 	to_pdf : STRING is
 			-- PDF representation
 		do
-			!!Result.make (0)
+			create Result.make (0)
 			Result.append_string (object_header)
 			Result.append_string (Precursor)
 			Result.append_string (object_footer)

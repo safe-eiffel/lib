@@ -58,6 +58,9 @@ feature {NONE} -- Initialization
 				end
 				create_samples (width, height, color_count)
 			end
+		ensure
+			not_filled: not is_filled
+			zero_size_if_not_valid: not is_valid implies (width = 0 and height = 0)
 		end
 		
 feature {NONE} -- Measurement
@@ -75,12 +78,17 @@ feature -- Measurement
 	
 feature -- Status report
 
-	is_filled : BOOLEAN is 
+	is_filled : BOOLEAN  
 			-- has current been filled with the PNG file content ?
-		do 
-			Result := (image = Void) 
-		end
 
+	is_valid : BOOLEAN is
+			-- is this a valid image ?
+		do 
+			Result := (image /= Void)
+		ensure
+			definition: Result = (image /= Void)
+		end
+		
 feature {NONE} -- Access
 
 	c_file_name : XS_C_STRING
@@ -114,6 +122,7 @@ feature {PDF_DOCUMENT}-- Implementation
 		require
 			document_exists: d /= Void
 			not_filled: not is_filled
+			valid_image: is_valid
 		local
 			has_alpha : BOOLEAN
 			i, j, index : INTEGER
@@ -158,6 +167,9 @@ feature {PDF_DOCUMENT}-- Implementation
 				i := i + 1
 			end
 			pimage.release
+			is_filled := True
+		ensure
+			filled: is_filled
 		end
 		
 feature -- Duplication

@@ -55,7 +55,7 @@ feature -- Conversion
 		local
 			index : INTEGER
 		do
-			!!Result.make (0)
+			create Result.make (0)
 			Result.append_string ("[ ")
 			from
 				index := lower

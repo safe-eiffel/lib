@@ -93,7 +93,7 @@ feature {NONE} -- Implementation
 		do
 			-- star radius
 			-- calculate star points
-			!!math
+			create math
 			d4pi_5 := 4 * p.math.Pi / 5
 			d2pi_5 := 2 * p.math.Pi / 5
 			x_4pi_5 := math.cosine (d4pi_5)

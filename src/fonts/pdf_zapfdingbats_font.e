@@ -34,14 +34,14 @@ feature -- Access
 
 	basefont : PDF_NAME is
 		once
-			!!Result.make ("ZapfDingbats")
+			create Result.make ("ZapfDingbats")
 		end
 
 feature {NONE} -- Implementation
 
 	name_to_width : DS_HASH_TABLE[INTEGER,STRING] is
 		once
-			!!Result.make (202)
+			create Result.make (202)
 			Result.force (668, "a100")
 			Result.force (732, "a101")
 			Result.force (923, "a43")

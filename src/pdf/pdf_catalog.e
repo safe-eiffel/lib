@@ -13,12 +13,25 @@ class
 
 inherit
 	PDF_OBJECT
-
+		rename
+			make as make_object
+		end
+		
 creation
 	make
 
-feature -- Initialization
+feature {NONE} -- Initialization
 
+	make (pages_root : PDF_PAGES; object_number : INTEGER) is
+			-- make a catalog with `pages_root', known as `object_number'
+		require
+			pages_root_exists: pages_root /= Void
+			object_number_valid: object_number >= 0
+		do
+			pages := pages_root
+			make_object (object_number)
+		end
+		
 feature -- Access
 
 	pages : PDF_PAGES
@@ -98,10 +111,10 @@ feature -- Conversion
 		local
 			ntype, npages, nlayout, noutlines, npagemode, nviewerpreferences : PDF_NAME
 		do
-			!!Result.make (0)
-			!!ntype.make ("Type")
-			!!npages.make ("Pages")
-			!!nlayout.make ("PageLayout")
+			create Result.make (0)
+			create ntype.make ("Type")
+			create npages.make ("Pages")
+			create nlayout.make ("PageLayout")
 			create noutlines.make ("Outlines")
 			create npagemode.make ("PageMode")
 			create nviewerpreferences.make ("ViewerPreferences")
@@ -128,6 +141,6 @@ feature -- Conversion
 feature {NONE} -- Implementation
 
 invariant
-	invariant_clause: -- Your invariant here
+	pages_exist: pages /= Void
 
 end -- class PDF_CATALOG

@@ -44,20 +44,22 @@ feature {NONE} -- Initialization
 			-- creates a document
 		do
 			-- create non PDF-objects
-			!!xref.make
-			!!fonts_table.make (10)
-			!!encodings_table.make (2)
+			create xref.make
+			create fonts_table.make (10)
+			create encodings_table.make (2)
 			!DS_LINKED_LIST[PDF_PAGE]!page_list.make
 			default_mediabox := Mediabox_a4
 			-- use factory methods for PDF-objects
-			create_catalog
-			catalog := last_catalog
 			create_pages
-			catalog.set_pages (last_pages)
+			create_catalog (last_pages)
+			catalog := last_catalog
+			-- ensure invariant
+			create_information_impl
+			-- ensure post_condition
 			add_page
 		ensure
-			default_mediabox = Mediabox_a4
-			last_page /= Void
+			default_mediabox_exists: default_mediabox = Mediabox_a4
+			first_page_created: last_page /= Void
 		end
 
 feature {NONE} -- Access
@@ -94,7 +96,7 @@ feature -- Access
 			-- last outline item created
 	
 	outlines : PDF_OUTLINES is
-			-- Current outlines entry; holds outline items
+			-- outlines entry; root of outline items
 		do
 			Result := catalog.outlines
 		end
@@ -114,8 +116,6 @@ feature {NONE} -- Measurement
 		do
 			Result := xref.count
 		end
-
-	last_png_image : PDF_PNG_IMAGE
 		
 feature -- Element change
 
@@ -131,6 +131,176 @@ feature -- Element change
 			stream: last_page.current_stream = last_stream
 		end
 	
+	set_default_mediabox (a_media_box : PDF_RECTANGLE) is
+			-- set `default_mediabox'
+		require
+			a_media_box /= Void
+		do
+			default_mediabox := a_media_box
+		ensure
+			default_mediabox = a_media_box
+		end
+	
+	set_page_layout (name : STRING) is
+			-- set the page layout for viewing or printing
+		require
+			good_name: name.is_equal (Layout_single_page) or else
+				name.is_equal (Layout_one_column) or else
+				name.is_equal (Layout_two_column_left) or else
+				name.is_equal (Layout_two_column_right)
+		do
+			create page_layout.make (name)
+			catalog.set_page_layout (page_layout)
+		ensure
+			page_layout /= Void and then page_layout.value.is_equal (name)
+		end
+
+	set_page_mode (name : STRING) is
+			-- set the page mode for viewing
+		require
+			good_name: name.is_equal (Mode_use_none) or else
+				name.is_equal (Mode_use_outlines) or else
+				name.is_equal (Mode_use_thumbs) or else
+				name.is_equal (Mode_full_screen)
+		do
+			create page_mode.make (name)
+			catalog.set_page_mode (page_mode)
+		ensure
+			page_mode_set: page_mode /= Void and then page_mode.value.is_equal (name)
+		end
+
+	create_image (image_width, image_height, sample_colors, color_precision: INTEGER) is
+		do
+			create last_image.make (xref.count, image_width, image_height, sample_colors, color_precision)
+			xref.add_entry (last_image)
+		ensure
+			image_created: last_image /= Void	
+		end
+	
+	create_png_image (file_name : STRING) is
+			-- create png image from file `file_name'
+		require
+			file_name_exists: file_name /= Void
+			file_exists: File_system.file_exists (file_name)
+		local
+			pdf_image : PDF_PNG_IMAGE
+		do
+			create {PDF_PNG_IMAGE}pdf_image.make (xref.count, file_name)
+			if pdf_image.is_valid then
+				xref.add_entry (pdf_image)
+				pdf_image.fill_xobject (Current)
+				last_image := pdf_image
+			end
+		ensure
+			image_created: last_image /= Void and then last_image /= old last_image
+		end
+		
+	create_outlines is
+			-- create `outlines'
+		require
+			no_outlines: outlines = Void
+		local
+			l_outlines : PDF_OUTLINES
+		do
+			create l_outlines.make (xref.count)
+			xref.add_entry (l_outlines)
+			catalog.set_outlines (l_outlines)
+		ensure
+			outlines_set: outlines /= Void
+		end
+
+	create_outline_item (item_title: STRING; referenced_page: PDF_PAGE; referenced_left, referenced_top: DOUBLE) is
+			-- create outline item with `item_title', referencing `referenced_page', fitting the window top left corner at `referenced_left', `referenced_top'
+		require
+			item_title_exists: item_title /= Void
+			referenced_page_exists: referenced_page /= Void
+			destination_fits_mediabox: referenced_page.mediabox.has_point (referenced_left, referenced_top)
+		do
+			create last_outline_item.make (xref.count, item_title, referenced_page, referenced_left, referenced_top)
+			xref.add_entry (last_outline_item)
+		ensure
+			last_outline_item_created: last_outline_item /= Void and then last_outline_item /= old last_outline_item
+		end
+
+	create_outline_item_with_destination (title : STRING; destination : PDF_DESTINATION) is
+			-- create outline item with `item_title', referencing `destination' 
+		require
+			title_exists: title /= Void
+			destination_exists: destination /= Void
+		do
+			create last_outline_item.make_with_destination (xref.count, title, destination)
+			xref.add_entry (last_outline_item)
+		ensure
+			last_outline_item_created: last_outline_item /= Void and then last_outline_item /= old last_outline_item
+		end
+		
+	create_information is
+			-- create `information'
+		obsolete "information need not be created anymore"
+		do
+		ensure
+			information_exist: information /= Void
+		end
+
+	create_viewer_preferences is
+		require
+			view_preferences_do_not_exist: viewer_preferences = Void
+		do
+			create viewer_preferences.make (xref.count)
+			xref.add_entry (viewer_preferences)
+			catalog.set_viewer_preferences (viewer_preferences)
+		ensure
+			viewer_preferences_exist: viewer_preferences /= Void
+		end
+		
+feature -- Constants
+
+	Mediabox_letter : PDF_RECTANGLE is
+			-- letter format
+		once
+			create Result.make_letter
+		end
+		
+	Mediabox_a4 : PDF_RECTANGLE is
+			-- a4 format
+		once
+			create Result.make_a4
+		end
+
+feature -- Conversion
+
+	to_pdf : STRING is
+			-- Current converted to PDF format - 'put_pdf' is preferred.
+		local
+			string_stream : KL_STRING_OUTPUT_STREAM
+			output_medium : PDF_OUTPUT_MEDIUM
+		do
+			create string_stream.make_empty
+			create output_medium.make_string (string_stream)
+			put_pdf (output_medium)
+			Result := string_stream.string
+		end
+
+	put_pdf (medium : PDF_OUTPUT_MEDIUM) is
+			-- put document to `medium'
+		local
+			startxref : INTEGER
+		do
+			-- build pages tree
+			catalog.pages.build_pages_tree (Current, page_list)
+			-- header
+			medium.put_string (pdf_header)
+			-- body
+			put_pdf_body (medium)
+			-- cross reference
+			startxref := medium.count
+			xref.put_pdf (medium)
+			-- trailer
+			put_pdf_trailer (startxref, medium)
+		end
+
+feature -- Basic operations
+
 	find_font (font_name : STRING; encoding_name : STRING) is
 			-- find the 'font_name' font with 'encoding_name' encoding
 			-- last_font /= Void if found...
@@ -160,46 +330,11 @@ feature -- Element change
 					last_font := Void
 				end
 			end
-		end
-	
-	set_default_mediabox (a_media_box : PDF_RECTANGLE) is
-			-- set `default_mediabox'
-		require
-			a_media_box /= Void
-		do
-			default_mediabox := a_media_box
 		ensure
-			default_mediabox = a_media_box
-		end
-	
-	set_page_layout (name : STRING) is
-			-- set the page layout for viewing or printing
-		require
-			good_name: name.is_equal (Layout_single_page) or else
-				name.is_equal (Layout_one_column) or else
-				name.is_equal (Layout_two_column_left) or else
-				name.is_equal (Layout_two_column_right)
-		do
-			!!page_layout.make (name)
-			catalog.set_page_layout (page_layout)
-		ensure
-			page_layout /= Void and then page_layout.value.is_equal (name)
+			same_name_if_found: last_font /= Void implies font_name.is_equal (last_font.basefont.value) 
+			same_encoding_if_found: last_font /= Void implies encoding_name.is_equal (last_font.encoding.name.value)
 		end
 
-	set_page_mode (name : STRING) is
-			-- set the page mode for viewing
-		require
-			good_name: name.is_equal (Mode_use_none) or else
-				name.is_equal (Mode_use_outlines) or else
-				name.is_equal (Mode_use_thumbs) or else
-				name.is_equal (Mode_full_screen)
-		do
-			create page_mode.make (name)
-			catalog.set_page_mode (page_mode)
-		ensure
-			page_mode_set: page_mode /= Void and then page_mode.value.is_equal (name)
-		end
-		
 	find_encoding (encoding_name : STRING) is
 			-- find 'encoding_name' encoding.  If found, last_encoding /= Void
 		require
@@ -225,133 +360,17 @@ feature -- Element change
 					encodings_table.force (last_encoding, encoding_name)
 				end
 			end
-		end
-
-	create_image (image_width, image_height, sample_colors, color_precision: INTEGER) is
-		do
-			create last_image.make (xref.count, image_width, image_height, sample_colors, color_precision)
-			xref.add_entry (last_image)
 		ensure
-			image_created: last_image /= Void	
+			last_encoding: last_encoding /= Void implies encoding_name.is_equal (last_encoding.name.value)
 		end
 	
-	create_png_image (file_name : STRING) is
-			-- create png image from file `file_name'
-		require
-			file_name_exists: file_name /= Void
-			file_exists: File_system.file_exists (file_name)
-		local
-			pdf_image : PDF_PNG_IMAGE
-		do
-			create {PDF_PNG_IMAGE}pdf_image.make (xref.count, file_name)
-			last_png_image := pdf_image
-			xref.add_entry (pdf_image)
-			pdf_image.fill_xobject (Current)
-			last_image := last_png_image
-		ensure
-			image_created: last_image /= Void and then last_image /= old last_image
-		end
-		
-	create_outlines is
-			-- 
-		require
-			no_outlines: outlines = Void
-		local
-			l_outlines : PDF_OUTLINES
-		do
-			create l_outlines.make (xref.count)
-			xref.add_entry (l_outlines)
-			catalog.set_outlines (l_outlines)
-		ensure
-			outlines_set: outlines /= Void
-		end
-
-	create_outline_item (item_title: STRING; referenced_page: PDF_PAGE; referenced_left, referenced_top: DOUBLE) is
-			-- 
-		do
-			create last_outline_item.make (xref.count, item_title, referenced_page, referenced_left, referenced_top)
-			-- make (object_number: INTEGER; item_title: STRING; referenced_page: PDF_PAGE; referenced_left, referenced_top: DOUBLE)
-			xref.add_entry (last_outline_item)
-		ensure
-			last_outline_item_created: last_outline_item /= Void and then last_outline_item /= old last_outline_item
-		end
-	
-	create_information is
-			-- 
-		require
-			information_does_not_exist: information = Void
-		do
-			if information = Void then
-				create document_information.make (xref.count)
-				xref.add_entry (document_information)
-			end
-		ensure
-			information_exist: information /= Void
-		end
-
-	create_viewer_preferences is
-		require
-			view_preferences_do_not_exist: viewer_preferences = Void
-		do
-			create viewer_preferences.make (xref.count)
-			xref.add_entry (viewer_preferences)
-			catalog.set_viewer_preferences (viewer_preferences)
-		ensure
-			viewer_preferences_exist: viewer_preferences /= Void
-		end
-		
-feature -- Constants
-
-	Mediabox_letter : PDF_RECTANGLE is
-			-- letter format
-		once
-			!!Result.make_letter
-		end
-		
-	Mediabox_a4 : PDF_RECTANGLE is
-			-- a4 format
-		once
-			!!Result.make_a4
-		end
-
-feature -- Conversion
-
-	to_pdf : STRING is
-			-- Current converted to PDF format - 'put_pdf' is preferred.
-		local
-			string_stream : KL_STRING_OUTPUT_STREAM
-			output_medium : PDF_OUTPUT_MEDIUM
-		do
-			!!string_stream.make_empty
-			!!output_medium.make_string (string_stream)
-			put_pdf (output_medium)
-			Result := string_stream.string
-		end
-
-	put_pdf (medium : PDF_OUTPUT_MEDIUM) is
-			-- put document to `medium'
-		do
-			pdf_count := 0
-			-- build pages tree
-			build_pages_tree
-			-- header
-			medium.put_string (pdf_header)
-			-- body
-			put_pdf_body (medium)
-			-- cross reference
-			xref_index := medium.count
-			xref.put_pdf (medium)
-			-- trailer
-			put_pdf_trailer (medium)
-		end
-
 feature {PDF_PAGE} -- Factory
 	
 	create_stream is
 			-- create Stream object before any text or graphics operation
 			-- and add it to a page
 		do
-			!!last_stream.make (xref.count, last_page)
+			create last_stream.make (xref.count, last_page)
 			xref.add_entry (last_stream)
 		ensure
 			last_stream /= Void and last_stream.page = last_page
@@ -359,28 +378,30 @@ feature {PDF_PAGE} -- Factory
 
 	last_stream : PDF_STREAM
 
-feature {NONE} -- Factory results (private)
-
-	last_catalog : PDF_CATALOG
-				
-	last_dictionary_object : PDF_DICTIONARY_OBJECT
-
+feature {PDF_PAGES} -- Factory results
+	
 	last_pages : PDF_PAGES
 
 	create_pages is
 			-- create a new pages node
 		do
-			!!last_pages.make (xref.count)
+			create last_pages.make (xref.count)
 			xref.add_entry (last_pages)
 		ensure
 			created: last_pages /= Void
 			new: last_pages /= old last_pages
 		end
-		
+	
+feature {NONE} -- Factory results (private)
+
+	last_catalog : PDF_CATALOG
+				
+	last_dictionary_object : PDF_DICTIONARY_OBJECT
+	
 	create_page is
 			-- create a new page
 		do
-			!!last_page.make (xref.count)
+			create last_page.make (xref.count)
 			xref.add_entry (last_page)
 			page_list.put_last (last_page)
 			-- temporarily link to root pages node
@@ -396,46 +417,56 @@ feature {NONE} -- Implementation
 	create_dictionary_object is
 			-- 
 		do
-			!!last_dictionary_object.make (xref.count)
+			create last_dictionary_object.make (xref.count)
 			xref.add_entry (last_dictionary_object)
 		end
 
-	create_catalog is
-			-- 
+	create_catalog (pages_root : PDF_PAGES) is
+			-- create `last_catalog' using `pages_root'
+		require
+			pages_root_exists: pages_root /= Void
 		do
-			!!last_catalog.make (xref.count)
+			create last_catalog.make (pages_root, xref.count)
 			xref.add_entry (last_catalog)
 		end
 
 	create_winansi_encoding is
-			-- 
+			-- create a Windows/ANSI encoding
 		do
-				!PDF_WINANSI_ENCODING!last_encoding		
+			create	{PDF_WINANSI_ENCODING}last_encoding		
+		ensure
+			last_encoding_created: last_encoding /= Void
 		end
 		
 	create_mac_encoding is
-			-- 
+			-- create a MAC encoding
 		do
-				!PDF_MAC_ENCODING!last_encoding
+			create 	{PDF_MAC_ENCODING}last_encoding
+		ensure
+			last_encoding_created: last_encoding /= Void
 		end
 		
 	create_adobe_standard_encoding is
-			-- 
+			-- create an Adobe standard encoding
 		do
-				!PDF_ADOBE_STANDARD_ENCODING!last_encoding
+			create	{PDF_ADOBE_STANDARD_ENCODING}last_encoding
+		ensure
+			last_encoding_created: last_encoding /= Void
 		end
 		
 	create_pdf_encoding is
-			--
+			-- create a PDF encoding
 		do
-				!PDF_PDF_ENCODING!last_encoding
+			create	{PDF_PDF_ENCODING}last_encoding
+		ensure
+			last_encoding_created: last_encoding /= Void
 		end
 
 	
 	create_font (font_name : STRING; encoding : PDF_CHARACTER_ENCODING) is
-			-- create 'font_name' font with 'encoding' 
+			-- create a font of name `font_name' font with `encoding' 
 		require
-			font_name /= Void
+			font_name_exists: font_name /= Void
 		do
 			if font_name.is_equal ("Courier") then
 				!PDF_COURIER_FONT!last_font.make (xref.count, encoding)
@@ -472,16 +503,13 @@ feature {NONE} -- Implementation
 				xref.add_entry (last_font)
 			end
 		ensure
-			last_font /= Void implies last_font.encoding = encoding
+			font_created_with_encoding: last_font /= Void implies last_font.encoding = encoding
+			font_created_has_same_name: last_font /= Void implies last_font.basefont.value.is_equal (font_name)
 		end
 
 	xref : PDF_XREF
+			-- PDF Cross reference
 	
-	xref_index : INTEGER
-		-- xref index in file
-
-	pdf_count : INTEGER
-
 	pdf_header : STRING is "%%PDF-1.4%N%%‚„œ”%N"
 
 	put_pdf_body (medium : PDF_OUTPUT_MEDIUM) is
@@ -500,22 +528,19 @@ feature {NONE} -- Implementation
 			end
 		end
 
-	put_pdf_xref (medium : PDF_OUTPUT_MEDIUM) is
-			-- put pdf cross reference
-		do
-						
-		end
 
-	put_pdf_trailer (medium : PDF_OUTPUT_MEDIUM) is
+	put_pdf_trailer (startxref : INTEGER; medium : PDF_OUTPUT_MEDIUM) is
 			-- put pdf trailer 
+		require
+			startxref_lower_medium_count: startxref < medium.count
 		local
 			size_name : PDF_NAME
 			root_name : PDF_NAME
 			info_name : PDF_NAME
 		do 
 			medium.put_string ("trailer%N")
-			!!size_name.make ("Size")
-			!!root_name.make ("Root")
+			create size_name.make ("Size")
+			create root_name.make ("Root")
 			medium.put_string ("<<%N")
 			medium.put_string (dictionary_entry (size_name, count.out))
 			medium.put_string (dictionary_entry (root_name, catalog.indirect_reference))
@@ -526,7 +551,7 @@ feature {NONE} -- Implementation
 			medium.put_string (">>%N")
 			-- startxref
 			medium.put_string ("startxref%N")
-			medium.put_string (xref_index.out)
+			medium.put_string (startxref.out)
 			medium.put_new_line
 			medium.put_string ("%%%%EOF%N")
 		end
@@ -537,7 +562,7 @@ feature {NONE} -- Implementation
 	
 	new_font_key (font_name, encoding_name : STRING) : STRING is
 		do
-			!!Result.make (font_name.count+encoding_name.count+1)
+			create Result.make (font_name.count+encoding_name.count+1)
 			Result.append_string (font_name)
 			Result.append_character (',')
 			Result.append_string (encoding_name)
@@ -545,80 +570,23 @@ feature {NONE} -- Implementation
 
 	page_list : DS_LIST[PDF_PAGE]
 
-	build_pages_tree is
-			-- Build pages tree using PDF_PAGE_TREE_NODEs, hierachical organization
-			-- of pages; Each PDF_PAGES_TREE_NODE having at most 'kids_count' kids.
-		local
-			nodes_count : INTEGER
-			nodes_list : DS_LIST[PDF_PAGE_TREE_NODE]
-			nodes_list_cursor : DS_LIST_CURSOR [PDF_PAGE_TREE_NODE]
-		do
-			from
-				nodes_count := ((page_list.count - 1)/kids_count).truncated_to_integer + 1
-				nodes_list := page_list
-				last_parent_list := Void
-			until
-				nodes_count < kids_count
-			loop
-				give_a_parent (nodes_list)
-				nodes_count := ((nodes_count - 1)/kids_count).truncated_to_integer + 1
-			end
-			-- add those nodes to root node
-			if last_parent_list /= Void then
-				nodes_list := last_parent_list
-			else
-				nodes_list := page_list
-			end
-			from
-				nodes_list_cursor := nodes_list.new_cursor
-				nodes_list_cursor.start
-				catalog.pages.empty_kids
-			until
-				nodes_list_cursor.off
-			loop
-				catalog.pages.add_kid (nodes_list_cursor.item)
-				nodes_list_cursor.forth
-			end
-		end
-		
-	give_a_parent (nodes : DS_LIST[PDF_PAGE_TREE_NODE]) is
-			-- Give a parent to 'nodes'; parent can be found in 'last_parent'
-		local
-			node_count : INTEGER
-			nodes_list_cursor : DS_LIST_CURSOR [PDF_PAGE_TREE_NODE]
-		do
-			from 
-				nodes_list_cursor := nodes.new_cursor 
-				nodes_list_cursor.start
-				node_count := 0
-				!DS_LINKED_LIST[PDF_PAGE_TREE_NODE]!last_parent_list.make
-			variant
-				nodes.count - node_count
-			until
-				nodes_list_cursor.off
-			loop
-				if node_count \\ kids_count = 0 then
-					-- create a parent
-					create_pages
-					-- add it to the DS_LIST
-					last_parent_list.put_last (last_pages)					
-				end
-				-- add kids up-to the kids_count
-				last_pages.add_kid (nodes_list_cursor.item)
-				node_count := node_count + 1
-				nodes_list_cursor.forth
-			end		
-		ensure
-			result_in_last_parent_list: last_parent_list /= Void 
-				-- and each parent p in last_parent_list
-				-- has at most 'kids_count' kids from nodes
-				-- foreach n in nodes : n.parent /= Void : each node in nodes has a parent
-		end
-		
-	last_parent_list : DS_LIST[PDF_PAGE_TREE_NODE]
-	
-	kids_count : INTEGER is 10
-
 	document_information : PDF_DOCUMENT_INFORMATION
+
+	create_information_impl is
+			-- create `information'
+		require
+			information_does_not_exist: information = Void
+		do
+			if information = Void then
+				create document_information.make (xref.count)
+				xref.add_entry (document_information)
+			end
+		ensure
+			information_exist: information /= Void
+		end
+
+invariant
+	information_always_present: information /= Void
+	default_mediabox_exists: default_mediabox /= Void
 	
 end -- class PDF_DOCUMENT

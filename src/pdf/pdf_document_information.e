@@ -40,7 +40,7 @@ feature -- Access
 		--CreationDate date (Optional) The date and time the document was created, in human-readable form (see Section 3.8.2, “Dates”).
 		
 	modification_date : DT_DATE_TIME
-		--ModDate date (Optional; PDF 1.1) The date and time the document was most recently modi.ed, in human-readable form (see Section 3.8.2, “Dates”).
+		--ModDate date (Optional; PDF 1.1) The date and time the document was most recently modified, in human-readable form (see Section 3.8.2, “Dates”).
 		
 feature -- Measurement
 

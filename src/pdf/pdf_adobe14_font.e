@@ -37,7 +37,7 @@ feature -- Access
 	subtype : PDF_NAME is
 			-- Subtype
 		once
-			!!Result.make ("Type1")
+			create Result.make ("Type1")
 		end
 			
 	firstchar : INTEGER is
@@ -63,12 +63,12 @@ feature -- Conversion
 		local
 			ntype, nsubtype, nbasefont,nencoding,nname: PDF_NAME
 		do
-			!!Result.make (0)
-			!!ntype.make ("Type")
-			!!nsubtype.make ("Subtype")
-			!!nbasefont.make ("BaseFont")
-			!!nencoding.make ("Encoding")
-			!!nname.make ("Name")
+			create Result.make (0)
+			create ntype.make ("Type")
+			create nsubtype.make ("Subtype")
+			create nbasefont.make ("BaseFont")
+			create nencoding.make ("Encoding")
+			create nname.make ("Name")
 			Result.append_string (object_header)
 			Result.append_string (begin_dictionary)
 			-- Type
@@ -99,7 +99,7 @@ feature {NONE} -- Implementation
 			code : INTEGER
 			character_name : STRING
 		do
-			!!widths_impl.make (0, 255)
+			create widths_impl.make (0, 255)
 			-- initialize with a "dummy" width
 			from
 				code := 0

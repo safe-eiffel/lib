@@ -16,7 +16,7 @@ feature -- Access
 
 	name : PDF_NAME is
 		once
-			!!Result.make ("MacRomanEncoding")
+			create Result.make ("MacRomanEncoding")
 		end
 		
 		
@@ -24,7 +24,7 @@ feature {NONE} -- Implementation
 
 	name_to_code : DS_HASH_TABLE[INTEGER, STRING] is
 		once
-			!!Result.make (256)
+			create Result.make (256)
 			Result.put (65, "A")	 -- 'A'
 			Result.put (174, "AE")	 -- 'Æ'
 			Result.put (231, "Aacute")	 -- 'Á'
