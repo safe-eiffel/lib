@@ -49,7 +49,7 @@
 		<!-- <available resource="${SAFE_KERNEL}/external/src/spec/${eiffel}/${GOBO_OS}/xs_c_${GOBO_CC}.lib" variable="safe_kernel_lib_exists" if="${GOBO_OS}=windows"/> -->
 		<exec executable="nmake -f makefile.mak" dir="${SAFE_KERNEL}\external\src\spec\${eiffel}\${GOBO_OS}" if="${GOBO_CC}=msc" unless="${safe_kernel_lib_exists}"/>
 		<exec executable="make -f makefile.bcc" dir="${SAFE_KERNEL}/external/src/spec/${eiffel}/${GOBO_OS}" if="${GOBO_CC}=bcc" unless="${safe_kernel_lib_exists}"/>
-		<exec executable="make -f makefile.lcc SMARTEIFFELDIR=${SMARTEIFFELDIR} epdf_lcc.lib" dir="${SAFE_KERNEL}/external/src/spec/${eiffel}/${GOBO_OS}" if="${GOBO_CC}=lcc" unless="${safe_kernel_lib_exists}"/>
+		<exec executable="make -f makefile.lcc SMARTEIFFELDIR=${SMARTEIFFELDIR} xs_c_lcc.lib" dir="${SAFE_KERNEL}/external/src/spec/${eiffel}/${GOBO_OS}" if="${GOBO_CC}=lcc" unless="${safe_kernel_lib_exists}"/>
 		<exec executable="make " dir="${SAFE_KERNEL}/external/src/spec/${eiffel}/${GOBO_OS}" if="${GOBO_CC}=gcc" unless="${safe_kernel_lib_exists}"/>
 	</target>
 	<target name="clean" depend="init">
