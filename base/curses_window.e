@@ -82,7 +82,7 @@ feature {NONE} -- construction
 	    exists: exists
 	end -- make
 
-    make_subwindow_absolute ( parent : like Current;
+    make_subwindow_absolute ( parent : CURSES_WINDOW;
 		a_height, a_width, y, x : INTEGER) is
 		-- make subwindow with absolute origin coordinates
 		-- the subwindow shares the output memory of the parent
@@ -108,7 +108,7 @@ feature {NONE} -- construction
 	    exists: exists
 	end -- make_subwindow_absolute
 
-    make_subwindow_relative ( parent : like Current;
+    make_subwindow_relative ( parent : CURSES_WINDOW;
 		a_height, a_width, y, x : INTEGER) is
 		-- make subwindow with origin coordinates relative to parent window
 		-- the subwindow shares the output memory of the parent
@@ -494,7 +494,7 @@ feature -- window status
 
 	end
 
-    parent_window : like Current
+    parent_window : CURSES_WINDOW
 
     subwindows : DS_LINKED_LIST[like Current]
 	
