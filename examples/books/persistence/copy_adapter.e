@@ -14,9 +14,9 @@ inherit
 
 	PO_ADAPTER[COPY]
 
+	COPY_PERSISTENT_CLASS_NAME
+	
 feature -- Access
-
-	class_name : STRING is once create {COPY_PERSISTENT_CLASS_NAME}Result.make end
 			
 feature -- Basic operations
 		

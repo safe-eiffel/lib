@@ -14,9 +14,9 @@ inherit
 
 	PO_ADAPTER[BORROWER]
 	
+	BORROWER_PERSISTENT_CLASS_NAME
+	
 feature -- Access
-
-	class_name : STRING is once create {BORROWER_PERSISTENT_CLASS_NAME}Result.make end
 			
 feature -- Basic operations
 

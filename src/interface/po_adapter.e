@@ -40,7 +40,13 @@ inherit
 	
 feature -- Access
 
-	class_name : STRING is
+	class_name: STRING is
+		obsolete "[2004-08-26] Use `persistent_class_name' instead."
+		do
+			Result := persistent_class_name
+		end
+
+	persistent_class_name : STRING is
 			-- Persistence class name of objects that this adapter can handle
 		deferred
 		end
@@ -352,7 +358,7 @@ feature {NONE} -- Implementation
 	
 invariant
 
-	class_name_defined: class_name /= Void and then not class_name.is_empty
+	class_name_defined: persistent_class_name /= Void and then not persistent_class_name.is_empty
 	datastore_exists : datastore /= Void
 	registered_to_datastore: datastore.adapters.has (Current)
 	valid_last_pid: last_pid /= Void implies is_pid_valid (last_pid)

@@ -179,8 +179,8 @@ feature {NONE} -- Implementation
 			book_name : BOOK_PERSISTENT_CLASS_NAME
 			book_reference : PO_REFERENCE[BOOK]
 		do
-			create book_name.make
-			persistence_manager.search_adapter (book_name)
+			create book_name
+			persistence_manager.search_adapter (book_name.persistent_class_name)
 			if persistence_manager.found then
 				book_adapter ?= persistence_manager.last_adapter
 			end
@@ -202,8 +202,8 @@ feature {NONE} -- Implementation
 				a_cursor.item.loc_shelf.as_integer,
 				a_cursor.item.loc_row.as_integer)
 			if not a_cursor.item.borrower.is_null then
-				create bpn.make
-				persistence_manager.search_adapter (bpn)
+				create bpn
+				persistence_manager.search_adapter (bpn.persistent_class_name)
 				if not persistence_manager.found then
 					--| FIXME ERROR!
 					status.set_framework_error (status.Error_could_not_find_adapter)

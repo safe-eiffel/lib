@@ -79,7 +79,7 @@ feature {PO_LAUNCHER} -- Element change
 
 	add_adapter (an_adapter: PO_ADAPTER [PO_PERSISTENT]) is
 		do
-			adapters_table.force (an_adapter, an_adapter.class_name)
+			adapters_table.force (an_adapter, an_adapter.persistent_class_name)
 			last_adapter := an_adapter	
 		end
 
