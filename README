@@ -2,7 +2,7 @@
 
 
                      Paul G. Crismer, Eric Fafchamps 
-            <pgcrism@attglobal.net >, <eric.fafchamps@win.be>
+            <pgcrism@attglobal.net >, <efaf@tiscalinet.be>
 
 eCurses is an Eiffel binding to *Curses.
 Whit this library it is possible to write nice console applications with
@@ -24,7 +24,7 @@ Please refer to ..ecurses/doc/ecurses.txt
 *** Copyright
 
 Copyright (C) 1999 by Paul G. Crismer <pgcrism@attglobal.net> and Eric
-Fafchamps <eric.fafchamps@win.be>.
+Fafchamps <efaf@tiscalinet.be>.
 
 This document and the eCurses library are licensed under the terms
 of the Eiffel Forum Freeware License, version 1. Please refer to http://www.eiffel-forum.org.
