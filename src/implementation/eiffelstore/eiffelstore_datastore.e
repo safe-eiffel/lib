@@ -1,13 +1,17 @@
 indexing
-	description: "EiffelStore implementation of PO_DATASTORE."
-	author: "Paul G. Crismer"
-	date: "$Date$"
-	revision: "$Revision$"
 
-class
-	EIFFELSTORE_DATASTORE
+	description:
+
+		"EiffelStore implementation of PO_DATASTORE."
+
+	copyright: "Copyright (c) 2004, Paul G. Crismer and others"
+	license: "Eiffel Forum License v2 (see forum.txt)"
+	date: "$Date$"
+
+class EIFFELSTORE_DATASTORE
 
 inherit
+
 	PO_DATASTORE
 
 	HANDLE_USE
@@ -16,6 +20,7 @@ inherit
 		end
 		
 creation
+
 	make
 	
 feature {NONE} -- Initialization
@@ -142,4 +147,4 @@ feature {NONE} -- Implementation
 	adapters_impl : DS_LINKED_LIST[PO_ADAPTER[PO_PERSISTENT]]
 	
 
-end -- class EIFFELSTORE_DATASTORE
+end

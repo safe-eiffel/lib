@@ -1,16 +1,21 @@
 indexing
-	description: "PIDs of BOOKs"
-	author: "Paul G. Crismer"
-	date: "$Date$"
-	revision: "$Revision$"
 
-class
-	BOOK_PID
+	description:
+
+		"PIDs of BOOKs"
+
+	copyright: "Copyright (c) 2004, Paul G. Crismer and others"
+	license: "Eiffel Forum License v2 (see forum.txt)"
+	date: "$Date$"
+
+class BOOK_PID
 	
 inherit
+
 	PO_PID
 
 creation
+
 	--{BOOK_ADAPTER} 
 	make_from_isbn
 	
@@ -19,7 +24,7 @@ feature -- Initialization
 	make_from_isbn (an_isbn : STRING) is
 			-- make from `an_isbn'
 		require
-			an_isbn_exists: an_isbn /= Void
+			an_isbn_not_void:  an_isbn /= Void
 		do
 			isbn := an_isbn
 		ensure
@@ -46,6 +51,7 @@ feature -- Basic operations
 feature {NONE} -- Implementation
 
 invariant
-	isbn_exists: isbn /= Void
+
+	isbn_not_void:  isbn /= Void
 	
-end -- class BOOK_PID
+end

@@ -21,4 +21,4 @@ feature  -- Access
 
 	id: ECLI_INTEGER
 
-end -- class BORROWER_ID
+end

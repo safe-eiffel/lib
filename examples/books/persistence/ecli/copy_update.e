@@ -52,4 +52,4 @@ where isbn=?isbn and serial_number =?serial_number
 	
 ]"
 
-end -- class COPY_UPDATE
+end

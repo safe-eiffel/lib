@@ -1,13 +1,17 @@
 indexing
-	description: "Adapters for BORROWER objects."
-	author: "Paul G. Crismer"
-	date: "$Date$"
-	revision: "$Revision$"
 
-deferred class
-	BORROWER_ADAPTER
+	description:
+
+		"Adapters for BORROWER objects."
+
+	copyright: "Copyright (c) 2004, Paul G. Crismer and others"
+	license: "Eiffel Forum License v2 (see forum.txt)"
+	date: "$Date$"
+
+deferred class BORROWER_ADAPTER
 
 inherit
+
 	PO_ADAPTER[BORROWER]
 	
 feature -- Access
@@ -19,7 +23,7 @@ feature -- Basic operations
 	read_by_name_pattern (name_pattern : STRING) is
 			-- read by name like `name_pattern'
 		require
-			name_pattern_exists: name_pattern /= Void
+			name_pattern_not_void:  name_pattern /= Void
 		deferred
 		end
 
@@ -41,4 +45,4 @@ feature {PO_ADAPTER} -- Factory
 			last_pid_created: last_pid /= Void
 		end
 		
-end -- class BORROWER_ADAPTER
+end

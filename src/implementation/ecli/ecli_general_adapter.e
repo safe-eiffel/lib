@@ -1,34 +1,31 @@
 indexing
-	description: "[
-		
-		Ecli partial implementation of PO_ADAPTERs.
-		
-		If `cache_on_read' is true, the adapter caches all read objects until `clear_cache' is called.
-		When `is_enabled_cache_on_write' is True then written object
-		also are inserted in the cache.
-			
-		
-		]"
-	author: "Eric Fafchamps, Paul G. Crismer"
+
+	description:
+
+		"Ecli partial implementation of PO_ADAPTERs.%
+	%	
+	%	If `cache_on_read' is true, the adapter caches all read objects until `clear_cache' is called.%
+	%	When `is_enabled_cache_on_write' is True then written object%
+	%	also are inserted in the cache."
 	
-	usage: "[
-		
-		* Inherit from it. 
-		* Implement deferred features. 
-		* Redefine `last_pid'.
-		
-		Implement any other access (query) on objects.
-		Features `read_one' and `read_collection' can be used as facility routines for
-		exact-match or multiple-match queries, respectively.
-		
-		]"
+	authors: "Eric Fafchamps, Paul G. Crismer"
+	
+	usage: "%N%
+	%	* Inherit from it.%N% 
+	%	* Implement deferred features. %N%
+	%	* Redefine `last_pid'.%N%
+	%	%N%
+	%	Implement any other access (query) on objects.%N%
+	%	Features `read_one' and `read_object_collection' can be used as facility routines for%N%
+	%	exact-match or multiple-match queries, respectively."
+
 	date: "$Date$"
 	revision: "$Revision$"
 
-deferred class
-	ECLI_GENERAL_ADAPTER[G->PO_PERSISTENT]
+deferred class ECLI_GENERAL_ADAPTER[G->PO_PERSISTENT]
 
 inherit
+
 	ECLI_ADAPTER_READ_COLLECTION_SKELETON[G]
 		undefine
 			can_refresh, refresh,
@@ -133,4 +130,4 @@ feature {NONE} -- Implementation
 		deferred
 		end
 
-end -- class ECLI_GENERAL_ADAPTER
+end

@@ -1,5 +1,8 @@
 indexing
-	description: "Basic implementation of PO_CURSOR[G] using a DS_LINKED_LIST[PO_REFERENCE[G]]."
+
+	description:
+
+		"Basic implementation of PO_CURSOR[G] using a DS_LINKED_LIST[PO_REFERENCE[G]]."
 	author: "Paul G. Crismer"
 	
 	date: "$Date$"

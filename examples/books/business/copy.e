@@ -1,13 +1,17 @@
 indexing
-	description: "COPY of a BOOK"
-	author: "Paul G. Crismer"
-	date: "$Date$"
-	revision: "$Revision$"
 
-class
-	COPY
+	description:
+
+		"COPY of a BOOK"
+
+	copyright: "Copyright (c) 2004, Paul G. Crismer and others"
+	license: "Eiffel Forum License v2 (see forum.txt)"
+	date: "$Date$"
+
+class COPY
 
 inherit
+
 	PO_PERSISTENT
 		redefine
 			persistent_class_name
@@ -18,6 +22,7 @@ creation
 	make
 
 creation
+
 	{COPY_ADAPTER} make_lazy
 	
 feature {NONE} -- Initialization
@@ -25,7 +30,7 @@ feature {NONE} -- Initialization
 	make (a_book : BOOK; a_number : INTEGER) is
 			-- create copy `a_number' for `a_book'
 		require
-			a_book_exists: a_book /= Void
+			a_book_not_void:  a_book /= Void
 			a_number_positive: a_number >= 0
 		do
 			create book_reference.set_item (a_book)
@@ -39,7 +44,7 @@ feature {NONE} -- Initialization
 	make_lazy (a_reference : PO_REFERENCE[BOOK]; a_number : INTEGER) is
 			-- create copy `a_number' for a book passed by `a_reference'
 		require
-			a_reference_exists: a_reference /= Void and then not a_reference.is_void
+			a_reference_not_void:  a_reference /= Void and then not a_reference.is_void
 			a_number_positive: a_number >= 0
 		do
 			create borrower_reference.make_void
@@ -132,4 +137,4 @@ invariant
 	book_exists : book /= Void
 	number_positive: number >= 0
 
-end -- class COPY
+end

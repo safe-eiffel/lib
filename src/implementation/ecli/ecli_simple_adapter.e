@@ -1,36 +1,34 @@
  indexing
-	description: "[
-		
-		Ecli partial implementation of PO_ADAPTERs.
-		
-		Caches all read objects until `clear_cache' is called.
-		When `is_enabled_cache_on_write' is True then written object
-		also are inserted in the cache.
-			
-		
-		]"
+
+	description:
+
+		"Ecli partial implementation of PO_ADAPTERs.%
+	%	
+	%	Caches all read objects until `clear_cache' is called.%
+	%	When `is_enabled_cache_on_write' is True then written object%
+	%	also are inserted in the cache.%
+	%"
+	
 	author: "Eric Fafchamps"
 	
-	usage: "[
+	usage: "%N%
+	%	* Inherit from it.%N% 
+	%	* Implement deferred features. %N%
+	%	* Redefine `last_pid'.%N%
+	%	%N%
+	%	Implement any other access (query) on objects.%N%
+	%	Features `read_one' and `read_object_collection' can be used as facility routines for%N%
+	%	exact-match or multiple-match queries, respectively."
 		
-		* Inherit from it. 
-		* Implement deferred features. 
-		* Redefine `last_pid'.
-		
-		Implement any other access (query) on objects.
-		Features `read_one' and `read_object_collection' can be used as facility routines for
-		exact-match or multiple-match queries, respectively.
-		
-		]"
 	date: "$Date$"
 	revision: "$Revision$"
 
-deferred class
-	ECLI_SIMPLE_ADAPTER[G->PO_PERSISTENT]
+deferred class ECLI_SIMPLE_ADAPTER[G->PO_PERSISTENT]
 
 obsolete "Use ECLI_GENERAL_ADAPTER descendants instead"
 
 inherit
+
 	PO_ADAPTER[G]
 			
 	PO_SHARED_MANAGER
@@ -373,15 +371,16 @@ feature {PO_ADAPTER} -- Implementation
 			-- Create `last_pid' based on the content of the row_cursor
 		require
 			last_pid_void: last_pid = Void
-			row_exists: row_cursor /= Void and then not row_cursor.off
+			row_not_void:  row_cursor /= Void and then not row_cursor.off
 		deferred
 		end
 
 	create_object_from_row_cursor is
 			-- Create object and just ensure invariant
+
 		require
 			last_object_void: last_object = Void
-			row_exists: row_cursor /= Void and then not row_cursor.off
+			row_not_void:  row_cursor /= Void and then not row_cursor.off
 		deferred
 		ensure
 			last_objet_is_persistent: last_object /= Void implies last_object.is_persistent
@@ -535,6 +534,7 @@ feature  {NONE} -- Implementation
 			-- Ecli change object
 		
 invariant
+
 	datastore_not_void: datastore /= Void
 	
-end -- class ECLI_SIMPLE_ADAPTER
+end

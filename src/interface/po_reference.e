@@ -1,18 +1,21 @@
 indexing
-	description: "[
-			Weak references to persistent objects.
-		]"
-	author: "Paul G. Crismer"
-	date: "$Date$"
-	revision: "$Revision$"
 
-class
-	PO_REFERENCE [G -> PO_PERSISTENT]
+	description:
+
+		"Weak references to persistent objects."
+
+	copyright: "Copyright (c) 2004, Paul G. Crismer and others"
+	license: "Eiffel Forum License v2 (see forum.txt)"
+	date: "$Date$"
+
+class PO_REFERENCE [G -> PO_PERSISTENT]
 
 inherit
+
 	PO_SHARED_MANAGER
 	
 creation
+
 	default_create, set_pid_from_adapter, set_item, make_void
 	
 feature -- Access			
@@ -142,4 +145,4 @@ feature {NONE} -- Implementation
 			end
 		end
 	
-end -- class PO_REFERENCE
+end

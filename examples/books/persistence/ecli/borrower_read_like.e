@@ -60,4 +60,4 @@ feature {NONE} -- Implementation
 			set_results (buffers)
 		end
 
-end -- class BORROWER_READ_LIKE
+end

@@ -36,4 +36,4 @@ feature  -- Access
 
 	serial_number: ECLI_INTEGER
 
-end -- class COPY_WRITE_PARAMETERS
+end

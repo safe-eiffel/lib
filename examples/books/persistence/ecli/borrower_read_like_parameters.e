@@ -21,4 +21,4 @@ feature  -- Access
 
 	name: ECLI_VARCHAR
 
-end -- class BORROWER_READ_LIKE_PARAMETERS
+end

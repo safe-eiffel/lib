@@ -1,14 +1,17 @@
 indexing
-	description: "Access modules to persistent state of BOOK instances  (EiffelStore)."
-	author: "Paul G. Crismer"
-	date: "$Date$"
-	revision: "$Revision$"
 
-class
-	BOOK_ADAPTER_EIFFELSTORE
+	description:
+
+		"Access modules to persistent state of BOOK instances  (EiffelStore)."
+
+	copyright: "Copyright (c) 2004, Paul G. Crismer and others"
+	license: "Eiffel Forum License v2 (see forum.txt)"
+	date: "$Date$"
+
+class BOOK_ADAPTER_EIFFELSTORE
 
 inherit
-	
+
 	BOOK_ADAPTER
 	
 	EIFFELSTORE_SIMPLE_ADAPTER[BOOK]
@@ -144,7 +147,8 @@ feature {NONE} -- Implementation
 		end
 		
 invariant
-	change_exists: change /= Void
-	selection_exists: selection /= Void
+
+	change_not_void:  change /= Void
+	selection_not_void:  selection /= Void
 	
-end -- class BOOK_ADAPTER
+end

@@ -1,13 +1,17 @@
 indexing
-	description: "Common features of adapters using ECLI"
-	author: "Paul G. Crismer"
-	date: "$Date$"
-	revision: "$Revision$"
 
-deferred class
-	ECLI_ADAPTER_COMMON_SKELETON[G->PO_PERSISTENT]
+	description:
+
+		"Common features of adapters using ECLI"
+
+	copyright: "Copyright (c) 2004, Paul G. Crismer and others"
+	license: "Eiffel Forum License v2 (see forum.txt)"
+	date: "$Date$"
+
+deferred class ECLI_ADAPTER_COMMON_SKELETON[G->PO_PERSISTENT]
 
 inherit
+
 	PO_ADAPTER[G]
 		undefine
 			on_adapter_connected, on_adapter_disconnect
@@ -164,4 +168,4 @@ feature {PO_ADAPTER} -- Implementation
 			a_cursor_after: a_cursor.after
 		end
 	
-end -- class ECLI_ADAPTER_COMMON_SKELETON
+end

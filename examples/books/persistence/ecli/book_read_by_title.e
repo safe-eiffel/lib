@@ -62,4 +62,4 @@ feature {NONE} -- Implementation
 			set_results (buffers)
 		end
 
-end -- class BOOK_READ_BY_TITLE
+end

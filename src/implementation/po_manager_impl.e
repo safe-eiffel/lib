@@ -1,22 +1,28 @@
 indexing
-	description: "Objects that implement persistence manager."
-	author: "Paul G. Crismer"
-	date: "$Date$"
-	revision: "$Revision$"
 
-class
-	PO_MANAGER_IMPL
+	description:
+
+		"Objects that implement persistence manager."
+
+	copyright: "Copyright (c) 2004, Paul G. Crismer and others"
+	license: "Eiffel Forum License v2 (see forum.txt)"
+	date: "$Date$"
+
+class PO_MANAGER_IMPL
 
 inherit
+
 	PO_MANAGER
 	
 creation
+
 	make
 	
 feature {NONE} -- Initialization
 
 	make is
 			-- creation
+
 		do
 			create adapters_table.make (10)
 		end
@@ -110,6 +116,7 @@ feature {NONE} -- Implementation
 	adapters_table : DS_HASH_TABLE [PO_ADAPTER[PO_PERSISTENT], STRING]
 	
 invariant
+
 	invariant_clause: True -- Your invariant here
 
-end -- class PO_MANAGER_IMPL
+end

@@ -1,13 +1,17 @@
 indexing
-	description: "Book adapter implemented using ECLI"
-	author: "Paul G. Crismer"
-	date: "$Date$"
-	revision: "$Revision$"
 
-class
-	BOOK_ADAPTER_ECLI
+	description:
+
+		"Book adapter implemented using ECLI"
+
+	copyright: "Copyright (c) 2004, Paul G. Crismer and others"
+	license: "Eiffel Forum License v2 (see forum.txt)"
+	date: "$Date$"
+
+class BOOK_ADAPTER_ECLI
 
 inherit
+
 	BOOK_ADAPTER
 		redefine
 			on_adapter_connected, on_adapter_disconnect
@@ -50,6 +54,7 @@ inherit
 		end
 
 creation
+
 	make
 	
 feature {PO_ADAPTER}-- Access
@@ -83,7 +88,7 @@ feature -- Basic operations
 	read_by_title (title : STRING) is
 			-- read by `title'
 		require else
-			title_exists: title /= Void
+			title_not_void:  title /= Void
 		local
 			cursor : BOOK_READ_BY_TITLE
 		do
@@ -92,6 +97,7 @@ feature -- Basic operations
 			do_book_read_by_title (cursor, title)
 			cursor.close
 			last_object := Void -- ensure invariant
+
 		end
 		
 	read_by_author (author_name : STRING) is
@@ -191,4 +197,4 @@ feature {NONE} -- Implementation
 			Result.isbn.set_item (a_pid.isbn)
 		end
 
-end -- class BOOK_ADAPTER_ECLI
+end

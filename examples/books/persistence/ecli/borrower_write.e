@@ -47,4 +47,4 @@ insert into borrower values (?id, ?name, ?address)
 	
 ]"
 
-end -- class BORROWER_WRITE
+end

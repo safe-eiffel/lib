@@ -1,13 +1,17 @@
 indexing
-	description: "Objects that are brokers for persistence adapters."
-	author: "Paul G. Crismer"
-	date: "$Date$"
-	revision: "$Revision$"
 
-deferred class
-	PO_MANAGER
+	description:
+
+		"Objects that are brokers for persistence adapters."
+
+	copyright: "Copyright (c) 2004, Paul G. Crismer and others"
+	license: "Eiffel Forum License v2 (see forum.txt)"
+	date: "$Date$"
+
+deferred class PO_MANAGER
 
 inherit
+
 	PO_STATUS_USE
 	PO_STATUS_MANAGEMENT
 
@@ -73,4 +77,4 @@ invariant
 
 	adapters_collection_not_void: adapters /= Void
 	
-end -- class PO_MANAGER
+end

@@ -45,4 +45,4 @@ delete from borrower where id = ?id
 	
 ]"
 
-end -- class BORROWER_DELETE
+end

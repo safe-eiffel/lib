@@ -1,11 +1,14 @@
 indexing
-	description: "Adapters that interface COPY object with a corresponding datastore"
-	author: "Paul G. Crismer"
-	date: "$Date$"
-	revision: "$Revision$"
 
-class
-	COPY_ADAPTER_ECLI
+	description:
+
+		"Adapters that interface COPY object with a corresponding datastore"
+
+	copyright: "Copyright (c) 2004, Paul G. Crismer and others"
+	license: "Eiffel Forum License v2 (see forum.txt)"
+	date: "$Date$"
+
+class COPY_ADAPTER_ECLI
 
 inherit
 
@@ -49,6 +52,7 @@ inherit
 		end
 
 creation
+
 	make
 	
 feature {NONE} -- Access
@@ -181,7 +185,7 @@ feature {NONE} -- Implementation
 				book_adapter ?= persistence_manager.last_adapter
 			end
 			check
-				book_adapter_exists: book_adapter /= Void
+				book_adapter_not_void:  book_adapter /= Void
 			end
 			book_adapter.create_pid_for_isbn (a_cursor.item.isbn.as_string)
 			create book_reference.set_pid_from_adapter (book_adapter)
@@ -249,4 +253,4 @@ feature {NONE} -- Implementation
 			Result.serial_number.set_item (a_pid.serial)
 		end
 		
-end -- class COPY_ADAPTER_ECLI
+end

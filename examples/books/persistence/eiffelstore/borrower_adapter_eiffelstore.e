@@ -1,13 +1,17 @@
 indexing
-	description: "Adapters for BORROWER objects  (EiffelStore)."
-	author: "Paul G. Crismer"
-	date: "$Date$"
-	revision: "$Revision$"
 
-class
-	BORROWER_ADAPTER_EIFFELSTORE
+	description:
+
+		"Adapters for BORROWER objects  (EiffelStore)."
+
+	copyright: "Copyright (c) 2004, Paul G. Crismer and others"
+	license: "Eiffel Forum License v2 (see forum.txt)"
+	date: "$Date$"
+
+class BORROWER_ADAPTER_EIFFELSTORE
 
 inherit
+
 	BORROWER_ADAPTER
 	
 	EIFFELSTORE_SIMPLE_ADAPTER[BORROWER]
@@ -154,4 +158,4 @@ feature {NONE} -- Implementation
 			create_pid_from_id (row.id)
 		end
 
-end -- class BORROWER_ADAPTER
+end

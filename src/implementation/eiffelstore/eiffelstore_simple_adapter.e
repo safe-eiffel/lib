@@ -1,34 +1,31 @@
 indexing
-	description: "[
+
+	description:
+
+		"EiffelStore partial implementation of PO_ADAPTERs.%N%
+	 % %N%
+	 % Caches all read objects until `clear_cache' is called.%N%
+	 % When `is_enabled_cache_on_write' is True then written object%N%
+	 % also are inserted in the cache."
 		
-		EiffelStore partial implementation of PO_ADAPTERs.
-		
-		Caches all read objects until `clear_cache' is called.
-		When `is_enabled_cache_on_write' is True then written object
-		also are inserted in the cache.
-			
-		
-		]"
 	author: "Paul G. Crismer"
 	
-	usage: "[
-		
-		* Inherit from it. 
-		* Implement deferred features. 
-		* Redefine `is_pid_valid', `pid_tuple'.
-		
-		Implement any other access (query) on objects.
-		Features `read_one' and `read_collection' can be used as facility routines for
-		exact-match or multiple-match queries, respectively.
-		
-		]"
+	usage: "%N%
+	%	* Inherit from it.%N% 
+	%	* Implement deferred features. %N%
+	%	* Redefine `last_pid'.%N%
+	%	%N%
+	%	Implement any other access (query) on objects.%N%
+	%	Features `read_one' and `read_object_collection' can be used as facility routines for%N%
+	%	exact-match or multiple-match queries, respectively."
+
 	date: "$Date$"
 	revision: "$Revision$"
 
-deferred class
-	EIFFELSTORE_SIMPLE_ADAPTER[G->PO_PERSISTENT]
+deferred class EIFFELSTORE_SIMPLE_ADAPTER[G->PO_PERSISTENT]
 
 inherit
+
 	PO_ADAPTER[G]
 		
 	PO_SHARED_MANAGER
@@ -430,6 +427,7 @@ feature {PO_ADAPTER} -- Basic operations
 
 	create_object_from_row is
 			-- Create object and just ensure invariant
+
 		require
 			last_object_void: last_object = Void
 			row_not_void: row /= Void
@@ -440,6 +438,7 @@ feature {PO_ADAPTER} -- Basic operations
 
 	create_pid_from_pid_row is
 			-- Create `last_object' and just ensure invariant
+
 		require
 			last_pid_void: last_pid = Void
 			row_not_void: row /= Void
@@ -696,4 +695,4 @@ invariant
 	selection_not_void: selection /= Void
 	datastore_not_void: datastore /= Void
 
-end -- class EIFFELSTORE_SIMPLE_ADAPTER
+end

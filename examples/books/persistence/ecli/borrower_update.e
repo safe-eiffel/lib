@@ -47,4 +47,4 @@ update borrower set name=?name, address =?address where id=?id
 	
 ]"
 
-end -- class BORROWER_UPDATE
+end

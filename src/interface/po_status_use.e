@@ -1,11 +1,14 @@
 indexing
-	description: "Objects that use a Persistence Operations Status"
-	author: "Paul G. Crismer"
-	date: "$Date$"
-	revision: "$Revision$"
 
-deferred class
-	PO_STATUS_USE
+	description:
+
+		"Objects that use a Persistence Operations Status"
+
+	copyright: "Copyright (c) 2004, Paul G. Crismer and others"
+	license: "Eiffel Forum License v2 (see forum.txt)"
+	date: "$Date$"
+
+deferred class PO_STATUS_USE
 
 feature -- Access
 
@@ -23,6 +26,7 @@ feature {NONE} -- Implementation
 	impl_status : like status
 	
 invariant
+
 	status_not_void: status /= Void
 
-end -- class PO_STATUS_USE
+end

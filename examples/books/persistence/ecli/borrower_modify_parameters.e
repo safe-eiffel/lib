@@ -27,4 +27,4 @@ feature  -- Access
 
 	name: ECLI_VARCHAR
 
-end -- class BORROWER_MODIFY_PARAMETERS
+end

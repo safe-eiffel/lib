@@ -14,9 +14,11 @@ inherit
 		end
 	
 creation
+
 	make
 	
 creation
+
 	{STRING} make_string
 	
 feature -- Initialization
@@ -31,6 +33,7 @@ feature -- Constants
 	name_constant : STRING is "BORROWER"
 	
 invariant
+
 	book_name: string.is_equal (name_constant)
 	
-end -- class BORROWER_PERSISTENT_CLASS_NAME
+end

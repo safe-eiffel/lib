@@ -1,15 +1,17 @@
 indexing
-	description	: "System's root class"
-	note		: "Initial version automatically generated"
 
-class
-	BOOKS_APPLICATION
+	description	: "Books sample application for EPOM"
+	
+	copyright: "(c) 2004, Paul G. Crismer and others"
+	
+class BOOKS_APPLICATION
 
 inherit
-	
+
 	BOOKS_DATASTORE_ACCESS
 	
 creation
+
 	make
 
 feature -- Initialization
@@ -18,10 +20,12 @@ feature -- Initialization
 			-- Creation procedure
 		do
 			initialize_persistence_framework
-			populate
-			borrow_copy_to_borrower ("1", 1, 1)
-			show
-			store.disconnect
+			if is_persistence_framework_initialized then
+				populate
+				borrow_copy_to_borrower ("1", 1, 1)
+				show
+				store.disconnect				
+			end
 		end
 
 feature -- Access
@@ -133,6 +137,8 @@ feature -- Implementation
 						from
 							the_cursor := adapter.last_cursor
 							the_cursor.start
+							print ("BOOKS%N")
+							print ("-----%N")
 						until
 							the_cursor.off
 						loop
@@ -140,6 +146,7 @@ feature -- Implementation
 							print ("Isbn: "+the_book.isbn + " title:'"+the_book.title+"'%N")
 							the_cursor.forth
 						end
+						print ("%N%N")
 					end
 				end
 			end
@@ -152,12 +159,13 @@ feature -- Implementation
 			the_cursor : PO_CURSOR[COPY]
 			the_copy : COPY
 		do
-			print ("Borrowed books%N")
 			copy_adapter.read_borrowed
 			if copy_adapter.status.is_ok then
 				from
 					the_cursor := copy_adapter.last_cursor
 					the_cursor.start
+					print ("Borrowed books%N")
+					print ("--------------%N")
 				until
 					the_cursor.off
 				loop
@@ -190,7 +198,7 @@ feature -- Implementation
 		end
 
 	write_copy (book : BOOK; a_number: INTEGER; a_store: INTEGER; a_shelf: INTEGER; a_row: INTEGER) is
-			--
+			-- write new copy of `book', having attributes `a_number', `a_store', `a_shelf', `a_row'
 		local
 			book_copy : COPY
 		do
@@ -210,5 +218,4 @@ feature -- Implementation
 				end
 			end
 		end		
-
 end

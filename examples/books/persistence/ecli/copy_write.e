@@ -50,4 +50,4 @@ insert into copy values (?isbn, ?serial_number, ?loc_store, ?loc_shelf, ?loc_row
 	
 ]"
 
-end -- class COPY_WRITE
+end

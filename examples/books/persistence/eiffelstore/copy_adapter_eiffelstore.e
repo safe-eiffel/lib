@@ -1,14 +1,17 @@
 indexing
-	description: "Adapters for COPY objects (EiffelStore)."
-	author: "Paul G. Crismer"
-	date: "$Date$"
-	revision: "$Revision$"
 
-class
-	COPY_ADAPTER_EIFFELSTORE
+	description:
+
+		"Adapters for COPY objects (EiffelStore)."
+
+	copyright: "Copyright (c) 2004, Paul G. Crismer and others"
+	license: "Eiffel Forum License v2 (see forum.txt)"
+	date: "$Date$"
+
+class COPY_ADAPTER_EIFFELSTORE
 
 inherit
-	
+
 	COPY_ADAPTER
 	
 	EIFFELSTORE_SIMPLE_ADAPTER[COPY]
@@ -183,4 +186,4 @@ feature {NONE} -- Implementation
 			create last_pid.make (isbn, number)
 		end
 
-end -- class COPY_ADAPTER
+end

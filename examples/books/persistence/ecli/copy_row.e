@@ -36,4 +36,4 @@ feature  -- Access
 
 	borrower: ECLI_INTEGER
 
-end -- class COPY_ROW
+end

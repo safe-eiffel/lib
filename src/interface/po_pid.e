@@ -1,22 +1,22 @@
 indexing
-	description: "[
-			Persistent Identifiers.  
-			Identify the persistent state of persistent objects.  
-			PID instances are opaque to client applications.
-		]"
-	usage: "[
-		
-		* Inherit from it.
-		* Implement deferred features. 		
-		]"		
-	author: ""
-	date: "$Date$"
-	revision: "$Revision$"
 
-deferred class
-	PO_PID
+	description:
+
+		"Persistent Identifiers. %N%
+	 %Identify the persistent state of persistent objects.  %N%
+	 %PID instances are opaque to client applications."
+
+	usage: "* Inherit from it.%N%
+		   %* Implement deferred features."		
+
+	copyright: "Copyright (c) 2004, Paul G. Crismer and others"
+	license: "Eiffel Forum License v2 (see forum.txt)"
+	date: "$Date$"
+
+deferred class PO_PID
 
 inherit
+
 	ANY
 		redefine
 			is_equal
@@ -61,6 +61,7 @@ feature -- Inapplicable
 
 
 invariant
+
 	class_name_is_defined: class_name /= Void and then not class_name.is_empty
 	
-end -- class PO_PID
+end

@@ -1,11 +1,14 @@
 indexing
-	description: "Objects that give linear access to a collection of persistent objects."
-	author: "Paul G. Crismer"
-	date: "$Date$"
-	revision: "$Revision$"
 
-deferred class
-	PO_CURSOR [G -> PO_PERSISTENT]
+	description:
+
+		"Objects that give linear access to a collection of persistent objects."
+
+	copyright: "Copyright (c) 2004, Paul G. Crismer and others"
+	license: "Eiffel Forum License v2 (see forum.txt)"
+	date: "$Date$"
+
+deferred class PO_CURSOR [G -> PO_PERSISTENT]
 
 feature -- Access
 

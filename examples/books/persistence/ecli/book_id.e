@@ -21,4 +21,4 @@ feature  -- Access
 
 	isbn: ECLI_VARCHAR
 
-end -- class BOOK_ID
+end

@@ -46,4 +46,4 @@ delete from copy where isbn=?isbn and serial_number=?serial_number
 	
 ]"
 
-end -- class COPY_DELETE
+end

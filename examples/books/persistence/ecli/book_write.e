@@ -44,4 +44,4 @@ feature  -- Constants
 
 	definition: STRING is "insert into book values (?isbn, ?title, ?author)	"
 
-end -- class BOOK_WRITE
+end

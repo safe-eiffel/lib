@@ -1,13 +1,17 @@
 indexing
-	description: "Objects that can persist on some datastore."
-	author: "Paul G. Crismer"
-	date: "$Date$"
-	revision: "$Revision$"
 
-class
-	PO_PERSISTENT
+	description:
+
+		"Objects that can persist on some datastore."
+
+	copyright: "Copyright (c) 2004, Paul G. Crismer and others"
+	license: "Eiffel Forum License v2 (see forum.txt)"
+	date: "$Date$"
+
+class PO_PERSISTENT
 
 inherit
+
 	PO_SHARED_MANAGER
 
 	PO_STATUS_USE
@@ -262,9 +266,10 @@ feature {NONE} -- Implementation
 	deleted_impl : BOOLEAN
 	
 invariant
+
 	persistent_has_a_pid: is_persistent implies pid /= Void
 	persistent_class_name_not_void: persistent_class_name /= Void and not persistent_class_name.is_empty
 	volatile_and_persistent_state_are_exclusive: is_volatile xor is_persistent
 	deleted_implies_volatile: is_deleted implies is_volatile
 	
-end -- class PO_PERSISTENT
+end

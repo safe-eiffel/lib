@@ -27,4 +27,4 @@ feature  -- Access
 
 	address: ECLI_VARCHAR
 
-end -- class BORROWER_ROW
+end

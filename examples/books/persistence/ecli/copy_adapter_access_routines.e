@@ -1,6 +1,8 @@
 indexing
 
-	description: "generated access routines"
+	description:
+
+		"generated access routines"
 	usage: "mix-in"
 
 deferred class COPY_ADAPTER_ACCESS_ROUTINES
@@ -40,7 +42,7 @@ feature {NONE} -- Implementation
 	do_copy_borrowed (cursor: COPY_BORROWED) is
 			-- helper implementation of access `COPY_BORROWED'
 		require
-			cursor_exists: cursor /= Void
+			cursor_not_void:  cursor /= Void
 		do
 			from
 				cursor.start
@@ -60,11 +62,11 @@ feature {NONE} -- Implementation
 
 	extend_cursor_from_copy_id (row: COPY_ID) is
 		require
-			row_exists: row /= Void
-			last_cursor_exists: last_cursor /= Void
+			row_not_void:  row /= Void
+			last_cursor_not_void:  last_cursor /= Void
 		deferred
 		ensure
 			last_cursor_extended: not is_error implies (last_cursor.count = old (last_cursor.count) + 1)
 		end
 
-end -- class COPY_ADAPTER_ACCESS_ROUTINES
+end

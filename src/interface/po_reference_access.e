@@ -1,10 +1,13 @@
 indexing
-	description: "Objects that have access to PO_REFERENCE element change"
-	author: "Paul G. Crismer"
+
+	description:
+
+		"Objects that have access to PO_REFERENCE element change"
+
+	copyright: "Copyright (c) 2004, Paul G. Crismer and others"
+	license: "Eiffel Forum License v2 (see forum.txt)"
 	date: "$Date$"
-	revision: "$Revision$"
 
-class
-	PO_REFERENCE_ACCESS
+class PO_REFERENCE_ACCESS
 
-end -- class PO_REFERENCE_ACCESS
+end

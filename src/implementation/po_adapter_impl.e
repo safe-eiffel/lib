@@ -1,13 +1,17 @@
 indexing
-	description: "Objects that provide an EiffelBase implementation for PO_ADAPTERs"
-	author: "Paul G. Crismer"
-	date: "$Date$"
-	revision: "$Revision$"
 
-deferred class
-	PO_ADAPTER_IMPL[G->PO_PERSISTENT]
+	description:
+
+		"Objects that provide an EiffelBase implementation for PO_ADAPTERs"
+
+	copyright: "Copyright (c) 2004, Paul G. Crismer and others"
+	license: "Eiffel Forum License v2 (see forum.txt)"
+	date: "$Date$"
+
+deferred class PO_ADAPTER_IMPL[G->PO_PERSISTENT]
 
 inherit
+
 	PO_ADAPTER[PO_PERSISTENT]
 
 feature -- Access
@@ -48,6 +52,7 @@ feature -- Basic operations
 	write (object: like last_object) is do  end
 	
 invariant
+
 	invariant_clause: True -- Your invariant here
 
-end -- class PO_ADAPTER_IMPL
+end

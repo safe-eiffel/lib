@@ -1,16 +1,21 @@
 indexing
-	description: "ECLI implementation of PO_DATASTORE."
-	author: "Eric Fafchamps"
-	date: "$Date$"
-	revision: "$Revision$"
 
-class
-	ECLI_DATASTORE
+	description:
+
+		"ECLI implementation of PO_DATASTORE."
+
+	copyright: "Copyright (c) 2004, Paul G. Crismer and others"
+	license: "Eiffel Forum License v2 (see forum.txt)"
+	date: "$Date$"
+
+class ECLI_DATASTORE
 
 inherit
+
 	PO_DATASTORE
 		
 creation
+
 	make
 	
 feature {NONE} -- Initialisation
@@ -159,6 +164,7 @@ feature {NONE} -- Implementation
 	adapters_impl : DS_LINKED_LIST[PO_ADAPTER[PO_PERSISTENT]]
 	
 invariant
+
 	session_not_void: session /= Void
 	
-end -- class ECLI_DATASTORE
+end

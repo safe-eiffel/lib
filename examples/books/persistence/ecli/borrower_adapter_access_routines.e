@@ -1,6 +1,8 @@
 indexing
 
-	description: "generated access routines"
+	description:
+
+		"generated access routines"
 	usage: "mix-in"
 
 deferred class BORROWER_ADAPTER_ACCESS_ROUTINES
@@ -40,7 +42,7 @@ feature {NONE} -- Implementation
 	do_borrower_read_like (cursor: BORROWER_READ_LIKE; name: STRING) is
 			-- helper implementation of access `BORROWER_READ_LIKE'
 		require
-			cursor_exists: cursor /= Void
+			cursor_not_void:  cursor /= Void
 		local
 			parameters: BORROWER_READ_LIKE_PARAMETERS
 		do
@@ -65,11 +67,11 @@ feature {NONE} -- Implementation
 
 	extend_cursor_from_borrower_id (row: BORROWER_ID) is
 		require
-			row_exists: row /= Void
-			last_cursor_exists: last_cursor /= Void
+			row_not_void:  row /= Void
+			last_cursor_not_void:  last_cursor /= Void
 		deferred
 		ensure
 			last_cursor_extended: not is_error implies (last_cursor.count = old (last_cursor.count) + 1)
 		end
 
-end -- class BORROWER_ADAPTER_ACCESS_ROUTINES
+end

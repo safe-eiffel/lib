@@ -1,11 +1,14 @@
 indexing
-	description: "Objects that control datastore access"
-	author: "Paul G. Crismer"
-	date: "$Date$"
-	revision: "$Revision$"
 
-deferred class
-	PO_DATASTORE
+	description:
+
+		"Objects that control datastore access"
+
+	copyright: "Copyright (c) 2004, Paul G. Crismer and others"
+	license: "Eiffel Forum License v2 (see forum.txt)"
+	date: "$Date$"
+
+deferred class PO_DATASTORE
 
 feature -- Access
 
@@ -122,4 +125,4 @@ feature -- Inapplicable
 
 feature {NONE} -- Implementation
 		
-end -- class PO_DATASTORE
+end

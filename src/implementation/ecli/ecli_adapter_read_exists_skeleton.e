@@ -1,13 +1,17 @@
 indexing
-	description: "ECLI adapters that implement 'exists' using 'read' access."
-	author: ""
-	date: "$Date$"
-	revision: "$Revision$"
 
-deferred class
-	ECLI_ADAPTER_READ_EXISTS_SKELETON [G -> PO_PERSISTENT] 
+	description:
+
+		"ECLI adapters that implement 'exists' using 'read' access."
+
+	copyright: "Copyright (c) 2004, Paul G. Crismer and others"
+	license: "Eiffel Forum License v2 (see forum.txt)"
+	date: "$Date$"
+
+deferred class ECLI_ADAPTER_READ_EXISTS_SKELETON [G -> PO_PERSISTENT] 
 
 inherit
+
 	ECLI_ADAPTER_READ_SKELETON [G]
 
 
@@ -35,6 +39,7 @@ feature {NONE} -- Implementation
 		end
 		
 invariant
+
 	invariant_clause: True -- Your invariant here
 
-end -- class ECLI_ADAPTER_READ_EXISTS_SKELETON
+end

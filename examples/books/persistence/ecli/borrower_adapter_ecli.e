@@ -1,13 +1,17 @@
 indexing
-	description: "Persistence adapters for BORROWER objects"
-	author: "Paul G. Crismer"
-	date: "$Date$"
-	revision: "$Revision$"
 
-class
-	BORROWER_ADAPTER_ECLI
+	description:
+
+		"Persistence adapters for BORROWER objects"
+
+	copyright: "Copyright (c) 2004, Paul G. Crismer and others"
+	license: "Eiffel Forum License v2 (see forum.txt)"
+	date: "$Date$"
+
+class BORROWER_ADAPTER_ECLI
 
 inherit
+
 	BORROWER_ADAPTER
 		redefine
 			on_adapter_connected, on_adapter_disconnect
@@ -48,6 +52,7 @@ inherit
 		end
 
 creation
+
 	make
 	
 feature {PO_ADAPTER, PO_CURSOR, PO_REFERENCE, PO_PERSISTENT} -- Access

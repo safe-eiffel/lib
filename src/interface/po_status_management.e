@@ -1,10 +1,13 @@
 indexing
-	description: "Objects that are allowed to manage PO_STATUS objects"
-	author: "Paul G. Crismer"
+
+	description:
+
+		"Objects that are allowed to manage PO_STATUS objects"
+
+	copyright: "Copyright (c) 2004, Paul G. Crismer and others"
+	license: "Eiffel Forum License v2 (see forum.txt)"
 	date: "$Date$"
-	revision: "$Revision$"
 
-class
-	PO_STATUS_MANAGEMENT
+class PO_STATUS_MANAGEMENT
 
-end -- class PO_STATUS_MANAGEMENT
+end

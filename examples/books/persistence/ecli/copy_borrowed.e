@@ -45,4 +45,4 @@ feature {NONE} -- Implementation
 			set_results (buffers)
 		end
 
-end -- class COPY_BORROWED
+end

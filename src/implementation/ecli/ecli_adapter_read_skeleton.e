@@ -1,13 +1,17 @@
 indexing
-	description: "Adapters using ECLI that implement read access"
-	author: "Paul G. Crismer"
-	date: "$Date$"
-	revision: "$Revision$"
 
-deferred class
-	ECLI_ADAPTER_READ_SKELETON[G->PO_PERSISTENT]
+	description:
+
+		"Adapters using ECLI that implement read access"
+
+	copyright: "Copyright (c) 2004, Paul G. Crismer and others"
+	license: "Eiffel Forum License v2 (see forum.txt)"
+	date: "$Date$"
+
+deferred class ECLI_ADAPTER_READ_SKELETON[G->PO_PERSISTENT]
 
 inherit
+
 	ECLI_ADAPTER_COMMON_SKELETON[G]
 		
 feature -- Status report
@@ -57,6 +61,7 @@ feature {NONE} -- Factory
 
 	create_object_from_read_cursor  (a_cursor : like read_cursor; a_pid : like last_pid) is
 			-- Create object and just ensure invariant
+
 		require
 			last_object_void: last_object = Void
 			a_cursor_not_void: a_cursor /= Void
@@ -113,4 +118,4 @@ feature {NONE} -- Implementation
 			end
 		end
 
-end -- class ECLI_ADAPTER_READ_SKELETON
+end

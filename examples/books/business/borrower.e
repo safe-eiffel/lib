@@ -1,13 +1,17 @@
 indexing
-	description: "BORROWERs"
-	author: "Paul G. Crismer"
-	date: "$Date$"
-	revision: "$Revision$"
 
-class
-	BORROWER
+	description:
+
+		"BORROWERs"
+
+	copyright: "Copyright (c) 2004, Paul G. Crismer and others"
+	license: "Eiffel Forum License v2 (see forum.txt)"
+	date: "$Date$"
+
+class BORROWER
 
 inherit
+
 	PO_PERSISTENT
 		redefine
 			persistent_class_name
@@ -57,7 +61,7 @@ feature -- Access
 invariant
 
 	id_gt0: id > 0
-	name_exists: name /= Void
-	address_exists: address /= Void
+	name_not_void:  name /= Void
+	address_not_void:  address /= Void
 
 end

@@ -1,13 +1,17 @@
 indexing
-	description: "Adapters for COPY objects."
-	author: "Paul G. Crismer"
-	date: "$Date$"
-	revision: "$Revision$"
 
-deferred class
-	COPY_ADAPTER
+	description:
+
+		"Adapters for COPY objects."
+
+	copyright: "Copyright (c) 2004, Paul G. Crismer and others"
+	license: "Eiffel Forum License v2 (see forum.txt)"
+	date: "$Date$"
+
+deferred class COPY_ADAPTER
 
 inherit
+
 	PO_ADAPTER[COPY]
 
 feature -- Access
@@ -19,7 +23,7 @@ feature -- Basic operations
 	read_from_isbn_and_number (isbn : STRING; number : INTEGER) is
 			--  read from  `isbn', `serial_number'
 		require
-			isbn_exists: isbn /= Void
+			isbn_not_void:  isbn /= Void
 			valid_number: number > 0
 		deferred
 		end
@@ -27,7 +31,7 @@ feature -- Basic operations
 	read_from_isbn (isbn : STRING) is
 			-- read copies identified by `isbn'
 		require
-			isbn_exists: isbn /= Void
+			isbn_not_void:  isbn /= Void
 		deferred
 		end
 		
@@ -36,4 +40,4 @@ feature -- Basic operations
 		deferred
 		end
 				
-end -- class COPY_ADAPTER
+end

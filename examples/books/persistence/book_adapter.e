@@ -1,13 +1,17 @@
 indexing
-	description: "Access modules to persistent state of BOOK instances."
-	author: "Paul G. Crismer"
-	date: "$Date$"
-	revision: "$Revision$"
 
-deferred class
-	BOOK_ADAPTER
+	description:
+
+		"Access modules to persistent state of BOOK instances."
+
+	copyright: "Copyright (c) 2004, Paul G. Crismer and others"
+	license: "Eiffel Forum License v2 (see forum.txt)"
+	date: "$Date$"
+
+deferred class BOOK_ADAPTER
 
 inherit
+
 	PO_ADAPTER[BOOK]
 		
 feature -- Access
@@ -33,7 +37,7 @@ feature -- Basic operations
 	read_by_author (author_name : STRING) is
 			-- read books by `author_name'
 		require
-			author_name_exists: author_name /= Void
+			author_name_not_void:  author_name /= Void
 		deferred
 		end
 
@@ -41,10 +45,10 @@ feature {PO_ADAPTER} -- Factory
 
 	create_pid_for_isbn (an_isbn : STRING) is
 		require
-			an_isbn_exists: an_isbn /= Void
+			an_isbn_not_void:  an_isbn /= Void
 		deferred
 		ensure
-			last_pid_exists: last_pid /= Void
+			last_pid_not_void:  last_pid /= Void
 		end
 		
-end -- class BOOK_ADAPTER
+end

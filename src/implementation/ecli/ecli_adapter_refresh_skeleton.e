@@ -1,13 +1,17 @@
 indexing
-	description: "Adapters using ECLI that implement refresh access"
-	author: "Paul G. Crismer"
-	date: "$Date$"
-	revision: "$Revision$"
 
-deferred class
-	ECLI_ADAPTER_REFRESH_SKELETON[G->PO_PERSISTENT]
+	description:
+
+		"Adapters using ECLI that implement refresh access"
+
+	copyright: "Copyright (c) 2004, Paul G. Crismer and others"
+	license: "Eiffel Forum License v2 (see forum.txt)"
+	date: "$Date$"
+
+deferred class ECLI_ADAPTER_REFRESH_SKELETON[G->PO_PERSISTENT]
 
 inherit
+
 	ECLI_ADAPTER_COMMON_SKELETON[G]
 
 feature -- Status report
@@ -66,4 +70,4 @@ feature {PO_ADAPTER} -- Implementation
 		deferred
 		end
 
-end -- class ECLI_ADAPTER_REFRESH_SKELETON
+end

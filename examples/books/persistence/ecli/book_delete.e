@@ -45,4 +45,4 @@ delete from book where isbn = ?isbn
 	
 ]"
 
-end -- class BOOK_DELETE
+end
