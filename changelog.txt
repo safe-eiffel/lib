@@ -1,8 +1,14 @@
-* 2003-03-06 Now compiles and runs with DOTNET
+* Version 1.1 
+	PNG Images
+	Document outline
+	Document information
+	Compressed images + streams
+
 * 2003-02-27 Compiles with SmartEiffel 1.0, VE 4.1, ISE 5.2
 	     Various fixes.
 	     Build automation with GOBO 'geant'.
 	     
+
 * 2002-03-19 Rework of public interfaces. Start of documentation
 * 2001-12-05 Cluster reorganization
 * 2001-12-03 Graphviz visualizer

@@ -37,7 +37,6 @@
 		<echo message="WARNING: GOBO_EIFFEL variable not set." unless="${GOBO_EIFFEL}"/>
 		<echo message="WARNING: BCC_DIR variable not set." if="${GOBO_CC}=bcc" unless="${BCC_DIR}"/>
 		<set name="eiffel" value="${GOBO_EIFFEL}"/>
-ZLIB, ZLIB_LIB, LIBPNG, LIBPNG_LIB,%
 	</target>
 
 	<target name="install" depend="init">

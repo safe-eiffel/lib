@@ -26,15 +26,13 @@ Eiffel compilers : all
 
 Section 0 : Current Status 
 
-The library is in beta state.
+The library is in production state
 
 EPDF has been compiled using
-* ISE Eiffel 5.0, ISE Eiffel 5.1
-* SmallEiffel 0.74beta20
+* ISE Eiffel 5.3, ISE Eiffel 5.2
+* SmartEiffel 1.1
 
 At this date, EPDF does not allow using
-- sampled images
-- thumbnails, outlines
 - patterns
 - other advanced features like rendering hints, interactive features (hyperlinks, ...)
 

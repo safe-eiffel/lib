@@ -2,6 +2,8 @@
 <library name="epdf" location="${EPDF}">
 	<description>
 		description: "ePDF ACE file"
+		environment_variables: "SAFE_KERNEL, EPDF, ZLIB, ZLIB_LIB, LIBPNG, LIBPNG_LIB,%
+			% GOBO_EIFFEL, GOBO_OS, GOBO_CC"
 
 	</description>
 	
@@ -10,7 +12,22 @@
 		<cluster name="fonts"/>
 		<cluster name="pdf"/>
 		<cluster name="spec">
-			<cluster name="${GOBO_EIFFEL}"/>
+			<cluster name="${GOBO_EIFFEL}">
+				<cluster name="${GOBO_OS}"/>
+			</cluster>
 		</cluster>
-	</cluster>
+
+		<option unless="${GOBO_OS}=windows">
+			<option name="link" value="${EPDF}/src/spec/${GOBO_EIFFEL}/${GOBO_OS}/libepdf_c.a"/>
+			<option name="link" value="-lpng -lz"/>
+		</option>
+		<option if="${GOBO_OS}=windows">
+			<option name="link" value="${EPDF}\src\spec\${GOBO_EIFFEL}\${GOBO_OS}\epdf_${GOBO_CC}.lib"/>
+			<option name="link" value="${LIBPNG_LIB}"/>
+			<option name="link" value="${ZLIB_LIB}"/>
+		</option>
+	</cluster>	
+	<mount location="${SAFE_KERNEL}/library.xace"/>
+	<option name="include_dir" value="${ZLIB}"/>
+	<option name="include_dir" value="${LIBPNG}"/>
 </library>
