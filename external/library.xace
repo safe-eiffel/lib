@@ -1,0 +1,38 @@
+<?xml version="1.0"?>
+
+<library name="external_support" prefix="xs_c_">
+
+	<description>
+		description:[
+
+			Xace file for the eXternal Support Library
+			Variables used: %
+			 * SAFE 		SAFE project path
+			 * GOBO_CC		type of C compiler; values (bcc|msc|lcc|gcc)
+			 * GOBO_OS		Operating system; values (windows|linux)
+			 * GOBO_EIFFEL		Eiffel compiler (ise|se|ve)
+			 *
+			]
+		library:     "eXternal Support Library"
+		author:      "Paul G. Crismer [pgcrism@users.sourceforge.net]"
+		copyright:   "Copyright (c) 2001-2003, Paul G. Crismer and others"
+		license:     "Eiffel Forum Freeware License v1 (see forum.txt)"
+		date:        "$Date $"
+		revision:    "$Revision$"
+	</description>
+
+	<cluster name="src" location="${SAFE}/lib/kernel/external/src">
+		<cluster name="spec">
+			<cluster name="${GOBO_EIFFEL}" prefix="compiler_"/>
+		</cluster>
+
+		<option unless="${GOBO_OS}=windows">
+			<option name="link" value="${SAFE}/lib/kernel/external/src/spec/${GOBO_EIFFEL}/${GOBO_OS}/libxs_c.a"/>
+			<option name="link" value="-lxs_c"/>
+		</option>
+		<option if="${GOBO_OS}=windows">
+			<option name="link" value="${SAFE}\lib\kernel\external\src\spec\${GOBO_EIFFEL}\${GOBO_OS}\xs_c_${GOBO_CC}.lib"/>
+			<option name="linker" value="microsoft" if="${GOBO_EIFFEL}=ve"/>
+		</option>
+	</cluster>
+</library>
