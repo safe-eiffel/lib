@@ -40,7 +40,11 @@ Installation
    * cd to $EPDF/examples/show_epdf directory
    * type 'geant install'
    * type 'geant compile'
-   
+ 
+- *) If you are using lcc-win32 and do not have a compiled version of
+     zlib nor libpng, you should find the following makefiles in
+     $EPDF/src/spec/se/windows : libpng_makefile.lcc and zlib_makefile.lcc.
+     
 Samples:
 - See directory 'examples'
 - Look at 'show_epdf' application for a start
