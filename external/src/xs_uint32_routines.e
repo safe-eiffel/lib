@@ -11,69 +11,91 @@ indexing
 class
 	XS_UINT32_ROUTINES
 	
+inherit
+	KL_STRING_ROUTINES
+		rename
+			make as make_string
+		export 
+			{NONE} all;
+			{ANY} hexadecimal_to_integer, is_hexadecimal
+		end
+		
 feature -- Basic operations
 
 	add (e1 : INTEGER; e2 : INTEGER)  : INTEGER is
+			-- Unsigned `e1' + `e2'
 		external "C"
 		alias "c_u_add32"
 		end
 
 	subtract (e1 : INTEGER; e2 : INTEGER)  : INTEGER is
+			-- Unsigned `e1' - `e2'
 		external "C"
 		alias "c_u_subtract32"
 		end
 
 	divide (e1 : INTEGER; e2 : INTEGER)  : INTEGER is
+			-- Unsigned `e1' / `e2'
 		external "C"
 		alias "c_u_divide32"
 		end
 
 	multiply (e1 : INTEGER; e2 : INTEGER)  : INTEGER is
+			-- Unsigned `e1' * `e2'
 		external "C"
 		alias "c_u_multiply32"
 		end
 
 	remainder (e1 : INTEGER; e2 : INTEGER)  : INTEGER is
+			-- Unsigned `e1' \\ `e2'
 		external "C"
 		alias "c_u_remainder32"
 		end
 
 	left_shift (e1 : INTEGER; e2 : INTEGER)  : INTEGER is
+			-- Unsigned `e1' << `e2'
 		external "C"
 		alias "c_u_left_shift32"
 		end
 
 	right_shift (e1 : INTEGER; e2 : INTEGER)  : INTEGER is
+			-- Unsigned `e1' >> `e2'
 		external "C"
 		alias "c_u_right_shift32"
 		end
 
 	u_and (e1 : INTEGER; e2 : INTEGER)  : INTEGER is
+			-- Unsigned `e1' & `e2'
 		external "C"
 		alias "c_u_and32"
 		end
 
 	u_or (e1 : INTEGER; e2 : INTEGER)  : INTEGER is
+			-- Unsigned `e1' | `e2'
 		external "C"
 		alias "c_u_or32"
 		end
 
 	u_xor (e1 : INTEGER; e2 : INTEGER)  : INTEGER is
+			-- Unsigned `e1' ^ `e2'
 		external "C"
 		alias "c_u_xor32"
 		end
 
 	u_not  (e1 : INTEGER)  : INTEGER is
+			-- Unsigned ~`e1'
 		external "C"
 		alias "c_u_not32"
 		end
 
 	lt (e1 : INTEGER; e2 : INTEGER)  : INTEGER is
+			-- Unsigned `e1' < `e2'
 		external "C"
 		alias "c_u_lt32"
 		end
 
 	eq (e1 : INTEGER; e2 : INTEGER)  : INTEGER is
+			-- Unsigned `e1' = `e2'
 		external "C"
 		alias "c_u_eq32"
 		end
@@ -93,7 +115,7 @@ feature -- Basic operations
 feature -- Conversion
 
 	as_signed_8 (n : INTEGER) : INTEGER is
-			-- INTEGER as a signed 8
+			-- `n' as a signed 8
 		require
 			n_unsigned8: n >= 0 and n <= 255
 		external "C"
@@ -103,6 +125,7 @@ feature -- Conversion
 		end
 
 	as_signed_16 (n : INTEGER) : INTEGER is
+			-- `n' as a signed 16
 		require
 			n_unsigned_16: n >= 0 and n <= 65535
 		external "C"
