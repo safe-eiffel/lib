@@ -56,7 +56,7 @@ feature  -- commands
     close is
 	do
 	    handle_curses_call(del_panel(pptr), "del_panel")
-	    Precursor
+	    Precursor		
 	end
 
     hide is
