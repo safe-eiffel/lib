@@ -1,0 +1,137 @@
+system
+	rcurses_server
+
+root
+	ROOT_CLASS: make
+
+default
+	assertion(require)
+	arguments("3000")
+	arguments(" ")
+	disabled_debug(yes)
+	debug(no)
+	line_generation(no)
+	profile(no)
+	trace(no)
+	il_verifiable(yes)
+	msil_generation_type("exe")
+	check_vape(yes)
+	console_application(yes)
+	address_expression(no)
+	array_optimization(yes)
+	dead_code_removal(yes)
+	dynamic_runtime(no)
+	exception_trace(no)
+	inlining(yes)
+	inlining_size("10")
+	multithreaded(no)
+
+
+-- EiffelBase
+
+cluster
+	root_cluster:		"."
+
+
+	ecurses:		"$ECURSES"
+		default
+			assertion (no)
+		end
+
+	ecurses_base (ecurses):		"$\base"
+		default
+			assertion (no)
+		end
+
+	codification (ecurses):		"$\remote\codification"
+		default
+			assertion (no)
+		end
+
+	ipc (ecurses):		"$\remote\ipc"
+		default
+			assertion (no)
+		end
+
+	shared_memory (ipc):		"$\shared_memory"
+		default
+			assertion (no)
+		end
+
+	ecurses_spec (ecurses): "$\spec"
+		default
+			assertion (no)
+		end
+
+	spec_ise (ecurses):		"$\spec\ise"
+		default
+			assertion (no)
+		end
+
+	utility (ecurses):		"$\utility"
+		default
+			assertion (no)
+		end
+
+	all base:		"$ISE_EIFFEL\library\base"
+		exclude
+			"desc"; "table_eiffel3"; 
+		end
+
+	ut_command:		"$GOBO\library\utility\command"
+
+	ut_error:		"$GOBO\library\utility\error"
+
+	ut_formatter:		"$GOBO\library\utility\formatter"
+
+	ut_support:		"$GOBO\library\utility\support"
+
+	kl_kernel:		"$GOBO\library\kernel"
+
+	kl_kernel_spec:		"$GOBO\library\kernel\spec\ise"
+
+	ds_container:		"$GOBO\library\structure\container"
+
+	ds_dispenser:		"$GOBO\library\structure\dispenser"
+
+	ds_list:		"$GOBO\library\structure\list"
+
+	ds_sort:		"$GOBO\library\structure\sort"
+
+	ds_support:		"$GOBO\library\structure\support"
+
+	ds_table:		"$GOBO\library\structure\table"
+
+	lx_skeleton:		"$GOBO\library\lexical\skeleton"
+
+	dt_clock:		"$GOBO\library\time\clock"
+
+	dt_date:		"$GOBO\library\time\date"
+
+	dt_spec:		"$GOBO\library\time\spec\ise"
+
+	dt_time_zone:		"$GOBO\library\time\time_zone"
+
+	ut_spec_ise:		"$GOBO\library\utility\spec\ise"
+
+external
+
+	include_path:
+		"$(ECURSES)\spec\ise\windows",
+		"$(GOBO)\library\kernel\include",
+		"$(GOBO)\library\time\include"
+
+	object:
+		"$ECURSES\spec\ise\windows\ecurses_c.lib",
+		"$PDCURSES\win32\pdcurses.lib",
+		"$PDCURSES\win32\panel.lib",
+		"$ECURSES\remote\spec\c\remote_curses.obj",
+		"$ECURSES\remote\ipc\C\ipc_c.lib"
+
+end
+
+-----------------------------------------------------------
+-- Copyright (C) 2001 Paul G. Crismer, Eric Fafchamps
+-- Licensed under Eiffel Forum Freeware License, version 1
+-- (see forum.txt)
+-----------------------------------------------------------
