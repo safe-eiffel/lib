@@ -233,7 +233,6 @@ feature -- Basic operations
 	rotate (theta : DOUBLE) is
 			-- 
 		local
-			math : expanded EPDF_MATH
 			c, s : DOUBLE
 		do
 			c := math.cosine (theta)
@@ -243,8 +242,6 @@ feature -- Basic operations
 	
 	skew (alpha, beta : DOUBLE) is
 			-- 
-		local
-			math : expanded EPDF_MATH
 		do
 			concatenate_to_ctm (1, math.tangent (alpha), math.tangent (beta), 1, 0, 0)
 		end
@@ -624,6 +621,11 @@ feature {NONE} -- Implementation
 			content.append_character ('%N')
 		end
 		
+	math : EPDF_MATH is
+			-- 
+		once
+			create Result
+		end
 		
 invariant
 	invariant_clause: -- Your invariant here
