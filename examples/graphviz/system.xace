@@ -31,8 +31,7 @@
 
 		<cluster name="show_epdf" location="${EPDF}/examples/graphviz"/>
 		<mount location="${EPDF}/epdf.xace"/>
-		<mount location="${EPDF}/smalleiffel.xace"/>
-		<mount location="${EPDF}/gobo.xace"/>
-	
+		<mount location="${GOBO}/library/cluster.xace"/>
+		<mount location="${GOBO}/library/kernel.xace"/>	
 	</cluster>
 </system>

@@ -31,8 +31,7 @@
 
 		<cluster name="pdf_hello_world" location="${EPDF}/examples/tutorial/pdf_hello_world"/>
 		<mount location="${EPDF}/epdf.xace"/>
-		<mount location="${EPDF}/smalleiffel.xace"/>
-		<mount location="${EPDF}/gobo.xace"/>
-	
+		<mount location="${GOBO}/library/cluster.xace"/>
+		<mount location="${GOBO}/library/kernel.xace"/>
 	</cluster>
 </system>
