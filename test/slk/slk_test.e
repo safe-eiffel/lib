@@ -14,7 +14,6 @@ creation
 	make
 
 feature
-feature
 	make is
 		local
 			args : expanded ARGUMENTS
@@ -300,6 +299,9 @@ end -- class BASIC_TEST
 -- Released under the Eiffel Forum free license
 -------------------------------------------------------
 -- $Log$
+-- Revision 1.3  2003/01/26 13:35:14  pgcrism
+-- .xace files added; old sebuild.bat, ace and .se file have been deleted
+--
 -- Revision 1.2  2000/10/01 19:16:54  efa
 -- Modifications/extensions for SmallEiffel portability
 --

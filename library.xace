@@ -1,0 +1,50 @@
+<?xml version="1.0"?>
+
+<library name="ecurses" prefix="ecurses_">
+
+	<description>
+		description:[
+
+			Xace file for the ECLI Library.
+			Variables used: %
+			 * ECURSES		Path of ECURSES library
+			 * ECLI_C_COMPILER	type of C compiler; values (bcc|vc|lcc|gcc)
+			 * ECLI_C_BCCDIR	directory where bcc resides if it is used
+			 * ECURSES_REMOTE	Defined if remote debugging is wanted
+			 * GOBO_OS		Operating system; values (windows|linux)
+			 * GOBO_EIFFEL		Eiffel compiler (ise|se|ve|hact)
+			 *
+			]
+		library:     "ECURSES Library"
+		author:      "Eric Fafchamps [efa@users.sourceforge.net], Paul G. Crismer [pgcrism@users.sourceforge.net]"
+		copyright:   "Copyright (c) 2001, Eric Fafchamps, Paul G. Crismer and others"
+		license:     "Eiffel Forum Freeware License v1 (see forum.txt)"
+		date:        "$Date $"
+		revision:    "$Revision$"
+	</description>
+
+	<cluster name="ecurses" location="${ECURSES}">
+		<option name="abstract" value="True"/>
+		<cluster name="base"/>
+		<cluster name="utility"/>
+		<cluster name="spec">
+			<cluster name="${GOBO_EIFFEL}" prefix="compiler_"/>
+		</cluster>
+		<option unless="${GOBO_OS}=windows">
+			<option name="link" value="${ECURSES}/spec/${GOBO_EIFFEL}/${GOBO_OS}/ecurses_c.a"/>
+			<option name="link" value="-lncurses"/>
+		</option>
+		<option if="${GOBO_OS}=windows">
+			<option name="link" value="${ECURSES}/spec/${GOBO_EIFFEL}/${GOBO_OS}/ecurses_c.lib"/>
+			<option name="link" value="${PDCURSES}/win32/pdcurses.lib"/>
+			<option name="link" value="${PDCURSES}/win32/panel.lib"/>
+		</option>
+		<cluster name="remote" if="${ECURSES_REMOTE}">
+			<cluster name="codification"/>
+			<cluster name="ipc"/>
+			<cluster name="spec">
+				<!-- TODO add what is needed here -->
+			</cluster>
+		</cluster>		
+	</cluster>
+</library>
