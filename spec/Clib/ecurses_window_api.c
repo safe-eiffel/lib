@@ -216,11 +216,11 @@ EIF_INTEGER c_ecurses_pair_number (EIF_INTEGER n)
 		return  PAIR_NUMBER ((int) n);
 	};
 
-EIF_INTEGER c_ecurses_pair_content (EIF_INTEGER n, EIF_POINTER f, EIF_POINTER g)
+EIF_INTEGER c_ecurses_pair_content (EIF_INTEGER n, EIF_INTEGER *f, EIF_INTEGER *g)
 	{
 		EIF_INTEGER _result;
 		short f1, g1;
-		f1 = (short) *f; g1 = (short) *g;
+		f1 = (short) *((short *)f); g1 = (short) *((short *)g);
 		_result = pair_content (n, &f1, &g1);
 		*f = (EIF_INTEGER) f1; *g = (EIF_INTEGER) g1;
 		return  _result;
