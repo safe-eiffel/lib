@@ -3,7 +3,7 @@
 	description:
 
 		"Ecli partial implementation of PO_ADAPTERs.%
-	%	
+	%	%
 	%	Caches all read objects until `clear_cache' is called.%
 	%	When `is_enabled_cache_on_write' is True then written object%
 	%	also are inserted in the cache.%
