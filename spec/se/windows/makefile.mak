@@ -1,0 +1,1 @@
+This file is obsolete now use geant install instead.

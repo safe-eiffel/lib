@@ -8,7 +8,7 @@
 			Xace file for the ECLI Library.
 			Variables used: %
 			 * ECURSES		Path of ECURSES library
-			 * ECLI_C_COMPILER	type of C compiler; values (bcc|vc|lcc|gcc)
+			 * ECLI_C_COMPILER	type of C compiler; values (bcc|msc|lcc|gcc)
 			 * ECLI_C_BCCDIR	directory where bcc resides if it is used
 			 * ECURSES_REMOTE	Defined if remote debugging is wanted
 			 * GOBO_OS		Operating system; values (windows|linux)
@@ -35,9 +35,9 @@
 			<option name="link" value="-lncurses"/>
 		</option>
 		<option if="${GOBO_OS}=windows">
-			<option name="link" value="${ECURSES}/spec/${GOBO_EIFFEL}/${GOBO_OS}/ecurses_c.lib"/>
-			<option name="link" value="${PDCURSES}/win32/pdcurses.lib"/>
-			<option name="link" value="${PDCURSES}/win32/panel.lib"/>
+			<option name="link" value="${ECURSES}/spec/${GOBO_EIFFEL}/${GOBO_OS}/ecurses_${GOBO_CC}.lib"/>
+			<option name="link" value="${ECURSES}/spec/${GOBO_EIFFEL}/${GOBO_OS}/pdcurses_${GOBO_CC}.lib"/>
+			<option name="link" value="${ECURSES}/spec/${GOBO_EIFFEL}/${GOBO_OS}/panel_${GOBO_CC}.lib"/>
 		</option>
 		<cluster name="remote" if="${ECURSES_REMOTE}">
 			<cluster name="codification"/>
