@@ -13,7 +13,9 @@ class
 	
 inherit
 	KL_IMPORTED_STRING_ROUTINES
-		
+
+	KL_IMPORTED_CHARACTER_ROUTINES
+	
 feature -- Basic operations
 
 	add (e1 : INTEGER; e2 : INTEGER)  : INTEGER is
@@ -133,8 +135,50 @@ feature -- Conversion
 		require
 			hexadecimal_string_not_void: hexadecimal_string /= Void
 			is_hexadecimal_string: is_hexadecimal_string (hexadecimal_string)
+			fits_in_32_bits: hexadecimal_string.count <= 8
+		local
+			nibble, i, count : INTEGER
 		do
-			Result := STRING_.hexadecimal_to_integer (hexadecimal_string)
+			from
+				count := hexadecimal_string.count
+				i := 1
+			until
+				i > count
+			loop
+				nibble := hexadecimal_digits.index_of (CHARACTER_.as_lower (hexadecimal_string.item (i)), 1) - 1
+				Result := left_shift (Result, 4)
+				Result := u_or (Result, nibble)
+				i := i + 1
+			end
+		end
+
+	append_hexadecimal_integer (integer : INTEGER; string : STRING; upper_case : BOOLEAN) is
+			-- Append 'value' as hexadecimal in `string' in upper/lower case.
+		local
+			s : STRING
+			nibble : INTEGER
+			v : INTEGER
+			mask : INTEGER
+		do
+			create s.make (8)
+			from
+				v := integer
+				mask := 15
+			until
+				v = 0
+			loop
+				nibble := u_and (v, mask)
+				s.append_character (hexadecimal_digit (nibble, upper_case))
+				v := right_shift (v, 4)
+			end
+			from
+				v := s.count
+			until
+				v = 0
+			loop
+				string.append_character (s.item (v))
+				v := v-1
+			end
 		end
 		
 feature -- Status report
@@ -143,8 +187,45 @@ feature -- Status report
 			-- Is `string' composed of [0-9A-Fa-f]+ ?
 		require
 			string_not_void: string /= Void
+		local
+			c : CHARACTER
+			i, count : INTEGER
 		do
-			Result := STRING_.is_hexadecimal (string)
+			from
+				i := 1
+				count := string.count
+				Result := True
+			until
+				not Result or else i > count
+			loop
+				c := string.item (i)
+				inspect c
+				when '0'..'9', 'a'..'f', 'A'..'F' then		
+				else
+					Result := False
+				end
+				i := i + 1
+			end
+		end
+	
+feature {NONE}  -- Implementation
+
+	hexadecimal_digit (n : INTEGER; upper_case : BOOLEAN) : CHARACTER is
+		require
+			n_positive: n > 0
+			n_less_16: n < 16
+		local
+			code : INTEGER
+		do
+			Result := hexadecimal_digits.item (n+1)
+			if upper_case then
+				Result := CHARACTER_.as_upper (Result)
+			end
+		end
+
+	hexadecimal_digits : STRING is
+		once
+			Result := "0123456789abcdef" -- <<'0','1','2','3','4','5','6','7','8','9','a','b','c','d','e','f'>>
 		end
 		
 end -- class XS_UINT32_ROUTINES

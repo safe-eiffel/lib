@@ -232,14 +232,14 @@ feature -- Conversion
 					significant_digit := True
 				end
 				if significant_digit then
-					INTEGER_.append_hexadecimal_integer (Result, nibble, True)
+--					INTEGER_.append_hexadecimal_integer (nibble, Result, True)
 				end
 				nibble := the_byte \\ 16
 				if nibble > 0 then
 					significant_digit := True
 				end
 				if significant_digit then
-					INTEGER_.append_hexadecimal_integer (Result, nibble, True)
+--					INTEGER_.append_hexadecimal_integer (nibble, Result, True)
 				end
 				index := index - 1
 			end
