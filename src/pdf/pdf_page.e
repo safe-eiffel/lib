@@ -741,16 +741,12 @@ feature {PDF_STREAM} -- Access
 		
 	has_font (a_font : PDF_FONT) : BOOLEAN is
 			-- does a font with 'font_name' exist ?
-		local
-			index : INTEGER
 		do
 			Result := fonts.has_value (a_font)	
 		end
 
 	has_image (image : PDF_IMAGE) : BOOLEAN is
 			-- does `image' exist ?
-		local
-			index : INTEGER
 		do
 			Result := images.has_value (image)	
 		end

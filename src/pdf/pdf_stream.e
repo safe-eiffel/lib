@@ -176,7 +176,6 @@ feature -- Conversion
 	put_pdf (medium : PDF_OUTPUT_MEDIUM) is
 			-- 
 		local
-			length : PDF_NAME
 			content_length : INTEGER
 			zlib_format : ZLIB_FORMAT
 			encoded_stream : STRING
@@ -187,23 +186,17 @@ feature -- Conversion
 			create names
 			if not unencoded then
 				create zlib_format
-				-- create ascii_85_format
 				encoded_stream := zlib_format.encode (content)
-				--encoded_stream := ascii_85_format.encode (encoded_stream)
---				content_length := content.count -- ascii_85_format.last_encoded_count (medium)
 			else
---				content_length := content.count + content.occurrences ('%N') * (medium.eol_count - 1)
 				encoded_stream := content
 			end
-			content_length := encoded_stream.count -- + encoded_stream.occurrences ('%N') * (medium.eol_count - 1)
-			
+			content_length := encoded_stream.count 			
 			medium.put_string (object_header)
 			-- dictionary
 			medium.put_string (begin_dictionary)
 			medium.put_string (dictionary_entry (names.LENGTH, content_length.out))
 			if not unencoded then
 				create filter.make (1,1)
-				--filter.put (names.Ascii85decode,1)
 				filter.put (names.Flatedecode,1) -- 2)
 				medium.put_string (dictionary_entry (names.Filter, filter.to_pdf))
 			end
@@ -228,8 +221,6 @@ feature -- Basic operations
 
 	begin_text is
 		do
---			text_origin_x := 0
---			text_origin_y := 0
 			content.append_string ("BT%N")
 			text_mode := True
 		end

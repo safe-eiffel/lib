@@ -23,7 +23,6 @@
 	</option>	
 	<mount location="${EPDF}/library.xace"/>
 	<option if="${GOBO_OS}=windows">
-		<option name="linker" value="microsoft" if="${GOBO_EIFFEL}=ve"/>
 		<option name="link" value="libc.lib" if="${GOBO_EIFFEL}=ve"/>
 		<option name="link" value="/entry:_mainCRTStartup" if="${GOBO_EIFFEL}=ve"/>
 	</option>

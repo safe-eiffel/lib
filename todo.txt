@@ -1,9 +1,12 @@
 TODO:
 
-- Allow for image inclusion (even if limited support of image formats, eg jpg or png)
 - (hyper)links
-- document index
 - rename text_renderer in text_format
+
+2003-08-27
+
+- (DONE) document outline
+- (DONE - png) Allow for image inclusion (even if limited support of image formats, eg jpg or png)
 
 2002-03-20
 * (DONE) GOBOnize
@@ -33,6 +36,3 @@ TODO:
 * (DONE) filling, stroking
 * (DONE) color/gray?
 * (DONE) concept of page tree node
-
-
-

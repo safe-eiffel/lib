@@ -54,9 +54,6 @@ feature -- Conversion
 
 	put_pdf (medium: PDF_OUTPUT_MEDIUM) is
 			-- put Current on `medium'
-		local
-			parent_cursor : DS_LIST_CURSOR[PDF_OUTLINE_NODE]
-			has_previous : BOOLEAN
 		do
 			medium.put_string (object_header)
 			medium.put_string (Begin_dictionary)

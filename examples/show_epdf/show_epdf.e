@@ -21,7 +21,6 @@ feature -- Initialization
 		local
 			medium : PDF_OUTPUT_MEDIUM
 			file : KI_BINARY_OUTPUT_FILE
-			page : PDF_PAGE
 		do
 			print ("show_epdf application%N")
 			create document.make

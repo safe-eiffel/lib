@@ -213,21 +213,13 @@ feature {NONE} -- Conversion
 			n_colorspace, n_bitspercomponent, 
 			n_length, n_filter,n_smask : PDF_NAME
 			encoded_stream : STRING
-			index : INTEGER
-			hex : STRING
-			encoded_stream_length, eol_count : INTEGER
-			--hex_format : ASCII_HEX_FORMAT
-			--ascii_85_format : ASCII_85_FORMAT
+			encoded_stream_length : INTEGER
 			zlib_stream : STRING
 			zlib_format : ZLIB_FORMAT
 		do
-			--create ascii_85_format
 			create zlib_format
-			zlib_stream := zlib_format.encode (samples)
-			--encoded_stream := ascii_85_format.encode (zlib_stream)
-			encoded_stream := zlib_stream
-			encoded_stream_length := encoded_stream.count + encoded_stream.occurrences ('%N') * (medium.eol_count - 1)
-
+			encoded_stream := zlib_format.encode (samples)
+			encoded_stream_length := encoded_stream.count 
 			create n_type.make ("Type")
 			create n_subtype.make ("Subtype")
 			create n_width.make ("Width")

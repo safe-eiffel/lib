@@ -54,7 +54,7 @@ Documentation:
 
 Tested:
 - ISE 5.2, 5.3
-- SmallEiffel -0.74, SmartEiffel 1.0, SmartEiffel 1.1
+- SmartEiffel 1.0, SmartEiffel 1.1
 - VisualEiffel 4.1
 
 

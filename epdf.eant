@@ -35,6 +35,8 @@
 		<echo message="WARNING: GOBO_CC variable not set. Must be msc|bcc|gcc|lcc" unless="${GOBO_CC}"/>
 		<echo message="WARNING: GOBO_OS variable not set." unless="${GOBO_OS}"/>
 		<echo message="WARNING: GOBO_EIFFEL variable not set." unless="${GOBO_EIFFEL}"/>
+		<echo message="WARNING: VE_BIN variable not set." if="${GOBO_EIFFEL}=ve"/>
+
 		<echo message="WARNING: BCC_DIR variable not set." if="${GOBO_CC}=bcc" unless="${BCC_DIR}"/>
 		<set name="eiffel" value="${GOBO_EIFFEL}"/>
 	</target>
