@@ -176,7 +176,9 @@ feature -- Basic operations
 			if is_enabled_cache_on_read then
 				cache.search (a_pid)
 				if cache.found then
-					last_cursor.add_object (cache.found_item)
+					if cache.found_item /= Void then
+						last_cursor.add_object (cache.found_item)
+					end
 				end
 			end
 			if not is_enabled_cache_on_read or else not cache.found then

@@ -30,5 +30,9 @@ feature {PO_ADAPTER} -- Basic operations
 feature {NONE} -- Implementation
 
 	cache : PO_CACHE[G]
+
+invariant
+	
+	cache_not_void: cache /= Void
 	
 end -- class PO_CACHE_USE

@@ -270,7 +270,7 @@ feature -- Basic operations
 		require
 			can_update: can_update
 			object_not_void: object /= Void
-			object_is_persistent: object.is_persistent
+			object_updatable: object.is_persistent or else exists (pid_for_object (object))
 			datastore_connected: datastore.is_connected
 			is_ok: status.is_ok
 		deferred			

@@ -36,8 +36,6 @@ feature {NONE} -- Initialization
 			create last_cursor.make
 		ensure
 			datastore_set: a_datastore /= Void
-			no_cache_on_write: not is_enabled_cache_on_write
-			no_cache_on_read: not is_enabled_cache_on_read
 		end
 
 	make_with_cache (a_datastore : ECLI_DATASTORE; a_cache : PO_CACHE[G]) is
@@ -51,8 +49,6 @@ feature {NONE} -- Initialization
 			create last_cursor.make
 		ensure
 			datastore_set: datastore = a_datastore
-			no_cache_on_write: not is_enabled_cache_on_write
-			no_cache_on_read: not is_enabled_cache_on_read
 			cache_set: cache = a_cache
 		end
 		
@@ -145,11 +141,6 @@ feature -- Basic operations
 		end
 	
 feature {PO_ADAPTER} -- Basic operations
-
---	create_pid_from_object (an_object: G) is
---			-- Create `last_pid' based on the content of `an_object'
---		deferred
---		end
 
 	init_parameters_for_exists (a_pid : like last_pid) is
 			-- Initialize parameters of `Sql_exists' with information from `a_pid'.
