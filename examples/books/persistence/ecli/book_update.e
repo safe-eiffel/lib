@@ -44,4 +44,4 @@ feature  -- Constants
 
 	definition: STRING is "update book set title = ?title , author = ?author where isbn = ?isbn	"
 
-end
+end -- class BOOK_UPDATE

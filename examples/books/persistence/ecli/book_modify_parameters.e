@@ -27,4 +27,4 @@ feature  -- Access
 
 	author: ECLI_VARCHAR
 
-end
+end -- class BOOK_MODIFY_PARAMETERS

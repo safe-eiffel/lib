@@ -44,7 +44,7 @@ feature -- Conversion
 		deferred
 		ensure
 			result_not_void: Result /= Void
-			class_name_substring: Result.substring (1, class_name.count).is_equal (class_name) 
+			class_name_substring: Result.substring (1,persistent_class_name.count).is_equal (persistent_class_name) 
 		end
 		
 feature -- Comparison
@@ -68,6 +68,6 @@ feature -- Inapplicable
 
 invariant
 
-	class_name_is_defined: class_name /= Void and then not class_name.is_empty
+	class_name_is_defined: persistent_class_name /= Void and then not persistent_class_name.is_empty
 	
 end

@@ -218,4 +218,6 @@ feature -- Implementation
 				end
 			end
 		end		
+
+	q : ECLI_ADAPTER_READ_COLLECTION_SKELETON [BOOK]
 end

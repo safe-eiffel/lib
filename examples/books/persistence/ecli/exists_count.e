@@ -1,8 +1,6 @@
 indexing
 
-	description:
-
-		"Results objects "
+	description: "Results objects "
 	status: "Automatically generated.  DOT NOT MODIFY !"
 
 class EXISTS_COUNT
@@ -23,4 +21,4 @@ feature  -- Access
 
 	exists_count: ECLI_INTEGER
 
-end
+end -- class EXISTS_COUNT
