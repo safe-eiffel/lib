@@ -1,21 +1,33 @@
-_EIFFEL_ = $(ISE_EIFFEL)
-CC = $(_EIFFEL_)\bcc55\bin\bcc32.exe
-LIB = $(_EIFFEL_)\bcc55\bin\tlib.exe
-PLATFORM=windows
-CFLAGS = -c -O2 -I$(_EIFFEL_)\bcc55\include -I$(_EIFFEL_)\studio\spec\$(PLATFORM)\include -I.
-OBJ = ecli_bcc.obj
+##
+## Makefile for EPDF support library
+##
+## Copyright: Paul G. Crismer and others
+## License: Realeased under the Eiffel Forum License version 2 (http://www.opensource.org/licenses/ver2_eiffel.php)
+## Note: Known to run with Borland Make 5.2
+##
 
-all: clean ecli_bcc.lib
+!if !$d(BORLANDC)
+BORLANDC = $(ISE_EIFFEL)\BCC55
+!endif
+
+CC = $(BORLANDC)\bin\bcc32.exe
+LIB = $(BORLANDC)\bin\tlib.exe
+PLATFORM=windows
+
+CFLAGS = -c -O2 -I$(BORLANDC)\include -I$(ISE_EIFFEL)\studio\spec\$(PLATFORM)\include -I. -I$(ZLIB) -I$(LIBPNG)
+OBJ = epdf_bcc.obj
+
+all: clean epdf_bcc.lib
 
 .c.obj:
 	$(CC) $(CFLAGS) ..\..\C\$< 
 
-ecli_bcc.lib: $(OBJ) ..\..\C\ecli_c.h
+epdf_bcc.lib: $(OBJ) ..\..\C\epdf_c.h
                 if exist $@ del $@
 		$(LIB) $@ +$(OBJ)
 
-ecli_bcc.obj: ..\..\C\ecli_c.c ..\..\C\ecli_c.h
-	$(CC) $(CFLAGS) -o $@ ..\..\C\ecli_c.c
+epdf_bcc.obj: ..\..\C\epdf_c.c ..\..\C\epdf_c.h
+	$(CC) $(CFLAGS) -o$@ ..\..\C\epdf_c.c
 
 clean:
        if exist *.obj del *.obj
