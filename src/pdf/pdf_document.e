@@ -323,7 +323,7 @@ feature -- Conversion
 			output_medium : PDF_OUTPUT_MEDIUM
 		do
 			!!string_stream.make_empty
-			!!output_medium.make (string_stream)
+			!!output_medium.make_string (string_stream)
 			put_pdf (output_medium)
 			Result := string_stream.string
 		end
@@ -482,7 +482,7 @@ feature {NONE} -- Implementation
 
 	pdf_count : INTEGER
 
-	pdf_header : STRING is "%%PDF-1.3%N"
+	pdf_header : STRING is "%%PDF-1.4%N%%‚„œ”%N"
 
 	put_pdf_body (medium : PDF_OUTPUT_MEDIUM) is
 			-- put pdf body

@@ -20,7 +20,7 @@ feature -- Initialization
 			-- Creation procedure.
 		local
 			medium : PDF_OUTPUT_MEDIUM
-			file : KI_TEXT_OUTPUT_FILE
+			file : KI_BINARY_OUTPUT_FILE
 			page : PDF_PAGE
 		do
 			print ("show_epdf application%N")
@@ -37,7 +37,7 @@ feature -- Initialization
 			test_coordinate_system
 			test_text_bonuses
 			--
-			file := file_system.new_output_file ("pdf_show.pdf")
+			create {KL_BINARY_OUTPUT_FILE} file.make ("pdf_show.pdf") -- file := file_system.new_bi ("pdf_show.pdf")
 			file.open_write
 			create  medium.make (file)
 			document.put_pdf (medium)

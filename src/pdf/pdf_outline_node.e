@@ -154,7 +154,7 @@ feature -- Conversion
 		do
 			create Result.make (25)
 			create buffer.make (Result)
-			create medium.make (buffer)
+			create medium.make_string (buffer)
 			put_pdf (medium)
 			Result := buffer.string
 		end

@@ -181,30 +181,30 @@ feature -- Conversion
 			zlib_format : ZLIB_FORMAT
 			encoded_stream : STRING
 			names : PDF_NAME_CONSTANTS
-			ascii_85_format : ASCII_85_FORMAT
+			-- ascii_85_format : ASCII_85_FORMAT
 			filter : PDF_ARRAY_SERIALIZABLE[PDF_NAME]
 		do
 			create names
 			if not unencoded then
 				create zlib_format
-				create ascii_85_format
+				-- create ascii_85_format
 				encoded_stream := zlib_format.encode (content)
-				encoded_stream := ascii_85_format.encode (encoded_stream)
+				--encoded_stream := ascii_85_format.encode (encoded_stream)
 --				content_length := content.count -- ascii_85_format.last_encoded_count (medium)
 			else
 --				content_length := content.count + content.occurrences ('%N') * (medium.eol_count - 1)
 				encoded_stream := content
 			end
-			content_length := encoded_stream.count + encoded_stream.occurrences ('%N') * (medium.eol_count - 1)
+			content_length := encoded_stream.count -- + encoded_stream.occurrences ('%N') * (medium.eol_count - 1)
 			
 			medium.put_string (object_header)
 			-- dictionary
 			medium.put_string (begin_dictionary)
 			medium.put_string (dictionary_entry (names.LENGTH, content_length.out))
 			if not unencoded then
-				create filter.make (1,2)
-				filter.put (names.Ascii85decode,1)
-				filter.put (names.Flatedecode,2)
+				create filter.make (1,1)
+				--filter.put (names.Ascii85decode,1)
+				filter.put (names.Flatedecode,1) -- 2)
 				medium.put_string (dictionary_entry (names.Filter, filter.to_pdf))
 			end
 			medium.put_string (end_dictionary)

@@ -22,9 +22,9 @@
 		<option name="finalize" value="false"/>
 	</option>	
 	<mount location="${EPDF}/library.xace"/>
-	<mount location="${GOBO}/library/library.xace"/>
-	<mount location="${GOBO}/library/kernel.xace"/>
 	<option if="${GOBO_OS}=windows">
 		<option name="linker" value="microsoft" if="${GOBO_EIFFEL}=ve"/>
+		<option name="link" value="libc.lib" if="${GOBO_EIFFEL}=ve"/>
+		<option name="link" value="/entry:_mainCRTStartup" if="${GOBO_EIFFEL}=ve"/>
 	</option>
 </system>

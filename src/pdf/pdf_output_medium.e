@@ -12,11 +12,19 @@ class
 	PDF_OUTPUT_MEDIUM
 
 creation
-	make
+	make, make_string
 	
 feature {NONE} -- Initialization
 
-	make (a_medium : KI_TEXT_OUTPUT_STREAM) is
+	make (a_medium : KI_BINARY_OUTPUT_FILE) is
+			-- make using `a_medium'
+		require
+			a_medium /= Void and then a_medium.is_open_write
+		do
+			medium := a_medium
+		end
+
+	make_string (a_medium : KL_STRING_OUTPUT_STREAM) is
 			-- make using `a_medium'
 		require
 			a_medium /= Void and then a_medium.is_open_write
@@ -29,7 +37,7 @@ feature -- Measurement
 	eol_count : INTEGER is
 			-- count of bytes in an EOF marker
 		do
-			Result := medium.eol.count
+			Result := 1 -- medium.eol.count
 		end
 		
 feature -- Status Report
@@ -119,8 +127,8 @@ feature -- Basic operations
 	put_new_line is
 			-- 
 		do
-			medium.put_new_line
-			increment_count (medium.eol.count)
+			medium.put_character ('%N') --medium.put_new_line
+			increment_count (eol_count)
 		ensure
 			count > old count
 		end
@@ -134,7 +142,7 @@ feature {NONE} -- Implementation
 		
 	count_impl : INTEGER
 	
-	medium : KI_TEXT_OUTPUT_STREAM
+	medium : KI_CHARACTER_OUTPUT_STREAM
 	
 invariant
 

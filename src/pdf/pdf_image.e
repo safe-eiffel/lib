@@ -217,14 +217,15 @@ feature {NONE} -- Conversion
 			hex : STRING
 			encoded_stream_length, eol_count : INTEGER
 			--hex_format : ASCII_HEX_FORMAT
-			ascii_85_format : ASCII_85_FORMAT
+			--ascii_85_format : ASCII_85_FORMAT
 			zlib_stream : STRING
 			zlib_format : ZLIB_FORMAT
 		do
-			create ascii_85_format
+			--create ascii_85_format
 			create zlib_format
 			zlib_stream := zlib_format.encode (samples)
-			encoded_stream := ascii_85_format.encode (zlib_stream)
+			--encoded_stream := ascii_85_format.encode (zlib_stream)
+			encoded_stream := zlib_stream
 			encoded_stream_length := encoded_stream.count + encoded_stream.occurrences ('%N') * (medium.eol_count - 1)
 
 			create n_type.make ("Type")
@@ -248,7 +249,7 @@ feature {NONE} -- Conversion
 			end
 			medium.put_string (dictionary_entry (n_bitspercomponent, color_bits.out))
 			medium.put_string (dictionary_entry (n_length, encoded_stream_length.out))
-			medium.put_string (dictionary_entry (n_filter, "[ /ASCII85Decode /FlateDecode ]"))
+			medium.put_string (dictionary_entry (n_filter, "[ /FlateDecode ]")) -- /ASCII85Decode
 			if alpha /= Void then
 				create n_smask.make ("SMask")
 				medium.put_string (dictionary_entry (n_smask, alpha.indirect_reference))
