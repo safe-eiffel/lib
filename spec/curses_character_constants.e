@@ -191,7 +191,7 @@ feature {NONE}  -- C interface
     c_curses_acs_lantern	:	INTEGER is external "C" end
     c_curses_acs_block		:	INTEGER is external "C" end
 
-end  -- class CURSES__CHARACTER_CONSTANTS
+end  -- class CURSES_CHARACTER_CONSTANTS
 -----------------------------------------------------------
 -- Copyright (C) 1999 Paul G. Crismer, Eric Fafchamps
 -- Licensed under Eiffel Forum Freeware License, version 1
