@@ -51,7 +51,7 @@ cluster
 	ds_table:			"$GOBO/library/structure/table";
 	
 external
-	Object: "-lpanel -lncurses", "${ECURSES}/spec/linux/libecurses_c.a";
-	include_path: "${ECURSES}/spec/linux";
+	Object: "-lpanel -lncurses", "${ECURSES}/spec/ise/linux/libecurses_c.a";
+	include_path: "${ECURSES}/spec/ise/linux";
 
 end
