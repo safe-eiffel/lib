@@ -496,7 +496,7 @@ feature -- window status
 
     parent_window : CURSES_WINDOW
 
-    subwindows : DS_LINKED_LIST[like Current]
+    subwindows : DS_LINKED_LIST[CURSES_WINDOW]
 	
     last_character : CHARACTER is
 	do
@@ -977,7 +977,7 @@ feature -- Operations
 
 feature {CURSES_WINDOW} -- protected
 
-    detach_subwindow (w : like Current) is
+    detach_subwindow (w : CURSES_WINDOW) is
 	require
 	    	exists: exists
 		window_ok : w /= Void
@@ -986,7 +986,7 @@ feature {CURSES_WINDOW} -- protected
 	    subwindows.delete(w)
 	end
 
-    attach_subwindow (w : like Current) is
+    attach_subwindow (w : CURSES_WINDOW) is
 	require
 	    exists: exists
 	    window_ok : w /= Void
