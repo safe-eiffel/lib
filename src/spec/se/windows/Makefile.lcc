@@ -1,0 +1,20 @@
+SRCDIR=..\..\C
+CFLAGS=-I$(SMARTEIFFELDIR)\sys\runtime\c -I. -I$(ZLIB) -I$(LIBPNG) -g2 
+CC=lcc.exe
+LINKER=lcclnk.exe
+LIBRARIAN=lcclib.exe
+OBJS=\
+	epdf_lcc.obj
+
+
+$(LIB):	$(OBJS) Makefile.lcc
+	$(LIBRARIAN) epdf_lcc.lib $(OBJS)
+
+epdf_lcc.obj: $(SRCDIR)\epdf_c.c
+	$(CC) -c -Foepdf_lcc.obj $(CFLAGS) $(SRCDIR)\epdf_c.c
+
+epdf_lcc.lib: epdf_lcc.obj
+	$(LIBRARIAN) /out:epdf_lcc.lib $(OBJS)
+
+clean:
+	del $(OBJS)
