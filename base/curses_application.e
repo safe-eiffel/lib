@@ -93,7 +93,9 @@ feature {NONE} -- Initialization
 
     dispose is
 	do
-		handle_curses_call(endwin,"endwin");
+		if standard_window_pointer /= default_pointer then
+			handle_curses_call(endwin,"endwin")
+		end
 	end
 
 feature  -- queries
