@@ -97,7 +97,6 @@ feature -- Basic operations
 			document.set_page_layout (layout.Layout_single_page)
 			document.set_page_mode (mode.Mode_use_outlines)
 			document.find_font ("Helvetica", document.Encoding_winansi)
-			document.create_information
 			document.information.set_author ("Paul G. Crismer")
 			document.information.set_title ("PDF Show")
 			document.information.set_creator ("Eiffel PDF library")
