@@ -40,10 +40,12 @@ feature {NONE} -- Initialization
 			object := Void
 			impl_value := a_next_entry_number
 			impl_generation := a_generation
+			set_eol_bytes_count (1)
 		ensure
 			next_free_set: next_free = a_next_entry_number
 			generation_set: generation= a_generation
 			free: is_free
+			byte_count_set: eol_bytes_count = 1
 		end
 		
 feature -- Access
@@ -170,6 +172,7 @@ feature {NONE} -- Implementation
 	impl_value : INTEGER
 	
 	impl_generation : INTEGER
-	
+invariant
+	eol_byte_count: eol_bytes_count > 0 and eol_bytes_count <= 2
 end -- class PDF_XREF_ENTRY
 		

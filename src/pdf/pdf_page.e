@@ -329,6 +329,9 @@ feature -- Basic operations
 		do
 			operations_mode := Mode_page_definition
 			current_stream.end_text
+			is_forbidden_change_to_nonclipping_mode := False
+		ensure then
+			clipping_rule: not is_forbidden_change_to_nonclipping_mode		
 		end
 
 feature -- Coordinate system operations
@@ -448,6 +451,9 @@ feature -- Basic operations - Text
 		do
 			text_render_mode := a_mode
 			current_stream.set_text_render_mode (a_mode)
+			if is_text_mode and is_text_render_mode_clipping then
+				is_forbidden_change_to_nonclipping_mode := True
+			end
 		end
 
 	move_text_origin (x, y : DOUBLE) is
@@ -554,7 +560,11 @@ feature -- Basic operations - Text
 					current_width := current_width + current_char_width
 					i_end := i_end + 1
 				end
-				new_line := (txt.item (i_end) = '%N')
+				if i_end <= txt.count then
+					new_line := (txt.item (i_end) = '%N')
+				else
+					new_line := False
+				end
 				-- i_end always an index too far wrt 
 				i_end := i_end - 1
 				if current_width > width then

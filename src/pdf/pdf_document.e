@@ -223,28 +223,34 @@ feature -- Conversion
 	to_pdf : STRING is
 			-- 
 		local
+			string_stream : KL_STRING_OUTPUT_STREAM
+			output_medium : PDF_OUTPUT_MEDIUM
 			pdf_string : STRING
 		do
-			!!Result.make (256)
-			pdf_count := 0
-			-- build pages tree
-			build_pages_tree
-			-- header
-			pdf_string := pdf_header
-			pdf_count := pdf_count + pdf_string.count
-			Result.append (pdf_string)
-			-- body
-			pdf_string := pdf_body
-			Result.append (pdf_string)
-			-- cross reference
-			xref_index := pdf_count
-			pdf_string := xref.to_pdf
-			pdf_count := pdf_count + pdf_string.count
-			Result.append (pdf_string)
-			-- trailer
-			pdf_string := pdf_trailer
-			pdf_count := pdf_count + pdf_string.count
-			Result.append (pdf_string)
+			!!string_stream.make_empty
+			!!output_medium.make (string_stream)
+			put_pdf (output_medium)
+			Result := string_stream.string
+--			!!Result.make (256)
+--			pdf_count := 0
+--			-- build pages tree
+--			build_pages_tree
+--			-- header
+--			pdf_string := pdf_header
+--			pdf_count := pdf_count + pdf_string.count
+--			Result.append (pdf_string)
+--			-- body
+--			pdf_string := pdf_body
+--			Result.append (pdf_string)
+--			-- cross reference
+--			xref_index := pdf_count
+--			pdf_string := xref.to_pdf
+--			pdf_count := pdf_count + pdf_string.count
+--			Result.append (pdf_string)
+--			-- trailer
+--			pdf_string := pdf_trailer
+--			pdf_count := pdf_count + pdf_string.count
+--			Result.append (pdf_string)
 		end
 
 	put_pdf (medium : PDF_OUTPUT_MEDIUM) is
@@ -403,26 +409,6 @@ feature {NONE} -- Implementation
 
 	pdf_header : STRING is "%%PDF-1.3%N"
 
-	pdf_body : STRING is
-			-- 
-		local
-			object_number : INTEGER
-			pdf_string : STRING
-		do
-			!!Result.make (256)
-			from
-				object_number := 1
-			until
-				object_number = count
-			loop
-				pdf_string := xref.object (object_number).to_pdf
-				xref.set_entry_offset (object_number, pdf_count)
-				pdf_count := pdf_count + pdf_string.count
-				Result.append (pdf_string)
-				object_number := object_number + 1
-			end
-		end
-
 	put_pdf_body (medium : PDF_OUTPUT_MEDIUM) is
 			-- put pdf body
 		local
@@ -443,27 +429,6 @@ feature {NONE} -- Implementation
 			-- put pdf cross reference
 		do
 						
-		end
-
-	pdf_trailer : STRING is
-			-- 
-		local
-			size_name : PDF_NAME
-			root_name : PDF_NAME
-		do
-			!!Result.make (256)
-			Result.append ("trailer%N")
-			!!size_name.make ("Size")
-			!!root_name.make ("Root")
-			Result.append ("<<%N")
-			Result.append (dictionary_entry (size_name, count.out))
-			Result.append (dictionary_entry (root_name, catalog.indirect_reference))
-			Result.append (">>%N")
-			-- startxref
-			Result.append ("startxref%N")
-			Result.append (xref_index.out)
-			Result.append_character ('%N')
-			Result.append ("%%%%EOF%N")
 		end
 
 	put_pdf_trailer (medium : PDF_OUTPUT_MEDIUM) is
@@ -525,6 +490,7 @@ feature {NONE} -- Implementation
 			from
 				nodes_list_cursor := nodes_list.new_cursor
 				nodes_list_cursor.start
+				catalog.pages.empty_kids
 			until
 				nodes_list_cursor.off
 			loop

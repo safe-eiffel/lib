@@ -155,10 +155,10 @@ feature -- Status setting
 	end_text is
 			-- end text mode
 		require
-			is_text_mode
+			text_mode: is_text_mode
 		deferred
 		ensure
-			is_page_definition_mode
+			definition: is_page_definition_mode
 		end
 
 feature -- Coordinate space transformation
@@ -323,7 +323,7 @@ feature -- Path construction operators
 			-- circle of radius `r' centered at (`x',`y')
 			-- drawn counter clockwise
 		require
-			r > 0
+			positive_radius: r > 0
 		do
 		    --| emulate by drawing 4 quadrants
 		    move (x + r, y)
@@ -333,15 +333,15 @@ feature -- Path construction operators
 		    bezier_1 (x + r*Bezier_arc_magic, y - r, x + r, y - r*Bezier_arc_magic, x + r, y)
 			close_path
 		ensure
-			current_x = x + r
-			current_y = y
+			updated_x: current_x = x + r
+			unchanged_y: current_y = y
+			path_mode: is_path_mode
 		end
 		
 	circle_2 (x, y, r : DOUBLE) is
 			-- circle drawn clockwise
 		require
-			is_path_mode
-			r > 0
+			positive_radius:	r > 0
 		do
 		    --| emulate by drawing 4 quadrants
 		    move (x + r, y)
@@ -351,8 +351,9 @@ feature -- Path construction operators
 		    bezier_1 (x + r*Bezier_arc_magic, y + r, x + r, y + r*Bezier_arc_magic, x + r, y)
 			close_path		
 		ensure
-			current_x = x + r
-			current_y = y
+			updated_x: current_x = x + r
+			unchanged_y: current_y = y
+			path_mode: is_path_mode
 		end
 		
 	ellipse (x, y, width, height: DOUBLE) is
@@ -377,8 +378,9 @@ feature -- Path construction operators
 			bezier_1 (centre_x - offset_x, y, x, centre_y - offset_y,x, centre_y)
 			close_path
 		ensure
-			equal_numbers ( current_x, x)
-			equal_numbers ( current_y, y + height / 2)
+			unchanged_x: equal_numbers ( current_x, x)
+			changed_y: equal_numbers ( current_y, y + height / 2)
+			path_mode: is_path_mode
 		end
 		
 	pie (x, y, r, alpha, beta : DOUBLE) is
@@ -386,7 +388,6 @@ feature -- Path construction operators
 			-- going from `alpha' to `beta' radians 
 			-- clockwise: alpha > beta; counterclockwise: beta > alpha 
 		require
-			path_mode: 		 is_path_mode
 			positive_radius: r > 0
 			alpha_bounds :   alpha.abs <= (2 * math.Pi)
 			beta_bounds:     beta.abs <= (2 * math.Pi)
@@ -398,13 +399,13 @@ feature -- Path construction operators
 		ensure
 			new_current_x: equal_numbers (current_x, (x + r * math.cosine (alpha)))
 			new_current_y: equal_numbers (current_y, (y + r * math.sine (alpha)))
+			path_mode: is_path_mode
 		end
 		
 	arc (x, y, r, alpha, beta : DOUBLE) is
 			-- clockwise if alpha > beta
 			-- counterclockwise if beta > alpha
 		require
-			path_mode: 		 is_path_mode
 			positive_radius: r > 0
 			alpha_bounds: 	 alpha.abs <= (2 * math.Pi)
 			beta_bounds:	 beta.abs <= (2 * math.Pi)
@@ -436,6 +437,7 @@ feature -- Path construction operators
 		ensure
 			new_current_x: equal_numbers (current_x, (x + r * math.cosine (beta)))
 			new_current_y: equal_numbers (current_y, (y + r * math.sine (beta)))
+			path_mode: is_path_mode
 		end
 
 feature -- Math constants
@@ -451,7 +453,8 @@ feature {NONE} -- Implementation
 	arc_1_quadrant (x, y, r, alpha, beta : DOUBLE) is
 			-- arc for 1 quadrant
 		require
-			(beta - alpha).abs <= (math.Pi / 2)
+			arc_angle_not_zero: (beta - alpha).abs >= 0
+			arc_angle_less_quadrant: (beta - alpha).abs < (math.pi / 2 ) + 1.e-10
 		local
 			bacpr :  DOUBLE
 			sin_alpha, sin_beta, cos_alpha, cos_beta : DOUBLE

@@ -1,19 +1,20 @@
 indexing
 	description: "PDF Rectangle"
-	author: ""
+	author: "Paul G. Crismer"
 	date: "$Date$"
 	revision: "$Revision$"
 
 class
 	PDF_RECTANGLE
 
-	-- Replace ANY below by the name of parent class if any (adding more parents
-	-- if necessary); otherwise you can remove inheritance clause altogether.
 inherit
 	
 	PDF_ARRAY[INTEGER]
 		rename
 			make as make_pdf_array
+		export 
+			{NONE} all;
+			{ANY} to_pdf
 		end
 		
 creation
@@ -22,25 +23,33 @@ creation
 feature -- Initialization
 
 		make is
-				-- 
+				-- Make an 'empty' rectangle
 			do
 				make_pdf_array(1, 4)
+			ensure
+				empty : llx = 0 and lly = 0 and urx = 0 and ury = 0
 			end
 			
 		make_a4 is
-				-- 
+				-- make 'a4' size rectangle, in points (1/72 inch)
 			do
 				make
 				set (0, 0, 595, 842)
 				is_constant := True
+			ensure
+				ll_corner: llx = 0 and lly = 0
+				ur_corner: urx=595 and ury = 842
 			end
 			
 		make_letter is
-				-- 
+				-- make 'letter' size rectangle, in points (1/72 inch)
 			do
 				make
 				set (0, 0, 612, 792)
 				is_constant := True
+			ensure
+				ll_corner: llx = 0 and lly = 0
+				ur_corner: urx=595 and ury = 842
 			end
 			
 feature -- Access
@@ -91,28 +100,5 @@ feature -- Element change
 			urx = a_urx
 			ury = a_ury
 		end
-		
-feature -- Removal
-
-feature -- Resizing
-
-feature -- Transformation
-
-feature -- Conversion
-
-feature -- Duplication
-
-feature -- Miscellaneous
-
-feature -- Basic operations
-
-feature -- Obsolete
-
-feature -- Inapplicable
-
-feature {NONE} -- Implementation
-
-invariant
-	invariant_clause: True -- Your invariant here
 
 end -- class PDF_RECTANGLE

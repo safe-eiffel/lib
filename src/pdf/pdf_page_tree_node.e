@@ -34,6 +34,13 @@ feature {PDF_OBJECT} -- Measurement
 			not_leaf: not is_page
 		deferred
 		end
+
+feature {PDF_DOCUMENT} -- Element change
+
+	empty_kids is
+		do
+			kids.wipe_out
+		end
 		
 feature -- Status report
 

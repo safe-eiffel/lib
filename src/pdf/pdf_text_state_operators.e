@@ -35,11 +35,12 @@ feature -- Status setting
 			-- cannot change to non-clipping mode if in a clipping mode
 		require
 			good_mode: a_mode >= Text_Render_fill and a_mode <= Text_Render_clip
-			clipping_constraint: (is_text_mode and is_text_render_mode_clipping) implies
+			clipping_constraint:  is_forbidden_change_to_nonclipping_mode implies
 					     (a_mode >= Text_Render_Fill_n_clip and a_mode <= Text_Render_clip)
 		deferred
 		ensure
 			mode_set: text_render_mode = a_mode
+			clipping_rule: (is_text_render_mode_clipping and then is_text_mode) implies is_forbidden_change_to_nonclipping_mode
 		end
 
 	move_text_origin (x, y : DOUBLE) is

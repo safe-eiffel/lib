@@ -103,6 +103,8 @@ feature -- Status report - Text state
 			Result := (text_render_mode >= Text_render_fill_n_clip and text_render_mode <= Text_render_clip)
 		end
 
+	is_forbidden_change_to_nonclipping_mode : BOOLEAN
+	
 	is_default_text_state : BOOLEAN is
 			-- 
 		do
