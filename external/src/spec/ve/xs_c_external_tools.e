@@ -16,7 +16,7 @@ feature -- Basic operations
 	string_to_pointer (s : STRING) : POINTER is
 			-- pointer to "C" version of 's'
 		do
-			Result := s.as_c
+			Result := s.to_c
 		end
 
 	pointer_to_string (p : POINTER) : STRING is
@@ -33,10 +33,10 @@ feature -- Basic operations
 
 feature {NONE} -- Implementation
 
-		pointer (ptr : POINTER) : POINTER is
-			do
-				Result := ptr
-			end
+	pointer (ptr : POINTER) : POINTER is
+		do
+			Result := ptr
+		end
 
 invariant
 	invariant_clause: -- Your invariant here

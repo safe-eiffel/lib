@@ -36,21 +36,4 @@ feature -- Basic operations
 		deferred
 		end
 		
---	protect is
---			-- protect memory against moving GC
---		do
---			was_collecting := collecting
---			collection_off
---			is_protected := True
---		end
-		
---	unprotect is
---			-- unprotect memory
---		do
---			if was_collecting then
---				collection_on
---			end
---			is_protected := False
---		end
-
 end -- class XS_C_EXTERNAL_TOOLS_COMMON

@@ -1,9 +1,9 @@
 indexing
 	description: "C allocated 8 bit boolean : False = 0; True /= False."
 	author: "Paul G. Crismer"
-	
+
 	library: "XS_C : eXternal Support C"
-	
+
 	date: "$Date$"
 	revision: "$Revision$"
 	licensing: "See notice at end of class"
@@ -13,17 +13,17 @@ class
 
 inherit
 	XS_C_MEMORY
-	
+
 creation
 	make
-			
+
 feature -- Initialization
 
 	make is
 		do
 			handle := c_memory_allocate (item_size)
 		end
-		
+
 feature -- Access
 
 	item : BOOLEAN is
@@ -31,9 +31,9 @@ feature -- Access
 		do
 			Result := (c_memory_get_int8 (handle) /= ext_false)
 		end
-		
+
 feature -- Measurement
-	
+
 	item_size : INTEGER is do Result := 1 end
 
 feature -- Element change
@@ -50,14 +50,15 @@ feature -- Element change
 			end
 			c_memory_put_int8 (handle, l_int)
 		end
-		
+
 	ext_true : INTEGER is 1
 	ext_false : INTEGER is 0
-	
+
 invariant
 	handle_not_default_pointer: handle /= default_pointer
-	
+
 end -- class XS_C_BOOLEAN
+
 --
 -- Copyright: 2003, Paul G. Crismer, <pgcrism@users.sourceforge.net>
 -- Released under the Eiffel Forum License <www.eiffel-forum.org>

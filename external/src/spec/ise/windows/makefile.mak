@@ -13,7 +13,7 @@ xs_c_msc.lib: $(OBJ) ..\..\C\xs_c.h
 	lib /OUT:$@ $(OBJ)
 
 xs_c_msc.obj: xs_c_var ..\..\C\xs_c.c ..\..\C\xs_c.h
-	$(CC) $(CFLAGS) -o xs_c_msc.obj ..\..\C\xs_c.c
+	$(CC) $(CFLAGS) /Foxs_c_msc.obj ..\..\C\xs_c.c
 #	-ren xs_c.obj xs_c_msc.obj
 
 clean:
@@ -21,8 +21,8 @@ clean:
 	-del *.lib
 
 xs_c_var:
-! IFNDEF SAFE
-!    ERROR SAFE environment variable not set ! Set it first, then make the build.
+! IFNDEF SAFE_KERNEL
+!    ERROR SAFE_KERNEL environment variable not set ! Set it first, then make the build.
 ! ENDIF
 ! IFNDEF ISE_EIFFEL
 !    ERROR ISE_EIFFEL environment variable not set ! Set it first, then make the build.

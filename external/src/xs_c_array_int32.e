@@ -1,9 +1,9 @@
 indexing
 	description: "C allocated arrays of 32 bits integers."
 	author: "Paul G. Crismer"
-	
+
 	library: "XS_C : eXternal Support C"
-	
+
 	date: "$Date$"
 	revision: "$Revision$"
 	licensing: "See notice at end of class"
@@ -13,10 +13,10 @@ class
 
 inherit
 	XS_C_ARRAY [INTEGER]
-	
+
 creation
 	make
-			
+
 feature -- Access
 
 	item (index : INTEGER) : INTEGER is
@@ -27,9 +27,9 @@ feature -- Access
 			item_ptr := item_pointer (index)
 			Result := c_memory_get_int32 (item_ptr)
 		end
-		
+
 feature -- Measurement
-	
+
 	item_size : INTEGER is do Result := 4 end
 
 feature -- Element change
@@ -42,8 +42,9 @@ feature -- Element change
 			item_ptr := item_pointer (index)
 			c_memory_put_int32 (item_ptr, value)
 		end
-		
+
 end -- class XS_C_ARRAY_INT32
+
 --
 -- Copyright: 2003, Paul G. Crismer, <pgcrism@users.sourceforge.net>
 -- Released under the Eiffel Forum License <www.eiffel-forum.org>
