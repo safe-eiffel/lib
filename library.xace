@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<library name="library_epom" location="${EPOM}">
+
+	<description>
+		description : "Eiffel Persistent Object Management framework"
+	</description>
+	
+	<cluster name="library_epom" location="${EPOM}" prefix="epom_">
+		<option name="assertion" value="all" if="${DEBUG}"/>
+		<cluster name="src">
+			<option name="abstract" value="true"/>
+			<cluster name="interface">
+				<option name="assertion" value="all" if="${DEBUG}"/>
+			</cluster>
+			<cluster name="implementation">
+				<option name="assertion" value="all" if="${DEBUG}"/>
+				<!-- <option name="abstract" value="true"/> -->
+				<cluster name="ecli" unless="${EIFFELSTORE}">
+					<option name="assertion" value="all" if="${DEBUG}"/>
+				</cluster>
+				<cluster name="eiffelstore" if="${EIFFELSTORE}"/>
+			</cluster>
+		</cluster>
+	</cluster>
+</library>

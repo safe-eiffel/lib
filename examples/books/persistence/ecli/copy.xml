@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<modules>
+<access  type="extended" name="COPY_BORROWED">
+	<description>
+		description: "Get the borrowed copies"
+	</description>
+	<sql>
+select isbn, serial_number from copy where borrower is not null and borrower > 0
+	</sql>
+	<result_set extends="COPY_ID"/>
+</access>
+<access  type="exists" name="COPY_EXIST">
+	<description>
+		description: "Does a COPY exist?"
+	</description>
+	<sql>
+select count (*) as exists_count from COPY where isbn=?isbn and serial_number=?serial_number
+	</sql>
+	<parameter_set extends="COPY_ID">
+		<parameter name="isbn" table="COPY" column="isbn" sample="1234567"/> 
+		<parameter name="serial_number" table="COPY" column="serial_number" sample="1"/> 
+	</parameter_set>
+	<result_set extends="EXISTS_COUNT"/>
+</access>
+<access  type="read" name="COPY_READ">
+	<description>
+		description: "Read copy"
+	</description>
+	<sql>
+select isbn, serial_number, LOC_STORE, LOC_SHELF, LOC_ROW, BORROWER 
+from COPY 
+where isbn=?isbn and serial_number=?serial_number
+	</sql>
+	<parameter_set extends="COPY_ID">
+		<parameter name="isbn" table="COPY" column="isbn" sample="1234567"/> 
+		<parameter name="serial_number" table="COPY" column="serial_number" sample="1"/> 
+	</parameter_set>
+	<result_set extends="COPY_ROW"/>
+</access>
+<access  type="delete" name="COPY_DELETE">
+	<description>
+		description: "Delete copy"
+	</description>
+	<sql>delete from copy where isbn=?isbn and serial_number=?serial_number
+	</sql>
+	<parameter_set extends="COPY_ID">
+		<parameter name="isbn" table="COPY" column="isbn" sample="123456"/> 
+		<parameter name="serial_number" table="COPY" column="serial_number" sample="123456"/> 
+	</parameter_set>
+</access>
+<access  type="write" name="COPY_WRITE">
+	<description>
+		description: "Insert a copy"
+	</description>
+	<sql>
+insert into copy values (?isbn, ?serial_number, ?loc_store, ?loc_shelf, ?loc_row, ?borrower )
+	</sql>
+	<parameter_set>
+		<parameter name="loc_store" table="COPY" column="loc_store" sample="1"/> 
+		<parameter name="loc_shelf" table="COPY" column="loc_shelf" sample="1"/> 
+		<parameter name="loc_row" table="COPY" column="loc_row" sample="1"/> 
+		<parameter name="borrower" table="COPY" column="borrower" sample="1234"/> 
+		<parameter name="isbn" table="COPY" column="isbn" sample="1234"/> 
+		<parameter name="serial_number" table="COPY" column="serial_number" sample="123"/> 
+	</parameter_set>
+</access>
+
+<access  type="update" name="COPY_UPDATE">
+	<description>
+		description: "Update copy"
+	</description>
+	<sql>
+update copy 
+set loc_store=?loc_store, loc_shelf = ?loc_shelf, loc_row=?loc_row, borrower=?borrower 
+where isbn=?isbn and serial_number =?serial_number
+	</sql>
+	<parameter_set>
+		<parameter name="loc_store" table="COPY" column="loc_store" sample="1"/> 
+		<parameter name="loc_shelf" table="COPY" column="loc_shelf" sample="1"/> 
+		<parameter name="loc_row" table="COPY" column="loc_row" sample="1"/> 
+		<parameter name="borrower" table="COPY" column="borrower" sample="1"/> 
+		<parameter name="isbn" table="COPY" column="isbn" sample=" "/> 
+		<parameter name="serial_number" table="COPY" column="serial_number" sample="1"/> 
+	</parameter_set>
+</access>
+</modules>

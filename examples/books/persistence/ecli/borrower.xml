@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<modules>
+<access  type="extended" name="BORROWER_READ_LIKE">
+	<description>
+		description: "Search for borrower with name like some pattern"
+	</description>
+	<sql>
+select id from borrower where name like ?name
+	</sql>
+	<parameter_set>
+		<parameter name="name" table="BORROWER" column="name" sample="foo"/> 
+	</parameter_set>
+	<result_set extends="BORROWER_ID"/>
+</access>
+<access  type="exists" name="BORROWER_EXIST">
+	<description>
+		description: "Does a borrower exists?"
+	</description>
+	<sql>
+select count (*) as exists_count from borrower where id = ?id
+	</sql>
+	<parameter_set extends="BORROWER_ID">
+		<parameter name="id" table="BORROWER" column="id" sample="1"/> 
+	</parameter_set>
+	<result_set extends="EXISTS_COUNT"/>
+</access>
+<access  type="read" name="BORROWER_READ">
+	<description>
+		description: "Read Borrower"
+	</description>
+	<sql>
+select id, name, address from borrower where id = ?id
+	</sql>
+	<parameter_set extends="BORROWER_ID">
+		<parameter name="id" table="BORROWER" column="id" sample="1"/> 
+	</parameter_set>
+	<result_set extends="BORROWER_ROW"/>
+</access>
+<access  type="delete" name="BORROWER_DELETE">
+	<description>
+		description: "Delete borrower"
+	</description>
+	<sql>
+delete from borrower where id = ?id
+	</sql>
+	<parameter_set extends="BORROWER_ID">
+		<parameter name="id" table="BORROWER" column="id" sample="10"/> 
+	</parameter_set>
+</access>
+<access  type="write" name="BORROWER_WRITE">
+	<description>
+		description: "Write Borrower"
+	</description>
+	<sql>
+insert into borrower values (?id, ?name, ?address)
+	</sql>
+	<parameter_set extends="BORROWER_MODIFY_PARAMETERS">
+		<parameter name="id" table="BORROWER" column="id" sample="123"/> 
+		<parameter name="address" table="BORROWER" column="address" sample="abcdef"/> 
+		<parameter name="name" table="BORROWER" column="name" sample="foo"/> 
+	</parameter_set>
+</access>
+<access  type="update" name="BORROWER_UPDATE">
+	<description>
+		description: "Update borrower"
+	</description>
+	<sql>
+update borrower set name=?name, address =?address where id=?id
+	</sql>
+	<parameter_set extends="BORROWER_MODIFY_PARAMETERS">
+		<parameter name="id" table="BORROWER" column="id" sample="10"/> 
+		<parameter name="address" table="BORROWER" column="address" sample="abcdef"/> 
+		<parameter name="name" table="BORROWER" column="name" sample="foo"/> 
+	</parameter_set>
+</access>
+</modules>

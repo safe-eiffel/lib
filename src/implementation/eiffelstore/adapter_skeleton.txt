@@ -1,0 +1,126 @@
+indexing
+	description: "Persistence adapter for <CLASS>."
+	author: ""
+	date: "$Date$"
+	revision: "$Revision$"
+
+class
+	<CLASS>_ADAPTER
+
+inherit
+	EIFFELSTORE_SIMPLE_ADAPTER[<CLASS>]
+		redefine
+			is_pid_valid, pid_tuple
+		end
+		
+create
+	make
+	
+feature -- Access
+
+	class_name : STRING is <CLASS>
+	
+feature -- Status report
+
+	is_pid_valid (p: like last_pid) : BOOLEAN is
+			-- 
+		do
+			<IMPLEMENT>
+		end
+		
+feature -- Basic operations
+
+	create_pid_from_object (an_object: <CLASS>) is
+		do
+			<IMPLEMENT>
+		end
+		
+	<OTHER ACCESS MODES>
+	
+feature -- Inapplicable
+
+	row : <CLASS>_ROW
+
+	pid_row : <PID_CLASS>_ROW
+	
+	create_row is 
+		do
+			<IMPLEMENT>
+		end
+
+	
+	create_pid_row is 
+		do
+			<IMPLEMENT>
+		end
+		
+feature {NONE} -- Implementation
+	
+	pid_tuple : TUPLE [<IMPLEMENT>]
+		-- primary key is ...
+		
+	sql_exists: STRING is "<STRING_CONSTANT>"
+	
+	init_parameters_for_exists (tuple : like pid_tuple) is
+			-- 
+		do
+			<IMPLEMENT>
+		end
+
+	sql_read: STRING is "<STRING_CONSTANT>"
+	
+	init_parameters_for_read (tuple : like pid_tuple) is
+			-- 
+		do
+			<IMPLEMENT>
+		end
+
+	sql_refresh: STRING is "<STRING_CONSTANT>"
+	
+
+	init_parameters_for_refresh (t : like pid_tuple) is
+			-- initialize refresh query parameters with pid information
+		do
+			<IMPLEMENT>
+		end
+
+	sql_delete : STRING is "<STRING_CONSTANT>"
+
+	init_parameters_for_delete (t : like pid_tuple) is
+		do
+			<IMPLEMENT>
+		end
+
+	sql_write: STRING is "<STRING_CONSTANT>"
+
+	init_parameters_for_write (o : like last_object; p : like last_pid) is
+		do
+			<IMPLEMENT>
+		end
+
+	sql_update: STRING is "<STRING_CONSTANT>"
+	
+	init_parameters_for_update (o : like last_object; p : like last_pid) is
+		do
+			<IMPLEMENT>
+		end
+		
+	create_object_from_row is
+		do
+			<IMPLEMENT>
+			count := count + 1
+		end
+		
+	fill_object_from_row is
+			-- 
+		do
+			<IMPLEMENT>
+		end
+
+	create_pid_from_pid_row is
+		do
+			<IMPLEMENT>
+			count := count + 1
+		end
+			
+end -- class BOOK_ADAPTER
