@@ -1,6 +1,6 @@
 CC = cl
 PLATFORM=windows
-CFLAGS = -Ox -nologo -c -I$(EIFFEL4)\bench\spec\$(PLATFORM)\include -I. -I$(PDCURSES)
+CFLAGS = -Ox -nologo -c -I$(ISE_EIFFEL)\studio\spec\$(PLATFORM)\include -I. -I$(PDCURSES)
 OBJ = ecurses_acs_characters.obj ecurses_attributes.obj ecurses_color_constants.obj ecurses_key_constants.obj ecurses_window_api.obj ecurses_panel_api.obj ecurses_slk_api.obj ecurses_system_api.obj ecurses_pad_api.obj
 
 all::clean ecurses_c.lib
