@@ -63,21 +63,6 @@ feature {NONE} -- Initialization
 			is_copy: as_string.is_equal (s)
 		end
 
-	make_shared_from_pointer (p : POINTER; a_capacity : INTEGER) is
-			-- 
-		require
-			p_not_default: p /= default_pointer
-			a_capacity_positive: a_capacity >= 0
-		do
-			handle := p
-			capacity := a_capacity
-			is_shared := True
-		ensure
-			handle_set: handle = p
-			capacity_set: capacity = a_capacity
-			is_shared: is_shared
-		end
-	
 	make_from_pointer (p : POINTER; a_capacity : INTEGER) is
 			-- make from externally allocated pointer and manage it
 		require
@@ -90,7 +75,24 @@ feature {NONE} -- Initialization
 			handle_set: handle = p
 			capacity_set: capacity = a_capacity
 		end
-		
+
+feature -- Initialization
+
+	make_shared_from_pointer (p : POINTER; a_capacity : INTEGER) is
+			-- have access to `p' as a string, sharing pointer
+		require
+			p_not_default: p /= default_pointer
+			a_capacity_positive: a_capacity >= 0
+		do
+			handle := p
+			capacity := a_capacity
+			is_shared := True
+		ensure
+			handle_set: handle = p
+			capacity_set: capacity = a_capacity
+			is_shared: is_shared
+		end
+
 feature -- Access
 
 	capacity : INTEGER
@@ -204,6 +206,16 @@ feature -- Element change
 				handle := default_pointer
 			end
 		end
+
+feature -- Basic operations
+
+	copy_to (s : STRING) is
+			-- copy 'Current' to `s'
+		do
+			string_copy_from_pointer (s, handle)
+		ensure
+			s_equal_as_string: as_string.is_equal (s)
+		end
 		
 feature {NONE} -- Implementation
 
@@ -219,7 +231,7 @@ feature {NONE} -- Implementation
 
 invariant
 	is_valid_or_released: is_valid or else is_released
-	
+		
 end -- class XS_C_STRING
 --
 -- Copyright: 2003, Paul G. Crismer, <pgcrism@users.sourceforge.net>
