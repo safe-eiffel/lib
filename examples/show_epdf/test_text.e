@@ -39,10 +39,7 @@ feature -- Basic operations
 			p.set_font (d.last_font, 24)
 			p.set_text_leading (26.5)
 			p.move_text_origin (100, p.mediabox.ury-150-p.text_leading)
-			p.put_text ("ePDF is an Eiffel Library that allows the creation of simple PDF %
-			% documents. It supports various graphics operations, text operations and provides some smart %
-			% operations like 'put_text'.  %%Put_text%% allows you to write text within a box, but without %
-			% any word wrapping.%NUnsupported are images, XObjects, patterns, document encoding and encryption.", 200)
+			p.put_text (text_to_show, 200)
 			p.end_text
 			p.set_line_dash (<<3>>, 1)
 			p.rectangle (350, 100, 200,  p.mediabox.ury-250)
@@ -51,41 +48,33 @@ feature -- Basic operations
 			p.set_text_leading (11.5)
 			p.begin_text
 			p.move_text_origin (350, p.mediabox.ury-150-p.text_leading)
-			p.put_text ("ePDF is an Eiffel Library that allows the creation of simple PDF %
-			% documents. It supports various graphics operations, text operations and provides some smart %
-			% operations like 'put_text'.  %%Put_text%% allows you to write text within a box, but without %
-			% any word wrapping.%NUnsupported are images, XObjects, patterns, document encoding and encryption.", 200)
+			p.put_text (text_to_show, 200)
 
 			p.set_word_spacing (3)
 			p.move_text_origin (0, -p.text_leading*2)
-			p.put_text ("ePDF is an Eiffel Library that allows the creation of simple PDF %
-			% documents. It supports various graphics operations, text operations and provides some smart %
-			% operations like 'put_text'.  %%Put_text%% allows you to write text within a box, but without %
-			% any word wrapping.%NUnsupported are images, XObjects, patterns, document encoding and encryption.", 200)
+			p.put_text (text_to_show, 200)
 
 			p.set_character_spacing (1)
 			p.move_text_origin (0, -p.text_leading*2)
-			p.put_text ("ePDF is an Eiffel Library that allows the creation of simple PDF %
-			% documents. It supports various graphics operations, text operations and provides some smart %
-			% operations like 'put_text'.  %%Put_text%% allows you to write text within a box, but without %
-			% any word wrapping.%NUnsupported are images, XObjects, patterns, document encoding and encryption.", 200)
+			p.put_text (text_to_show, 200)
 
 			p.set_horizontal_scaling (200)
 			p.move_text_origin (0, -p.text_leading*2)
-			p.put_text ("ePDF is an Eiffel Library that allows the creation of simple PDF %
-			% documents. It supports various graphics operations, text operations and provides some smart %
-			% operations like 'put_text'.  %%Put_text%% allows you to write text within a box, but without %
-			% any word wrapping.%NUnsupported are images, XObjects, patterns, document encoding and encryption.", 200)
+			p.put_text (text_to_show, 200)
 			p.end_text
 			
 		end
-		
-feature -- Obsolete
-
-feature -- Inapplicable
 
 feature {NONE} -- Implementation
 
+	text_to_show : STRING is
+		once
+			Result := "ePDF is an Eiffel Library that allows the creation of simple PDF %
+			% documents. It supports various graphics operations, text operations and provides some smart %
+			% operations like 'put_text'.  %%Put_text%% allows you to write text within a box, but without %
+			% any word wrapping.%NUnsupported are patterns, forms, document encoding and encryption."
+		end
+		
 invariant
 	invariant_clause: True -- Your invariant here
 

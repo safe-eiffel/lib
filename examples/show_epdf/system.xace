@@ -21,7 +21,7 @@
 		<option name="finalize" value="false"/>
 	</option>
 
-	<mount location="${EPDF}/library.xace"/>
+	<mount location="${SAFE}/lib/epdf/library.xace"/>
 	<mount location="${GOBO}/library/library.xace"/>
 	<mount location="${GOBO}/library/kernel.xace"/>
 </system>

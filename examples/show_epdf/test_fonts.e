@@ -1,5 +1,5 @@
 indexing
-	description: "Objects that test font capabilities of eif-PDF"
+	description: "Objects that test font capabilities of ePDF"
 	author: ""
 	date: "$Date$"
 	revision: "$Revision$"
