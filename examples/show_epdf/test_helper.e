@@ -62,8 +62,7 @@ feature {NONE} -- Implementation
 		do
 			p.gsave
 			p.rectangle (x-(w/2), y-(w/2), w, w)
-			p.fill
-			p.stroke
+			p.fill_then_stroke
 			p.grestore
 		end
 
