@@ -42,9 +42,8 @@ feature  -- -- Element change
 
 feature  -- Constants
 
-	definition: STRING is "[
-insert into borrower values (?id, ?name, ?address)
-	
-]"
+	definition: STRING is " %
+% insert into borrower values (?id, ?name, ?address) %
+% "
 
 end

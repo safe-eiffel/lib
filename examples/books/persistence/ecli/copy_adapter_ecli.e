@@ -89,7 +89,7 @@ feature -- Basic operations
 feature {NONE} -- Factory
 
 		
-	create_pid_from_object (an_object : like last_object) is
+	create_pid_from_object (an_object : like object_anchor) is
 			-- 
 		do
 			create last_pid.make (an_object.book.isbn, an_object.number)

@@ -26,10 +26,9 @@ feature  -- -- Access
 
 feature  -- Constants
 
-	definition: STRING is "[
-select isbn, serial_number from copy where borrower is not null
-	
-]"
+	definition: STRING is " %
+% select isbn, serial_number from copy where borrower is not null %
+% "
 
 feature {NONE} -- Implementation
 

@@ -44,7 +44,7 @@ feature -- Conversion
 	to_string : STRING is
 			-- 
 		do
-			create Result.make_from_string (class_name)
+			create Result.make_from_string (persistent_class_name)
 			Result.append_character(',')
 			Result.append_string (id.out)
 		end

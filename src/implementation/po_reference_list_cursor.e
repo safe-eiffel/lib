@@ -70,10 +70,10 @@ feature {PO_ADAPTER} -- Element change
 		require
 			object_valid: object /= Void and object.is_persistent
 		local
-			reference : PO_REFERENCE[G]
+			a_reference : PO_REFERENCE[G]
 		do
-			create reference.set_item (object)
-			add_reference (reference)
+			create a_reference.set_item (object)
+			add_reference (a_reference)
 		end
 	
 	add_last_pid (adapter : PO_ADAPTER[G]) is
@@ -81,10 +81,10 @@ feature {PO_ADAPTER} -- Element change
 		require
 			last_pid_valid: adapter /= Void and then adapter.last_pid /= Void
 		local
-			reference : PO_REFERENCE [G]
+			a_reference : PO_REFERENCE [G]
 		do
-			create reference.set_pid_from_adapter (adapter)
-			add_reference (reference)
+			create a_reference.set_pid_from_adapter (adapter)
+			add_reference (a_reference)
 		end
 		
 feature {NONE} -- Implementation

@@ -119,7 +119,7 @@ feature -- Status report
 feature {PO_ADAPTER} -- Status setting
 
 	set_deleted is
-			-- set `is_deleted' to `value'
+			-- Set `is_deleted'.
 		require
 			is_persistent: is_persistent
 		do
@@ -133,7 +133,7 @@ feature {PO_ADAPTER} -- Status setting
 feature  {PO_ADAPTER } -- Element change
 
 	set_pid (p : PO_PID ) is
-			-- set `pid' to `p'
+			-- Set `pid' to `p'.
 		require
 			p_not_void: p /= Void
 			same_persistent_class_names : p.persistent_class_name.is_equal (persistent_class_name)
@@ -142,6 +142,14 @@ feature  {PO_ADAPTER } -- Element change
 		ensure
 			shared_pid: pid = p
 			same_class_names: equal (persistent_class_name, pid.persistent_class_name)
+		end
+
+	disable_modified is
+			-- Set `is_modified' to False.
+		do
+			set_modified (False)
+		ensure
+			fresh: not is_modified
 		end
 
 feature -- Basic operations
@@ -159,9 +167,6 @@ feature -- Basic operations
 			if adapter /= Void then
 				adapter.write (Current)
 				status.copy (adapter.status)
-				if not status.is_error then
-					set_modified(False)
-				end
 			else
 				status.copy (persistence_manager.status)
 			end
@@ -180,11 +185,7 @@ feature -- Basic operations
 			adapter := adapter_for_me
 			if adapter /= Void then
 				adapter.update (Current)
---				status.copy (adapter.status)
 				status.copy (adapter.status)
-				if not status.is_error then
-					set_modified(False)
-				end
 			else
 				status.copy (persistence_manager.status)
 			end
@@ -204,9 +205,6 @@ feature -- Basic operations
 			if adapter /= Void then
 				adapter.delete (Current)
 				status.copy (adapter.status)
-				if not status.is_error then
-					pid := Void
-				end
 			else
 				status.copy (persistence_manager.status)
 			end
@@ -227,9 +225,6 @@ feature -- Basic operations
 			if adapter /= Void then
 				adapter.refresh (Current)
 				status.copy (adapter.status)
-				if not status.is_error then
-					set_modified(False)
-				end
 			else
 				status.copy (persistence_manager.status)
 			end
@@ -253,13 +248,12 @@ feature {NONE} -- Implementation
 				Result ?= persistence_manager.last_adapter
 			end
 		end
-	
+
 	set_modified (value : BOOLEAN) is
 			-- set `is_modified' to `value'
 		do
 			modified_impl := Value
 		end
-
 	modified_impl : BOOLEAN
 
 	deleted_impl : BOOLEAN

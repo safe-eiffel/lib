@@ -21,7 +21,7 @@ inherit
 		redefine
 			last_pid
 		end
-		
+
 	ECLI_ADAPTER_WRITE_SKELETON[BORROWER]
 		redefine
 			last_pid
@@ -31,12 +31,12 @@ inherit
 		redefine
 			last_pid
 		end
-	
+
 	ECLI_ADAPTER_UPDATE_SKELETON[BORROWER]
 		redefine
 			last_pid
 		end
-	
+
 	ECLI_ADAPTER_SINK_SKELETON[BORROWER]
 		undefine
 			on_adapter_connected, on_adapter_disconnect,
@@ -54,10 +54,10 @@ inherit
 creation
 
 	make
-	
+
 feature {PO_ADAPTER, PO_CURSOR, PO_REFERENCE, PO_PERSISTENT} -- Access
 
-	last_pid : BORROWER_PID 
+	last_pid : BORROWER_PID
 
 feature {PO_DATASTORE}-- Basic operations
 
@@ -68,7 +68,7 @@ feature {PO_DATASTORE}-- Basic operations
 			create update_query.make (datastore.session)
 			create delete_query.make (datastore.session)
 		end
-		
+
 	on_adapter_disconnect is
 		do
 			read_cursor.close
@@ -76,7 +76,7 @@ feature {PO_DATASTORE}-- Basic operations
 			update_query.close
 			delete_query.close
 		end
-		
+
 feature -- Basic operations
 
 	read_by_id (id : INTEGER) is
@@ -85,7 +85,7 @@ feature -- Basic operations
 			create last_pid.make (id)
 			read (last_pid)
 		end
-		
+
 	read_by_name_pattern (name_pattern : STRING) is
 			-- read by `name_pattern'
 		local
@@ -103,32 +103,32 @@ feature {PO_ADAPTER} -- Factory
 			create last_pid.make (id)
 		end
 
-	create_pid_from_object (object : like last_object) is
+	create_pid_from_object (object : like object_anchor) is
 		do
 			create last_pid.make (object.id)
 		end
-	
+
 feature {NONE} -- Implementation
 
 	init_parameters_for_read (a_pid : like last_pid) is
 		do
 			read_cursor.set_parameters_object (borrower_id_parameter (a_pid))
 		end
-		
+
 	init_parameters_for_delete  (a_pid : like last_pid) is
 		do
 			delete_query.set_parameters_object (borrower_id_parameter (a_pid))
 		end
 
 	init_parameters_for_write (object : like last_object; a_pid : like last_pid) is
-		do			
+		do
 			write_query.set_parameters_object (modify_parameters(object, a_pid))
 		end
 
 	init_parameters_for_update (object : like last_object; a_pid : like last_pid) is
 		do
 			update_query.set_parameters_object (modify_parameters (object, a_pid))
-		end		
+		end
 
 feature {NONE} -- Implementation --factories
 
@@ -138,16 +138,14 @@ feature {NONE} -- Implementation --factories
 				a_cursor.item.name.as_string,
 				a_cursor.item.address.as_string)
 		end
-		
+
 	fill_object_from_read_cursor  (a_cursor : like read_cursor; object : like last_object) is
-			-- 
+			--
 		do
 			do_nothing
 		end
 
 	extend_cursor_from_borrower_id (id : BORROWER_ID) is
-		local
-			reference : PO_REFERENCE[BORROWER]
 		do
 			create last_pid.make (id.id.as_integer)
 			last_cursor.add_last_pid (Current)
@@ -158,7 +156,7 @@ feature {NONE} -- Implementation --factories
 			create Result.make
 			Result.id.set_item (a_pid.id)
 		end
-		
+
 	modify_parameters (object : like last_object; a_pid : like last_pid) : BORROWER_MODIFY_PARAMETERS is
 		do
 			create Result.make
@@ -170,11 +168,11 @@ feature {NONE} -- Implementation --factories
 feature {NONE} -- Implementation -- datastore access
 
 	read_cursor : BORROWER_READ
-	
+
 	write_query : BORROWER_WRITE
-	
+
 	update_query : BORROWER_UPDATE
-	
+
 	delete_query : BORROWER_DELETE
 
 end

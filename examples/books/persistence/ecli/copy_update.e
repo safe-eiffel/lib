@@ -45,11 +45,10 @@ feature  -- -- Element change
 
 feature  -- Constants
 
-	definition: STRING is "[
-update copy 
-set loc_store=?loc_store, loc_shelf = ?loc_shelf, loc_row=?loc_row, borrower=?borrower 
-where isbn=?isbn and serial_number =?serial_number
-	
-]"
+	definition: STRING is "%
+% update copy %
+% set loc_store=?loc_store, loc_shelf = ?loc_shelf, loc_row=?loc_row, borrower=?borrower %
+% where isbn=?isbn and serial_number =?serial_number %
+% "
 
 end

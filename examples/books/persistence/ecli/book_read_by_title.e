@@ -42,10 +42,8 @@ feature  -- -- Element change
 
 feature  -- Constants
 
-	definition: STRING is "[
-select isbn, title, author from book where title like ?title
-	
-]"
+	definition: STRING is "select isbn, title, author from book where title like ?title%
+%	"
 
 feature {NONE} -- Implementation
 

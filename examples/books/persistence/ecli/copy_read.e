@@ -43,12 +43,11 @@ feature  -- -- Element change
 
 feature  -- Constants
 
-	definition: STRING is "[
-select isbn, serial_number, LOC_STORE, LOC_SHELF, LOC_ROW, BORROWER 
-from COPY 
-where isbn=?isbn and serial_number=?serial_number
-	
-]"
+	definition: STRING is "%
+% select isbn, serial_number, LOC_STORE, LOC_SHELF, LOC_ROW, BORROWER %
+% from COPY %
+% where isbn=?isbn and serial_number=?serial_number %
+% "
 
 feature {NONE} -- Implementation
 

@@ -40,9 +40,8 @@ feature  -- -- Element change
 
 feature  -- Constants
 
-	definition: STRING is "[
-delete from borrower where id = ?id
-	
-]"
+	definition: STRING is " %
+% delete from borrower where id = ?id %
+% "
 
 end

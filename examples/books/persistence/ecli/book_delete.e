@@ -40,9 +40,7 @@ feature  -- -- Element change
 
 feature  -- Constants
 
-	definition: STRING is "[
-delete from book where isbn = ?isbn
-	
-]"
+	definition: STRING is "delete from book where isbn = ?isbn%
+%	"
 
 end -- class BOOK_DELETE

@@ -42,10 +42,9 @@ feature  -- -- Element change
 
 feature  -- Constants
 
-	definition: STRING is "[
-select id, name, address from borrower where id = ?id
-	
-]"
+	definition: STRING is " %
+% select id, name, address from borrower where id = ?id %
+% "
 
 feature {NONE} -- Implementation
 

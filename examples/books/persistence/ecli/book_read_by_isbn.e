@@ -42,10 +42,8 @@ feature  -- -- Element change
 
 feature  -- Constants
 
-	definition: STRING is "[
-select isbn, title, author from BOOK where isbn = ?isbn
-	
-]"
+	definition: STRING is "select isbn, title, author from BOOK where isbn = ?isbn%
+%	"
 
 feature {NONE} -- Implementation
 

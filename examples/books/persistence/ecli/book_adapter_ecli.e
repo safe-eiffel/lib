@@ -49,8 +49,6 @@ inherit
 	BOOK_ADAPTER_ACCESS_ROUTINES
 		rename
 			book_read_by_title as read_by_title
-		redefine
-			read_by_title
 		end
 
 creation
@@ -63,7 +61,7 @@ feature {PO_ADAPTER}-- Access
 
 feature {NONE}-- Basic operations
 
-	create_pid_from_object (b : BOOK) is
+	create_pid_from_object (b : like object_anchor) is
 			-- 
 		do
 			create last_pid.make_from_isbn (b.isbn)

@@ -42,10 +42,9 @@ feature  -- -- Element change
 
 feature  -- Constants
 
-	definition: STRING is "[
-select id from borrower where name like ?name
-	
-]"
+	definition: STRING is " %
+% select id from borrower where name like ?name %
+% "
 
 feature {NONE} -- Implementation
 

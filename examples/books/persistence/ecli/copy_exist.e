@@ -43,10 +43,9 @@ feature  -- -- Element change
 
 feature  -- Constants
 
-	definition: STRING is "[
-select count (*) as exists_count from COPY where isbn=?isbn and serial_number=?serial_number
-	
-]"
+	definition: STRING is "%
+% select count (*) as exists_count from COPY where isbn=?isbn and serial_number=?serial_number %
+% "
 
 feature {NONE} -- Implementation
 

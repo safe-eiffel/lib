@@ -25,7 +25,7 @@ feature -- Status report
 
 feature -- Basic operations
 
-	delete (object: like last_object) is
+	delete (object: like object_anchor) is
 			-- Delete `object' from datastore using `delete_query'.
 		do  
 			status.reset

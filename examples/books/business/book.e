@@ -13,9 +13,6 @@ class BOOK
 inherit
 
 	PO_PERSISTENT
-		redefine
-			persistent_class_name
-		end
 	
 	BOOK_PERSISTENT_CLASS_NAME
 	
@@ -26,18 +23,19 @@ creation
 feature -- Initialization
 
 	make (an_isbn, a_title, an_author : STRING) is
-			-- 
+			-- Make with `an_isbn', `a_title', `an_author'.
 		require
-			a_isbn_not_void:  an_isbn /= Void and an_isbn.count > 0 and an_isbn.count <= 14
-			a_title_not_void:  a_title /= Void
-			an_author_not_void:  an_author /= Void
+			a_isbn_valid:  an_isbn /= Void and an_isbn.count > 0 and an_isbn.count <= 14
+			a_title_valid:  a_title /= Void and not a_title.is_empty
+			an_author_not_void:  an_author /= Void and not an_author.is_empty
 		do
 			isbn := an_isbn
 			title := a_title
 			author := an_author
 		ensure
-			isbn = an_isbn
-			title = a_title
+			isbn_set: isbn = an_isbn
+			title_set: title = a_title
+			author_set: author = an_author
 		end
 		
 feature -- Access
@@ -51,6 +49,6 @@ feature -- Access
 invariant
 
 	isbn_ok: isbn /= Void and then isbn.count > 0 and isbn.count <=14
-	title_ok: title /= Void and then title.count > 0
-
+	title_ok: title /= Void and then not title.is_empty
+	author_set: author /= Void and then not author.is_empty
 end

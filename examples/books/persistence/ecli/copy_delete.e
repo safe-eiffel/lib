@@ -41,9 +41,8 @@ feature  -- -- Element change
 
 feature  -- Constants
 
-	definition: STRING is "[
-delete from copy where isbn=?isbn and serial_number=?serial_number
-	
-]"
+	definition: STRING is "%
+% delete from copy where isbn=?isbn and serial_number=?serial_number %
+% "
 
 end

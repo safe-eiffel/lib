@@ -8,7 +8,7 @@ indexing
 	license: "Eiffel Forum License v2 (see forum.txt)"
 	date: "$Date$"
 
-deferred class PO_STATUS_USE
+class PO_STATUS_USE
 
 feature -- Access
 

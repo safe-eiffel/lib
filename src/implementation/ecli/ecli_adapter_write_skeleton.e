@@ -23,7 +23,7 @@ feature -- Status report
 
 feature -- Basic operations
 
-	write (object: like last_object) is
+	write (object: like object_anchor) is
 			-- Write `object' on datastore.
 		do
 			status.reset
@@ -34,6 +34,7 @@ feature -- Basic operations
 				write_query.execute
 				if write_query.is_ok then
 					object.set_pid (last_pid)
+					object.disable_modified
 					if is_enabled_cache_on_write then
 						cache.force (last_object, last_pid.to_string)
 					end

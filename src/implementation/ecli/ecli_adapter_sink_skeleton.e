@@ -29,22 +29,22 @@ feature -- Basic operations
 			do_nothing
 		end
 
-	update (object: like last_object) is
+	update (object: like object_anchor) is
 		do
 			do_nothing
 		end
 
-	refresh (object: like last_object) is
+	refresh (object: like object_anchor) is
 		do
 			do_nothing
 		end
 
-	write (object: like last_object)  is
+	write (object: like object_anchor)  is
 		do
 			do_nothing
 		end
 
-	delete (object: like last_object) is
+	delete (object: like object_anchor) is
 		do
 			do_nothing
 		end

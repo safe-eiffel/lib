@@ -42,9 +42,8 @@ feature  -- -- Element change
 
 feature  -- Constants
 
-	definition: STRING is "[
-update borrower set name=?name, address =?address where id=?id
-	
-]"
+	definition: STRING is " %
+% update borrower set name=?name, address =?address where id=?id %
+% "
 
 end

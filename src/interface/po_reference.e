@@ -16,7 +16,7 @@ inherit
 	
 creation
 
-	default_create, set_pid_from_adapter, set_item, make_void
+	set_pid_from_adapter, set_item, make_void
 	
 feature -- Access			
 	

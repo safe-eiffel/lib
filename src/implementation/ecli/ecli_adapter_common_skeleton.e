@@ -127,10 +127,10 @@ feature -- Basic operations
 	
 feature {PO_ADAPTER} -- Basic operations
 
-	create_pid_from_object (an_object: G) is
-			-- Create `last_pid' based on the content of `an_object'
-		deferred
-		end
+--	create_pid_from_object (an_object: G) is
+--			-- Create `last_pid' based on the content of `an_object'
+--		deferred
+--		end
 
 	init_parameters_for_exists (a_pid : like last_pid) is
 			-- Initialize parameters of `Sql_exists' with information from `a_pid'

@@ -11,7 +11,7 @@ indexing
 	authors: "Eric Fafchamps, Paul G. Crismer"
 	
 	usage: "%N%
-	%	* Inherit from it.%N% 
+	%	* Inherit from it.%N%
 	%	* Implement deferred features. %N%
 	%	* Redefine `last_pid'.%N%
 	%	%N%

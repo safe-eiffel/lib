@@ -45,9 +45,8 @@ feature  -- -- Element change
 
 feature  -- Constants
 
-	definition: STRING is "[
-insert into copy values (?isbn, ?serial_number, ?loc_store, ?loc_shelf, ?loc_row, ?borrower )
-	
-]"
+	definition: STRING is " %
+% insert into copy values (?isbn, ?serial_number, ?loc_store, ?loc_shelf, ?loc_row, ?borrower ) %
+% "
 
 end

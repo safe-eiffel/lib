@@ -12,7 +12,7 @@
 	author: "Eric Fafchamps"
 	
 	usage: "%N%
-	%	* Inherit from it.%N% 
+	%	* Inherit from it.%N%
 	%	* Implement deferred features. %N%
 	%	* Redefine `last_pid'.%N%
 	%	%N%
@@ -391,7 +391,7 @@ feature {PO_ADAPTER} -- Implementation
 		local
 			ref : PO_REFERENCE[G]
 		do
-			create ref
+			create ref.make_void
 			ref.set_pid_from_adapter (Current)
 			last_cursor.add_reference (ref)
 		end
@@ -401,8 +401,7 @@ feature {PO_ADAPTER} -- Implementation
 		local
 			ref : PO_REFERENCE[G]
 		do
-			create ref
-			ref.set_item (last_object)
+			create ref.set_item (last_object)
 			last_cursor.add_reference (ref)
 		end
 

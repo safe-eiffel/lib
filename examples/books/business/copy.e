@@ -2,7 +2,7 @@ indexing
 
 	description:
 
-		"COPY of a BOOK"
+		"Copies of a BOOK"
 
 	copyright: "Copyright (c) 2004, Paul G. Crismer and others"
 	license: "Eiffel Forum License v2 (see forum.txt)"
@@ -13,9 +13,6 @@ class COPY
 inherit
 
 	PO_PERSISTENT
-		redefine
-			persistent_class_name
-		end
 	
 	COPY_PERSISTENT_CLASS_NAME
 
@@ -30,7 +27,7 @@ creation
 feature {NONE} -- Initialization
 
 	make (a_book : BOOK; a_number : INTEGER) is
-			-- create copy `a_number' for `a_book'
+			-- Create copy `a_number' for `a_book'.
 		require
 			a_book_not_void:  a_book /= Void
 			a_number_positive: a_number >= 0
@@ -44,7 +41,7 @@ feature {NONE} -- Initialization
 		end
 
 	make_lazy (a_reference : PO_REFERENCE[BOOK]; a_number : INTEGER) is
-			-- create copy `a_number' for a book passed by `a_reference'
+			-- Create copy `a_number' for a book passed by `a_reference'.
 		require
 			a_reference_not_void:  a_reference /= Void and then not a_reference.is_void
 			a_number_positive: a_number >= 0
@@ -63,8 +60,7 @@ feature -- Access
 		do
 			Result := book_reference.item
 		end
-		
-	
+
 	number : INTEGER
 	
 	store : INTEGER
@@ -74,7 +70,7 @@ feature -- Access
 	row : INTEGER
 	
 	borrower : BORROWER is
-			-- 
+			-- Borrower that currently holds the copy.
 		do
 			if not borrower_reference.is_void then
 				Result := borrower_reference.item
@@ -85,15 +81,17 @@ feature -- Access
 feature -- Status report
 
 	is_borrowable : BOOLEAN is
-			-- can this copy be borrowed by someone ?
+			-- Can this copy be borrowed by someone ?
 		do 
 			Result := not borrower_reference.is_identified
+		ensure
+			definition: Result implies borrower = Void
 		end	
 		
 feature -- Basic operations
 
 	set_location (a_store, a_shelf, a_row : INTEGER) is
-			-- set location to `a_store', `a_shelf', `a_location'
+			-- Set location to `a_store', `a_shelf', `a_location'.
 		do
 			row := a_row
 			store := a_store
@@ -105,7 +103,7 @@ feature -- Basic operations
 		end
 
 	borrow (a_borrower : BORROWER) is
-			-- borrow this copy by `a_borrower'
+			-- Borrow this copy by `a_borrower'.
 		require
 			borrowable: is_borrowable
 			a_borrower_not_void: a_borrower /= Void
@@ -116,7 +114,7 @@ feature -- Basic operations
 		end
 
 	set_borrowable is
-			-- set the book borrowable
+			-- Set the book borrowable.
 		require
 			borrowed: not is_borrowable
 		do

@@ -36,7 +36,7 @@ feature -- Basic operations
 		end
 		
 	read_borrowed is
-			-- read borrowed copies
+			-- Read all borrowed copies.
 		deferred
 		end
 				
