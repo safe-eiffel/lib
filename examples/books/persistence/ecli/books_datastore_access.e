@@ -33,9 +33,12 @@ feature -- Basic operations
 		local
 			adapter : PO_ADAPTER[PO_PERSISTENT]
 			session : ECLI_SESSION
+			simple_login : ECLI_SIMPLE_LOGIN
 			manager : PO_MANAGER_IMPL
 		do
-			create session.make ("books", "","")
+			create session.make_default
+			create simple_login.make("books", "","")
+			session.set_login_strategy (simple_login)
 			create store.make (session)
 			store.connect
 			verify_table_existence

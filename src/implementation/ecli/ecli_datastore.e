@@ -24,6 +24,7 @@ feature {NONE} -- Initialisation
 			-- Initialise with `a_session'.
 		require
 			a_session_not_void : a_session /= Void
+			a_session_ready_to_connect: a_session.is_ready_to_connect
 		do
 			session_impl := a_session
 			create adapters_impl.make

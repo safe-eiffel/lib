@@ -36,6 +36,9 @@ feature -- Basic operations
 				if refresh_cursor.is_ok then
 					if not refresh_cursor.off then
 						fill_from_refresh_cursor (object)
+						if not status.is_error then
+							object.disable_modified
+						end
 					else
 						status.set_framework_error (status.Error_could_not_refresh_object)
 					end
