@@ -8,24 +8,29 @@ http://www.opensource.org/licenses/ver2_eiffel.php
 See hereunder.
 
 Installation: 
-- copy directory structure
+	- copy directory structure
 
 Library usage:
-- GOBO 3.3 and better
-Either
- - ECLI
-Or
- - EiffelStore (ISE)
+	- GOBO 3.3 and better
+
+	Either
+	 - ECLI
+	Or
+	 - EiffelStore (ISE)
 
 Directory structure:
 
-${EPOM}
-  + doc          documentation/specification
-  + examples
-  |  + books     books sample application
-  |
-  + src	         source files
+	${EPOM}
+	  + doc          documentation/specification
+	  + examples
+	  |  + books     books sample application
+	  |
+	  + src	         source files
 
+Variables
+
+	EPOM	Location of epom library
+	
 -----------------------------------------------------------------------
 Eiffel Forum License, version 2
 
