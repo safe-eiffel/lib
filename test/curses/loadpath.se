@@ -1,0 +1,4 @@
+./
+./se/
+${ECURSES}/loadpath.se
+${GOBO}/library/loadpath.se

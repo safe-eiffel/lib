@@ -69,6 +69,7 @@ feature -- Operations
 		end
 		terminate
 	end
+
 end -- class CURSES_EVENT_MANAGER
 -----------------------------------------------------------
 -- Copyright (C) 1999 Paul G. Crismer, Eric Fafchamps

@@ -55,8 +55,8 @@ feature -- Commandes
 						current_window_index := current_window_index + 1
 					end
 					windows.go_i_th (current_window_index)
-					windows.item.bring_to_front
-					windows.item.redraw
+					windows.item_for_iteration.bring_to_front
+					windows.item_for_iteration.redraw
 					stdwin.refresh
 				elseif stdwin.last_character = 'p' or stdwin.last_character = 'P' then
 					--previous window
@@ -66,20 +66,20 @@ feature -- Commandes
 						current_window_index := current_window_index - 1
 					end
 					windows.go_i_th (current_window_index)
-					windows.item.bring_to_front
-					windows.item.redraw
+					windows.item_for_iteration.bring_to_front
+					windows.item_for_iteration.redraw
 					stdwin.refresh
 				elseif stdwin.last_character = 'f' or stdwin.last_character = 'F' then
 					-- scroll forward
 					if current_window_index > 0 then
 						windows.go_i_th (current_window_index)
-						scroll_forward (windows.item)
+						scroll_forward (windows.item_for_iteration)
 					end
 				elseif stdwin.last_character = 'b' or stdwin.last_character = 'B' then
 					-- scroll backward
 					if current_window_index > 0 then
 						windows.go_i_th (current_window_index)
-						scroll_backward (windows.item)
+						scroll_backward (windows.item_for_iteration)
 					end
 				elseif stdwin.last_character = 'q' or stdwin.last_character = 'Q' then
 					-- exit			
@@ -102,7 +102,7 @@ feature -- Commandes
 			stdwin.refresh
 		end
 
-	windows : LINKED_LIST [CURSES_PANEL]
+	windows : DS_LINKED_LIST [CURSES_PANEL]
 		
 	help_string : STRING is " W = create window   N = next window      P = previous window%N%
 				% F = scroll forward  B = scroll backward  Q = exit";
@@ -131,7 +131,7 @@ feature -- Commandes
 			-- 
 			if lr_y > ul_y and ul_x < lr_x then
 				!!p.make (lr_y - ul_y +1 , lr_x - ul_x +1 , ul_y, ul_x)
-				windows.extend (p)
+				windows.force_last (p)
 				current_window_index := windows.count
 				p.set_standard_border
 				--p.set_border (('|').code, ('|').code, ('-').code, ('-').code,

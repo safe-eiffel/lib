@@ -8,13 +8,7 @@ class
 inherit
 	SINGLE_TEST
 
-	ASCII
-		export
-			{NONE}
-				all
-		end
-
-	BASIC_ROUTINES
+	UT_CHARACTER_CODES
 		export
 			{NONE}
 				all
@@ -26,6 +20,11 @@ inherit
 				all
 		end		
 
+	KL_IMPORTED_INTEGER_ROUTINES
+		export
+			{NONE}
+				all
+		end
 
 
 creation
@@ -85,9 +84,8 @@ feature -- Commands
 						-- c2 = c & 0x7f
 						-- ...
 						else
-							if c >= First_printable and c <= Last_printable then
-								--| FIXME : NOT portable
-								window.put_character (charconv(c))
+							if c >= Space_code and c <= Right_brace_code then
+								window.put_character (INTEGER_.to_character (c \\ 256))
 								window.put_string (" (ASCII printable character)%N")
 							else
 								window.put_string (curses.printable_representation(c))
@@ -103,8 +101,7 @@ feature -- Commands
 					firsttime := False
 				end
 
-				--| FIXME : charconv NOT portable
-				if charconv(c) = 'g' then
+				if INTEGER_.to_character (c \\ 256) = 'g' then
 					window.put_string ("getstr test: ")
 					curses.enable_echo
 					window.read_line
@@ -114,15 +111,15 @@ feature -- Commands
 					window.put_string (".%N")
 				end
 
-				if charconv(c) = 's' then
+				if INTEGER_.to_character (c \\ 256) = 's' then
 					shellout (window, True)
 				end
 
-				if charconv(c) = 'x' or charconv(c) = 'q' or (c = curses_error_value and blocking) then
+				if INTEGER_.to_character (c \\ 256) = 'x' or INTEGER_.to_character(c \\ 256) = 'q' or (c = curses_error_value and blocking) then
 					exit := True
 				end
 
-				if charconv(c) = '?' then
+				if INTEGER_.to_character (c \\ 256) = '?' then
 					window.put_string ("Type any key to see its keypad value.  Also:%N")
 					window.put_string ("g -- triggers getstr test%N")
 					window.put_string ("s -- shell out (bash) ... return from shell by typing 'exit'%N")

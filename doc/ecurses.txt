@@ -5,7 +5,7 @@ ECurses : an Eiffel binding to Curses
 Paul G. Crismer, Eric Fafchamps 
 <pgcrism@attglobal.net>, <eric.fafchamps@win.be>
 
-October 3, 1999
+October 1, 2000
 
 Abstract
 
@@ -78,9 +78,17 @@ spec API and constants wrapping classes.
 
   Clib c source files.
 
-  linux linux specific files.
+  ise ISE specific files. 
 
-  windows windows specific file.s
+    linux Linux specific files.
+
+    windows Windows specific files.
+
+  se SmallEiffel specific files.
+
+    linux Linux specific files.
+
+    windows Windows specific files.
 
 utility some classes found useful to develop ECurses applications like
 an event manager and a frame panel.
@@ -95,7 +103,10 @@ test small test projects.
 
   curses mimics the 'ncurses' standard test application.
 
-2.2 Get the appropriate Curses library
+  compile_test compatibility test for SmallEiffel (forces compilation
+  of all features).
+
+2.2 Get the appropriate libraries
 
 Get and install the appropriate Curses library.
 
@@ -104,16 +115,31 @@ NCURSES Version 4.2. http://www.gnu.org. Work on Unix/Linux platforms.
 PDCurses Version 2.4. http://www.lightlink.com/hessling. Works on Windows
 9X and Windows NT. PDCurses also offer an X11 implementation for Unix,
 but it has not been tested with the ECurses library.
-!!WARNING : PDCurses has a bug. You should download sources, patch
+!!WARNING : PDCurses has 2 bugs. You should download sources, patch
 them following directions given in the appendix, and recompile it.
 
-2.3 Compile support library
+Get and install the GOBO library
 
-C files are in the spec/Clib directory. The spec/<platform> directory
-contains ad hoc makefiles.
+GOBO Version 1.5 http://www.gobosoft.com. Works on Unix/Linux/win32
+platforms for SmallEiffel/ISE/Halstenbach/Visual -Eiffel
 
-windows A makefile (Makefile.vc.mak) is provided for MSVC compiler.
-Library name is ecurses_c.lib.
+2.3 Set some environment variable
+
+GOBO Set to the root-directory of the gobo installation (e.g: ~/libs/eiffel/gobo)
+
+ECURSES Set to the root-directory of the ecurses installation (e.g:
+~/libs/eiffel/ecurses)
+
+PDCURSES Set to the root-directory of the pdcurses installation (e.g:
+c:\libs\c\pdcurses)
+
+2.4 Compile support library
+
+C files are in the spec/Clib directory. The spec/<compiler>/<platform>
+directory contains ad hoc makefiles.
+
+windows A makefile (Makefile) is provided for MSVC compiler. Library
+name is ecurses_c.lib.
 
 linux  A makefile (Makefile) is provided for Linux .  Type "make all"
 in order to build the library libecurses_c.a.
@@ -275,8 +301,7 @@ defined. This function basically cares that argument types are converted
 the right way.
 
 This mechanism is tedious (to type) but rather straightforward. External
-clauses are simple, like defined in ETL (hope that SE and VE can handle
-it...) :
+clauses are simple, like defined in ETL (hope that VE can handle it...) :
 
 Eiffel side (example)
 
@@ -313,12 +338,11 @@ ECurses has been tested with PDCurses on Windows and NCurses on Linux.
 
 ECurses has been compiled using ISE Eiffel version 4.4 on Linux (Caldera
 2.3, kernel 2.210, glibc2.1, egcs 2.91.66), version 4.3 and 4.4 on
-Windows (MSVC Compiler). The library should be portable without too
-much effort since no compiler or library idiosyncrasy has been used.
-If some still remain, it is not intentional.
+Windows (MSVC Compiler). 
 
-One of the possible difficulties remain in getting and passing external
-pointers, for STRINGs for example.
+Ecurses has been compiled using SmallEiffel version -0.78 on Linux
+(Caldera 2.3, kernel 2.210,glibc2.1, egcs 2.91.66), version -0.78
+on Windows (MSVC Compiler).
 
 4.4 Console and X terminal emulations
 
@@ -349,9 +373,6 @@ If the keypad is to be used, use the feature enable_keypad.
 
 5 TODO
 
-* Make ECurses portable among Eiffel compilers. Port ECurses to SmallEiffel,
-  and use the GOBO library. 
-
 * Software contracts could be extended and better reflect features
   specifications. 
 
@@ -360,8 +381,8 @@ If the keypad is to be used, use the feature enable_keypad.
 
 6 Copyright
 
-Copyright (C) 1999 by Paul G. Crismer <pgcrism@attglobal.net> and Eric
-Fafchamps <eric.fafchamps@win.be>.
+Copyright (C) 1999-2000 by Paul G. Crismer <pgcrism@attglobal.net>
+and Eric Fafchamps <eric.fafchamps@win.be>.
 
 This document and the ECurses library are licensed under the terms
 of the Eiffel Forum Freeware License, version 1. Please refer to http://www.eiffel-forum.org.
@@ -452,6 +473,19 @@ last lines are the buggy ones.
   
 
   /*+-------------------------------------------------------------------------
+
+Edit the file $PDCURSES/curses.h. 
+
+The macro pechochar at line 1946 is defined as follows : 
+
+#define pechochar(w,c) (waddch(w, (chtype)c)==ERR?ERR:prefresh(w))
+
+This fails during compilation because prefresh needs 7 actual parameters!
+I don't now how to provide those parameters so i decided to delete
+the refresh until someone finds what to do in this case. This could
+alter behaviour of CURSES_PAD on win32.
+
+#define pechochar(w,c) (waddch(w, (chtype)c)==ERR?ERR:prefresh(w))
 
 References
 

@@ -9,6 +9,7 @@ class
 inherit
 	CURSES_APPLICATION
 
+
 creation
 	make
 
@@ -18,8 +19,8 @@ feature
 		local
 			args : expanded ARGUMENTS
 		do
-			no_message_on_failure
-			catch (Developer_exception)
+			--| no_message_on_failure 
+			--| catch (Developer_exception) --> not available in SmallEiffel
 			-- initialize with soft label keys
 			if args.argument_count < 1 then
 				print_usage
@@ -38,9 +39,13 @@ feature
 				do_slk_test
 			end
 		rescue
-			io.put_string ("This Curses library does not support the ")
-			io.put_string (args.argument(1).out)
-			io.put_string (" mode.%NNCurses : 323, 444, 444i.  PDCurses : 323, 44, 55%N")
+			initialize
+			standard_window.put_string ("This Curses library does not support the ")
+			standard_window.put_string (args.argument(1).out)
+			standard_window.put_string (" mode.%NNCurses : 323, 444, 444i.  PDCurses : 323, 44, 55%N")
+			standard_window.put_string ("Press any key to exit")
+			standard_window.read_character
+			die (-1)
 		end
 
 	do_slk_test is
@@ -281,9 +286,12 @@ feature
 	print_usage is
 			-- print usage message
 		do
-			io.put_string (
+			initialize
+			standard_window.put_string (
 				"Usage: slk_test <mode>%N%
 				%       where mode is either 323, 44, 444, 444i or 55%N");
+			standard_window.put_string ("Press a key to exit")
+			standard_window.read_character
 		end
 		
 end -- class BASIC_TEST
@@ -292,8 +300,11 @@ end -- class BASIC_TEST
 -- Released under the Eiffel Forum free license
 -------------------------------------------------------
 -- $Log$
--- Revision 1.1  2000/01/07 11:33:35  pgcrism
--- Initial revision
+-- Revision 1.2  2000/10/01 19:16:54  efa
+-- Modifications/extensions for SmallEiffel portability
+--
+-- Revision 1.1.1.1  2000/01/07 11:33:35  pgcrism
+-- Initial checkin
 --
 --
 	

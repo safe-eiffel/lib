@@ -1,0 +1,6 @@
+${GOBO}/library/loadpath.se
+${ECURSES}/base/
+${ECURSES}/spec/
+${ECURSES}/spec/se/
+${ECURSES}/utility/
+

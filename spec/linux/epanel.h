@@ -10,5 +10,4 @@
  * 
 */
 #include <panel.h>
-#include <eif_eiffel.h>
 

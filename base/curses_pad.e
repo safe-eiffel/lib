@@ -18,7 +18,7 @@ inherit
 		end
 
 	CURSES_WINDOW
-		redefine refresh, memory_refresh, height, width, subwindows, origin_y, origin_x
+		redefine refresh, memory_refresh, height, width, origin_y, origin_x
 		end
 
 creation
@@ -126,7 +126,7 @@ feature -- Status Report
 	origin_x : INTEGER
 		-- origin relative to parent pad
  
-   	subwindows : LINKED_LIST[CURSES_PAD]
+--   	subwindows : DS_LINKED_LIST[CURSES_PAD]
 	
 feature {NONE}
 	refresh_pad (pad_row, pad_col,

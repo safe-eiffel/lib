@@ -12,64 +12,14 @@ color, windows.
 This version of eCurses has been developed and tested with
 
     * ISE Eiffel version 4.3 (Linux or Windows)
+    * SmallEiffel version -0.78 (Linux or Windows)
     * Linux	  : NCURSES 4.2
       Windows     : PDCurses 2.4
 
 
 *** Installation
 
-.1 Unpack directory structure
------------------------------
-Simply extract the tarball. Directory structure is described below :
-
-+ base 		-- base Curses abstractions.
-|
-+ doc		-- Documentation in various formats
-|
-+ spec 		-- API and constants wrapping classes.
-| |
-| + Clib 	-- c source files.
-| |
-| + linux 	-- linux specific files.
-| |
-| + windows 	-- windows specific file.s
-|
-+ utility 	-- some classes found useful to develop eCurses applications
-|            	   like an event manager and a frame panel.
-|
-+ test 		-- small test projects.
-  |
-  + hello 	-- hello world !
-  |
-  + pad 	-- exercise basic pad capabilities.
-  |
-  + slk 	-- exercise soft label keys.
-  |
-  + curses 	-- mimics the 'ncurses' standard test application.
-
-.2 Get the appropriate Curses library
--------------------------------------
-Get and install the appropriate Curses library.
-
-* NCURSES Version 4.2. http://www.gnu.org. Work on Unix/Linux platforms.
-
-* PDCurses Version 2.4. http://www.lightlink.com/hessling. Works on Windows
-9X and Windows NT. PDCurses also offer an X11 implementation for Unix,
-but it has not been tested with the ECurses library.
-!!WARNING : PDCurses has to be patched. Please refer to the documentation.
-
-.3 Compile support library
---------------------------
-C files are in the spec/Clib directory. The spec/<platform> directory
-contains ad hoc makefiles.
-
-windows A makefile (Makefile.vc.mak) is provided for MSVC compiler.
-Library name is ecurses_c.lib.
-
-linux  A makefile (Makefile) is provided for Linux .  Type "make all"
-in order to build the library libecurses_c.a.
-
-This support library is necessary to compile and link eCurses programs .
+Please refer to ..ecurses/doc/ecurses.txt
 
 *** Copyright
 

@@ -34,51 +34,42 @@ feature
 				curses.use_colors
 			end
 			
-			standard_window.set_background(Blank, 0 ,0)
-
-			--escape from curses mode
+			--standard_window.set_background(Blank, 0 ,0)
 
 			from
 				command := '0'
 			until
 				command = 'q'
 			loop
-				curses.save_terminal_state
-				curses.escape_to_shell
-				io.put_string ("*************************************%N%N");
-				io.put_string ("a = keyboard and mouse (N/A) input test%N")
-				io.put_string ("b = character attribute test%N")
-				io.put_string ("c = color test pattern%N")
-				--io.put_string ("d = edit RGB color values(N/A)%N")
-				--io.put_string ("e = exercice soft keys%N")
-				io.put_string ("f = display ACS characters%N")		
-				io.put_string ("g = display windows and scrolling%N")
-				--io.put_string ("i = test of flushinp()%N")
-				io.put_string ("k = display character attributes%N")
-				--io.put_string ("m = menu code test (N/A)%N")
-				--io.put_string ("o = exercise panels library%N")	
-				--io.put_string ("p = exercise pad features%N")
-				io.put_string ("q = quit%N")
-				--io.put_string ("r = exercise forms code (N/A)%N")
-				--io.put_string ("s = overlapping-refresh test%N")
-				--io.put_string ("t = set trace level%N")
-				io.put_string ("? = repeat this command summary%N")
-				io.put_string ("> ")
-				io.output.flush
-				io.read_character
-				command := io.last_character
+				standard_window.clear
+				standard_window.move (0, 0); standard_window.put_string ("This is the ecurses capability tester.")
+				standard_window.move (1, 0); standard_window.put_string ("You may select a test from the main menu by typing the")
+				standard_window.move (2, 0); standard_window.put_string ("key letter of the choice (the letter to the left of the = )")
+				standard_window.move (3, 0); standard_window.put_string ("at the > prompt. The commands 'x' or 'q' will exit.")
+				standard_window.move (4, 0); standard_window.put_string ("*************************************");
+				standard_window.move (5, 0); standard_window.put_string ("a = keyboard and mouse (N/A) input test")
+				standard_window.move (6, 0); standard_window.put_string ("b = character attribute test")
+				standard_window.move (7, 0); standard_window.put_string ("c = color test pattern")
+				--standard_window.put_string ("d = edit RGB color values(N/A)")
+				--standard_window.put_string ("e = exercice soft keys")
+				standard_window.move (8, 0); standard_window.put_string ("f = display ACS characters")		
+				standard_window.move (9, 0); standard_window.put_string ("g = display windows and scrolling")
+				--standard_window.put_string ("i = test of flushinp()")
+				--standard_window.move (10, 0); standard_window.put_string ("k = display character attributes")
+				--standard_window.put_string ("m = menu code test (N/A)")
+				--standard_window.put_string ("o = exercise panels library")	
+				--standard_window.put_string ("p = exercise pad features")
+				standard_window.move (10, 0); standard_window.put_string ("q = quit")
+				--standard_window.put_string ("r = exercise forms code (N/A)")
+				--standard_window.put_string ("s = overlapping-refresh test")
+				--standard_window.put_string ("t = set trace level")
+				standard_window.move (12, 0); standard_window.put_string ("> ")
 
-				curses.resume_from_shell
-				curses.restore_terminal_state
+				standard_window.read_character
+
+				command := standard_window.last_character
+
 				do_single_test (command)
-
-
-				if (command = '?') then
-					io.put_string ("This is the ecurses capability tester. %N")
-					io.put_string ("You may select a test from the main menu by typing the%N")
-					io.put_string ("key letter of the choice (the letter to the left of the = )%N")
-					io.put_string ("at the > prompt. The commands 'x' or 'q' will exit.")
-				end
 			end			
 	end
 

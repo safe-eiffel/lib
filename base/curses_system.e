@@ -261,11 +261,12 @@ feature -- Status setting
 		-- other characters are represented as is
 	    local
 		ptr : POINTER
+		tools: CURSES_EXTERNAL_TOOLS
 	    do
 		!!Result.make (2)
 		ptr := unctrl (c)
 		if ptr /= default_pointer then
-			Result.from_c (ptr)
+			Result := tools.pointer_to_string (ptr)
 		else
 			last_error := curses_error_value
 		end	
@@ -275,11 +276,12 @@ feature -- Status setting
 		-- returns the name of the key corresponding to 'key_code'
 	    local
 		ptr : POINTER
+		tools: CURSES_EXTERNAL_TOOLS
 	    do
 		!!Result.make (5)
 		ptr := keyname (key_code)
 		if ptr /= default_pointer then
-			Result.from_c (ptr)
+			Result := tools.pointer_to_string (ptr)
 		else
 			last_error := curses_error_value
 		end

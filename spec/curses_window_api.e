@@ -706,15 +706,14 @@ feature -- window queries
 	external "C"
 	alias "c_ecurses_cursor_y"
 	end
-
-    
-
+   
 end -- class CURSES_WINDOW_API
 -----------------------------------------------------------
 -- Copyright (C) 1999 Paul G. Crismer, Eric Fafchamps
 -- Licensed under Eiffel Forum Freeware License, version 1
 -- (see forum.txt)
 -----------------------------------------------------------
+
 
 
 

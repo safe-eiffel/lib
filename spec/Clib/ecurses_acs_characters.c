@@ -13,7 +13,6 @@ int c_curses_acs_ulcorner()
 		return ACS_ULCORNER;
 	};
 
-
 EIF_INTEGER c_curses_acs_llcorner() 
 	{
 		return ACS_LLCORNER;
@@ -156,6 +155,4 @@ EIF_INTEGER c_curses_acs_block  ()
 	{
 		return ACS_BLOCK;
 	};
-
-
 

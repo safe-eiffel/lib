@@ -1,4 +1,4 @@
-#This file was created by <pgc> Fri Oct 15 20:52:35 1999
+#This file was created by <efa> Sun Oct  1 18:19:37 2000
 #LyX 0.12 (C) 1995-1998 Matthias Ettrich and the LyX Team
 \lyxformat 2.15
 \textclass article
@@ -34,7 +34,7 @@ Paul G.
 <pgcrism@attglobal.net>, <eric.fafchamps@win.be>
 \layout Date
 
-October 3, 1999
+October 1, 2000
 \layout Abstract
 
 ECurses is an Eiffel binding to Curses.
@@ -296,17 +296,38 @@ Clib
 
 
 \series bold 
-linux
+ise ISE
 \series default 
- linux specific files.
+ specific files.
+ 
+\begin_deeper 
+\layout List
+\labelwidthstring 00.00.0000
+
+linux Linux specific files.
+\layout List
+\labelwidthstring 00.00.0000
+
+windows Windows specific files.
+\end_deeper 
 \layout List
 \labelwidthstring 00.00.0000
 
 
 \series bold 
-windows
+se
 \series default 
- windows specific file.s
+ SmallEiffel specific files.
+\begin_deeper 
+\layout List
+\labelwidthstring 00.00.0000
+
+linux Linux specific files.
+\layout List
+\labelwidthstring 00.00.0000
+
+windows Windows specific files.
+\end_deeper 
 \end_deeper 
 \layout List
 \labelwidthstring 00.00.0000
@@ -358,10 +379,18 @@ slk
 curses
 \series default 
  mimics the 'ncurses' standard test application.
+\layout List
+\labelwidthstring 00.00.0000
+
+
+\series bold 
+compile_test compatibility test for SmallEiffel
+\series default 
+ (forces compilation of all features).
 \end_deeper 
 \layout Subsection
 
-Get the appropriate Curses library
+Get the appropriate libraries
 \layout Standard
 
 Get and install the appropriate Curses library.
@@ -380,9 +409,40 @@ PDCurses Version 2.4.
  PDCurses also offer an X11 implementation for Unix, but it has not been
  tested with the ECurses library.
 \newline 
-!!WARNING : PDCurses has a bug.
+!!WARNING : PDCurses has 2 bugs.
  You should download sources, patch them following directions given in the
  appendix, and recompile it.
+\layout Standard
+
+Get and install the GOBO library
+\layout List
+\labelwidthstring 00.00.0000
+
+GOBO Version 1.5 http://www.gobosoft.com.
+ Works on Unix/Linux/win32 platforms for SmallEiffel/ISE/Halstenbach/Visual
+ -Eiffel
+\layout Subsection
+
+Set some environment variable
+\layout List
+\labelwidthstring 00.00.0000
+
+GOBO Set to the root-directory of the gobo installation (e.g: ~/libs/eiffel/gobo)
+\layout List
+\labelwidthstring 00.00.0000
+
+ECURSES Set to the root-directory of the ecurses installation (e.g: ~/libs/eiffel
+/ecurses)
+\layout List
+\labelwidthstring 00.00.0000
+
+PDCURSES Set to the root-directory of the pdcurses installation (e.g: c:
+\backslash 
+libs
+\backslash 
+c
+\backslash 
+pdcurses)
 \layout Subsection
 
 Compile support library
@@ -391,13 +451,13 @@ Compile support library
 C files are in the spec/Clib directory.
  The spec/
 \emph on 
-<platform>
+<compiler>/<platform>
 \emph toggle 
  directory contains ad hoc makefiles.
 \layout List
 \labelwidthstring 00.00.0000
 
-windows A makefile (Makefile.vc.mak) is provided for MSVC compiler.
+windows A makefile (Makefile) is provided for MSVC compiler.
  Library name is 
 \emph on 
 ecurses_c.lib
@@ -1005,8 +1065,8 @@ c_ecurses_F
 \layout Standard
 
 This mechanism is tedious (to type) but rather straightforward.
- External clauses are simple, like defined in ETL (hope that SE and VE can
- handle it...) :
+ External clauses are simple, like defined in ETL (hope that VE can handle
+ it...) :
 \layout Description
 
 Eiffel side (example)
@@ -1068,13 +1128,11 @@ ECurses has been tested with PDCurses on Windows and NCurses on Linux.
 ECurses has been compiled using ISE Eiffel version 4.4 on Linux (Caldera
  2.3, kernel 2.210, glibc2.1, egcs 2.91.66), version 4.3 and 4.4 on Windows (MSVC
  Compiler).
- The library should be portable without too much effort since no compiler
- or library idiosyncrasy has been used.
- If some still remain, it is not intentional.
+ 
 \layout Standard
 
-One of the possible difficulties remain in getting and passing external
- pointers, for STRINGs for example.
+Ecurses has been compiled using SmallEiffel version -0.78 on Linux (Caldera
+ 2.3, kernel 2.210,glibc2.1, egcs 2.91.66), version -0.78 on Windows (MSVC Compiler).
 \layout Subsection
 
 Console and X terminal emulations
@@ -1156,11 +1214,6 @@ If the keypad is to be used, use the feature
 TODO
 \layout Itemize
 
-Make ECurses portable among Eiffel compilers.
- Port ECurses to SmallEiffel, and use the GOBO library.
- 
-\layout Itemize
-
 Software contracts could be extended and better reflect features specifications.
  
 \layout Itemize
@@ -1172,7 +1225,7 @@ Documentation and sample programs should allow people to use ECurses, without
 Copyright
 \layout Standard
 
-Copyright (C) 1999 by Paul G.
+Copyright (C) 1999-2000 by Paul G.
  Crismer <pgcrism@attglobal.net> and Eric Fafchamps <eric.fafchamps@win.be>.
 \layout Standard
 
@@ -1719,6 +1772,25 @@ return(OK);
 
 \protected_separator 
  /*+-------------------------------------------------------------------------
+\layout Standard
+
+Edit the file $PDCURSES/curses.h.
+ 
+\layout Standard
+
+The macro pechochar at line 1946 is defined as follows : 
+\layout LyX-Code
+
+#define pechochar(w,c) (waddch(w, (chtype)c)==ERR?ERR:prefresh(w))
+\layout Standard
+
+This fails during compilation because prefresh needs 7 actual parameters!
+ I don't now how to provide those parameters so i decided to delete the
+ refresh until someone finds what to do in this case.
+ This could alter behaviour of CURSES_PAD on win32.
+\layout LyX-Code
+
+#define pechochar(w,c) (waddch(w, (chtype)c)==ERR?ERR:prefresh(w))
 \layout Bibliography
 \bibitem {1}
 

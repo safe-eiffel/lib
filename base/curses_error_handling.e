@@ -11,6 +11,9 @@ class
 	CURSES_ERROR_HANDLING
 
 inherit
+
+	ANY --| Needed To avoid SE errors about is_equal that is not visible in invariant of GENERAL due to export {NONE} all
+
 	EXCEPTIONS
 	    export {NONE} all
 	    end
@@ -38,34 +41,32 @@ feature
 	curses_error_value : INTEGER is
 		-- value indicating that last curses call was in 'error'
 	    once
-		Result := c_curses_err
+		Result := c_ecurses_err
 	    end
 
 	curses_ok_value : INTEGER is
 		-- value indicating that last curses call was 'ok'
 	    once
-		Result := c_curses_ok
+		Result := c_ecurses_ok
 	    end
 
 feature {NONE} -- helper procedure
 	handle_curses_call ( code : INTEGER; message : STRING) is
 	    do
 		last_error := code
-		if last_error = c_curses_err and exceptions_enabled then
+		if last_error = c_ecurses_err and exceptions_enabled then
 			raise (message)
 		end
 	    end
 
 feature {NONE} -- C interface
 
-    c_curses_err: INTEGER is
-	external "C [macro <ecurses.h>]"
-	alias "ERR"
+    c_ecurses_err: INTEGER is
+	external "C"
 	end
 
-    c_curses_ok: INTEGER is
-	external "C [macro <ecurses.h>]"
-	alias "OK"
+    c_ecurses_ok: INTEGER is
+	external "C"
 	end
 
 end -- class CURSES_ERROR_HANDLING

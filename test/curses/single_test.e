@@ -22,6 +22,8 @@ inherit
 		export {NONE} all
 		end
 
+	ANY
+
 feature {NONE} -- Initialisation
 
 	make_from_window (a_window: CURSES_WINDOW) is
@@ -42,7 +44,6 @@ feature -- Commands
 			-- Execute the test
 		deferred			
 		end
-
 
 end -- class SINGLE_TEST
 -----------------------------------------------------------

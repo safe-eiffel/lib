@@ -8,7 +8,7 @@ class
 inherit
 	SINGLE_TEST
 
-	BASIC_ROUTINES
+	KL_IMPORTED_INTEGER_ROUTINES
 		export
 			{NONE}
 				all
@@ -121,11 +121,9 @@ feature -- {NONE}
 			row: INTEGER
 			col: INTEGER
 			temp_string: STRING
-			integer_formatter: INTEGER_FORMATTER
-			string_formatter: STRING_FORMATTER
+			ut_integer_formatter: UT_INTEGER_FORMATTER
 		do
-			!!integer_formatter
-			!!string_formatter
+			!!ut_integer_formatter
 			last := first + 31
 			window.clear
 			window.enable_attribute (Attribute_bold)
@@ -150,10 +148,12 @@ feature -- {NONE}
 			loop
 				row := 4 + ((code - first) \\ 16)
 				col := ((code - first) // 16) * curses.maximum_width // 2
-				temp_string := integer_formatter.format("%%3d ", code)
-				temp_string.append (integer_formatter.format("(0x%%x)", code))
+				temp_string := ut_integer_formatter.decimal_integer_out (code)
+				temp_string.append_string (" ")						
+				ut_integer_formatter.append_octal_integer (temp_string, code)
+				temp_string.append_string (" ")
 				window.move (row, col)
-				window.put_string (string_formatter.format_2 ("%%*s: ", curses.maximum_width // 4, temp_string))
+				window.put_string (temp_string)
 				if first = 128 then
 					-- N/A nodelay
 
@@ -165,7 +165,7 @@ feature -- {NONE}
 					from
 						window.read_character
 					until
-						window.last_character.code /= -1
+						window.last_key /= -1
 					loop
 						window.read_character
 					end

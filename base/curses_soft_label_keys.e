@@ -98,10 +98,10 @@ feature -- Status report
 		key_num_ok: key_num >=1 and key_num <= count
 	    local
 		p : POINTER
+		tools: CURSES_EXTERNAL_TOOLS
 	    do
-		!!Result.make(0)
 		p := slk_label (key_num)
-		Result.from_c (p)
+		Result := tools.pointer_to_string (p)
 	    end
 
     current_attributes : INTEGER is
@@ -125,10 +125,9 @@ feature -- Status setting
 		key_num_ok: key_num >=1 and key_num <= count
 		mode_ok: mode >= 0 and mode <= 2
 	    local
-		a : ANY
+		tools : CURSES_EXTERNAL_TOOLS
  	    do
-		a := msg.to_c
-		handle_curses_call (slk_set (key_num, $a, mode), "slk_set")
+		handle_curses_call (slk_set (key_num, tools.string_to_pointer (msg), mode), "slk_set")
 	    end
 
 	refresh is

@@ -6,6 +6,19 @@ indexing
 class 
 	CURSES_TEST_SUPPORT
 
+inherit
+	KL_IMPORTED_INTEGER_ROUTINES
+		export
+			{NONE}
+				all
+		end
+
+	UT_CHARACTER_CODES
+		export
+			{NONE}
+				all
+		end
+
 feature -- Support routines
 
 	pause (window: CURSES_WINDOW) is
@@ -48,8 +61,15 @@ feature -- Support routines
 
 	ctrl (c: CHARACTER): INTEGER is
 			-- Value of CTRL + key
+		local
+			lower_c: CHARACTER
 		do
-			Result:= c.lower.code - ('a').code + 1
+			if c.code >= Upper_a_code and c.code <= Upper_z_code then
+				lower_c := INTEGER_.to_character ((c.code + Case_diff) \\ 256)
+			else
+				lower_c := c
+			end
+			Result:= lower_c.code - Lower_a_code + 1
 		end
 
 	shellout (window: CURSES_WINDOW; message: BOOLEAN) is
@@ -57,15 +77,15 @@ feature -- Support routines
 		require
 			window_exist: window /= Void
 		local
-			exec_env: EXECUTION_ENVIRONMENT
+			shell_tool: CURSES_TEST_SHELL_TOOL
 		do
 			if message then
 				window.put_string ("Shelling out...")
 			end
 			window.curses.save_terminal_state
 			window.curses.escape_to_shell
-			!!exec_env
-			exec_env.system ("sh")
+			!!shell_tool
+			shell_tool.system_request ("sh")
 			window.curses.resume_from_shell
 			window.curses.restore_terminal_state
 			if message then

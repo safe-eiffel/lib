@@ -105,3 +105,13 @@ EIF_INTEGER c_ecurses_flushinp ()
 		return flushinp ();
 	};
 
+EIF_INTEGER c_ecurses_ok ()
+	{
+		return OK;
+	};
+
+EIF_INTEGER c_ecurses_err ()
+	{
+		return ERR;
+	};
+

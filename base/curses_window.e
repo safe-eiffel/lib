@@ -42,7 +42,7 @@ inherit
 			dispose
 		end
 
-	BASIC_ROUTINES --mixin
+	KL_IMPORTED_INTEGER_ROUTINES --mixin
 		export {NONE} all
 		end
 
@@ -82,7 +82,7 @@ feature {NONE} -- construction
 	    exists: exists
 	end -- make
 
-    make_subwindow_absolute ( parent : CURSES_WINDOW;
+    make_subwindow_absolute ( parent : like Current;
 		a_height, a_width, y, x : INTEGER) is
 		-- make subwindow with absolute origin coordinates
 		-- the subwindow shares the output memory of the parent
@@ -108,7 +108,7 @@ feature {NONE} -- construction
 	    exists: exists
 	end -- make_subwindow_absolute
 
-    make_subwindow_relative ( parent : CURSES_WINDOW;
+    make_subwindow_relative ( parent : like Current;
 		a_height, a_width, y, x : INTEGER) is
 		-- make subwindow with origin coordinates relative to parent window
 		-- the subwindow shares the output memory of the parent
@@ -164,9 +164,9 @@ feature -- destruction
 	    from subwindows.start
 	    until subwindows.off
 	    loop
-			if subwindows.item /= Void then 
-				if subwindows.item.exists then
-				       subwindows.item.close
+			if subwindows.item_for_iteration /= Void then 
+				if subwindows.item_for_iteration.exists then
+				       subwindows.item_for_iteration.close
 		    	    end 
 			end
 			subwindows.forth
@@ -494,14 +494,13 @@ feature -- window status
 
 	end
 
-    parent_window : CURSES_WINDOW
+    parent_window : like Current
 
-    subwindows : LINKED_LIST[CURSES_WINDOW]
-
+    subwindows : DS_LINKED_LIST[like Current]
+	
     last_character : CHARACTER is
 	do
-		Result := charconv(last_key)
-		--| FIXME : not portable
+		Result := INTEGER_.to_character(last_key \\ 256)
 	end 
 
     last_key : INTEGER
@@ -551,8 +550,7 @@ feature -- window status
     current_background_character : CHARACTER is
 		-- Current background character
 	do
-	    Result := charconv(current_background)
-	    --| FIXME : not portable
+	    Result := INTEGER_.to_character(current_background \\ 256)
 	end
 
     current_background_attributes : INTEGER is
@@ -577,6 +575,8 @@ feature -- window status
 		-- Set background character as 'c' decorated with
 		-- 'attr' attributes and 'pair_number' color_pair
 		-- and applies it to the whole window
+	require
+		pair_strict_positif: pair > 0
 	do
 		set_current_background ( c.code + attr + color_pair (pair) )
 		apply_current_background
@@ -606,8 +606,10 @@ feature  -- window output
 	require
 	    string_exists: str /= Void;
 	    exists: exists
+	local
+		tools: CURSES_EXTERNAL_TOOLS
 	do
-		handle_curses_call(waddstr (wptr, pointer(str.to_c)),"waddstr")
+		handle_curses_call(waddstr (wptr, tools.string_to_pointer(str)),"waddstr")
 	end
 
     put_n_string (str: STRING; n: INTEGER) is
@@ -616,8 +618,10 @@ feature  -- window output
 	    exists: exists
 	    string_exists: str /= Void;
 	    valid_range: n >= 0 
+	local
+		tools: CURSES_EXTERNAL_TOOLS
 	do
-		handle_curses_call(waddnstr (wptr, pointer(str.to_c),n),"waddnstr")
+		handle_curses_call(waddnstr (wptr, tools.string_to_pointer(str),n),"waddnstr")
 	end
 
     insert_character (ch: CHARACTER) is
@@ -647,8 +651,10 @@ feature  -- window output
 	require
 	    string_exists: str /= Void;
 	    exists: exists
+	local
+		tools: CURSES_EXTERNAL_TOOLS
 	do
-	    handle_curses_call(winsstr (wptr, pointer(str.to_c)), "winsstr")
+	    handle_curses_call(winsstr (wptr, tools.string_to_pointer(str)), "winsstr")
 	end
 	
     insert_n_string (str: STRING; n: INTEGER) is
@@ -659,8 +665,10 @@ feature  -- window output
 	    exists: exists
 	    string_exists: str /= Void;
 	    valid_range: n >= 0
+	local
+		tools: CURSES_EXTERNAL_TOOLS
 	do
-	    handle_curses_call(winsnstr (wptr, pointer(str.to_c), n), "winsnstr")
+	    handle_curses_call(winsnstr (wptr, tools.string_to_pointer(str), n), "winsnstr")
 	end
 	
     delete_character is
@@ -825,14 +833,15 @@ feature -- window input
 	local
 		line : STRING
 		lptr : POINTER
+		tools: CURSES_EXTERNAL_TOOLS
 	do
 		if last_string = Void then
 			!!last_string.make (0)
 		end
 		!!line.make(256)
-		lptr := pointer (line.to_c)
+		lptr := tools.string_to_pointer (line)
 		handle_curses_call (wgetnstr (wptr, lptr, 255), "wgetnstr")
-		last_string.from_c (lptr)
+		last_string := tools.pointer_to_string (lptr)
 	end
        
 feature -- color status
@@ -844,8 +853,6 @@ feature -- color status
 
     foreground_color : INTEGER is
 		-- foreground color number (to test with one of the CURSES_COLOR_CONSTANTS)
-	local
-		f, g : INTEGER
 	do
 		if is_color_used then
 			pair_content (current_color_pair, $f, $g)
@@ -857,8 +864,6 @@ feature -- color status
 
     background_color : INTEGER is
 		-- background color number (to test with one of the CURSES_COLOR_CONSTANTS)
-	local
-		f, g : INTEGER
 	do
 		if is_color_used then
 			pair_content (current_color_pair, $f, $g)
@@ -972,22 +977,22 @@ feature -- Operations
 
 feature {CURSES_WINDOW} -- protected
 
-    detach_subwindow (w : CURSES_WINDOW) is
+    detach_subwindow (w : like Current) is
 	require
 	    	exists: exists
 		window_ok : w /= Void
 		is_subwindow : subwindows.has (w)
 	do
-	    subwindows.prune(w)
+	    subwindows.delete(w)
 	end
 
-    attach_subwindow (w : CURSES_WINDOW) is
+    attach_subwindow (w : like Current) is
 	require
 	    exists: exists
 	    window_ok : w /= Void
 	    new_subwindow : not subwindows.has (w)
 	do
-	    subwindows.extend(w)
+	    subwindows.force_last(w)
 	ensure
 	    subwindow_attached: subwindows.has (w)
 	end
@@ -1014,16 +1019,8 @@ feature {CURSES_WINDOW} -- protected
 		not exists
 	end
 
-feature {NONE} -- helper function
-    pointer (a : ANY) : POINTER is
-	do
-		Result := pointer_dummy($a)
-	end
-
-    pointer_dummy (p : POINTER) : POINTER is
-	do
-		Result := p
-	end
+    f, g : INTEGER
+		-- Temporary attributes used as $f and $g in features (SmallEiffel does not allow to use $ on local variable)
 
 invariant
 
