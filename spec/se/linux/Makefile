@@ -2,8 +2,7 @@ SHELL = /bin/sh
 CC = cc
 AR = ar
 RANLIB = ranlib
-SMALLEIFFELDIR=$(SmallEiffel:/sys/system.se=)
-CFLAGS = -O  -I$(SMALLEIFFELDIR)/sys/runtime -I. -I/usr/local/include 
+CFLAGS = -O  -I$(SMARTEIFFELDIR)/sys/runtime/c -I. -I/usr/local/include 
 LIBS = -lnsl -lm
 RM = /bin/rm -f
 SRC= $(ECURSES)/spec/Clib

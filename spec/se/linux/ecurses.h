@@ -10,7 +10,7 @@
  * 
 */
 #include <ncurses.h>
-#include <se_types.h>
+#include <base.h>
 
 #define ecurses_cursor_x(w) ((w)->_curx)
 #define ecurses_cursor_y(w) ((w)->_cury)
