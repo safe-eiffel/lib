@@ -174,13 +174,41 @@ feature -- Status report
 		
 	is_released : BOOLEAN
 	
+	is_empty : BOOLEAN is
+			-- Is this an empty C string ?
+		do
+			Result := item (1) = '%U'
+		end
+
+	equal_string (s : STRING) : BOOLEAN is
+		local
+			index : INTEGER
+		do
+			if s.count > 0 then
+				Result := substring (1, s.count).is_equal (s)
+			else
+				Result := True
+			end
+		ensure
+			definition: s.count > 0 implies Result = substring (1, s.count).is_equal (s)
+			definition_empty: s.count = 0 implies Result = True
+		end
+		
 feature -- Element change
 
+	wipe_out is
+		do
+			put ('%U', 1)
+		ensure
+			is_empty: is_empty
+		end
+		
 	put (c : CHARACTER; index : INTEGER) is
 			-- put `c' at `index'
 		require
 			valid_index: index >= 1 and index <= capacity
 		do
+			c_memory_put_uint8 (c_memory_pointer_plus (handle, index - 1), c.code)
 		ensure
 			item_set: item (index) = c
 		end
@@ -237,7 +265,7 @@ feature -- Element change
 			end
 			c_memory_put_uint8 (c_memory_pointer_plus (handle, s.count), 0)
 		ensure
-			equal_strings: as_string.is_equal (s)
+			equal_strings: equal_string (s)
 		end
 
 	dispose is
