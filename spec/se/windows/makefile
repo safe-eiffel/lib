@@ -1,5 +1,5 @@
 CC = cl
-SMALLEIFFEL=g:\smalleiffel
+SMALLEIFFEL=c:\user\pers\smalleiffel
 CFLAGS = -Ox -nologo -c -I$(SMALLEIFFEL)\sys\runtime -I. -I$(PDCURSES)
 OBJ = ecurses_acs_characters.obj ecurses_attributes.obj ecurses_color_constants.obj ecurses_key_constants.obj ecurses_window_api.obj ecurses_panel_api.obj ecurses_slk_api.obj ecurses_system_api.obj ecurses_pad_api.obj
 
@@ -37,5 +37,5 @@ ecurses_pad_api.obj: ..\..\clib\ecurses_pad_api.c .\ecurses.h
         $(CC) $(CFLAGS) ..\..\clib\ecurses_pad_api.c
 
 clean:
-	del *.obj 
+	del *.obj
 	del *.lib
