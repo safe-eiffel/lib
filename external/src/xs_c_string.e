@@ -181,8 +181,6 @@ feature -- Status report
 		end
 
 	equal_string (s : STRING) : BOOLEAN is
-		local
-			index : INTEGER
 		do
 			if s.count > 0 then
 				Result := substring (1, s.count).is_equal (s)
