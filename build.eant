@@ -34,6 +34,7 @@
 		<echo message="WARNING: GOBO_EIFFEL variable not set." unless="${GOBO_EIFFEL}"/>
 		<echo message="WARNING: BCC_DIR variable not set." if="${GOBO_CC}=bcc" unless="${BCC_DIR}"/>
 		<echo message="WARNING: VE_BIN variable not set." if="${GOBO_EIFFEL}=ve" unless="${VE_BIN}"/>
+		<echo message="WARNING: SMARTEIFFELDIR variable not set." if="${GOBO_EIFFEL}=se" unless="${SMARTEIFFELDIR}"/>
 		<set name="eiffel" value="${GOBO_EIFFEL}"/>
 	</target>
 
