@@ -5,7 +5,7 @@ RANLIB = ranlib
 PLATFORM = linux-glibc2.1
 CFLAGS =  -O -I$(ISE_EIFFEL)/studio/spec/$(ISE_PLATFORM)/include -I. -I/usr/include
 RM = /bin/rm -f
-SRC = $(SAFE_KERNEL)/src/spec/C
+SRC = $(SAFE_KERNEL)/external/src/spec/C
 OBJ = xs_c.o
 
 .c.o:

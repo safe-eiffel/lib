@@ -4,7 +4,7 @@ AR = ar
 RANLIB = ranlib
 CFLAGS =  -O -I$(VE_Bin) -I. -I/usr/local/include
 RM = /bin/rm -f
-SRC = $(SAFE_KERNEL)/src/spec/C
+SRC = $(SAFE_KERNEL)/external/src/spec/C
 OBJ = xs_c.o
 
 .c.o:

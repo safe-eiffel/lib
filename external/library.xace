@@ -28,7 +28,6 @@
 
 		<option unless="${GOBO_OS}=windows">
 			<option name="link" value="${SAFE_KERNEL}/external/src/spec/${GOBO_EIFFEL}/${GOBO_OS}/libxs_c.a"/>
-			<option name="link" value="-lxs_c"/>
 		</option>
 		<option if="${GOBO_OS}=windows">
 			<option name="link" value="${SAFE_KERNEL}\external\src\spec\${GOBO_EIFFEL}\${GOBO_OS}\xs_c_${GOBO_CC}.lib"/>
