@@ -10,6 +10,8 @@ class
 inherit
 	XS_IMPORTED_UINT32_ROUTINES
 
+	KL_SHARED_FILE_SYSTEM
+	
 feature -- Basic operations
 
 	do_test (document : PDF_DOCUMENT; images_outline : PDF_OUTLINE_ITEM) is
@@ -21,7 +23,7 @@ feature -- Basic operations
 			png : PDF_PNG_IMAGE
 		do
 			page := document.last_page
-			document.create_png_image ("images\toucan.png")
+			document.create_png_image (file_system.pathname (images_dir,"toucan.png"))
 			image2 := document.last_image
 			document.create_image (80, 80,3,8)
 			image := document.last_image
@@ -84,7 +86,7 @@ feature -- Basic operations
 			until
 				i > images.upper
 			loop
-				document.create_png_image (images.item (i))
+				document.create_png_image (file_system.pathname (images_dir,images.item (i)))
 				image := document.last_image
 				page.gsave
 				page.translate (100, j)
@@ -106,22 +108,24 @@ feature -- Basic operations
 			-- 
 		once 
 			Result := <<
-			    "images\basn0g01.png", "1-bit grayscale",
-			    "images\basn0g02.png", "2-bit grayscale",
-			    "images\basn0g04.png", "4-bit grayscale",
-			    "images\basn0g08.png", "8-bit grayscale",
-			    "images\basn0g16.png", "16-bit grayscale",
-			    "images\basn2c08.png", "8-bit truecolor",
-			    "images\basn2c16.png", "16-bit truecolor",
-			    "images\basn3p01.png", "1-bit paletted",
-			    "images\basn3p02.png", "2-bit paletted",
-			    "images\basn3p04.png", "4-bit paletted",
-			    "images\basn3p08.png", "8-bit paletted",
-			    "images\basn4a08.png", "8-bit gray with alpha",
-			    "images\basn4a16.png", "16-bit gray with alpha",
-			    "images\basn6a08.png", "8-bit RGBA",
-			    "images\basn6a16.png", "16-bit RGBA"
+			    "basn0g01.png", "1-bit grayscale",
+			    "basn0g02.png", "2-bit grayscale",
+			    "basn0g04.png", "4-bit grayscale",
+			    "basn0g08.png", "8-bit grayscale",
+			    "basn0g16.png", "16-bit grayscale",
+			    "basn2c08.png", "8-bit truecolor",
+			    "basn2c16.png", "16-bit truecolor",
+			    "basn3p01.png", "1-bit paletted",
+			    "basn3p02.png", "2-bit paletted",
+			    "basn3p04.png", "4-bit paletted",
+			    "basn3p08.png", "8-bit paletted",
+			    "basn4a08.png", "8-bit gray with alpha",
+			    "basn4a16.png", "16-bit gray with alpha",
+			    "basn6a08.png", "8-bit RGBA",
+			    "basn6a16.png", "16-bit RGBA"
 			>>
 		end
 
+	images_dir : STRING is "images"
+	
 end -- class TEST_IMAGES

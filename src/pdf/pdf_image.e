@@ -248,7 +248,7 @@ feature {NONE} -- Conversion
 			end
 			medium.put_string (dictionary_entry (n_bitspercomponent, color_bits.out))
 			medium.put_string (dictionary_entry (n_length, encoded_stream.count.out))
-			medium.put_string (dictionary_entry (n_filter, "[/ASCII85Decode /FlateDecode]"))
+			medium.put_string (dictionary_entry (n_filter, "[/ASCII85Decode/FlateDecode]"))
 			if alpha /= Void then
 				create n_smask.make ("SMask")
 				medium.put_string (dictionary_entry (n_smask, alpha.indirect_reference))

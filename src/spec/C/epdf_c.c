@@ -1,30 +1,38 @@
+
 #include "epdf_c.h"
+#include <epdf_c_spec.h>
+#include <stdio.h>
 
 /* compress data using zlib algorithm */
-long zlib_compress (Bytef *pDest,   uLongf * pDestLen,
-                                 const Bytef * pSource, uLong SourceLen) { //EIF_POINTER pDest, EIF_POINTER pDestLen, EIF_POINTER pSource, EIF_INTEGER SourceLen) {
-	return (long) compress ((Bytef *)pDest,   (uLongf *) pDestLen,
+EIF_INTEGER zlib_compress (EIF_POINTER pDest, EIF_POINTER pDestLen, EIF_POINTER pSource, EIF_INTEGER SourceLen) {
+	return (EIF_INTEGER) compress ((Bytef *)pDest,   (uLongf *) pDestLen,
                                  (const Bytef *) pSource, (uLong) SourceLen);
 }
 
 /* read png image */
-uch *read_png (char *file_name, int *pChannels, ulg *pRowbytes,
-		int *pWidth,int *pHeight,int *pBitDepth,int *pColorType,int *pInterlaceType) {
+uch *read_png (EIF_POINTER p_file_name, EIF_POINTER pChannels, EIF_POINTER pRowbytes,
+		EIF_POINTER pWidth, EIF_POINTER pHeight,EIF_POINTER pBitDepth,EIF_POINTER pColorType,EIF_POINTER pInterlaceType) {
+	//parameters
+	char *file_name;
+
+	//locals
+	//int cha
 	png_structp		png_ptr;
 	png_infop		info_ptr;
 	png_uint_32 	width;
 	png_uint_32		height;
-    png_uint_32  i, rowbytes;
+    	png_uint_32  i, rowbytes;
 	int				bit_depth;
 	int				color_type;
 	int				interlace_type;
 	FILE 			*fp;			/* Current opened file */
-   png_color_16 my_background, *image_background;
+   	png_color_16 my_background, *image_background;
 	double gamma;
 
-    png_bytepp  row_pointers = NULL;
+    	png_bytepp  row_pointers = NULL;
 
-// open file
+	// open file
+	file_name=(char*)p_file_name;
 	fp = fopen (file_name, "rb");
 	if (fp == NULL) {
 		return NULL;
@@ -112,15 +120,16 @@ uch *read_png (char *file_name, int *pChannels, ulg *pRowbytes,
 	png_get_IHDR(png_ptr, info_ptr, &width, &height, &bit_depth, &color_type,
 		&interlace_type, NULL, NULL);
 
-    *pRowbytes = rowbytes = png_get_rowbytes(png_ptr, info_ptr);
-    *pChannels = (int)png_get_channels(png_ptr, info_ptr);
+	rowbytes = png_get_rowbytes(png_ptr, info_ptr);
+    	*((EIF_INTEGER*)pRowbytes) = (EIF_INTEGER) rowbytes;
+	*((EIF_INTEGER*)pChannels) = (EIF_INTEGER) png_get_channels(png_ptr, info_ptr);
 
 
-	*pWidth = width;
-	*pHeight = height;
-	*pBitDepth = bit_depth;
-	*pColorType = color_type;
-	*pInterlaceType = interlace_type;
+	*((EIF_INTEGER*)pWidth) = (EIF_INTEGER) width;
+	*((EIF_INTEGER*)pHeight) = (EIF_INTEGER) height;
+	*((EIF_INTEGER*)pBitDepth) = (EIF_INTEGER) bit_depth;
+	*((EIF_INTEGER*)pColorType) = (EIF_INTEGER) color_type;
+	*((EIF_INTEGER*)pInterlaceType) = (EIF_INTEGER) interlace_type;
 
     if ((image_data = (uch *)malloc(rowbytes*height)) == NULL) {
         png_destroy_read_struct(&png_ptr, &info_ptr, NULL);
@@ -161,5 +170,12 @@ uch *read_png (char *file_name, int *pChannels, ulg *pRowbytes,
 
 	fclose (fp);
 
-    return image_data;
+    return (EIF_POINTER) image_data;
 }
+
+
+
+
+
+
+

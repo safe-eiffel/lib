@@ -5,7 +5,7 @@ RANLIB = ranlib
 SMALLEIFFELDIR=$(SmartEiffel:/sys/system.se=)
 CFLAGS =  -O -I$(SMALLEIFFELDIR)/sys/runtime -I. -I/usr/local/include -I$(ZLIB) -I$(PNGLIB)
 RM = /bin/rm -f
-SRC = $(EPDF)/external/src/spec/C
+SRC = $(EPDF)/src/spec/C
 OBJ = epdf_c.o 
 
 .c.o:

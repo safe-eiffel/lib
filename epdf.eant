@@ -52,7 +52,7 @@
 		<exec executable="nmake -f makefile.mak" dir="${EPDF}\src\spec\${eiffel}\${GOBO_OS}" if="${GOBO_CC}=msc" unless="${epdf_lib_exists}"/>
 		<exec executable="make -f makefile.bcc" dir="${EPDF}/src/spec/${eiffel}/${GOBO_OS}" if="${GOBO_CC}=bcc" unless="${epdf_lib_exists}"/>
 		<exec executable="make -f makefile.lcc ZLIB=${ZLIB} LIBPNG=${LIBPNG} epdf_lcc.lib" dir="${EPDF}/src/spec/${eiffel}/${GOBO_OS}" if="${GOBO_CC}=lcc" unless="${epdf_lib_exists}"/>
-		<exec executable="make -f makefile.gcc" dir="${EPDF}/src/spec/${eiffel}/${GOBO_OS}" if="${GOBO_CC}=gcc" unless="${epdf_lib_exists}"/>
+		<exec executable="make " dir="${EPDF}/src/spec/${eiffel}/${GOBO_OS}" if="${GOBO_CC}=gcc" unless="${epdf_lib_exists}"/>
 		
 		<!-- Precursor -->
 		<precursor/>
