@@ -40,4 +40,8 @@ feature -- Conversion
 			Result.append_string (value)
 		end
 
+feature {NONE} -- Implementation
+
+	number : INTEGER is do end
+	
 end -- class PDF_NAME

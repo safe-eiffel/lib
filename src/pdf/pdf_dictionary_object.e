@@ -17,7 +17,7 @@ inherit
 		rename
 			make as make_dictionary
 		undefine
-			indirect_reference
+			indirect_reference, number
 		redefine
 			to_pdf
 		end
@@ -37,7 +37,7 @@ feature -- Initialization
 feature -- Conversion
 
 	to_pdf : STRING is
-			-- 
+			-- PDF representation
 		do
 			!!Result.make (0)
 			Result.append_string (object_header)

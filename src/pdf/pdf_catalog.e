@@ -34,6 +34,11 @@ feature -- Access
 	page_layout : PDF_NAME
 			-- PDF optional
 
+	page_mode : PDF_NAME
+			-- PDF optional
+			
+	viewer_preferences : PDF_VIEWER_PREFERENCES
+	
 feature {PDF_DOCUMENT} -- Element change
 
 	set_pages (a_pages : PDF_PAGES) is
@@ -48,8 +53,42 @@ feature {PDF_DOCUMENT} -- Element change
 
 	set_page_layout (p : PDF_NAME) is
 			-- set page_layout
+		require
+			p_exists: p /= Void
 		do
 			page_layout := p
+		ensure
+			page_layout_set: page_layout = p
+		end
+
+	set_outlines (document_outlines : PDF_OUTLINES) is
+			-- 
+		require
+			document_outlines_exists: document_outlines /= Void
+		do
+			outlines := document_outlines
+		ensure
+			outlines_set: outlines = document_outlines
+		end
+	
+	set_page_mode (new_mode : PDF_NAME) is
+			-- 
+		require
+			new_mode_exists: new_mode /= Void
+		do
+			page_mode := new_mode
+		ensure
+			page_mode_set: page_mode = new_mode
+		end
+	
+	set_viewer_preferences (new_viewer_preferences : PDF_VIEWER_PREFERENCES) is
+			-- 
+		require
+			new_viewer_preferences_exists: new_viewer_preferences /= Void
+		do
+			viewer_preferences := new_viewer_preferences
+		ensure
+			viewer_preferences_set: viewer_preferences = new_viewer_preferences
 		end
 		
 feature -- Conversion
@@ -57,18 +96,30 @@ feature -- Conversion
 	to_pdf : STRING is
 			-- 
 		local
-			ntype, npages, nlayout : PDF_NAME
+			ntype, npages, nlayout, noutlines, npagemode, nviewerpreferences : PDF_NAME
 		do
 			!!Result.make (0)
 			!!ntype.make ("Type")
 			!!npages.make ("Pages")
 			!!nlayout.make ("PageLayout")
+			create noutlines.make ("Outlines")
+			create npagemode.make ("PageMode")
+			create nviewerpreferences.make ("ViewerPreferences")
 			Result.append_string (object_header)
 			Result.append_string (begin_dictionary)
 			Result.append_string (dictionary_entry (ntype, "/Catalog"))
 			Result.append_string (dictionary_entry (npages, pages.indirect_reference))
 			if page_layout /= Void and then not page_layout.value.is_empty then
 				Result.append_string (dictionary_entry (nlayout, page_layout.to_pdf))
+			end
+			if outlines /= Void then
+				Result.append_string (dictionary_entry (noutlines, outlines.indirect_reference))
+			end
+			if page_mode /= Void then
+				Result.append_string (dictionary_entry (npagemode, page_mode.to_pdf))		
+			end
+			if viewer_preferences /= Void then
+				Result.append_string (dictionary_entry (nviewerpreferences, viewer_preferences.indirect_reference))
 			end
 			Result.append_string (end_dictionary)
 			Result.append_string (object_footer)

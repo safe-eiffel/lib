@@ -96,10 +96,10 @@ feature {PDF_DOCUMENT} -- Element change
 			-- add a new object to the cross reference section
 		local
 			an_entry : PDF_XREF_ENTRY
-			number : INTEGER
+			object_number : INTEGER
 		do
-			number := xref_section.upper + 1
-			!!an_entry.make_free (number, 0)
+			object_number := xref_section.upper + 1
+			!!an_entry.make_free (object_number, 0)
 			xref_section.force(an_entry, count)
 			entry_count := entry_count + 1
 		ensure
@@ -178,6 +178,8 @@ feature {NONE} -- Implementation
 	xref_section : ARRAY[PDF_XREF_ENTRY]
 	
 	entry_count : INTEGER
+	
+	number : INTEGER is do end
 	
 end -- class PDF_XREF
 		

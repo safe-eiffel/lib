@@ -31,6 +31,9 @@ feature -- Initialization
 			make_object (a_number)
 			!!content.make (0)
 			page := a_page
+			debug ("debug_stream")
+				unencoded := True
+			end
 		ensure
 			page = a_page
 		end
@@ -65,7 +68,7 @@ feature -- Element change
 		end
 
 	put_string (s : STRING) is
-			-- 
+			-- put string `s'
 		do
 			content_append_literal_string (s)
 			content.append_string (" Tj%N") 
@@ -78,14 +81,14 @@ feature -- Element change
 		end
 
 	put_new_line_string (s : STRING) is
-			-- 
+			-- put string `s' and issue a newline
 		do
 			content_append_literal_string (s)
 			content.append_string (" '%N")
 		end
 
 	set_text_leading (l : DOUBLE) is
-			-- 
+			-- set `l' as text_leading
 		do
 			content_append_numop (l, "TL")
 		end
@@ -128,6 +131,13 @@ feature {PDF_PAGE} --
 			content.append_string (" Tf%N")
 		end
 
+	put_image (image : PDF_IMAGE) is
+		do
+			content_append_name (page.image_alias (image))
+			content_append_space
+			content.append_string (" Do%N")
+		end
+		
 feature -- Removal
 
 feature -- Resizing
@@ -168,21 +178,42 @@ feature -- Conversion
 		local
 			length : PDF_NAME
 			content_length : INTEGER
+			zlib_format : ZLIB_FORMAT
+			encoded_stream : STRING
+			names : PDF_NAME_CONSTANTS
+			ascii_85_format : ASCII_85_FORMAT
+			filter : PDF_ARRAY_SERIALIZABLE[PDF_NAME]
 		do
+			if not unencoded then
+				create zlib_format
+				create ascii_85_format
+				create names
+				encoded_stream := zlib_format.encode (content)
+				encoded_stream := ascii_85_format.encode (encoded_stream)
+				content_length := ascii_85_format.last_encoded_count (medium)
+			else
+				content_length := content.count + content.occurrences ('%N') * (medium.eol_count - 1)
+			end
 			medium.put_string (object_header)
 			-- dictionary
 			medium.put_string (begin_dictionary)
-			!!length.make ("Length")
-			medium.put_string (length.to_pdf)
-			medium.put_string (" ")
-			
-			content_length := content.count + content.occurrences ('%N') * (medium.eol_count - 1)
-			medium.put_string (content_length.out)
+			medium.put_string (dictionary_entry (names.LENGTH, content_length.out))
+			if not unencoded then
+				create filter.make (1,2)
+				filter.put (names.Ascii85decode,1)
+				filter.put (names.Flatedecode,2)
+				medium.put_string (dictionary_entry (names.Filter, filter.to_pdf))
+			end
 			medium.put_string (end_dictionary)
 			-- stream
 			medium.put_string ("stream%N")
 			-- content
-			medium.put_string (content)
+			
+			if unencoded then
+				medium.put_string (content)
+			else
+				medium.put_string (encoded_stream)
+			end
 			medium.put_new_line
 			-- endstream
 			medium.put_string ("endstream%N")
@@ -233,6 +264,7 @@ feature -- Basic operations
 	rotate (theta : DOUBLE) is
 			-- 
 		local
+			math : expanded EPDF_MATH
 			c, s : DOUBLE
 		do
 			c := math.cosine (theta)
@@ -242,6 +274,8 @@ feature -- Basic operations
 	
 	skew (alpha, beta : DOUBLE) is
 			-- 
+		local
+			math : expanded EPDF_MATH
 		do
 			concatenate_to_ctm (1, math.tangent (alpha), math.tangent (beta), 1, 0, 0)
 		end
@@ -621,12 +655,8 @@ feature {NONE} -- Implementation
 			content.append_character ('%N')
 		end
 		
-	math : EPDF_MATH is
-			-- 
-		once
-			create Result
-		end
-		
+	unencoded : BOOLEAN
+	
 invariant
 	invariant_clause: -- Your invariant here
 

@@ -1,6 +1,6 @@
 indexing
 
-	description: "Adobe standard (one of the...) 14 PDF font."
+	description: "Adobe standard (one of the... 14) PDF font."
 	author: "Paul G. Crismer"
 	licence: "Release under the Eiffel Forum licence.  See file 'forum.txt'."
 

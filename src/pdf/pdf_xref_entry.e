@@ -172,6 +172,9 @@ feature {NONE} -- Implementation
 	impl_value : INTEGER
 	
 	impl_generation : INTEGER
+	
+	number : INTEGER is do  end
+	
 invariant
 	eol_byte_count: eol_bytes_count > 0 and eol_bytes_count <= 2
 end -- class PDF_XREF_ENTRY

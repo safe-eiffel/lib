@@ -30,17 +30,18 @@ inherit
 	PDF_GRAPHICS_STATE_OPERATORS
 		
 creation
-	make
+	{PDF_DOCUMENT} make
 
 feature {NONE} -- Initialization
 
 	make (an_object : INTEGER) is
-			-- 
+			-- make PDF object with number `an_object'
 		local
 			procname : PDF_NAME
 		do
 			Precursor (an_object)
 			!!fonts.make
+			!!images.make
 			!!procset.make (1,2)
 			!!procname.make ("PDF")
 			procset.put (procname, 1)
@@ -69,6 +70,7 @@ feature -- Access
 			-- must be a multiple of 90
 	
 	current_stream : PDF_STREAM
+			-- current stream of graphical operations
 
 feature {PDF_OBJECT} -- Access
 
@@ -98,9 +100,13 @@ feature {PDF_OBJECT} -- Access
 	fonts : PDF_DICTIONARY
 			-- member of `resources'
 	
+	images : PDF_DICTIONARY
+			-- member of `resources'
+			
 feature -- Element change
 
 	set_font (a_font : PDF_FONT; a_size : DOUBLE) is
+			-- set (current_font, current_font_size) to (`a_font', `a_size')
 		do
 			if not has_font (a_font) then
 				use_font (a_font)
@@ -127,7 +133,7 @@ feature -- Status Report
 feature -- Element change
 
 	add_stream (a_document : PDF_DOCUMENT) is
-			-- 
+			-- add a new stream created by `a_document'
 		require
 			a_document /= Void
 		do
@@ -152,9 +158,9 @@ feature -- Element change
 feature -- Conversion
 
 	to_pdf : STRING is
-			-- 
+			-- pdf representation of Current
 		local
-			stype, sparent, sresources, smediabox : PDF_NAME
+			stype, sparent, sresources, smediabox, procname : PDF_NAME
 			contents_cursor : DS_LIST_CURSOR [PDF_OBJECT]
 		do
 			!!stype.make ("Type")
@@ -172,6 +178,13 @@ feature -- Conversion
 			if resources = Void then
 				Result.append_string (dictionary_entry (sresources, "<< >>"))
 			else
+				if images.count > 0 then
+					create procname.make ("ImageB")
+					procset.force (procname, procset.count + 1)
+					create procname.make ("ImageC")
+					procset.force (procname, procset.count + 1)
+					resources.add_entry ("XObject", images)					
+				end
 				Result.append_string (dictionary_entry (sresources, resources.to_pdf))
 			end
 			-- MediaBox
@@ -215,24 +228,28 @@ feature -- Basic operations - Graphics
 		end
 		
 	set_line_cap (c : INTEGER) is
+			-- set `line_cap' to `c'
 		do
 			line_cap := c
 			current_stream.set_line_cap (c)
 		end
 		
 	set_line_join (j : INTEGER) is
+			-- set `line_joint' to `j'
 		do
 			line_join := j
 			current_stream.set_line_join (j)
 		end
 		
 	set_miter_limit (m : DOUBLE) is
+			-- set `miter_limit' to `m'
 		do
 			miter_limit := m
 			current_stream.set_miter_limit (m)
 		end
 
 	set_line_dash (array : ARRAY[INTEGER]; phase : INTEGER) is
+			-- set `line_dash_array', and `line_dash_phase' to `array' and `phase'
 		do
 			!!line_dash_array.make_from_array(array)
 			line_dash_phase := phase
@@ -240,6 +257,7 @@ feature -- Basic operations - Graphics
 		end
 
 	set_line_solid is
+			-- set lines as 'solid' i.e. no dash
 		do
 			current_stream.set_line_solid
 			line_dash_array := Void
@@ -306,6 +324,7 @@ feature -- Basic operations
 		end
 
 	begin_text is
+			-- begin text mode
 		do
 			operations_mode := Mode_text
 			tlm.set_identity
@@ -337,46 +356,61 @@ feature -- Basic operations
 feature -- Coordinate system operations
 
 	translate (a_tx, a_ty : DOUBLE) is
+			-- translate coordinate system by `a_tx', `a_ty' points
 		do
 			current_stream.translate (a_tx, a_ty)
 		end
 
 	scale (sx, sy : DOUBLE) is
+			-- scale coordinate system by `sx', `sy'
 		do
 			current_stream.scale (sx, sy)
 		end
 		
 	rotate (theta : DOUBLE) is
+			-- rotate coordinate system by `theta' radians
 		do
 			current_stream.rotate (theta)
 		end
 	
 	skew (alpha, beta : DOUBLE) is
+			-- skew coordinate system by `alpha' and `beta' radians
 		do
 			current_stream.skew (alpha, beta)
 		end
 
 feature -- Painting operators
 
+	put_image (image : PDF_IMAGE) is
+			-- put `image'
+		do
+			use_image (image)
+			current_stream.put_image (image)
+		end
+		
 	stroke is
+			-- stroke current path
 		do
 			current_stream.stroke
 			operations_mode := Mode_page_definition
 		end
 	
 	fill is
+			-- fill current path
 		do
 			current_stream.fill (path_fill_heuristics)
 			operations_mode := Mode_page_definition
 		end
 		
 	fill_then_stroke is
+			-- fill then stroke current path
 		do
 			current_stream.fill_then_stroke(path_fill_heuristics)
 			operations_mode := Mode_page_definition
 		end
 		
 	end_path is
+			-- end current path
 		do
 			current_stream.end_path
 			operations_mode := Mode_page_definition
@@ -385,6 +419,7 @@ feature -- Painting operators
 feature -- Clipping operators
 
 	clip is
+			-- clip using current path and `path_fill_heuristics'
 		do
 			current_stream.clip (path_fill_heuristics)
 			operations_mode := Mode_clipping
@@ -393,6 +428,8 @@ feature -- Clipping operators
 feature -- Path Construction operators
 		
 	rectangle (x, y, w, h : DOUBLE) is
+			-- add to current path a rectangle whose lower left edge 
+			-- is at (`x',`y') and whose (width,height) is (`w'/`h') 
 		do
 			current_x := x
 			current_y := y + h
@@ -401,6 +438,7 @@ feature -- Path Construction operators
 		end
 
 	move (x, y : DOUBLE) is
+			-- begin a new (sub)path at `x',`y'
 		do
 			current_x := x
 			current_y := y
@@ -411,6 +449,8 @@ feature -- Path Construction operators
 		end
 		
 	lineto (x, y : DOUBLE) is
+			-- add a line to current path joining current point
+			-- (`current_x', `current_y') to (`x', `y')
 		do
 			current_x := x
 			current_y := y
@@ -418,6 +458,9 @@ feature -- Path Construction operators
 		end
 		
 	close_path is
+			-- close current path, implicitly drawing a line
+			-- joining current point (`current_x', `current_y') to the
+			-- paht origin (`path_origin_x', `path_origin_y')
 		do
 			current_x := path_origin_x
 			current_y := path_origin_y
@@ -425,6 +468,9 @@ feature -- Path Construction operators
 		end
 		
 	bezier_1 (cx1, cy1, cx2, cy2, px, py : DOUBLE) is
+			-- add a bezier curve to current path
+			-- begin and end points are p1=(current_x, current_y), p2=(px, py)
+			-- control points are c1=(cx1, cy1) and c2=(cx2, cy2)
 		do
 			current_x := px
 			current_y := py
@@ -432,6 +478,9 @@ feature -- Path Construction operators
 		end
 		
 	bezier_2 (cx2, cy2, px, py : DOUBLE) is
+			-- add a bezier curve to current path
+			-- begin and end points are p1=(current_x, current_y), p2=(px, py)
+			-- control point for p2 is c2=(cx2, cy2)
 		do
 			current_x := px
 			current_y := py
@@ -439,6 +488,9 @@ feature -- Path Construction operators
 		end
 		
 	bezier_3 (cx1, cy1, px, py : DOUBLE) is
+			-- add a bezier curve to current path
+			-- begin and end points are p1=(current_x, current_y), p2=(px, py)
+			-- control point for p1 is c1=(cx1, cy1)
 		do
 			current_x := px
 			current_y := py
@@ -448,6 +500,7 @@ feature -- Path Construction operators
 feature -- Basic operations - Text
 
 	set_text_render_mode (a_mode : INTEGER) is
+			-- set `text_render_mode' to `a_mode'
 		do
 			text_render_mode := a_mode
 			current_stream.set_text_render_mode (a_mode)
@@ -471,7 +524,26 @@ feature -- Basic operations - Text
 			tm := tm * m
 		end
 
+	set_text_origin (x, y : DOUBLE) is
+			-- set text origin to `x',`y'
+		local
+			m : PDF_TRANSFORMATION_MATRIX
+		do
+			create m.set (1, 0, 0, 1, x, y)
+			tlm.copy (m)
+			tm.copy(m)
+			current_stream.set_text_matrix (m.a, m.b, m.c, m.d, m.e, m.f)
+			line_x := x
+			text_x := x
+			line_y := y
+			text_y := y
+		ensure
+			line_origin_set: equal_numbers (line_x, x) and then equal_numbers (line_y, y)
+			text_origin_set: equal_numbers (text_x, x) and then equal_numbers (text_y, y)
+		end
+		
 	put_string (s : STRING) is
+			-- put string `s'
 		local
 			m : PDF_TRANSFORMATION_MATRIX
 			w : DOUBLE
@@ -484,6 +556,7 @@ feature -- Basic operations - Text
 		end
 
 	put_new_line is
+			-- put a new line
 		local
 			m : PDF_TRANSFORMATION_MATRIX
 		do
@@ -497,7 +570,7 @@ feature -- Basic operations - Text
 		end
 	
 	put_new_line_string (s : STRING) is
-			-- 
+			-- put string `s' go to beginning of next line.
 		local
 			m : PDF_TRANSFORMATION_MATRIX
 			w : DOUBLE
@@ -594,6 +667,7 @@ feature -- Basic operations - Text
 		end
 
 	set_character_spacing (s : DOUBLE) is
+			-- set `character_spacing' to `s' points
 		do
 			if character_spacing /= s then
 				character_spacing := s
@@ -602,6 +676,7 @@ feature -- Basic operations - Text
 		end
 		
 	set_word_spacing (w : DOUBLE) is
+			-- set `word_spacing' to `w' points
 		do	
 			if word_spacing /= w then
 				word_spacing := w
@@ -610,6 +685,7 @@ feature -- Basic operations - Text
 		end
 		
 	set_horizontal_scaling (s : DOUBLE) is
+			-- set `horizontal_scaling' to `s' points
 		do
 			if horizontal_scaling /= s then
 				horizontal_scaling := s
@@ -618,6 +694,7 @@ feature -- Basic operations - Text
 		end
 	
 	set_text_rise (r : DOUBLE) is
+			-- set text rise to `r' points
 		do
 			if text_rise /= r then
 				text_rise := r
@@ -626,6 +703,7 @@ feature -- Basic operations - Text
 		end
 
 	set_text_matrix (a_text_matrix : PDF_TRANSFORMATION_MATRIX) is
+			-- set `tm' to `a_text_matrix'
 		do
 			tm.copy (a_text_matrix)
 			current_stream.set_text_matrix (tm.a, tm.b, tm.c, tm.d, tm.e, tm.f)
@@ -641,16 +719,40 @@ feature {PDF_STREAM} -- Access
 		local
 			index : INTEGER
 		do
-			index := font_index (a_font)
-			if index <= fonts.count then
+			index := fonts.index_of_value (a_font)
+			if index > 0 and then index <= fonts.count then
 				Result := fonts.key (index)
+			end
+		end
+
+	image_alias (image : PDF_IMAGE) : STRING is
+			-- fonts receive an alias (nickname) within the context of a page
+		require
+			image_exists: image /= Void
+			has_image: has_image (image)
+		local
+			index : INTEGER
+		do
+			index := images.index_of_value (image)
+			if index > 0 and then index <= images.count then
+				Result := images.key (index)
 			end
 		end
 		
 	has_font (a_font : PDF_FONT) : BOOLEAN is
 			-- does a font with 'font_name' exist ?
+		local
+			index : INTEGER
 		do
-			Result := (font_index (a_font) <= fonts.count)	
+			Result := fonts.has_value (a_font)	
+		end
+
+	has_image (image : PDF_IMAGE) : BOOLEAN is
+			-- does `image' exist ?
+		local
+			index : INTEGER
+		do
+			Result := images.has_value (image)	
 		end
 			
 feature {NONE} -- Implementation
@@ -663,30 +765,6 @@ feature {NONE} -- Implementation
 
 	impl_contents : DS_LIST [PDF_STREAM]
 	
-	font_index (a_font : PDF_FONT) : INTEGER is
-			-- 
-		require
-			a_font_exists: a_font /= Void
-		local
-			index : INTEGER
-			font : PDF_FONT
-		do
-			index := 1
-			if fonts.count > 0 then
-				from
-					font ?= fonts.value (index)
-				until
-					index > fonts.count or else font.number = a_font.number 
-				loop
-					index := index + 1
-					if index <= fonts.count then
-						font ?= fonts.value (index)
-					end
-				end
-			end
-			Result := index
-		end
-
 		
 	use_font (a_font : PDF_FONT) is
 			-- 
@@ -700,6 +778,20 @@ feature {NONE} -- Implementation
 			fname.append_string ("F")
 			fname.append_string ((fonts.count + 1).out)
 			fonts.add_entry (fname, a_font)
+		end
+
+	use_image (image : PDF_IMAGE) is
+			-- 
+		require
+			image /= Void
+			not has_image (image)
+		local
+			name : STRING
+		do
+			!!name.make (0)
+			name.append_string ("Im")
+			name.append_string ((images.count + 1).out)
+			images.add_entry (name, image)
 		end
 
 	state_stack : DS_LINKED_STACK [PDF_PAGE_STATE]

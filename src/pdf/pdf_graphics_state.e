@@ -1,5 +1,9 @@
 indexing
 
+	description: "PDF graphic states."
+	author: "Paul G. Crismer"
+	licence: "Release under the Eiffel Forum licence.  See file 'forum.txt'."
+
 class
 	PDF_GRAPHICS_STATE
 	

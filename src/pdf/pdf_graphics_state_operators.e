@@ -91,7 +91,7 @@ feature -- Basic operations
 		ensure
 			save_level = old save_level + 1
 		end
-		
+
 	grestore is
 			-- pop graphics state
 		require
@@ -185,6 +185,13 @@ feature -- Coordinate space transformation
 
 feature -- Path painting operators
 
+	put_image (image : PDF_IMAGE) is
+			-- put `image'
+		require
+			image_exists: image /= Void
+		deferred
+		end
+		
 	stroke is
 			-- stroke current path
 		require

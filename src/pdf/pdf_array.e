@@ -18,11 +18,6 @@ inherit
 	ARRAY[G]
 		rename
 			make as make_array, make_from_array as array_make_from_array
---		export 
---			{NONE}
---				all;
---		 	{ANY}
---				item, put, has, force, upper, lower
 		end
 	
 
@@ -56,12 +51,12 @@ feature {NONE} -- Initialization
 feature -- Conversion
 
 	to_pdf : STRING is
+			-- PDF representation
 		local
 			index : INTEGER
 		do
 			!!Result.make (0)
-			--Result.append_string (object_header)
-			Result.append_string ("[ ")
+			Result.append_string ("[")
 			from
 				index := lower
 			until
@@ -71,8 +66,7 @@ feature -- Conversion
 				Result.append_string (to_pdf_item (index))
 				index := index + 1
 			end
-			Result.append_string (" ]%N")
-			--Result.append_string (object_footer)
+			Result.append_string (" ]")
 		end
 
 feature {NONE} -- Implementation
@@ -90,5 +84,7 @@ feature {NONE} -- Implementation
 				Result := " "
 			end
 		end
+
+	number : INTEGER is do  end	
 		
 end -- class PDF_ARRAY
