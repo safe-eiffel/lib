@@ -22,6 +22,8 @@ inherit
 			{NONE} all
 		end
 
+	ANY
+
 feature
 
     Character_ulcorner: INTEGER is

@@ -32,6 +32,9 @@ default
 cluster
 	root_cluster:		"."
 
+	error_handling:		"$SAFE_ERROR_HANDLING\src"
+
+	ise_error_handling (error_handling):		"$\spec\ise"
 
 	ecurses:		"$ECURSES"
 		default

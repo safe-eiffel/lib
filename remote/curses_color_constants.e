@@ -22,6 +22,8 @@ inherit
 			{NONE} all
 		end
 
+	ANY
+
 feature  -- Colors
 
     Color_black: INTEGER is 

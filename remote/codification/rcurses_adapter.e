@@ -10,111 +10,158 @@ class
 	RCURSES_ADAPTER
 
 inherit
-	CURSES_APPLICATION
-		export
-			{NONE} all
-		end
 	
 	CURSES_ATTRIBUTE_CONSTANTS
 		export
 			{NONE} all
+		undefine
+			default_rescue			
 		end
 	
 	RCURSES_ATTRIBUTE_CONSTANTS_IDS
 		export
 			{NONE} all
+		undefine
+			default_rescue				
 		end
 	
 	CURSES_CHARACTER_CONSTANTS
 		export
 			{NONE} all
+		undefine
+			default_rescue			
 		end
 	
 	RCURSES_CHARACTER_CONSTANTS_IDS
 		export
 			{NONE} all
+		undefine
+			default_rescue			
 		end
 	
 	CURSES_COLOR_CONSTANTS
 		export
 			{NONE} all
+		undefine
+			default_rescue			
 		end
 	
 	RCURSES_COLOR_CONSTANTS_IDS
 		export
 			{NONE} all
+		undefine
+			default_rescue			
 		end
 	
 	CURSES_ERROR_API
 		export
 			{NONE} all
+		undefine
+			default_rescue			
 		end
 	
 	RCURSES_ERROR_API_IDS
 		export
 			{NONE} all
+		undefine
+			default_rescue			
 		end
 	
 	CURSES_KEY_CONSTANTS
 		export
 			{NONE} all
+		undefine
+			default_rescue			
 		end
 	
 	RCURSES_KEY_CONSTANTS_IDS
 		export
 			{NONE} all
+		undefine
+			default_rescue			
 		end
 	
 	CURSES_PAD_API
 		export
 			{NONE} all
+		undefine
+			default_rescue			
 		end
 	
 	RCURSES_PAD_API_IDS
 		export
 			{NONE} all
+		undefine
+			default_rescue			
 		end
 	
 	CURSES_PANEL_API
 		export
 			{NONE} all
+		undefine
+			default_rescue			
 		end
 	
 	RCURSES_PANEL_API_IDS
 		export
 			{NONE} all
+		undefine
+			default_rescue			
 		end
 	
 	CURSES_SLK_API
 		export
 			{NONE} all
+		undefine
+			default_rescue			
 		end
 	
 	RCURSES_SLK_API_IDS
 		export
 			{NONE} all
+		undefine
+			default_rescue			
 		end
 	
 	CURSES_SYSTEM_API
 		export
 			{NONE} all
+		undefine
+			default_rescue			
 		end
 	
 	RCURSES_SYSTEM_API_IDS
 		export
 			{NONE} all
+		undefine
+			default_rescue			
 		end
 	
 	CURSES_WINDOW_API
 		export
 			{NONE} all
+		undefine
+			default_rescue			
 		end
 
 	RCURSES_WINDOW_API_IDS
 		export
 			{NONE} all
+		undefine
+			default_rescue			
 		end
 		
+	UT_APPLICATION_STATUS_SINGLETON_ACCESSOR
+		export
+			{NONE} all
+		end		
+
+	ANY
+		undefine
+			default_rescue
+		end
+
+	
 creation
 	make
 	
@@ -125,40 +172,59 @@ feature {NONE} -- Initialization
 		do
 			!!pointers_table.make (1000)
 			!!last_results.make
+			!!dictionnary
 		end
 
 
 feature -- Access
 
-	last_results: DS_LINKED_LIST[ANY]
-			-- Results of last call.
 	
+	last_server_message: RCURSES_SERVER_MESSAGE is
+			-- Last message of server results.
+		do
+			!!Result.make (last_results)
+		end
+
+	pointers_table_dump: STRING is
+			-- Dump of pointers_table.
+		do
+			!!Result.make (200)
+			Result.append_string ("(Key, Item) = ")
+			from
+				pointers_table.start
+			until
+				pointers_table.off
+			loop
+				Result.append_string ("(" + pointers_table.key_for_iteration.out + "," + pointers_table.item_for_iteration.out + ") ; ")	
+				pointers_table.forth
+			end
+		end
+
+		
 feature -- Basic operations
 
-	call_feature (a_function_identifier: INTEGER; arguments: ARRAY[STRING]) is
-			-- Call feature with `a_function_identifier' with `arguments'.
+	call_feature (a_client_message: RCURSES_CLIENT_MESSAGE) is
+			-- Call feature for `a_client_message'.
 		do	
 			--| Initialize results
 			last_results.wipe_out
 
-			dispatch_call (a_function_identifier, arguments)
+			dispatch_call (a_client_message.feature_identifier, a_client_message.arguments)
 			
 		end
 		
 feature {NONE} -- Implementation
 
-	dispatch_call (a_function_identifier: INTEGER; arguments: ARRAY[STRING]) is
+	dispatch_call (a_feature_identifier: INTEGER; arguments: ARRAY[STRING]) is
 			-- Dispatch the feature call.
 		local
 			a_pointer: POINTER
 			an_integer: INTEGER
 			a_character: CHARACTER
 			a_boolean: BOOLEAN
-			i1: INTEGER
-			i2: INTEGER
 		do
 			
-			inspect a_function_identifier
+			inspect a_feature_identifier
 			
 			--| Identifiers for CURSES_WINDOW_API
 
@@ -169,7 +235,7 @@ feature {NONE} -- Implementation
 			when Id_initscr then
 				a_pointer := initscr
 				pointers_table.force (a_pointer, a_pointer.out )
-				last_results.force_last (a_pointer)
+				last_results.force_last (a_pointer.out)
  
 			when Id_cbreak then
  				an_integer := cbreak
@@ -299,7 +365,7 @@ feature {NONE} -- Implementation
 			when Id_api_stdscr then
  				a_pointer := api_stdscr
 				pointers_table.force (a_pointer, a_pointer.out )
-				last_results.force_last (a_pointer)
+				last_results.force_last (a_pointer.out)
  
 			when Id_api_has_colors then
   				a_boolean := api_has_colors
@@ -329,7 +395,7 @@ feature {NONE} -- Implementation
 			when Id_newwin then
    				a_pointer := newwin (arguments.item (1).to_integer,arguments.item (2).to_integer,arguments.item (3).to_integer,arguments.item (4).to_integer)
 				pointers_table.force (a_pointer, a_pointer.out )
- 				last_results.force_last (a_pointer)
+ 				last_results.force_last (a_pointer.out)
  
 			when Id_delwin then
  				an_integer := delwin (pointers_table.item (arguments.item(1)))
@@ -342,12 +408,12 @@ feature {NONE} -- Implementation
 			when Id_subwin then
    				a_pointer := subwin (pointers_table.item (arguments.item(1)),arguments.item (2).to_integer,arguments.item (3).to_integer,arguments.item (4).to_integer,arguments.item (5).to_integer)
 				pointers_table.force (a_pointer, a_pointer.out )
- 				last_results.force_last (a_pointer)
+ 				last_results.force_last (a_pointer.out)
 
 			when Id_derwin then
    				a_pointer := derwin (pointers_table.item (arguments.item(1)),arguments.item (2).to_integer,arguments.item (3).to_integer,arguments.item (4).to_integer,arguments.item (5).to_integer)
 				pointers_table.force (a_pointer, a_pointer.out )
- 				last_results.force_last (a_pointer)
+ 				last_results.force_last (a_pointer.out)
  
 			when Id_mvderwin then
    				an_integer := mvderwin (pointers_table.item (arguments.item(1)),arguments.item (2).to_integer,arguments.item (3).to_integer)
@@ -356,7 +422,7 @@ feature {NONE} -- Implementation
 			when Id_dupwin then
    				a_pointer := dupwin (pointers_table.item (arguments.item(1)))
 				pointers_table.force (a_pointer, a_pointer.out )
- 				last_results.force_last (a_pointer)
+ 				last_results.force_last (a_pointer.out)
  
 			when Id_wsyncup then
    				wsyncup (pointers_table.item (arguments.item(1)))
@@ -626,7 +692,7 @@ feature {NONE} -- Implementation
 			when Id_panel_window then
 				a_pointer := panel_window (pointers_table.item (arguments.item(1)))
 				pointers_table.force (a_pointer, a_pointer.out )				
- 				last_results.force_last (a_pointer)
+ 				last_results.force_last (a_pointer.out)
  
 			when Id_update_panels then
  				update_panels
@@ -654,17 +720,17 @@ feature {NONE} -- Implementation
 			when Id_new_panel then
 				a_pointer := new_panel (pointers_table.item (arguments.item(1)))
 				pointers_table.force (a_pointer, a_pointer.out )				
- 				last_results.force_last (a_pointer)
+ 				last_results.force_last (a_pointer.out)
  
 			when Id_panel_above then
  				a_pointer := panel_above (pointers_table.item (arguments.item(1)))
 				pointers_table.force (a_pointer, a_pointer.out )				
- 				last_results.force_last (a_pointer)
+ 				last_results.force_last (a_pointer.out)
 
 			when Id_panel_below then
  				a_pointer := panel_below (pointers_table.item (arguments.item(1)))
 				pointers_table.force (a_pointer, a_pointer.out )				
- 				last_results.force_last (a_pointer)
+ 				last_results.force_last (a_pointer.out)
 
 			when Id_set_panel_userptr then
  				an_integer := set_panel_userptr (pointers_table.item (arguments.item(1)), pointers_table.item (arguments.item(2)))
@@ -673,7 +739,7 @@ feature {NONE} -- Implementation
 			when Id_panel_userptr then
  				a_pointer := panel_userptr (pointers_table.item (arguments.item(1)))
 				pointers_table.force (a_pointer, a_pointer.out )				
- 				last_results.force_last (a_pointer)
+ 				last_results.force_last (a_pointer.out)
  
 			when Id_move_panel then
  				an_integer := move_panel (pointers_table.item (arguments.item(1)), arguments.item (2).to_integer, arguments.item(3).to_integer)
@@ -693,7 +759,7 @@ feature {NONE} -- Implementation
 			when Id_newpad then
 				a_pointer := newpad (arguments.item(1).to_integer, arguments.item(2).to_integer)
 				pointers_table.force (a_pointer, a_pointer.out )
-				last_results.force_last (a_pointer)
+				last_results.force_last (a_pointer.out)
  
 			when Id_prefresh then
   				an_integer := prefresh (pointers_table.item (arguments.item(1)), arguments.item(2).to_integer, arguments.item(3).to_integer, arguments.item(4).to_integer, arguments.item(5).to_integer, arguments.item(6).to_integer, arguments.item(7).to_integer)
@@ -706,7 +772,7 @@ feature {NONE} -- Implementation
 			when Id_subpad then
 				a_pointer := subpad (pointers_table.item (arguments.item(1)), arguments.item(2).to_integer, arguments.item(3).to_integer, arguments.item(4).to_integer, arguments.item(5).to_integer)
 				pointers_table.force (a_pointer, a_pointer.out )
-				last_results.force_last (a_pointer)
+				last_results.force_last (a_pointer.out)
  
 			when Id_pechochar then
   				pechochar (pointers_table.item (arguments.item(1)), arguments.item(2).to_integer)
@@ -1371,20 +1437,33 @@ feature {NONE} -- Implementation
 				last_results.force_last (an_integer)
 
 			else
-				print ("Unknown feature indentifier: ")
-				print (a_function_identifier)
+				report_error (new_error ("Unknown feature indentifier: " + a_feature_identifier.out))
 			end
 		rescue
-			print ("feature identifier: ")
-			print (a_function_identifier)
-			print ("%N")
-		end
-		
+			dictionnary.search (a_feature_identifier)
+			if dictionnary.found then
+				report_error (new_error ("Exception occured in call to  " + dictionnary.found_item))
+			else
+				report_error (new_error ("Exception occured in call to rcurses feature with identifier " + a_feature_identifier.out))
+			end
+			report_error (new_error ("Contents of pointers table : " + pointers_table_dump))
 
-	pointers_table: HASH_TABLE [POINTER,STRING]
+		end
+
+	pointers_table: DS_HASH_TABLE [POINTER,STRING]
 			-- Tables of pointers which can be accessed by a string key.
+
+
+	last_results: DS_LINKED_LIST[ANY]
+			-- Results of last call.
 			
 	curses_external_tools: CURSES_EXTERNAL_TOOLS
+
+	i1: INTEGER
+	i2: INTEGER
+
+	dictionnary: RCURSES_DICTIONNARY
+	
 
 end -- class RCURSES_ADAPTER
 

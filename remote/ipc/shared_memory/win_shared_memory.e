@@ -12,6 +12,9 @@ indexing
 class
 	WIN_SHARED_MEMORY
 
+inherit
+	CURSES_EXTERNAL_TOOLS
+	
 creation
 	make
 	
@@ -38,7 +41,7 @@ feature -- Access
 			p: POINTER
 		do
 			p := ipc_shared_memory_item (file_view_address)	
-			!!Result.make_from_c (p)
+			Result := pointer_to_string (p)
 		end
 		
 feature -- Measurement
@@ -55,13 +58,8 @@ feature -- Element change
 
 	put (a_string: STRING) is
 			-- Put `a_string' in item.
-		local
-			p: POINTER
-			a: ANY
 		do
-			a := a_string.to_c
-			p := $a
-			ipc_shared_memory_put (file_view_address, p)
+			ipc_shared_memory_put (file_view_address, string_to_pointer (a_string))
 		end
 		
 
@@ -81,25 +79,15 @@ feature -- Basic operations
 
 	create_map is
 			-- Create map.
-		local
-			p: POINTER
-			a: ANY
 		do
-			a := name.to_c
-			p := $a
-			file_mapping_handle := ipc_create_file_mapping (0, 8001, p)
+			file_mapping_handle := ipc_create_file_mapping (0, 8001, string_to_pointer (name))
 			file_view_address := ipc_map_view_of_file (file_mapping_handle, 8000)
 		end
 		
 	open_map is
 			-- Open existing map.
-		local
-			p: POINTER
-			a: ANY
 		do
-			a := name.to_c
-			p := $a
-			file_mapping_handle := ipc_open_file_mapping (p)
+			file_mapping_handle := ipc_open_file_mapping (string_to_pointer (name))
 			file_view_address := ipc_map_view_of_file (file_mapping_handle, 8000)
 		end
 	

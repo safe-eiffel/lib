@@ -39,43 +39,6 @@ feature {NONE} -- Initialization
 			feature_identifier_copied: feature_identifier = a_feature_identifier
 			-- for each arguments_array.item(i) it holds that the string representation is in arguments.item(i)
 		end
-		
-feature -- Access
-
-	feature_identifier: INTEGER
-			-- Identifier of called feature.
-
-	arguments: ARRAY[STRING]
-			-- Arguments for feature call.
-			
-feature -- Conversion
-
-	to_string: STRING is
-			-- Encode message in a string.
-		local
-			i: INTEGER
-			s: STRING
-		do
-			from
-				!!Result.make (70)
-				Result.append_string (feature_identifier.out)
-				result.append_character (separator)
-				result.append_string (arguments.count.out)
-				i := arguments.lower		
-			until
-				i > arguments.upper
-			loop
-				Result.append_character (separator)				
-				s := arguments.item(i)
-				Result.append_string (s.count.out)
-				Result.append_character (separator)
-				Result.append_string (s)
-				i := i + 1
-			end
-		ensure then
-			-- featurename (arg1, .. argn) is encoded as "featurename arguments.count arguments.item(1).out.count arguments.item(1).out ... arguments.item(n).out.count arguments.item(n).out
-		end
-
 
 	make_from_string (a_string: STRING) is
 			-- Initialize message from the encoded string representation.
@@ -125,6 +88,77 @@ feature -- Conversion
 				i := i + 1		
 			end					
 		end
+
+		
+feature -- Access
+
+	feature_identifier: INTEGER
+			-- Identifier of called feature.
+
+	arguments: ARRAY[STRING]
+			-- Arguments for feature call.
+			
+feature -- Conversion
+
+	to_string: STRING is
+			-- Encode message in a string.
+		local
+			i: INTEGER
+			s: STRING
+		do
+			from
+				!!Result.make (70)
+				Result.append_string (feature_identifier.out)
+				result.append_character (separator)
+				result.append_string (arguments.count.out)
+				i := arguments.lower		
+			until
+				i > arguments.upper
+			loop
+				Result.append_character (separator)				
+				s := arguments.item(i)
+				Result.append_string (s.count.out)
+				Result.append_character (separator)
+				Result.append_string (s)
+				i := i + 1
+			end
+		ensure then
+			-- featurename (arg1, .. argn) is encoded as "featurename arguments.count arguments.item(1).out.count arguments.item(1).out ... arguments.item(n).out.count arguments.item(n).out
+		end
+
+	trace_output: STRING is
+			-- Output for trace.
+		local
+			i: INTEGER
+			s: STRING
+			dictionnary: RCURSES_DICTIONNARY
+		do
+			from
+				!!dictionnary
+				!!Result.make (70)
+				dictionnary.search (feature_identifier)
+				if dictionnary.found then
+					Result.append_string (dictionnary.found_item)
+				else
+					Result.append_string (feature_identifier.out)
+				end
+				result.append_string (" (")
+				i := arguments.lower		
+			until
+				i > arguments.upper
+			loop				
+				s := arguments.item(i)
+				Result.append_string (s)
+				i := i + 1
+				if i <= arguments.upper then
+					Result.append_string (", ")
+				end
+			end
+			Result.append_string (")")
+		end
+
+feature {NONE} -- Implementation
+	
 
 invariant
 	arguments_not_void: arguments /= Void

@@ -16,7 +16,13 @@ feature {NONE} -- Initialize
 
 	make is
 			-- Initialization
+		local
+			shell_command: UT_SHELL_COMMAND		
 		do
+
+--			!!shell_command.make ("rcurses")
+--			shell_command.execute 						
+
 	  		!!server_turn.make ("ECURSES_SERVER_TURN")
 			server_turn.create_only (1,  1)
 			server_turn.wait
@@ -26,7 +32,7 @@ feature {NONE} -- Initialize
 
 			!!shared_memory.make ("ECURSES_SHARED_MEMORY")
 			shared_memory.create_map
-			
+
 		end
 	
 feature -- Access

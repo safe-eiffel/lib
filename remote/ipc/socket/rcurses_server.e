@@ -48,10 +48,9 @@ feature {ANY}
 			client_socket.receive_string (input_buffer)
 			!!client_message.make_from_string (input_buffer.substring(1,client_socket.bytes_received))
 			
-            curses_adapter.call_feature (client_message.feature_identifier, client_message.arguments)
+            		curses_adapter.call_feature (client_message)
 		
-			!!server_message.make (curses_adapter.last_results)
-			client_socket.send_string (server_message.to_string)
+			client_socket.send_string (curses_adapter.last_server_message.to_string)
 		end
 
 

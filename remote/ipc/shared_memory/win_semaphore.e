@@ -12,8 +12,12 @@ indexing
 class
 	WIN_SEMAPHORE
 
+inherit
+	CURSES_EXTERNAL_TOOLS
+	
 creation
 	make
+	
 	
 feature {NONE} -- Initialization
 
@@ -71,13 +75,8 @@ feature -- Basic operations
 		require
 			not_is_open: not is_open
 			consistent: an_initial_count >= 0 and an_initial_count <= a_maximum_count
-		local
-			p: POINTER
-			a: ANY
 		do
-			a := name.to_c
-			p := $a
-			handle := ipc_semaphore_create (an_initial_count, a_maximum_count, p)
+			handle := ipc_semaphore_create (an_initial_count, a_maximum_count, string_to_pointer (name))
 		ensure
 			is_open: is_open
 		end
@@ -106,13 +105,8 @@ feature -- Basic operations
 			-- Open semaphore.
 		require
 			not_is_open: not is_open
-		local
-			p: POINTER
-			a: ANY
 		do
-			a := name.to_c
-			p := $a
-			handle := ipc_semaphore_open (p)
+			handle := ipc_semaphore_open ( string_to_pointer (name))
 		ensure
 			-- semaphore exists implies is_open
 		end

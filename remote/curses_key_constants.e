@@ -21,6 +21,8 @@ inherit
 		export
 			{NONE} all
 		end
+	
+	ANY
 
 feature  
 
