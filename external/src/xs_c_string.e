@@ -232,10 +232,10 @@ feature -- Element change
 			until
 				index > s.count
 			loop
-				c_memory_put_int8 (c_memory_pointer_plus (handle, index-1), s.item (index).code)				
+				c_memory_put_uint8 (c_memory_pointer_plus (handle, index-1), s.item (index).code)				
 				index := index + 1
 			end
-			c_memory_put_int8 (c_memory_pointer_plus (handle, s.count), 0)
+			c_memory_put_uint8 (c_memory_pointer_plus (handle, s.count), 0)
 		ensure
 			equal_strings: as_string.is_equal (s)
 		end
