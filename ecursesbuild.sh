@@ -32,7 +32,7 @@ if test -z "$ECURSES" ; then
 fi
 
 # -- compilation variables
-export LIBS='-lpanel -lncurses $ECURSES/spec/se/linux/libecurses_c.a'
+export LIBS='-lpanel -lncurses $ECURSES/spec/se/linux/ecurses_c.a'
 export SEFLAGS='-case_insensitive -no_style_warning'
 export BUILDFLAGS='-I$ECURSES/spec/se/linux'
 

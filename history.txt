@@ -1,0 +1,14 @@
+Version  - 21 decembre 2003
+
+	doc :
+	
+	* refresh emails of authors
+	* add license.txt file for eiffel-forum licence version 2
+	* add history.txt file
+	* add release_notes.txt file
+	* add todo.txt file
+
+
+	test :
+
+	* library tested with Eiffel studio 5.2, SmartEiffel 1.1, Linux ncurses 5.2 and Windows pdcurses 2.4

@@ -2,7 +2,7 @@ SHELL = /bin/sh
 CC = cc
 AR = ar
 RANLIB = ranlib
-CFLAGS = -O  -I${EIFFEL4}/bench/spec/${PLATFORM}/include -I. -I/usr/local/include 
+CFLAGS = -O  -I${ISE_EIFFEL}/studio/spec/${ISE_PLATFORM}/include -I. -I/usr/include -I/usr/local/include 
 LIBS = -lnsl -lm
 RM = /bin/rm -f
 SRC= $(ECURSES)/spec/Clib
@@ -11,7 +11,7 @@ OBJ=ecurses_acs_characters.o ecurses_color_constants.o ecurses_pad_api.o ecurses
 .c.o:
 	$(CC) $(CFLAGS) -c $<
 
-libecurses_c.a : ecursesvar $(OBJ)
+ecurses_c.a : ecursesvar $(OBJ)
 	$(AR) -ru $@ $(OBJ)
 	$(RANLIB) $@
 
@@ -45,9 +45,9 @@ ecurses_system_api.o : $(SRC)/ecurses_system_api.c
 
 
 clean:
-	$(RM) libecurses_c.a $(OBJ)
+	$(RM) ecurses_c.a $(OBJ)
 
-all:ecuresevar libecurses_c.a
+all:ecuresevar ecurses_c.a
  
 ecursesvar:
 	@if test -z "$(ECURSES)" ; then \

@@ -1,0 +1,5 @@
+
+	* replace ecursesbuild.bat and ecursesbuild.sh with use of eant
+	* replace doc with OpenOffice file and pdf
+	* replace loadpaths with xace files
+	* replace makefile with eant files

@@ -33,6 +33,7 @@
 		<option unless="${GOBO_OS}=windows">
 			<option name="link" value="${ECURSES}/spec/${GOBO_EIFFEL}/${GOBO_OS}/ecurses_c.a"/>
 			<option name="link" value="-lncurses"/>
+			<option name="link" value="-lpanel"/>
 		</option>
 		<option if="${GOBO_OS}=windows">
 			<option name="link" value="${ECURSES}/spec/${GOBO_EIFFEL}/${GOBO_OS}/ecurses_${GOBO_CC}.lib"/>
