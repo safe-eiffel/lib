@@ -36,6 +36,8 @@ inherit
 			{NONE} all
 		end
 
+	PO_CACHE_USE [G]
+	
 	PO_ADAPTER_ERROR_CODES
 		rename
 			po_error_code_within_bounds as error_code_within_bounds			
@@ -46,13 +48,13 @@ inherit
 feature {NONE} -- Initialization
 
 	make (a_datastore : ECLI_DATASTORE) is
-			-- make using `datastore'
+			-- Make using `datastore'.
 		require
 			a_datastore_not_void: a_datastore /= Void
 		do
 			datastore := a_datastore
 			datastore.register_adapter (Current)
-			create cache.make (10)
+			create {PO_HASHED_CACHE[G]}cache.make (10)
 			create last_cursor.make
 		ensure
 			datastore_set: a_datastore /= Void
@@ -81,7 +83,7 @@ feature -- Status report
 	error_code : INTEGER
 
 	error_meaning : STRING is
-			-- Human readable meaning for current `error_code'
+			-- Human readable meaning for current `error_code'.
 		do
 			!!Result.make(0)
 			Result.append (status.message)
@@ -145,7 +147,7 @@ feature {PO_LAUNCHER} -- Element change
 feature -- Basic operations
 
 	exists (a_pid: like last_pid): BOOLEAN is
-			-- Does an object identified by `a_pid' exist? Uses `Sql_exists'
+			-- Does an object identified by `a_pid' exist? Uses `Sql_exists'.
 		do
 			status.reset
 			create row_cursor.open (datastore.session, Sql_exists)
@@ -166,13 +168,13 @@ feature -- Basic operations
 		end
 
 	read (a_pid: like last_pid) is
-			-- Read an object identified by `a_pid'.  Uses `Sql_read'
+			-- Read an object identified by `a_pid'.  Uses `Sql_read'.
 		do
 			last_object := Void
 			create last_cursor.make
 			status.reset
 			if is_enabled_cache_on_read then
-				cache.search (a_pid.to_string)
+				cache.search (a_pid)
 				if cache.found then
 					last_cursor.add_object (cache.found_item)
 				end
@@ -189,7 +191,7 @@ feature -- Basic operations
 							fill_object_from_row_cursor				
 							last_object.set_pid (a_pid)
 							if is_enabled_cache_on_read then
-								cache.force (last_object, a_pid.to_string)
+								cache.put (last_object)
 							end
 							last_cursor.add_object (last_object)
 						else
@@ -206,7 +208,7 @@ feature -- Basic operations
 		end
 
 	refresh (object: like last_object) is
-			-- Refresh `object'.  Uses `Sql_refresh'
+			-- Refresh `object'.  Uses `Sql_refresh'.
 		do 
 			last_object := Void
 			
@@ -234,7 +236,7 @@ feature -- Basic operations
 		end
 
 	delete (object: like last_object) is
-			-- Delete `object' from datastore.  Uses `Sql_delete'
+			-- Delete `object' from datastore.  Uses `Sql_delete'.
 		do  
 			last_object := Void
 			
@@ -259,7 +261,7 @@ feature -- Basic operations
 		end
 
 	update (object: like last_object) is
-			-- Update `object' on datastore. Uses `Sql_update'
+			-- Update `object' on datastore. Uses `Sql_update'.
 		do  
 			last_object := Void
 			
@@ -290,7 +292,7 @@ feature -- Basic operations
 		end
 
 	write (object: like last_object) is
-			-- Write `object' on datastore. Uses `Sql_write'
+			-- Write `object' on datastore. Uses `Sql_write'.
 		do
 			last_object := Void
 			
@@ -306,7 +308,7 @@ feature -- Basic operations
 				if change.is_ok then
 					object.set_pid (last_pid)
 					if is_enabled_cache_on_write then
-						cache.force (last_object, last_pid.to_string)
+						cache.put (last_object)
 					end
 				else
 					status.set_datastore_error (row_cursor.native_code, row_cursor.diagnostic_message)
@@ -333,42 +335,42 @@ feature {PO_ADAPTER} -- Implementation
 		end
 
 	init_parameters_for_exists (a_pid : like last_pid) is
-			-- Initialize parameters of `Sql_exists' with information from `a_pid'
+			-- Initialize parameters of `Sql_exists' with information from `a_pid'.
 		deferred
 		end
 
 	init_parameters_for_read (a_pid : like last_pid) is
-			-- Initialize parameters of `Sql_read' with information from `a_pid'
+			-- Initialize parameters of `Sql_read' with information from `a_pid'.
 		deferred
 		end
 
 	init_parameters_for_refresh (a_pid : like last_pid) is
-			-- Initialize parameters of `Sql_refresh' with information from `a_pid'
+			-- Initialize parameters of `Sql_refresh' with information from `a_pid'.
 		deferred
 		end
 
 	init_parameters_for_delete (a_pid : like last_pid) is
-			-- Initialize parameters of `Sql_delete' with information from `a_pid'
+			-- Initialize parameters of `Sql_delete' with information from `a_pid'.
 		deferred
 		end
 
 	init_parameters_for_write (object : like last_object; a_pid : like last_pid) is
-			-- Initialize parameters of `Sql_write' with information from `object' and `a_pid'
+			-- Initialize parameters of `Sql_write' with information from `object' and `a_pid'.
 		deferred
 		end
 
 	init_parameters_for_update (object : like last_object; a_pid : like last_pid) is
-			-- Initialize parameters of `Sql_update' with information from `object' and `a_pid'
+			-- Initialize parameters of `Sql_update' with information from `object' and `a_pid'.
 		deferred
 		end
 
 	create_pid_from_object (an_object: G) is
-			-- Create `last_pid' based on the content of `an_object'
+			-- Create `last_pid' based on the content of `an_object'.
 		deferred
 		end
 
 	create_pid_from_row_cursor is
-			-- Create `last_pid' based on the content of the row_cursor
+			-- Create `last_pid' based on the content of the row_cursor.
 		require
 			last_pid_void: last_pid = Void
 			row_not_void:  row_cursor /= Void and then not row_cursor.off
@@ -376,7 +378,7 @@ feature {PO_ADAPTER} -- Implementation
 		end
 
 	create_object_from_row_cursor is
-			-- Create object and just ensure invariant
+			-- Create object and just ensure invariant.
 
 		require
 			last_object_void: last_object = Void
@@ -387,7 +389,7 @@ feature {PO_ADAPTER} -- Implementation
 		end
 		
 	add_pid_to_cursor is
-			-- Extend last_cursor with a PO_REFERENCE p, with p.pid initialized to `last_pid'
+			-- Extend last_cursor with a PO_REFERENCE p, with p.pid initialized to `last_pid'.
 		local
 			ref : PO_REFERENCE[G]
 		do
@@ -397,7 +399,7 @@ feature {PO_ADAPTER} -- Implementation
 		end
 		
 	add_object_to_cursor is
-			-- Extend last_cursor with a PO_REFERENCE p, with p.pid initialized to `last_pid'
+			-- Extend last_cursor with a PO_REFERENCE p, with p.pid initialized to `last_pid'.
 		local
 			ref : PO_REFERENCE[G]
 		do
@@ -406,7 +408,7 @@ feature {PO_ADAPTER} -- Implementation
 		end
 
 	fill_object_from_row_cursor is
-			-- Fill `last_object' using `row' content
+			-- Fill `last_object' using `row' content.
 		require
 			row_cursor_not_void: row_cursor /= Void
 			last_object_not_void: last_object /= Void
@@ -417,39 +419,39 @@ feature {PO_ADAPTER} -- Implementation
 			-- Cursor on virtual rows.
 		
 	Sql_exists : STRING is
-			-- SQL query for 'exists'
+			-- SQL query for 'exists'.
 		 deferred 
 		 end
 		
 	Sql_read : STRING  is
-			-- SQL query for 'read'
+			-- SQL query for 'read'.
 		 deferred 
 		 end
 
 	Sql_refresh : STRING  is
-			-- SQL query for 'refresh'
+			-- SQL query for 'refresh'.
 		 deferred 
 		 end
 
 	Sql_update : STRING  is
-			-- SQL query for 'update'
+			-- SQL query for 'update'.
 		 deferred 
 		 end
 
 	Sql_write : STRING is
-			-- SQL query for 'write'
+			-- SQL query for 'write'.
 		 deferred 
 		 end
 
 	Sql_delete : STRING is
-			-- SQL query for 'delete'
+			-- SQL query for 'delete'.
 		 deferred 
 		 end
 
 feature  {NONE} -- Implementation facilities for descendants
 
 	read_object_collection is
-			-- Read a collection of objects from current row_cursor
+			-- Read a collection of objects from current row_cursor.
 		require
 			row_cursor_ready: row_cursor /= Void
 		do

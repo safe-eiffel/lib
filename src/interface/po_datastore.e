@@ -13,7 +13,7 @@ deferred class PO_DATASTORE
 feature -- Access
 
 	adapters : DS_LIST[PO_ADAPTER [PO_PERSISTENT]] is
-			-- adapters registered for operating on this datastore
+			-- Adapters registered for operating on this datastore.
 		deferred
 		end
 
@@ -47,7 +47,7 @@ feature -- Status report
 feature -- Status setting
 
 	connect is
-			-- connect to datastore
+			-- Connect to datastore.
 		require
 			valid_connection_parameters: valid_connection_parameters
 		deferred
@@ -56,19 +56,18 @@ feature -- Status setting
 		end
 
 	disconnect is
-			-- disconnect from datastore
+			-- Disconnect from datastore.
 		require
 			is_connected: is_connected
 		deferred
 		ensure
 			disconnected: not is_connected
 		end
-feature -- Cursor movement
 
 feature -- Element change
 
 	register_adapter (an_adapter : PO_ADAPTER[PO_PERSISTENT]) is
-			-- register `an_adapter' to datastore
+			-- Register `an_adapter' to datastore.
 		require
 			an_adapter_not_void: an_adapter /= Void
 			an_adapter_not_already_registered: not adapters.has (an_adapter)
@@ -77,23 +76,11 @@ feature -- Element change
 		ensure
 			registered: adapters.has (an_adapter)
 		end
-		
-feature -- Removal
-
-feature -- Resizing
-
-feature -- Transformation
-
-feature -- Conversion
-
-feature -- Duplication
-
-feature -- Miscellaneous
 
 feature -- Basic operations
 
 	begin_transaction is
-			-- begin a new transaction
+			-- Begin a new transaction.
 		require
 			can_begin_transaction: can_begin_transaction
 		deferred	
@@ -102,7 +89,7 @@ feature -- Basic operations
 		end
 	
 	commit_transaction is
-			-- commits the current transaction
+			-- Commits the current transaction.
 		require
 			in_transaction: transaction_level > 0
 		deferred
@@ -111,18 +98,12 @@ feature -- Basic operations
 		end
 	
 	rollback_transaction is
-			-- rollbacks the current transaction
+			-- Rollbacks the current transaction.
 		require
 			in_transaction: transaction_level > 0
 		deferred
 		ensure
 			ended_transaction: transaction_level = old transaction_level - 1	
 		end
-		
-feature -- Obsolete
-
-feature -- Inapplicable
-
-feature {NONE} -- Implementation
-		
+				
 end

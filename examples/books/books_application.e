@@ -17,12 +17,13 @@ creation
 feature -- Initialization
 
 	make is
-			-- Creation procedure
+			-- Creation procedure.
 		do
 			initialize_persistence_framework
 			if is_persistence_framework_initialized then
 				populate
 				borrow_copy_to_borrower ("1", 1, 1)
+				borrow_copy_to_borrower ("1", 2, 2)
 				show
 				store.disconnect				
 			end
@@ -37,7 +38,7 @@ feature -- Access
 feature -- Basic operations
 
 	populate is
-			-- populate BOOKS database
+			-- Populate BOOKS database.
 		do
 			populate_books
 			populate_borrowers
@@ -46,7 +47,7 @@ feature -- Basic operations
 
 		
 	borrow_copy_to_borrower (book_isbn : STRING; copy_number : INTEGER; borrower_id : INTEGER) is
-			-- borrow some copy identified by (`book_isbn',`copy_number') for borrower `borrower_id'
+			-- Borrow some copy identified by (`book_isbn',`copy_number') for borrower `borrower_id'.
 		require
 			book_isbn_exists: book_isbn /= Void and not book_isbn.is_empty
 			copy_number_gt0: copy_number > 0
@@ -76,7 +77,7 @@ feature -- Basic operations
 		end
 
 	show is
-			-- show various objects
+			-- Show various objects.
 		do
 			show_books
 			show_borrowed_copies
@@ -86,7 +87,7 @@ feature -- Basic operations
 feature -- Implementation
 
 	populate_books is
-			-- populate books
+			-- Populate books.
 		do
 			create books.make (1,3)
 			write_book ("1", "Title One", "Author one", book_adapter)
@@ -98,7 +99,7 @@ feature -- Implementation
 		end
 
 	populate_borrowers is
-			-- populate borrowers
+			-- Populate borrowers.
 		do
 			write_borrower (1, "Borrower 1", "One, borrower rd., MOON-1")
 			write_borrower (2, "Borrower 2", "Two, borrower rd., MARS-2")
@@ -106,7 +107,7 @@ feature -- Implementation
 		end
 
 	populate_copies is
-			-- populate copies
+			-- Populate copies.
 		do
 			write_copy (books.item (1),1,1,1,1)
 			write_copy (books.item (1),2,1,1,2)
@@ -153,7 +154,7 @@ feature -- Implementation
 		end
 
 	show_borrowed_copies is
-			-- Show copies that have been borrowed
+			-- Show copies that have been borrowed.
 		local
 			the_book : BOOK
 			the_cursor : PO_CURSOR[COPY]
@@ -172,6 +173,7 @@ feature -- Implementation
 					the_copy := the_cursor.item
 					the_book := the_copy.book
 					print ("'"+ the_book.title+ "' copy "+the_cursor.item.number.out + " borrowed by '"+the_copy.borrower.name+"'");
+					print ("%N")
 					the_cursor.forth
 				end
 			end
@@ -179,7 +181,7 @@ feature -- Implementation
 		
 
 	write_book (book_isbn, book_title, book_author : STRING; adapter : BOOK_ADAPTER) is
-			-- Write new book object [`book_isbn', `book_title', `book_author'] through `adapter'
+			-- Write new book object [`book_isbn', `book_title', `book_author'] through `adapter'.
 		local
 			b : BOOK
 		do
@@ -189,7 +191,7 @@ feature -- Implementation
 		end
 	
 	write_borrower (borrower_id : INTEGER; borrower_name, borrower_address : STRING) is
-			-- write new borrower object [`borrower_id', `borrower_name', `borrower_address']
+			-- Write new borrower object [`borrower_id', `borrower_name', `borrower_address'].
 		local
 			b : BORROWER
 		do
@@ -198,7 +200,7 @@ feature -- Implementation
 		end
 
 	write_copy (book : BOOK; a_number: INTEGER; a_store: INTEGER; a_shelf: INTEGER; a_row: INTEGER) is
-			-- write new copy of `book', having attributes `a_number', `a_store', `a_shelf', `a_row'
+			-- Write new copy of `book', having attributes `a_number', `a_store', `a_shelf', `a_row'.
 		local
 			book_copy : COPY
 		do
@@ -209,7 +211,7 @@ feature -- Implementation
 
 		
 	try_write (o : PO_PERSISTENT) is
-			-- Try writing `o'
+			-- Try writing `o'.
 		do
 			if not o.exists then
 				o.write
@@ -219,5 +221,4 @@ feature -- Implementation
 			end
 		end		
 
-	q : ECLI_ADAPTER_READ_COLLECTION_SKELETON [BOOK]
 end

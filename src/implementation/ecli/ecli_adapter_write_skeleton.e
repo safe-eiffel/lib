@@ -36,7 +36,7 @@ feature -- Basic operations
 					object.set_pid (last_pid)
 					object.disable_modified
 					if is_enabled_cache_on_write then
-						cache.force (last_object, last_pid.to_string)
+						cache.put (last_object)
 					end
 				else
 					status.set_datastore_error (write_query.native_code, write_query.diagnostic_message)

@@ -16,6 +16,8 @@ inherit
 
 	COPY_PERSISTENT_CLASS_NAME
 	
+	PO_CACHE_USE [COPY]
+	
 feature -- Access
 			
 feature -- Basic operations
@@ -29,7 +31,7 @@ feature -- Basic operations
 		end
 	
 	read_from_isbn (isbn : STRING) is
-			-- read copies identified by `isbn'
+			-- Read copies identified by `isbn'.
 		require
 			isbn_not_void:  isbn /= Void
 		deferred
@@ -39,5 +41,5 @@ feature -- Basic operations
 			-- Read all borrowed copies.
 		deferred
 		end
-				
+
 end

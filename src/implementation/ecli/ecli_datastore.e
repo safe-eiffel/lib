@@ -80,7 +80,7 @@ feature -- Status report
 feature -- Status setting
 
 	connect is
-			-- connect to datastore
+			-- Connect to datastore.
 		local
 			adapters_cursor : DS_LIST_CURSOR [PO_ADAPTER[PO_PERSISTENT]]
 		do
@@ -99,7 +99,7 @@ feature -- Status setting
 		end
 
 	disconnect is
-			-- disconnect from datastore
+			-- Disconnect from datastore.
 		local
 			adapters_cursor : DS_LIST_CURSOR [PO_ADAPTER[PO_PERSISTENT]]
 		do
@@ -134,21 +134,21 @@ feature -- Miscellaneous
 feature -- Basic operations
 
 	begin_transaction is
-			-- begin a new transaction
+			-- Begin a new transaction.
 		do
 			session.begin_transaction
 			transaction_level := transaction_level + 1
 		end
 	
 	commit_transaction is
-			-- commits the current transaction
+			-- Commits the current transaction.
 		do
 			session.commit
 			transaction_level := transaction_level + 1			
 		end
 	
 	rollback_transaction is
-			-- rollbacks the current transaction
+			-- Rollbacks the current transaction.
 		do
 			session.rollback
 			transaction_level := transaction_level + 1

@@ -32,7 +32,7 @@ feature -- Basic operations
 			create last_cursor.make
 			status.reset
 			if is_enabled_cache_on_read then
-				cache.search (a_pid.to_string)
+				cache.search (a_pid)
 				if cache.found then
 					last_cursor.add_object (cache.found_item)				
 				end
@@ -60,7 +60,7 @@ feature {PO_ADAPTER} -- Basic operations
 feature {NONE} -- Factory
 
 	create_object_from_read_cursor  (a_cursor : like read_cursor; a_pid : like last_pid) is
-			-- Create object and just ensure invariant
+			-- Create object and just ensure invariant.
 
 		require
 			last_object_void: last_object = Void
@@ -88,7 +88,7 @@ feature {PO_ADAPTER} -- Implementation
 feature {NONE} -- Implementation
 
 	load_results (a_cursor : like read_cursor; a_pid : like last_pid) is
-			-- load results from a cursor
+			-- Load results from a cursor.
 		require
 			a_cursor_not_void: a_cursor /= Void
 			a_cursor_executed: a_cursor.is_executed
@@ -103,7 +103,7 @@ feature {NONE} -- Implementation
 						fill_object_from_read_cursor (a_cursor, last_object)				
 						last_object.set_pid (a_pid)
 						if is_enabled_cache_on_read then
-							cache.force (last_object, a_pid.to_string)
+							cache.put (last_object)
 						end
 						last_cursor.add_object (last_object)
 						a_cursor.go_after
@@ -111,7 +111,9 @@ feature {NONE} -- Implementation
 						status.set_framework_error (status.error_could_not_create_object)
 					end
 				else
-					do_nothing
+					if is_enabled_cache_on_read then
+						cache.put_void (a_pid)
+					end
 				end
 			else
 				status.set_datastore_error (a_cursor.native_code, a_cursor.diagnostic_message)

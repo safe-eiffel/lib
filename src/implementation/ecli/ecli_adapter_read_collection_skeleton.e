@@ -21,7 +21,7 @@ feature {PO_ADAPTER} -- Access
 feature {PO_ADAPTER} -- Basic operations
 
 	create_pid_from_read_pid_cursor is
-			-- Create `last_pid' based on the content of the read_pid_cursor
+			-- Create `last_pid' based on the content of the read_pid_cursor.
 		require
 			last_pid_void: last_pid = Void
 			row_exists: read_pid_cursor /= Void and then not read_pid_cursor.off
@@ -31,7 +31,7 @@ feature {PO_ADAPTER} -- Basic operations
 		end
 		
 	create_last_cursor is
-			-- Create last_cursor on result-set
+			-- Create last_cursor on result-set.
 		do
 			create last_cursor.make
 		end
@@ -40,7 +40,7 @@ feature {PO_ADAPTER} -- Basic operations
 feature  {NONE} -- Implementation facilities for descendants
 
 	read_object_collection is
-			-- Read a collection of objects from current `read_cursor'
+			-- Read a collection of objects from current `read_cursor'.
 		require
 			read_cursor_ready: read_cursor /= Void
 		do
@@ -68,7 +68,7 @@ feature  {NONE} -- Implementation facilities for descendants
 		end
 
 	read_pid_collection is
-			-- Read a collection of pid from current `read_pid_cursor'
+			-- Read a collection of pid from current `read_pid_cursor'.
 			-- uses `create_pid_from_read_pid_cursor' and `add_pid_to_cursor'
 		require
 			read_pid_cursor_ready: read_pid_cursor /= Void

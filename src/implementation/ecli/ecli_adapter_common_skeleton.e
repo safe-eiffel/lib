@@ -21,22 +21,41 @@ inherit
 		export
 			{NONE} all
 		end
-		
+	
+	PO_CACHE_USE [G]
+	
 feature {NONE} -- Initialization
 
 	make (a_datastore : ECLI_DATASTORE) is
-			-- make using `datastore'
+			-- Make using `datastore'.
 		require
 			a_datastore_not_void: a_datastore /= Void
 		do
 			set_datastore (a_datastore)
-			create cache.make (10)
+			create {PO_HASHED_CACHE[G]}cache.make (10)
 			create last_cursor.make
 		ensure
 			datastore_set: a_datastore /= Void
 			no_cache_on_write: not is_enabled_cache_on_write
+			no_cache_on_read: not is_enabled_cache_on_read
 		end
 
+	make_with_cache (a_datastore : ECLI_DATASTORE; a_cache : PO_CACHE[G]) is
+			-- Make using `a_datastore' and `a_cache'.
+		require
+			a_datastore_not_void: a_datastore /= Void
+			a_cache_not_void: a_cache /= Void
+		do
+			set_datastore (a_datastore)
+			cache := a_cache
+			create last_cursor.make
+		ensure
+			datastore_set: datastore = a_datastore
+			no_cache_on_write: not is_enabled_cache_on_write
+			no_cache_on_read: not is_enabled_cache_on_read
+			cache_set: cache = a_cache
+		end
+		
 feature {PO_ADAPTER} -- Access
 
 	last_object: G
@@ -76,7 +95,7 @@ feature {PO_LAUNCHER} -- Element change
 	set_datastore (a_datastore: ECLI_DATASTORE) is
 		do
 			datastore := a_datastore
-			datastore.register_adapter (Current)
+			datastore.register_adapter (as_adapter_persistent)
 			if datastore.is_connected then
 				on_adapter_connected
 			end
@@ -85,7 +104,7 @@ feature {PO_LAUNCHER} -- Element change
 feature -- Basic operations
 
 	exists (a_pid: like last_pid): BOOLEAN is
-			-- Does an object identified by `a_pid' exist? Uses `Sql_exists'
+			-- Does an object identified by `a_pid' exist? Uses `Sql_exists'.
 		do
 			create last_cursor.make
 			last_object := Void
@@ -133,7 +152,7 @@ feature {PO_ADAPTER} -- Basic operations
 --		end
 
 	init_parameters_for_exists (a_pid : like last_pid) is
-			-- Initialize parameters of `Sql_exists' with information from `a_pid'
+			-- Initialize parameters of `Sql_exists' with information from `a_pid'.
 		deferred
 		end
 
@@ -143,7 +162,7 @@ feature {PO_ADAPTER} -- Implementation
 			-- Error message associated with last error
 
 	set_query_error_message (a_string : STRING) is
-			-- set `query_error_message' to `a_string'
+			-- Set `query_error_message' to `a_string'.
 		require
 			a_string_not_void: a_string /= Void
 		do

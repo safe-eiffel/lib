@@ -93,7 +93,7 @@ feature {NONE} -- Implementation
 		end
 
 	init_parameters_for_refresh (t : like last_pid) is
-			-- initialize refresh query parameters with pid information
+			-- Initialize refresh query parameters with pid information.
 		do
 			init_parameters_for_read (t)		
 		end

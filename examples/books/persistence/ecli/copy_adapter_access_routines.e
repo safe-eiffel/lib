@@ -40,7 +40,7 @@ feature  -- Basic operations
 feature {NONE} -- Implementation
 
 	do_copy_borrowed (cursor: COPY_BORROWED) is
-			-- helper implementation of access `COPY_BORROWED'
+			-- Helper implementation of access `COPY_BORROWED'.
 		require
 			cursor_not_void:  cursor /= Void
 		do

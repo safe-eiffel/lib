@@ -47,24 +47,24 @@ feature -- Access
 		end
 
 	persistent_class_name : STRING is
-			-- Persistence class name of objects that this adapter can handle
+			-- Persistence class name of objects that this adapter can handle.
 		deferred
 		end
 
 	datastore : PO_DATASTORE is
-			-- Datastore on which I/O operations will occur
+			-- Datastore on which I/O operations will occur.
 		deferred
 		end
 	
 	last_cursor : PO_CURSOR [G] is
-			-- Last cursor on objects that have been read
+			-- Last cursor on objects that have been read.
 		deferred		
 		end
 
 	object_anchor : G is do end
 	
 	pid_for_object (object : like object_anchor) : PO_PID is
-			-- Persistent identifier for `object'
+			-- Persistent identifier for `object'.
 		require
 			object_not_void: object /= Void
 		do
@@ -83,14 +83,14 @@ feature -- Access
 feature {PO_ADAPTER, PO_CURSOR, PO_REFERENCE, PO_PERSISTENT, PO_REFERENCE_ACCESS} -- Access
 
 	last_pid : PO_PID is
-			-- Last PID created by factory features
+			-- Last PID created by factory features.
 		deferred
 		end
 
 feature {PO_ADAPTER} -- Access
 
 	last_object : G is
-			-- Last object created by factory features
+			-- Last object created by factory features.
 		deferred
 		ensure
 		end
@@ -172,7 +172,7 @@ feature -- Status report
 feature -- Status setting
 
 	reset_error is
-			-- reset `is_error' so that operations can continue
+			-- Reset `is_error' so that operations can continue.
 		obsolete "use `status.reset' instead."
 		do
 			status.reset
@@ -181,28 +181,28 @@ feature -- Status setting
 		end
 
 	enable_cache_on_read is
-			-- cache objects after they have been read
+			-- Cache objects after they have been read.
 		deferred
 		ensure
 			definition: is_enabled_cache_on_read
 		end
 		
 	disable_cache_on_read is
-			-- do not cache objects after they have been read
+			-- Do not cache objects after they have been read.
 		deferred
 		ensure
 			definition: not is_enabled_cache_on_read
 		end
 		
 	enable_cache_on_write is
-			-- cache objects after they have been written
+			-- Cache objects after they have been written.
 		deferred
 		ensure
 			definition: is_enabled_cache_on_write
 		end
 		
 	disable_cache_on_write is
-			-- do not cache objects after they have been written
+			-- Do not cache objects after they have been written.
 		deferred
 		ensure
 			definition: not is_enabled_cache_on_write
@@ -211,19 +211,19 @@ feature -- Status setting
 feature {PO_LAUNCHER} -- Element change
 
 	set_datastore (a_datastore : PO_DATASTORE) is
-			-- attach to `a_datastore'
+			-- Attach to `a_datastore'.
 		require
 			a_datastore_not_void: a_datastore /= Void
 		deferred
 		ensure
 			datastore_set: datastore = a_datastore
-			adapter_registered_to_datastore: datastore.adapters.has (Current)
+			adapter_registered_to_datastore: datastore.adapters.has (Current.as_adapter_persistent)
 		end
 		
 feature -- Basic operations
 		
 	exists (pid : like last_pid) : BOOLEAN is
-			-- does an object identifed by `pid' exist in datastore ?
+			-- Does an object identifed by `pid' exist in datastore ?
 		require
 			pid_not_void: pid /= Void
 			pid_is_valid_pid: is_pid_valid (pid)
@@ -233,7 +233,7 @@ feature -- Basic operations
 		end
 		
 	read (pid : like last_pid) is
-			-- read a persistent object using identifier `pid'
+			-- Read a persistent object using identifier `pid'.
 		require
 			can_read: can_read
 			pid_not_void: pid /= Void
@@ -249,7 +249,7 @@ feature -- Basic operations
 		end
 
 	write (object : like object_anchor) is
-			-- write `o' on persistent datastore
+			-- Write `o' on persistent datastore.
 		require
 			can_write: can_write
 			object_not_void: object /= Void
@@ -266,7 +266,7 @@ feature -- Basic operations
 		end
 
 	update (object : like object_anchor) is
-			-- update `object' on persistent datastore
+			-- Update `object' on persistent datastore.
 		require
 			can_update: can_update
 			object_not_void: object /= Void
@@ -279,7 +279,7 @@ feature -- Basic operations
 		end
 	
 	refresh (object : like object_anchor) is
-			-- refresh `object' by reading its persistent state from datastore
+			-- Refresh `object' by reading its persistent state from datastore.
 		require
 			can_refresh: can_refresh
 			object_not_void: object /= Void
@@ -292,7 +292,7 @@ feature -- Basic operations
 		end
 		
 	delete (object : like object_anchor) is
-			--  delete `object's persistent image
+			--  Delete `object's persistent image.
 		require
 			can_delete: can_delete
 			object_not_void: object /= Void
@@ -306,9 +306,8 @@ feature -- Basic operations
 		end
 
 	clear_cache is
-			-- clear cache
-		do	
-			cache.wipe_out
+			-- Clear cache.
+		deferred
 		ensure
 			cache_count_is_0 : cache_count = 0
 		end
@@ -316,14 +315,14 @@ feature -- Basic operations
 feature {PO_DATASTORE} -- Basic Operations
 
 	on_adapter_connected is
-			-- Callback after adapter has been connected
+			-- Callback after adapter has been connected.
 			-- * to be redefined in descendant classes
 		do
 			
 		end
 		
 	on_adapter_disconnect is
-			-- Callback before adapter is disconnected
+			-- Callback before adapter is disconnected.
 			-- * to be redefined in descendant classes
 		do
 			
@@ -332,17 +331,25 @@ feature {PO_DATASTORE} -- Basic Operations
 feature -- Contract support
 
 	is_cached (object : like object_anchor) : BOOLEAN is
-			-- is `object' in cache ?
+			-- Is `object' in cache ?
 		require
 			persistent_object: object /= Void and then object.is_persistent
+		deferred
+		end
+	
+	as_adapter_persistent : PO_ADAPTER[PO_PERSISTENT] is
+			-- Contract support for ISE 5.5.
+			-- Should disappear when 'reference' keyword usage is dropped.
 		do
-			Result := cache.has_item (object)
+			Result ?= Current
+		ensure
+			result_not_void: Result /= Void
 		end
 		
 feature -- Factory
 
 	create_pid_from_object (an_object : like object_anchor) is
-			-- create a pid from a volatile object
+			-- Create a pid from a volatile object.
 		require
 			object_not_void: an_object /= Void
 			object_is_volatile: an_object.is_volatile
@@ -350,18 +357,13 @@ feature -- Factory
 		ensure
 			exists_and_valid: not status.is_error implies (last_pid /= Void and then is_pid_valid (last_pid))		
 		end
-
-feature {NONE} -- Implementation
-
-	cache : DS_HASH_TABLE [G, STRING]
 	
 invariant
 
 	class_name_defined: persistent_class_name /= Void and then not persistent_class_name.is_empty
 	datastore_exists : datastore /= Void
-	registered_to_datastore: datastore.adapters.has (Current)
+	registered_to_datastore: datastore.adapters.has (Current.as_adapter_persistent)
 	valid_last_pid: last_pid /= Void implies is_pid_valid (last_pid)
-	cache_not_void: cache /= Void
 	last_cursor_not_void: last_cursor /= Void
 	
 end

@@ -80,14 +80,14 @@ feature {PO_DATASTORE}-- Basic operations
 feature -- Basic operations
 
 	read_by_id (id : INTEGER) is
-			-- read by `id'
+			-- Read by `id'.
 		do
 			create last_pid.make (id)
 			read (last_pid)
 		end
 
 	read_by_name_pattern (name_pattern : STRING) is
-			-- read by `name_pattern'
+			-- Read by `name_pattern'.
 		local
 			cursor : BORROWER_READ_LIKE
 		do

@@ -24,7 +24,7 @@ feature -- Access
 			-- identifier of persistent object
 
 	item : G is
-			-- actual value of referenced item
+			-- Actual value of referenced item.
 		require
 			not_void: not is_void
 		do
@@ -69,7 +69,7 @@ feature -- Status report
 feature {PO_ADAPTER, PO_PERSISTENT, PO_REFERENCE_ACCESS} -- Element change
 
 	set_pid_from_adapter (an_adapter : PO_ADAPTER[G]) is
-			-- set `pid' to `an_adapter.pid'
+			-- Set `pid' to `an_adapter.pid'.
 		require
 			adapter_not_void: an_adapter /= Void
 			pid_not_void: an_adapter.last_pid /= Void
@@ -95,7 +95,7 @@ feature {PO_ADAPTER, PO_PERSISTENT, PO_REFERENCE_ACCESS} -- Element change
 		end
 
 	make_void, reset is
-			-- reset reference
+			-- Reset reference.
 		do
 			pid := Void
 			set_object (Void)
@@ -104,7 +104,7 @@ feature {PO_ADAPTER, PO_PERSISTENT, PO_REFERENCE_ACCESS} -- Element change
 feature {NONE} -- Implementation
 
 	get_object : G is
-			-- get object
+			-- Get object.
 		require
 			identified: is_identified
 		local
@@ -128,7 +128,7 @@ feature {NONE} -- Implementation
 	object : G
 	
 	pid_for (an_object : G) : PO_PID is
-			-- pid for  `an_object'
+			-- Pid for  `an_object'.
 		local
 			persistent_adapter : PO_ADAPTER[G]
 		do

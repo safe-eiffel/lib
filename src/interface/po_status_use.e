@@ -13,7 +13,7 @@ class PO_STATUS_USE
 feature -- Access
 
 	status : PO_STATUS is
-			-- status related to latest persistance operation
+			-- Status related to latest persistance operation.
 		do
 			if impl_status = Void then
 				create impl_status

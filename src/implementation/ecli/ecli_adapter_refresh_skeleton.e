@@ -53,7 +53,7 @@ feature -- Basic operations
 feature {PO_ADAPTER} -- Basic operations
 
 	init_parameters_for_refresh (a_pid : like last_pid) is
-			-- Initialize parameters of `refresh_cursor' with information from `a_pid'
+			-- Initialize parameters of `refresh_cursor' with information from `a_pid'.
 		deferred
 		ensure
 			bound_parameters: refresh_cursor.bound_parameters

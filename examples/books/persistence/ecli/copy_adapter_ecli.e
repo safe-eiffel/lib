@@ -81,7 +81,7 @@ feature -- Basic operations
 		end
 
 	read_from_isbn (isbn : STRING) is
-			-- read copies identified by `isbn'
+			-- Read copies identified by `isbn'.
 		do
 			
 		end

@@ -17,15 +17,15 @@ inherit
 	PO_STATUS_USE
 	PO_STATUS_MANAGEMENT
 	
-feature {PO_PERSISTENT, PO_REFERENCE, PO_ADAPTER} -- Access
+feature {PO_PERSISTENT, PO_REFERENCE, PO_ADAPTER, PO_CACHE} -- Access
 
 	pid : PO_PID
-		-- Persistence identifier, if any
+		-- Persistence identifier, if any.
 
 feature -- Access
 
 	persistence_error_meaning : STRING is
-			-- Error meaning, if any
+			-- Error meaning, if any.
 		obsolete "use `status.message' instead"
 		require
 			status.is_error
@@ -34,7 +34,7 @@ feature -- Access
 		end
 
 	persistent_class_name : STRING is
-		-- Name of class for persistence. 
+		-- Name of class for persistence. .
 		-- To be redefined when a single adapter takes care of
 		-- a whole class hierarchy (different classes, same persistent class name)
 		deferred
@@ -152,10 +152,12 @@ feature  {PO_ADAPTER } -- Element change
 			fresh: not is_modified
 		end
 
+feature -- Conversion
+		
 feature -- Basic operations
 
 	write is
-			-- write current object state to data store
+			-- Write current object state to data store.
 		require
 			volatile: is_volatile
 			writable: is_writable
@@ -175,7 +177,7 @@ feature -- Basic operations
 		end
 		
 	update is
-			-- update data store from current object state
+			-- Update data store from current object state.
 		require
 			persistent: is_persistent
 			updatable: is_updatable			
@@ -194,7 +196,7 @@ feature -- Basic operations
 		end
 
 	delete is
-			-- delete current object state from data store
+			-- Delete current object state from data store.
 		require
 			persistent: is_persistent
 			deletable: is_deletable
@@ -214,7 +216,7 @@ feature -- Basic operations
 		end
 		
 	refresh is
-			-- delete current object state from data store
+			-- Delete current object state from data store.
 		require
 			persistent: is_persistent
 			refreshable: is_refreshable
@@ -250,7 +252,7 @@ feature {NONE} -- Implementation
 		end
 
 	set_modified (value : BOOLEAN) is
-			-- set `is_modified' to `value'
+			-- Set `is_modified' to `value'.
 		do
 			modified_impl := Value
 		end

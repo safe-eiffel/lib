@@ -3,10 +3,10 @@ indexing
 	description:
 
 		"Basic implementation of PO_CURSOR[G] using a DS_LINKED_LIST[PO_REFERENCE[G]]."
-	author: "Paul G. Crismer"
-	
+
+	copyright: "Copyright (c) 2004, Paul G. Crismer and others"
+	license: "Eiffel Forum License v2 (see forum.txt)"
 	date: "$Date$"
-	revision: "$Revision$"
 
 class PO_REFERENCE_LIST_CURSOR[G->PO_PERSISTENT]
 
@@ -21,7 +21,7 @@ creation
 feature -- Initialization
 
 	make is
-			-- creation routine
+			-- Creation routine.
 		do
 			create list.make
 		end
@@ -58,7 +58,7 @@ feature -- Basic operations
 feature {PO_ADAPTER} -- Element change
 
 	add_reference (a_reference : PO_REFERENCE[G]) is
-			-- add `a_reference' into the collection
+			-- Add `a_reference' into the collection.
 		require
 			a_reference_not_void: a_reference /= Void
 		do
@@ -66,7 +66,7 @@ feature {PO_ADAPTER} -- Element change
 		end
 	
 	add_object (object : G) is
-			-- add `object' into the collection
+			-- Add `object' into the collection.
 		require
 			object_valid: object /= Void and object.is_persistent
 		local
@@ -77,7 +77,7 @@ feature {PO_ADAPTER} -- Element change
 		end
 	
 	add_last_pid (adapter : PO_ADAPTER[G]) is
-			-- add `adapter.last_pid' into the collection
+			-- Add `adapter.last_pid' into the collection.
 		require
 			last_pid_valid: adapter /= Void and then adapter.last_pid /= Void
 		local

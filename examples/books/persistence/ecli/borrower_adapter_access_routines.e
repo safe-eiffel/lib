@@ -40,7 +40,7 @@ feature  -- Basic operations
 feature {NONE} -- Implementation
 
 	do_borrower_read_like (cursor: BORROWER_READ_LIKE; name: STRING) is
-			-- helper implementation of access `BORROWER_READ_LIKE'
+			-- Helper implementation of access `BORROWER_READ_LIKE'.
 		require
 			cursor_not_void:  cursor /= Void
 		local

@@ -37,9 +37,9 @@ feature -- Basic operations
 				delete_query.execute
 				if delete_query.is_ok then
 					status.reset
-					cache.search (last_pid.to_string)
+					cache.search (last_pid)
 					if cache.found then
-						cache.remove (cache.found_key)
+						cache.remove (last_pid)
 					end
 					object.set_deleted
 				else

@@ -31,7 +31,7 @@ feature -- Access
 		end
 
 	persistent_class_name: STRING is
-			-- Name of class for persistence that this PID identifies
+			-- Name of class for persistence that this PID identifies.
 			-- Used by PO_REFERENCE to obtain an adapter
 		deferred
 		end
@@ -39,22 +39,33 @@ feature -- Access
 feature -- Conversion
 
 	to_string : STRING is
-			-- stringified PID made by appending
+			-- Stringified PID made by appending.
+			-- class_name and any other identifying query separated by some separator character like ',' or '|'
+		obsolete "Use as_string instead." 
+		do
+			Result := as_string
+		ensure
+			result_not_void: Result /= Void
+			class_name_substring: Result.substring (1,persistent_class_name.count).is_equal (persistent_class_name) 
+		end
+
+	as_string : STRING is
+			-- Stringified PID made by appending.
 			-- class_name and any other identifying query separated by some separator character like ',' or '|'
 		deferred
 		ensure
 			result_not_void: Result /= Void
 			class_name_substring: Result.substring (1,persistent_class_name.count).is_equal (persistent_class_name) 
 		end
-		
+			
 feature -- Comparison
 
 	is_equal (other : like Current) : BOOLEAN is
-			-- comparison
+			-- Comparison.
 		do
-			Result := (to_string.is_equal (other.to_string))
+			Result := (as_string.is_equal (other.as_string))
 		ensure then
-			definition: Result = (to_string.is_equal (other.to_string))
+			definition: Result = (as_string.is_equal (other.as_string))
 		end
 
 feature -- Miscellaneous

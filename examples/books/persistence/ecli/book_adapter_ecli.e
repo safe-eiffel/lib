@@ -77,14 +77,14 @@ feature {PO_ADAPTER} -- Factory
 feature -- Basic operations
 
 	read_by_isbn (isbn : STRING) is
-			-- read by `isbn'
+			-- Read by `isbn'.
 		do
 			create last_pid.make_from_isbn (isbn)
 			read (last_pid)
 		end
 		
 	read_by_title (title : STRING) is
-			-- read by `title'
+			-- Read by `title'.
 		require else
 			title_not_void:  title /= Void
 		local

@@ -13,7 +13,7 @@ deferred class PO_CURSOR [G -> PO_PERSISTENT]
 feature -- Access
 
 	item : G is
-			-- current item
+			-- Current item.
 		require
 			not_off: not off
 		deferred
@@ -22,7 +22,7 @@ feature -- Access
 		end
 		
 	first : G is
-			-- first item
+			-- First item.
 		require
 			not_empty: not is_empty
 		deferred
@@ -33,7 +33,7 @@ feature -- Access
 feature -- Measurement
 
 	count : INTEGER is
-			-- number of elements in cursor
+			-- Number of elements in cursor.
 		deferred
 		end
 
@@ -56,7 +56,7 @@ feature -- Status report
 		end
 		
 	off : BOOLEAN is
-			-- is there no `item' at current cursor position
+			-- Is there no `item' at current cursor position.
 		deferred
 		ensure
 			before_or_after: Result = (before or after)
@@ -65,7 +65,7 @@ feature -- Status report
 feature -- Basic operations
 
 	start is
-			-- start iteration
+			-- Start iteration.
 		require
 		deferred
 		ensure
@@ -73,7 +73,7 @@ feature -- Basic operations
 		end
 
 	forth is
-			-- advance cursor forth
+			-- Advance cursor forth.
 		require
 			not_off_or_after: not off or after
 		deferred

@@ -22,7 +22,7 @@ creation
 feature -- Initialization
 
 	make (an_isbn : STRING; a_serial : INTEGER) is
-			-- make pid by `an_isbn', `a_serial'
+			-- Make pid by `an_isbn', `a_serial'.
 		require
 			an_isbn_not_void:  an_isbn /= Void
 			a_serial_gt0: a_serial > 0
@@ -42,8 +42,7 @@ feature -- Access
 	
 feature -- Conversion
 
-	to_string : STRING is
-			-- 
+	as_string : STRING is
 		do
 			create Result.make_from_string (persistent_class_name)
 			Result.append_character(',')

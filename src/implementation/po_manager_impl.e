@@ -21,7 +21,7 @@ creation
 feature {NONE} -- Initialization
 
 	make is
-			-- creation
+			-- Creation.
 
 		do
 			create adapters_table.make (10)
@@ -116,6 +116,6 @@ feature {NONE} -- Implementation
 	
 invariant
 
-	invariant_clause: True -- Your invariant here
-
+	adapters_table_not_void: adapters_table /= Void
+	
 end

@@ -27,7 +27,7 @@ feature  -- -- Access
 feature  -- -- Element change
 
 	set_parameters_object (a_parameters_object: BOOK_ID) is
-			-- set `parameters_object' to `a_parameters_object'
+			-- Set `parameters_object' to `a_parameters_object'.
 		require
 			a_parameters_object_not_void: a_parameters_object /= Void
 		do

@@ -60,14 +60,4 @@ feature -- Basic operations
 		end
 		
 		
-feature -- Obsolete
-
-feature -- Inapplicable
-
-feature {NONE} -- Implementation
-
-invariant
-
-	invariant_clause: True -- Your invariant here
-
 end

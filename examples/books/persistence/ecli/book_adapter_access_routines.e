@@ -40,7 +40,7 @@ feature  -- Basic operations
 feature {NONE} -- Implementation
 
 	do_book_read_by_title (cursor: BOOK_READ_BY_TITLE; title: STRING) is
-			-- helper implementation of access `BOOK_READ_BY_TITLE'
+			-- Helper implementation of access `BOOK_READ_BY_TITLE'.
 		require
 			cursor_not_void:  cursor /= Void
 		local

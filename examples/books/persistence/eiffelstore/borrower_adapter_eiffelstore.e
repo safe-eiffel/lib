@@ -51,12 +51,12 @@ feature -- Basic operations
 
 		
 	read_by_name_pattern (name_pattern : STRING) is
-			-- read by name like `name_pattern'
+			-- Read by name like `name_pattern'.
 		do
 		end
 
 	read_by_id (id : INTEGER) is
-			-- read by `id'
+			-- Read by `id'.
 		do
 			create_pid_from_id (id)
 			read (last_pid)
@@ -109,7 +109,7 @@ feature {NONE} -- Implementation
 	
 
 	init_parameters_for_refresh (t : like last_pid) is
-			-- initialize refresh query parameters with pid information
+			-- Initialize refresh query parameters with pid information.
 		do
 			init_parameters_for_read (t)
 		end

@@ -38,8 +38,4 @@ feature {NONE} -- Implementation
 			end	
 		end
 		
-invariant
-
-	invariant_clause: True -- Your invariant here
-
 end

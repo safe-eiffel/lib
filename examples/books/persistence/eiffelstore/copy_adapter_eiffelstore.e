@@ -44,7 +44,7 @@ feature -- Basic operations
 		end
 	
 	read_borrowed is
-			-- read borrowed copies
+			-- Read borrowed copies.
 		do
 			read_pid_collection ("select isbn, serial_number from copy where borrower is not null and borrower > 0")
 		end
@@ -104,7 +104,7 @@ feature {NONE} -- Implementation
 	
 
 	init_parameters_for_refresh (t : like last_pid) is
-			-- initialize refresh query parameters with pid information
+			-- Initialize refresh query parameters with pid information.
 		do
 			init_parameters_for_read (t)
 		end
