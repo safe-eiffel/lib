@@ -98,7 +98,7 @@ feature -- Access
 	capacity : INTEGER
 			-- string capacity
 			
-	item_at (c : INTEGER) : CHARACTER is
+	item (c : INTEGER) : CHARACTER is
 		require
 			c_within_limits: c >= 1 and c <= capacity
 			valid: is_valid
@@ -106,6 +106,14 @@ feature -- Access
 			Result := INTEGER_.to_character (c_memory_get_uint8 (c_memory_pointer_plus (handle, c - 1)))
 		end
 
+	item_integer (c: INTEGER) : INTEGER is
+		require
+			c_within_limits: c >= 1 and c <= capacity
+			valid: is_valid
+		do
+			Result := c_memory_get_uint8 (c_memory_pointer_plus (handle, c - 1))
+		end
+		
 	substring (i_start, i_end : INTEGER) : STRING is
 			-- substring made of characters [i_start..i_end]
 		require
@@ -120,9 +128,43 @@ feature -- Access
 			until
 				index > i_end
 			loop
-				Result.append_character (item_at (index))
+				Result.append_character (item (index))
 				index := index + 1
 			end
+		end
+	
+	copy_substring_to (i_start, i_end : INTEGER; string : STRING) is
+			-- copy substring [i_start..i_end] to string
+		require
+			i_start_ok: i_start > 0 and i_start <= i_end
+			i_end_ok: i_end > 0 and i_end <= capacity
+			string_exists: string /= Void
+		do
+			string.wipe_out
+			append_substring_to (i_start, i_end, string)
+		ensure
+			string_set: string.is_equal (substring (i_start, i_end))
+		end
+
+	append_substring_to (i_start, i_end : INTEGER; string : STRING) is
+			-- append substring [i_start..i_end] to string
+		require
+			i_start_ok: i_start > 0 and i_start <= i_end
+			i_end_ok: i_end > 0 and i_end <= capacity
+			string_exists: string /= Void
+		local
+			index : INTEGER
+		do
+			from
+				index := i_start
+			until
+				index > i_end
+			loop
+				string.append_character (item (index))
+				index := index + 1
+			end
+		ensure
+			string_set: string.substring (old (string.count) + 1, string.count).is_equal (substring (i_start, i_end))
 		end
 		
 feature -- Status report
@@ -132,6 +174,17 @@ feature -- Status report
 		
 	is_released : BOOLEAN
 	
+feature -- Element change
+
+	put (c : CHARACTER; index : INTEGER) is
+			-- put `c' at `index'
+		require
+			valid_index: index >= 1 and index <= capacity
+		do
+		ensure
+			item_set: item (index) = c
+		end
+		
 feature -- Conversion
 
 	as_string : STRING is

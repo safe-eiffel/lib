@@ -57,16 +57,16 @@ feature {NONE} -- Implementation
 		alias "c_memory_allocate"
 		end
 
+	c_memory_resize (block : POINTER; size : INTEGER) : POINTER is
+		external "C"
+		alias "c_memory_resize"
+		end
+
  	c_memory_free (pointer : POINTER) is
 		external "C"
 		alias "c_memory_free"
 		end 
-
--- 	c_memory_short_to_integer (pointer : POINTER) : INTEGER is
---		external "C"
---		alias "c_memory_short_to_integer"
---		end	
-
+		
 end -- class XS_C_MEMORY
 --
 -- Copyright: 2003, Paul G. Crismer, <pgcrism@users.sourceforge.net>

@@ -19,6 +19,10 @@ EIF_POINTER c_memory_allocate (EIF_INTEGER size) {
 	return (EIF_POINTER) calloc ((long) size, 1);
 }
 
+EIF_POINTER c_memory_resize (EIF_POINTER p, EIF_INTEGER size) {
+	return (EIF_POINTER) realloc (p, (long) size);
+}
+
 void c_memory_free (EIF_POINTER pointer) {
 	free ((char *)pointer);
 }
@@ -27,13 +31,17 @@ EIF_INTEGER c_memory_short_to_integer (EIF_POINTER pointer) {
 	return (EIF_INTEGER) (*((short *)pointer));
 }
 
+void c_memory_put_char (EIF_POINTER pointer, EIF_CHARACTER v) { *((char*)pointer) = (char) v; };
 void c_memory_put_int8 (EIF_POINTER pointer, EIF_INTEGER v) { *((char*)pointer) = (char) v; };
 void c_memory_put_int16 (EIF_POINTER pointer, EIF_INTEGER v) { *((short*)pointer) = (short) v; };
+void c_memory_put_uint8 (EIF_POINTER pointer, EIF_INTEGER v) { *((unsigned char*)pointer) = (unsigned char) v; };
+void c_memory_put_uint16 (EIF_POINTER pointer, EIF_INTEGER v) { *((unsigned short*)pointer) = (unsigned short) v; };
 void c_memory_put_int32 (EIF_POINTER pointer, EIF_INTEGER v) { *((int*)pointer) = (int) v; };
 void c_memory_put_real (EIF_POINTER pointer, EIF_REAL v) { *((float*)pointer) = (float) v; };
 void c_memory_put_double (EIF_POINTER pointer, EIF_DOUBLE v) { *((double*)pointer) = (double) v; };
 void c_memory_put_pointer (EIF_POINTER pointer, EIF_POINTER v) { *((void**)pointer) = (void *) v; };
 
+EIF_CHARACTER c_memory_get_char (EIF_POINTER pointer) { return (EIF_CHARACTER) (*((char*)pointer));};
 EIF_INTEGER c_memory_get_int8 (EIF_POINTER pointer) { return (EIF_INTEGER) (*((char*)pointer));};
 EIF_INTEGER c_memory_get_int16 (EIF_POINTER pointer) { return (EIF_INTEGER) (*((short*)pointer));};
 EIF_INTEGER c_memory_get_uint8 (EIF_POINTER pointer) { return (EIF_INTEGER) (*((unsigned char*)pointer));};
