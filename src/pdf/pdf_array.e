@@ -56,7 +56,7 @@ feature -- Conversion
 			index : INTEGER
 		do
 			!!Result.make (0)
-			Result.append_string ("[")
+			Result.append_string ("[ ")
 			from
 				index := lower
 			until

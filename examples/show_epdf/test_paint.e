@@ -100,6 +100,7 @@ feature -- Initialization
 			p.pie (510, 60, 50, p.math.Pi/8, -2*p.math.Pi+p.math.Pi/4)
 			p.stroke
 			center_label (510, 0, "pie",p)
+			p.grestore
 		end
 		
 	test_winding_fill (d : PDF_DOCUMENT; p : PDF_PAGE) is

@@ -135,11 +135,11 @@ feature -- Conversion
 				Result.append_string (key (index))
 				Result.append_character (' ')
 				Result.append_string (value (index).indirect_reference)
-				if index \\ 10 = 0 then
+--				if index \\ 10 = 0 then
 					Result.append_character ('%N')
-				else
-					Result.append_character (' ')
-				end
+--				else
+--					Result.append_character ('%N')
+--				end
 				index := index + 1
 			end
 			Result.append_string (">> ") 

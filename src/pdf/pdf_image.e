@@ -225,7 +225,7 @@ feature {NONE} -- Conversion
 			create zlib_format
 			zlib_stream := zlib_format.encode (samples)
 			encoded_stream := ascii_85_format.encode (zlib_stream)
-			encoded_stream_length := ascii_85_format.last_encoded_count (medium) --encoded_stream.count - 2 + encoded_stream.occurrences ('%N') * (medium.eol_count - 1)
+			encoded_stream_length := encoded_stream.count + encoded_stream.occurrences ('%N') * (medium.eol_count - 1)
 
 			create n_type.make ("Type")
 			create n_subtype.make ("Subtype")
@@ -247,8 +247,8 @@ feature {NONE} -- Conversion
 				medium.put_string (dictionary_entry (n_colorspace, "/DeviceRGB"))
 			end
 			medium.put_string (dictionary_entry (n_bitspercomponent, color_bits.out))
-			medium.put_string (dictionary_entry (n_length, encoded_stream.count.out))
-			medium.put_string (dictionary_entry (n_filter, "[/ASCII85Decode/FlateDecode]"))
+			medium.put_string (dictionary_entry (n_length, encoded_stream_length.out))
+			medium.put_string (dictionary_entry (n_filter, "[ /ASCII85Decode /FlateDecode ]"))
 			if alpha /= Void then
 				create n_smask.make ("SMask")
 				medium.put_string (dictionary_entry (n_smask, alpha.indirect_reference))

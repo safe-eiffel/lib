@@ -88,11 +88,11 @@ feature -- Conversion
 			medium.put_string (object_header)
 			medium.put_string (Begin_dictionary)
 			--
-			medium.put_string ("/Title(")
+			medium.put_string ("/Title (")
 			medium.put_string (title)
 			medium.put_string (")")
 			--
-			medium.put_string ("/Parent ")
+			medium.put_string (" /Parent ")
 			medium.put_string (parent.indirect_reference)
 			-- First
 			-- Last
@@ -102,7 +102,7 @@ feature -- Conversion
 			-- Prev ?
 			if not parent_cursor.is_first then
 				parent_cursor.back
-				medium.put_string ("/Prev ")
+				medium.put_string (" /Prev ")
 				medium.put_string (parent_cursor.item.indirect_reference)
 				has_previous := True
 			end
@@ -116,21 +116,21 @@ feature -- Conversion
 				medium.put_string (parent_cursor.item.indirect_reference)
 			end
 			if not list.is_empty then
-				medium.put_string ("/First ")
+				medium.put_string (" /First ")
 				medium.put_string (list.first.indirect_reference)
 				medium.put_string ("/Last ")
 				medium.put_string (list.last.indirect_reference)
-				medium.put_string ("/Count ")
+				medium.put_string (" /Count ")
 				medium.put_string (recursive_open_count.out)
 			end
 			-- dest
-			medium.put_string ("/Dest [")
+			medium.put_string (" /Dest [ ")
 			medium.put_string (page.indirect_reference)
-			medium.put_string ("/XYZ ")
+			medium.put_string (" /XYZ ")
 			medium.put_double (left)
 			medium.put_string (" ")
 			medium.put_double (top)
-			medium.put_string (" null]")
+			medium.put_string (" null ]")
 			medium.put_string (End_dictionary)
 			medium.put_string (Object_footer)
 		end

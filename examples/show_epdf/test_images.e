@@ -73,7 +73,7 @@ feature -- Basic operations
 			page.scale (image2.width / 2 ,image2.height / 2)
 			page.put_image (image2)
 			page.grestore
-			
+			check page.save_level = 0 end
 			document.add_page
 			page := document.last_page
 			document.create_outline_item ("Test PNG", page, page.mediabox.llx, page.mediabox.ury)
@@ -102,6 +102,7 @@ feature -- Basic operations
 				j := j - image.height - 5
 				i := i + 2
 			end
+			check page.save_level = 0 end
 		end
 		
 	images : ARRAY [STRING] is

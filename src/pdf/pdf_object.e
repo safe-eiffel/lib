@@ -46,17 +46,17 @@ feature {NONE} -- Access
 
 	object_footer : STRING is
 		once
-			Result := "endobj%N"
+			Result := "endobj%N%N"
 		end
 		
 	begin_dictionary : STRING is
 		once
-			Result := "<<"
+			Result := "<< "
 		end
 		
 	end_dictionary : STRING is
 		once
-			Result := ">>%N"
+			Result := " >>%N"
 		end
 		
 feature {NONE} -- Implementation
@@ -78,7 +78,7 @@ feature {NONE} -- Implementation
 			Result.append_string (name.to_pdf)
 			Result.append_character (' ')
 			Result.append_string (value)
---			Result.append_character (' ')			
+			Result.append_character ('%N')			
 		end
 
 	pdf_string (s: STRING) : STRING is

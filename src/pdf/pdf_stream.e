@@ -184,16 +184,19 @@ feature -- Conversion
 			ascii_85_format : ASCII_85_FORMAT
 			filter : PDF_ARRAY_SERIALIZABLE[PDF_NAME]
 		do
+			create names
 			if not unencoded then
 				create zlib_format
 				create ascii_85_format
-				create names
 				encoded_stream := zlib_format.encode (content)
 				encoded_stream := ascii_85_format.encode (encoded_stream)
-				content_length := ascii_85_format.last_encoded_count (medium)
+--				content_length := content.count -- ascii_85_format.last_encoded_count (medium)
 			else
-				content_length := content.count + content.occurrences ('%N') * (medium.eol_count - 1)
+--				content_length := content.count + content.occurrences ('%N') * (medium.eol_count - 1)
+				encoded_stream := content
 			end
+			content_length := encoded_stream.count + encoded_stream.occurrences ('%N') * (medium.eol_count - 1)
+			
 			medium.put_string (object_header)
 			-- dictionary
 			medium.put_string (begin_dictionary)

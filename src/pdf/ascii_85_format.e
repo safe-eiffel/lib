@@ -20,7 +20,7 @@ feature -- Measurement
 
 	last_encoded_count (medium : PDF_OUTPUT_MEDIUM) : INTEGER is
 		do
-			Result := 	last_encoded.count - 2 + last_encoded.occurrences ('%N') * (medium.eol_count - 1)
+			Result := 	last_encoded.count - 2 --+ last_encoded.occurrences ('%N') * (medium.eol_count - 1)
 		end
 		
 feature -- Status report

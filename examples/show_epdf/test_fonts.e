@@ -76,7 +76,6 @@ feature -- Basic operations
 			page.put_new_line_string ("Fill render mode")
 			page.set_text_render_mode (page.Text_render_fill_then_stroke)
 			page.put_new_line_string ("Fill then stroke mode")
-			page.set_text_render_mode (document.last_page.Text_render_stroke)
 			put_space_after (page)
 		end
 	
