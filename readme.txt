@@ -13,6 +13,11 @@ Library usage:
 - CVS version of GOBO
 - gexace for producing multi-platform assembly files
 
+Variables:
+- EPDF			Path of the EPDF library
+- SMALLEIFFEL_DIR 	Path of Smalleiffel if you are using it
+- GOBO			Path of GOBO
+
 Samples:
 - See directory 'examples'
 - Look at 'show_epdf' application for a start
