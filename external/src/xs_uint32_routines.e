@@ -12,13 +12,7 @@ class
 	XS_UINT32_ROUTINES
 	
 inherit
-	KL_STRING_ROUTINES
-		rename
-			make as make_string
-		export 
-			{NONE} all;
-			{ANY} hexadecimal_to_integer, is_hexadecimal
-		end
+	KL_IMPORTED_STRING_ROUTINES
 		
 feature -- Basic operations
 
@@ -134,6 +128,25 @@ feature -- Conversion
 			result_signed16: Result >= -32768 and Result <= 32767
 		end
 
+	hexadecimal_to_integer (hexadecimal_string : STRING) : INTEGER is
+			-- `hexadecimal_string' as integer
+		require
+			hexadecimal_string_not_void: hexadecimal_string /= Void
+			is_hexadecimal_string: is_hexadecimal_string (hexadecimal_string)
+		do
+			Result := STRING_.hexadecimal_to_integer (hexadecimal_string)
+		end
+		
+feature -- Status report
+
+	is_hexadecimal_string (string : STRING) : BOOLEAN is
+			-- Is `string' composed of [0-9A-Fa-f]+ ?
+		require
+			string_not_void: string /= Void
+		do
+			Result := STRING_.is_hexadecimal (string)
+		end
+		
 end -- class XS_UINT32_ROUTINES
 --
 -- Copyright: 2003; Paul G. Crismer; <pgcrism@users.sourceforge.net>
