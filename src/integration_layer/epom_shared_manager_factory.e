@@ -17,14 +17,14 @@ feature -- Access
 
 feature -- Element change
 
-	def_shared_manager_factory (a_manager_factory: EPOM_MANAGER_FACTORY) is
-			-- Define shared_manager_factory with `a_manager_factory'.
+	set_shared_manager_factory (a_manager_factory: EPOM_MANAGER_FACTORY) is
+			-- Set shared_manager_factory with `a_manager_factory'.
 		require
 			manager_factory_exists: a_manager_factory /= Void
 		do
 			cell.put (a_manager_factory)
 		ensure
-			shared_manager_factory_defined: shared_manager_factory = a_manager_factory
+			shared_manager_factory_set: shared_manager_factory = a_manager_factory
 		end
 
 

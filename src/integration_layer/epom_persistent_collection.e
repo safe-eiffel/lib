@@ -25,8 +25,8 @@ feature -- Basic operations for persistent behaviour
 			end
 
 			if last_epom_error = Void then
-				def_persistent
-				def_not_modified
+				set_persistent
+				set_not_modified
 			end
 
 		end
@@ -42,8 +42,8 @@ feature -- Basic operations for persistent behaviour
 			end
 
 			if last_epom_error = Void then
-				def_persistent
-				def_not_modified
+				set_persistent
+				set_not_modified
 			end
 
 		end

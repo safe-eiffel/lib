@@ -46,7 +46,7 @@ feature -- Element change
 			-- Do not move cursors.
 		do
 			Precursor (other)
-			container.def_modified
+			container.set_modified
 		ensure then
 			container_is_modified: container.is_modified
 		end
@@ -57,7 +57,7 @@ feature -- Element change
 			-- Do not move cursors.
 		do
 			Precursor (other)
-			container.def_modified
+			container.set_modified
 		ensure then
 			container_is_modified: container.is_modified
 		end
@@ -68,7 +68,7 @@ feature -- Element change
 			-- Do not move cursors.
 		do
 			Precursor (other)
-			container.def_modified
+			container.set_modified
 		ensure then
 			container_is_modified: container.is_modified
 		end
@@ -79,7 +79,7 @@ feature -- Element change
 			-- Do not move cursors.
 		do
 			Precursor (other)
-			container.def_modified
+			container.set_modified
 		ensure then
 			container_is_modified: container.is_modified
 		end
@@ -89,7 +89,7 @@ feature -- Element change
 			-- Do not move cursors.
 		do
 			Precursor (v)
-			container.def_modified
+			container.set_modified
 		ensure then
 			container_is_modified: container.is_modified
 		end
@@ -99,7 +99,7 @@ feature -- Element change
 			-- Do not move cursors.
 		do
 			Precursor (v)
-			container.def_modified
+			container.set_modified
 		ensure then
 			container_is_modified: container.is_modified
 		end
@@ -109,7 +109,7 @@ feature -- Element change
 			-- Do not move cursors.
 		do
 			Precursor (v)
-			container.def_modified
+			container.set_modified
 		ensure then
 			container_is_modified: container.is_modified
 		end
@@ -119,7 +119,7 @@ feature -- Element change
 			-- Do not move cursors.
 		do
 			Precursor (v)
-			container.def_modified
+			container.set_modified
 		ensure then
 			container_is_modified: container.is_modified
 		end
@@ -131,7 +131,7 @@ feature -- Element change
 		do
 			container.removed_items.force_last (item)
 			Precursor (v)
-			container.def_modified
+			container.set_modified
 		ensure then
 			new_removed_count: container.removed_items.count = old (container.removed_items.count) + 1
 			container_is_modified: container.is_modified
@@ -143,7 +143,7 @@ feature -- Element change
 			-- (from DS_DYNAMIC_CURSOR)
 		do
 			Precursor (other)
-			container.def_modified
+			container.set_modified
 		ensure then
 			container_is_modified: container.is_modified
 		end

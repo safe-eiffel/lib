@@ -51,16 +51,16 @@ feature -- Status report for persistent behaviour
 
 feature -- Status setting
 
-	def_modified is
-			-- Define this object as modified since it's last retrieve or store.
+	set_modified is
+			-- Set this object as modified since it's last retrieve or store.
 		do
 			is_modified_i := True
 		ensure
 			is_modified: is_modified
 		end
 
-	def_not_modified is
-			-- Define this object as not been modified since it's last retrieve or store.
+	set_not_modified is
+			-- Set this object as not been modified since it's last retrieve or store.
 		do
 			is_modified_i := False
 		ensure
@@ -80,7 +80,7 @@ feature -- Basic operations for persistent behaviour
 	retrieve (a_query_frame: EPOM_QUERY_FRAME) is
 			-- Retrieve the persistent object by using it's unique indentifier.
 		require
-			a_query_frame_defined: a_query_frame /= Void
+			a_query_frame_set: a_query_frame /= Void
 		deferred
 		ensure
 			retrieved: (last_epom_error = Void) implies (is_persistent and not is_modified)
@@ -94,16 +94,16 @@ feature {EPOM_STORAGE_MANAGER} -- Support routines for storage managers
 		end
 
 
-	def_persistent is
-			-- Define this object as persistent.
+	set_persistent is
+			-- Set this object as persistent.
 		do
 			is_persistent := True
 		ensure
 			is_persistent: is_persistent
 		end
 
-	def_not_persistent is
-			-- Define this object as not beeing persistent.
+	set_not_persistent is
+			-- Set this object as not beeing persistent.
 		do
 			is_persistent := False
 		ensure

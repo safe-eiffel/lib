@@ -89,7 +89,7 @@ feature -- Element change
 			-- Was declared in DS_LINKED_LIST as synonym of `extend' and `append'.
 		do
 			Precursor (other, i)
-			def_modified
+			set_modified
 		ensure then
 			is_modified: is_modified
 		end
@@ -102,7 +102,7 @@ feature -- Element change
 			-- Was declared in DS_LINKED_LIST as synonym of `extend_first' and `append_first'.
 		do
 			Precursor (other)
-			def_modified
+			set_modified
 		ensure then
 			is_modified: is_modified
 		end
@@ -115,7 +115,7 @@ feature -- Element change
 			-- Was declared in DS_LINKED_LIST as synonym of `extend_last' and `append_last'.
 		do
 			Precursor (other)
-			def_modified
+			set_modified
 		ensure then
 			is_modified: is_modified
 		end
@@ -126,7 +126,7 @@ feature -- Element change
 			-- Do not move cursors.
 		do
 			Precursor (other)
-			def_modified
+			set_modified
 		ensure then
 			is_modified: is_modified
 		end
@@ -140,7 +140,7 @@ feature -- Element change
 			-- Was declared in DS_BILINKED_LIST as synonym of `extend_left_cursor' and `append_left_cursor'.
 		do
 			Precursor (other, a_cursor)
-			def_modified
+			set_modified
 		ensure then
 			is_modified: is_modified
 		end
@@ -151,7 +151,7 @@ feature -- Element change
 			-- Do not move cursors.
 		do
 			Precursor (other)
-			def_modified
+			set_modified
 		ensure then
 			is_modified: is_modified
 		end
@@ -165,7 +165,7 @@ feature -- Element change
 			-- Was declared in DS_LINKED_LIST as synonym of `extend_right_cursor' and `append_right_cursor'.
 		do
 			Precursor (other, a_cursor)
-			def_modified
+			set_modified
 		ensure then
 			is_modified: is_modified
 		end
@@ -178,7 +178,7 @@ feature -- Element change
 			-- Was declared in DS_LINKED_LIST as synonym of `extend' and `append'.
 		do
 			Precursor (other, i)
-			def_modified
+			set_modified
 		ensure then
 			is_modified: is_modified
 		end
@@ -191,7 +191,7 @@ feature -- Element change
 			-- Was declared in DS_LINKED_LIST as synonym of `extend_first' and `append_first'.
 		do
 			Precursor (other)
-			def_modified
+			set_modified
 		ensure then
 			is_modified: is_modified
 		end
@@ -204,7 +204,7 @@ feature -- Element change
 			-- Was declared in DS_LINKED_LIST as synonym of `extend_last' and `append_last'.
 		do
 			Precursor (other)
-			def_modified
+			set_modified
 		ensure then
 			is_modified: is_modified
 		end
@@ -215,7 +215,7 @@ feature -- Element change
 			-- Do not move cursors.
 		do
 			Precursor (other)
-			def_modified
+			set_modified
 		ensure then
 			is_modified: is_modified
 		end
@@ -229,7 +229,7 @@ feature -- Element change
 			-- Was declared in DS_BILINKED_LIST as synonym of `extend_left_cursor' and `append_left_cursor'.
 		do
 			Precursor (other, a_cursor)
-			def_modified
+			set_modified
 		ensure then
 			is_modified: is_modified
 		end
@@ -240,7 +240,7 @@ feature -- Element change
 			-- Do not move cursors.
 		do
 			Precursor (other)
-			def_modified
+			set_modified
 		ensure then
 			is_modified: is_modified
 		end
@@ -254,7 +254,7 @@ feature -- Element change
 			-- Was declared in DS_LINKED_LIST as synonym of `extend_right_cursor' and `append_right_cursor'.
 		do
 			Precursor (other, a_cursor)
-			def_modified
+			set_modified
 		ensure then
 			is_modified: is_modified
 		end
@@ -266,7 +266,7 @@ feature -- Element change
 			-- Was declared in DS_LINKED_LIST as synonym of `put' and `force'.
 		do
 			Precursor (v, i)
-			def_modified
+			set_modified
 		ensure then
 			is_modified: is_modified
 		end
@@ -278,7 +278,7 @@ feature -- Element change
 			-- Was declared in DS_LINKED_LIST as synonym of `put_first' and `force_first'.
 		do
 			Precursor (v)
-			def_modified
+			set_modified
 		ensure then
 			is_modified: is_modified
 		end
@@ -290,7 +290,7 @@ feature -- Element change
 			-- Was declared in DS_LINKED_LIST as synonym of `put_last' and `force_last'.
 		do
 			Precursor (v)
-			def_modified
+			set_modified
 		ensure then
 			is_modified: is_modified
 		end
@@ -300,7 +300,7 @@ feature -- Element change
 			-- Do not move cursors.
 		do
 			Precursor (v)
-			def_modified
+			set_modified
 		ensure then
 			is_modified: is_modified
 		end
@@ -313,7 +313,7 @@ feature -- Element change
 			-- Was declared in DS_BILINKED_LIST as synonym of `put_left_cursor' and `force_left_cursor'.
 		do
 			Precursor (v, a_cursor)
-			def_modified
+			set_modified
 		ensure then
 			is_modified: is_modified
 		end
@@ -323,7 +323,7 @@ feature -- Element change
 			-- Do not move cursors.
 		do
 			Precursor (v)
-			def_modified
+			set_modified
 		ensure then
 			is_modified: is_modified
 		end
@@ -336,7 +336,7 @@ feature -- Element change
 			-- Was declared in DS_LINKED_LIST as synonym of `put_right_cursor' and `force_right_cursor'.
 		do
 			Precursor (v, a_cursor)
-			def_modified
+			set_modified
 		ensure then
 			is_modified: is_modified
 		end
@@ -348,7 +348,7 @@ feature -- Element change
 			-- Was declared in DS_LINKED_LIST as synonym of `put' and `force'.
 		do
 			Precursor (v, i)
-			def_modified
+			set_modified
 		ensure then
 			is_modified: is_modified
 		end
@@ -360,7 +360,7 @@ feature -- Element change
 			-- Was declared in DS_LINKED_LIST as synonym of `put_first' and `force_first'.
 		do
 			Precursor (v)
-			def_modified
+			set_modified
 		ensure then
 			is_modified: is_modified
 		end
@@ -372,7 +372,7 @@ feature -- Element change
 			-- Was declared in DS_LINKED_LIST as synonym of `put_last' and `force_last'.
 		do
 			Precursor (v)
-			def_modified
+			set_modified
 		ensure then
 			is_modified: is_modified
 		end
@@ -382,7 +382,7 @@ feature -- Element change
 			-- Do not move cursors.
 		do
 			Precursor (v)
-			def_modified
+			set_modified
 		ensure then
 			is_modified: is_modified
 		end
@@ -395,7 +395,7 @@ feature -- Element change
 			-- Was declared in DS_BILINKED_LIST as synonym of `put_left_cursor' and `force_left_cursor'.
 		do
 			Precursor (v, a_cursor)
-			def_modified
+			set_modified
 		ensure then
 			is_modified: is_modified
 		end
@@ -405,7 +405,7 @@ feature -- Element change
 			-- Do not move cursors.
 		do
 			Precursor (v)
-			def_modified
+			set_modified
 		ensure then
 			is_modified: is_modified
 		end
@@ -418,7 +418,7 @@ feature -- Element change
 			-- Was declared in DS_LINKED_LIST as synonym of `put_right_cursor' and `force_right_cursor'.
 		do
 			Precursor (v, a_cursor)
-			def_modified
+			set_modified
 		ensure then
 			is_modified: is_modified
 		end
@@ -430,7 +430,7 @@ feature -- Element change
 		do
 			removed_items.force_last (item (i))
 			Precursor (v, i)
-			def_modified
+			set_modified
 		ensure then
 			is_modified: is_modified
 			new_removed_count: removed_items.count = old (removed_items.count) + 1
@@ -441,7 +441,7 @@ feature -- Element change
 			-- Do not move cursors.
 		do
 			Precursor (v)
-			def_modified
+			set_modified
 		ensure then
 			is_modified: is_modified
 		end
@@ -452,7 +452,7 @@ feature -- Element change
 			-- (Synonym of `a_cursor.replace (v)'.)
 		do
 			Precursor (v, a_cursor)
-			def_modified
+			set_modified
 		ensure then
 			is_modified: is_modified
 		end
@@ -463,7 +463,7 @@ feature -- Element change
 			-- (Performance: O(max(i,j)).)
 		do
 			Precursor (i, j)
-			def_modified
+			set_modified
 		ensure then
 			is_modified: is_modified
 		end
@@ -518,7 +518,7 @@ feature -- Removal
 				end
 			end
 			Precursor (v)
-			def_modified
+			set_modified
 		ensure then
 			is_modified: is_modified
 			new_removed_count: removed_items.count = old (removed_items.count + occurrences(v))
@@ -549,7 +549,7 @@ feature -- Removal
 				--| wipe_out managed removed_items
 			end
 			Precursor (n)
-			def_modified
+			set_modified
 		ensure then
 			is_modified: is_modified
 			new_removed_count: removed_items.count = old (removed_items.count) + (old (count) - n)
@@ -579,7 +579,7 @@ feature -- Removal
 				--| wipe_out managed removed_items
 			end
 			Precursor (n)
-			def_modified
+			set_modified
 		ensure then
 			is_modified: is_modified
 			new_removed_count: removed_items.count = old (removed_items.count) + (old (count) - n)
@@ -607,7 +607,7 @@ feature -- Removal
 				--| prune_first managed removed_items
 			end
 			Precursor (n, i)
-			def_modified
+			set_modified
 		ensure then
 			is_modified: is_modified
 			new_removed_count: removed_items.count = old (removed_items.count) + n
@@ -635,7 +635,7 @@ feature -- Removal
 				--| wipe_out managed removed_items
 			end
 			Precursor (n)
-			def_modified
+			set_modified
 		ensure then
 			is_modified: is_modified
 			new_removed_count: removed_items.count = old (removed_items.count) + n
@@ -663,7 +663,7 @@ feature -- Removal
 				--| wipe_out managed removed_items
 			end
 			Precursor (n) 
-			def_modified
+			set_modified
 		ensure then
 			is_modified: is_modified
 			new_removed_count: removed_items.count = old (removed_items.count) +  n
@@ -693,7 +693,7 @@ feature -- Removal
 				--| prune_last managed removed_persistent_items
 			end
 			Precursor (n, a_cursor)
-			def_modified
+			set_modified
 		ensure then
 			is_modified: is_modified
 			new_removed_count: removed_items.count = old (removed_items.count) +  n
@@ -722,7 +722,7 @@ feature -- Removal
 				--| prune_first managed remove_items
 			end
 			Precursor (n, a_cursor)
-			def_modified
+			set_modified
 		ensure then
 			is_modified: is_modified
 			new_removed_count: removed_items.count = old (removed_items.count) +  n
@@ -739,7 +739,7 @@ feature -- Removal
 				--| remove_first or remove_last manages removed_items
 			end
 			Precursor (i)
-			def_modified
+			set_modified
 		ensure then
 			is_modified: is_modified
 			new_removed_count: removed_items.count = old (removed_items.count) + 1
@@ -757,7 +757,7 @@ feature -- Removal
 				--| remove_first or remove_last manages removed_items
 			end
 			Precursor (a_cursor)
-			def_modified
+			set_modified
 		ensure then
 			is_modified: is_modified
 			new_removed_count: removed_items.count = old (removed_items.count) + 1
@@ -774,7 +774,7 @@ feature -- Removal
 				removed_items.force_last (first)
 			end
 			Precursor
-			def_modified
+			set_modified
 		ensure then
 			is_modified: is_modified
 			new_removed_count: removed_items.count = old (removed_items.count) + 1
@@ -788,7 +788,7 @@ feature -- Removal
 		do
 			removed_items.force_last (last)
 			Precursor
-			def_modified
+			set_modified
 		ensure then
 			is_modified: is_modified
 			new_removed_count: removed_items.count = old (removed_items.count) + 1
@@ -812,7 +812,7 @@ feature -- Removal
 				end
 			end
 			Precursor (a_cursor)
-			def_modified
+			set_modified
 		ensure then
 			is_modified: is_modified
 			new_removed_count: removed_items.count = old (removed_items.count) + 1
@@ -835,7 +835,7 @@ feature -- Removal
 				end
 			end
 			Precursor (a_cursor)
-			def_modified
+			set_modified
 		ensure then
 			is_modified: is_modified
 			new_removed_count: removed_items.count = old (removed_items.count) + 1
@@ -856,7 +856,7 @@ feature -- Removal
 				forth
 			end
 			Precursor
-			def_modified
+			set_modified
 		ensure then
 			is_modified: is_modified
 			new_removed_count: removed_items.count = old (removed_items.count) + old (count)
