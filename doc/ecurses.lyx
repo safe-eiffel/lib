@@ -1,0 +1,1754 @@
+#This file was created by <pgc> Fri Oct 15 20:52:35 1999
+#LyX 0.12 (C) 1995-1998 Matthias Ettrich and the LyX Team
+\lyxformat 2.15
+\textclass article
+\language default
+\inputencoding latin1
+\fontscheme default
+\graphics default
+\paperfontsize default
+\spacing single 
+\papersize a4paper
+\paperpackage a4
+\use_geometry 0
+\use_amsmath 0
+\paperorientation portrait
+\secnumdepth 3
+\tocdepth 3
+\paragraph_separation indent
+\defskip medskip
+\quotes_language english
+\quotes_times 2
+\papercolumns 1
+\papersides 1
+\paperpagestyle default
+
+\layout Title
+
+ECurses : an Eiffel binding to Curses
+\layout Author
+
+Paul G.
+ Crismer, Eric Fafchamps 
+\newline 
+<pgcrism@attglobal.net>, <eric.fafchamps@win.be>
+\layout Date
+
+October 3, 1999
+\layout Abstract
+
+ECurses is an Eiffel binding to Curses.
+ It tries to be more than just a wrapping of the C library.
+ It does not implement all the features of Curses, but provides enough functiona
+lity to allow development of nice console applications.
+\layout Abstract
+
+ECurses has been designed to be portable among different platforms, i.e.
+ on 
+\noun on 
+Unix/Linux
+\noun toggle 
+ (Curses, NCurses) and 
+\noun on 
+Windows
+\noun toggle 
+ (PDCurses).
+\layout Section
+
+Introduction
+\layout Standard
+
+ECurses is an Eiffel binding to Curses.
+ It is intended to be sufficiently complete to enable people write terminal/cons
+ole applications in Eiffel.
+\layout Standard
+
+The following table gives an overview of what ECurses provides, compared
+ to the Curses library.
+\layout Standard
+\added_space_top 0.3cm \added_space_bottom 0.3cm \align center \LyXTable
+multicol5
+14 3 0 0 -1 -1 -1 -1
+1 1 0 0
+1 0 0 0
+0 0 0 0
+0 0 0 0
+0 0 0 0
+0 0 0 0
+0 0 0 0
+0 0 0 0
+0 1 0 0
+0 1 0 0
+0 1 0 0
+0 1 0 0
+0 1 0 0
+0 1 0 0
+2 1 0 "" ""
+2 1 1 "" ""
+2 0 1 "" ""
+0 8 0 1 0 0 0 "" ""
+0 8 0 1 0 0 0 "" ""
+0 8 0 1 0 0 0 "" ""
+0 8 0 1 0 0 0 "" ""
+0 8 0 1 0 0 0 "" ""
+0 8 0 1 0 0 0 "" ""
+0 8 0 1 0 0 0 "" ""
+0 8 0 1 0 0 0 "" ""
+0 8 0 1 0 0 0 "" ""
+0 8 0 1 0 0 0 "" ""
+0 8 0 1 0 0 0 "" ""
+0 8 0 1 0 0 0 "" ""
+0 8 0 1 0 0 0 "" ""
+0 8 0 1 0 0 0 "" ""
+0 8 0 1 0 0 0 "" ""
+0 8 0 1 0 0 0 "" ""
+0 8 0 1 0 0 0 "" ""
+0 8 0 1 0 0 0 "" ""
+0 8 0 1 0 0 0 "" ""
+0 8 0 1 0 0 0 "" ""
+0 8 0 1 0 0 0 "" ""
+0 8 0 1 0 0 0 "" ""
+0 8 0 1 0 0 0 "" ""
+0 8 0 1 0 0 0 "" ""
+0 8 0 1 0 0 0 "" ""
+0 8 0 1 0 0 0 "" ""
+0 8 0 1 0 0 0 "" ""
+0 8 0 1 0 0 0 "" ""
+0 8 0 1 0 0 0 "" ""
+0 8 0 1 0 0 0 "" ""
+0 8 0 1 0 0 0 "" ""
+0 8 0 1 0 0 0 "" ""
+0 8 0 1 0 0 0 "" ""
+0 8 0 1 0 0 0 "" ""
+0 8 0 1 0 0 0 "" ""
+0 8 0 1 0 0 0 "" ""
+0 8 0 1 0 0 0 "" ""
+0 8 0 1 0 0 0 "" ""
+0 8 0 1 0 0 0 "" ""
+0 8 0 1 0 0 0 "" ""
+0 8 0 1 0 0 0 "" ""
+0 8 0 1 0 0 0 "" ""
+
+Curses
+\newline 
+ECurses
+\newline 
+Eiffel Class
+\newline 
+Curses core
+\newline 
+Partial
+\newline 
+CURSES_WINDOW
+\newline 
+* color
+\newline 
+Yes
+\newline 
+
+\newline 
+* character attributes
+\newline 
+Yes
+\newline 
+
+\newline 
+* subwindows
+\newline 
+Yes
+\newline 
+
+\newline 
+* scrolling
+\newline 
+Yes
+\newline 
+
+\newline 
+* mouse interfacing
+\newline 
+No
+\newline 
+
+\newline 
+* multiple terminal screens
+\newline 
+No
+\newline 
+
+\newline 
+* testing for terminal capabilities
+\newline 
+No
+\newline 
+
+\newline 
+Pads
+\newline 
+Partial
+\newline 
+CURSES_PAD
+\newline 
+Soft label keys
+\newline 
+Yes
+\newline 
+CURSES_SOFT_LABEL_KEYS
+\newline 
+Panels
+\newline 
+Yes
+\newline 
+CURSES_PANEL
+\newline 
+Menu
+\newline 
+No
+\newline 
+
+\newline 
+Forms
+\newline 
+No
+\newline 
+
+\layout Standard
+
+ECurses introduces some level of abstraction.
+ Feature names try to be more explicit than their Curses counterpart.
+ When possible pre- and post-conditions reflect the features specifications.
+\layout Standard
+
+ECurses has not been 
+\begin_inset Quotes eld
+\end_inset 
+
+extensively
+\begin_inset Quotes erd
+\end_inset 
+
+ tested.
+ Though, it works sufficiently well to develop applications with color,
+ scrolling, multiple panels, and basic forms.
+\layout Standard
+
+This document is 
+\emph on 
+not
+\emph toggle 
+ a Curses manual.
+ Please refer to appropriate man pages or to the excellent article 
+\begin_inset Quotes eld
+\end_inset 
+
+Writing programs with NCURSES
+\begin_inset Quotes erd
+\end_inset 
+
+ by Eric S.
+ Raymond and Zeyd M.
+ Ben-Halim.
+\layout Section
+
+Installation
+\layout Subsection
+
+Unpack directory structure
+\layout Standard
+
+Simply extract the tarball.
+ Directory structure is described below :
+\layout List
+\labelwidthstring 00.00.0000
+
+
+\series bold 
+base
+\series default 
+ base Curses abstractions.
+\layout List
+\labelwidthstring 00.00.0000
+
+
+\series bold 
+doc
+\series default 
+ documentation; this file in various formats.
+\layout List
+\labelwidthstring 00.00.0000
+
+
+\series bold 
+spec
+\series default 
+ API and constants wrapping classes.
+\begin_deeper 
+\layout List
+\labelwidthstring 00.00.0000
+
+
+\series bold 
+Clib
+\series default 
+ c source files.
+\layout List
+\labelwidthstring 00.00.0000
+
+
+\series bold 
+linux
+\series default 
+ linux specific files.
+\layout List
+\labelwidthstring 00.00.0000
+
+
+\series bold 
+windows
+\series default 
+ windows specific file.s
+\end_deeper 
+\layout List
+\labelwidthstring 00.00.0000
+
+
+\series bold 
+utility
+\series default 
+ some classes found useful to develop ECurses applications like an event
+ manager and a frame panel.
+\layout List
+\labelwidthstring 00.00.0000
+
+
+\series bold 
+test
+\series default 
+ small test projects.
+\begin_deeper 
+\layout List
+\labelwidthstring 00.00.0000
+
+
+\series bold 
+hello
+\series default 
+ hello world !
+\layout List
+\labelwidthstring 00.00.0000
+
+
+\series bold 
+pad
+\series default 
+ exercise basic pad capabilities.
+\layout List
+\labelwidthstring 00.00.0000
+
+
+\series bold 
+slk
+\series default 
+ exercise soft label keys.
+\layout List
+\labelwidthstring 00.00.0000
+
+
+\series bold 
+curses
+\series default 
+ mimics the 'ncurses' standard test application.
+\end_deeper 
+\layout Subsection
+
+Get the appropriate Curses library
+\layout Standard
+
+Get and install the appropriate Curses library.
+\layout List
+\labelwidthstring 00.00.0000
+
+NCURSES Version 4.2.
+ http://www.gnu.org.
+ Work on Unix/Linux platforms.
+\layout List
+\labelwidthstring 00.00.0000
+
+PDCurses Version 2.4.
+ http://www.lightlink.com/hessling.
+ Works on Windows 9X and Windows NT.
+ PDCurses also offer an X11 implementation for Unix, but it has not been
+ tested with the ECurses library.
+\newline 
+!!WARNING : PDCurses has a bug.
+ You should download sources, patch them following directions given in the
+ appendix, and recompile it.
+\layout Subsection
+
+Compile support library
+\layout Standard
+
+C files are in the spec/Clib directory.
+ The spec/
+\emph on 
+<platform>
+\emph toggle 
+ directory contains ad hoc makefiles.
+\layout List
+\labelwidthstring 00.00.0000
+
+windows A makefile (Makefile.vc.mak) is provided for MSVC compiler.
+ Library name is 
+\emph on 
+ecurses_c.lib
+\emph toggle 
+.
+\layout List
+\labelwidthstring 00.00.0000
+
+linux
+\protected_separator 
+ A makefile (Makefile) is provided for Linux .
+\protected_separator 
+ Type "make all" in order to build the library 
+\emph on 
+libecurses_c.a
+\emph toggle 
+.
+\layout Standard
+
+This support library is necessary to compile and link ECurses programs .
+\layout Section
+
+Usage
+\layout Standard
+
+This section gives an overview of what are the main abstractions of ECurses.
+\layout Subsection
+
+Hello World !
+\layout LyX-Code
+
+
+\size small 
+class
+\layout LyX-Code
+
+
+\size small 
+
+\protected_separator 
+
+\protected_separator 
+
+\protected_separator 
+
+\protected_separator 
+HELLO_WORLD
+\layout LyX-Code
+
+
+\protected_separator 
+ 
+\protected_separator 
+ 
+\layout LyX-Code
+
+
+\size small 
+inherit
+\layout LyX-Code
+
+
+\size small 
+
+\protected_separator 
+
+\protected_separator 
+
+\protected_separator 
+
+\protected_separator 
+CURSES_APPLICATION
+\layout LyX-Code
+
+
+\protected_separator 
+ 
+\protected_separator 
+ 
+\layout LyX-Code
+
+
+\size small 
+creation
+\layout LyX-Code
+
+
+\size small 
+
+\protected_separator 
+
+\protected_separator 
+
+\protected_separator 
+
+\protected_separator 
+make
+\layout LyX-Code
+
+\layout LyX-Code
+
+
+\size small 
+feature
+\layout LyX-Code
+
+
+\size small 
+
+\protected_separator 
+
+\protected_separator 
+
+\protected_separator 
+
+\protected_separator 
+make is
+\layout LyX-Code
+
+
+\size small 
+
+\protected_separator 
+
+\protected_separator 
+
+\protected_separator 
+
+\protected_separator 
+
+\protected_separator 
+
+\protected_separator 
+
+\protected_separator 
+
+\protected_separator 
+do
+\layout LyX-Code
+
+
+\size small 
+
+\protected_separator 
+
+\protected_separator 
+
+\protected_separator 
+
+\protected_separator 
+
+\protected_separator 
+
+\protected_separator 
+
+\protected_separator 
+
+\protected_separator 
+
+\protected_separator 
+
+\protected_separator 
+
+\protected_separator 
+
+\protected_separator 
+initialize
+\layout LyX-Code
+
+
+\size small 
+
+\protected_separator 
+
+\protected_separator 
+
+\protected_separator 
+
+\protected_separator 
+
+\protected_separator 
+
+\protected_separator 
+
+\protected_separator 
+
+\protected_separator 
+
+\protected_separator 
+
+\protected_separator 
+
+\protected_separator 
+
+\protected_separator 
+standard_window.move (standard_window.height // 2, 
+\layout LyX-Code
+
+
+\size small 
+
+\protected_separator 
+ 
+\protected_separator 
+ 
+\protected_separator 
+ 
+\protected_separator 
+ 
+\protected_separator 
+ 
+\protected_separator 
+ 
+\protected_separator 
+ 
+\protected_separator 
+ 
+\protected_separator 
+ 
+\protected_separator 
+ 
+\protected_separator 
+ 
+\protected_separator 
+ 
+\protected_separator 
+ 
+\protected_separator 
+ 
+\protected_separator 
+ 
+\protected_separator 
+ 
+\protected_separator 
+ standard_window.width // 2)
+\layout LyX-Code
+
+
+\size small 
+
+\protected_separator 
+
+\protected_separator 
+
+\protected_separator 
+
+\protected_separator 
+
+\protected_separator 
+
+\protected_separator 
+
+\protected_separator 
+
+\protected_separator 
+
+\protected_separator 
+
+\protected_separator 
+
+\protected_separator 
+
+\protected_separator 
+standard_window.put_string ("Hello, World")
+\layout LyX-Code
+
+
+\size small 
+
+\protected_separator 
+
+\protected_separator 
+
+\protected_separator 
+
+\protected_separator 
+
+\protected_separator 
+
+\protected_separator 
+
+\protected_separator 
+
+\protected_separator 
+
+\protected_separator 
+
+\protected_separator 
+
+\protected_separator 
+
+\protected_separator 
+standard_window.move (standard_window.height-1, 0)
+\layout LyX-Code
+
+
+\size small 
+
+\protected_separator 
+
+\protected_separator 
+
+\protected_separator 
+
+\protected_separator 
+
+\protected_separator 
+
+\protected_separator 
+
+\protected_separator 
+
+\protected_separator 
+
+\protected_separator 
+
+\protected_separator 
+
+\protected_separator 
+
+\protected_separator 
+standard_window.put_string ("Press any key....")
+\layout LyX-Code
+
+
+\size small 
+
+\protected_separator 
+
+\protected_separator 
+
+\protected_separator 
+
+\protected_separator 
+
+\protected_separator 
+
+\protected_separator 
+
+\protected_separator 
+
+\protected_separator 
+
+\protected_separator 
+
+\protected_separator 
+
+\protected_separator 
+
+\protected_separator 
+standard_window.read_character
+\layout LyX-Code
+
+
+\size small 
+
+\protected_separator 
+
+\protected_separator 
+
+\protected_separator 
+
+\protected_separator 
+
+\protected_separator 
+
+\protected_separator 
+
+\protected_separator 
+
+\protected_separator 
+end
+\layout LyX-Code
+
+
+\protected_separator 
+ 
+\protected_separator 
+ 
+\layout LyX-Code
+
+
+\size small 
+end -- class 
+\protected_separator 
+HELLO_WORLD
+\layout LyX-Code
+
+
+\protected_separator 
+
+\protected_separator 
+
+\protected_separator 
+
+\protected_separator 
+
+\protected_separator 
+
+\protected_separator 
+
+\protected_separator 
+
+\protected_separator 
+
+\layout List
+\labelwidthstring 00.00.0000
+
+CURSES_APPLICATION must be inherited by an application's root class.
+ The first feature to be called must be one of the 
+\emph on 
+initialize
+\emph toggle 
+rs.
+ Initialize is the basic one.
+ Others initialize Curses so that it provides soft label keys at the bottom
+ of the screen.
+ An initialized ECurses application has a 
+\emph on 
+standard_window
+\emph toggle 
+, a 
+\emph on 
+standard_panel
+\emph toggle 
+, and 
+\emph on 
+soft_label_keys
+\emph toggle 
+.
+\layout List
+\labelwidthstring 00.00.0000
+
+CURSES_WINDOW is the 
+\begin_inset Quotes eld
+\end_inset 
+
+basic
+\begin_inset Quotes erd
+\end_inset 
+
+ window class.
+ It has many features which cannot all be enumerated here.
+ They are related to window creation or destruction, positioning, update,
+ status, cursor position, color setting, window input and output, scrolling,
+ line and border drawing, graphic attributes setting, subwindows ...
+\layout Subsection
+
+Clusters description
+\layout Subsubsection
+
+Cluster BASE
+\layout List
+\labelwidthstring 00.00.0000
+
+CURSES_APPLICATION Inherited by the application's root class.
+ It provides access to the standard (default) window and panel.
+\layout List
+\labelwidthstring 00.00.0000
+
+CURSES_WINDOW Main abstraction.
+ A window is a rectangular portion on the screen.
+ Internally, each window has a cell-memory where input/output operations
+ occurs.
+ Actual screen i/o occur only when a window is 
+\emph on 
+refreshed
+\emph toggle 
+.
+ A window can have several subwindows.
+ Each subwindow is a window of its own excepted that it shares the same
+ cell-memory as its parent : refreshing the parent refreshes all the subwindows.
+\layout List
+\labelwidthstring 00.00.0000
+
+CURSES_ERROR_HANDLING Interface through which each low-level Curses call
+ transits.
+ Provides handling of return codes.
+\layout List
+\labelwidthstring 00.00.0000
+
+CURSES_PAD A pad is a rectangular area which is viewed through a view, i.e.
+ a smaller-than-the-pad rectangle.
+ The view is displayed on the screen.
+ A pad can be larger than the terminal screen, but its view cannot.
+\layout List
+\labelwidthstring 00.00.0000
+
+CURSES_PANEL A panel is a window which can be moved, hidden, shown.
+ Panels can be overlapped, while windows cannot easily.
+\layout List
+\labelwidthstring 00.00.0000
+
+CURSES_SOFT_LABEL_KEYS Soft label keys, viewable at the bottom of the screen.
+ Several soft label keys organizations are available at initialization.,
+ but they are limited to the capabilities of the library (PDCurses or NCurses)
+ or of the terminal.
+\layout List
+\labelwidthstring 00.00.0000
+
+CURSES_SYSTEM Curses state an behaviour not related to a pad, panel or window.
+ 
+\layout List
+\labelwidthstring 00.00.0000
+
+SHARED_CURSES_SYSTEM The 
+\begin_inset Quotes eld
+\end_inset 
+
+Curses system
+\begin_inset Quotes erd
+\end_inset 
+
+ is a singleton accessible to all ECurses abstractions.
+\layout Subsubsection
+
+Cluster
+\protected_separator 
+SPEC 
+\layout List
+\labelwidthstring 00.00.0000
+
+CURSES_ATTRIBUTE_CONSTANTS Output attribute constants, like blink, underline.
+\layout List
+\labelwidthstring 00.00.0000
+
+CURSES_CHARACTER_CONSTANTS Constants reflecting  special terminal characters
+ like graphics blocks, etc...
+\layout List
+\labelwidthstring 00.00.0000
+
+CURSES_COLOR_CONSTANTS Color constants
+\layout List
+\labelwidthstring 00.00.0000
+
+CURSES_KEY_CONSTANTS Constants that reflect key codes like function keys,
+ cursor keys, keypad keys.
+\layout List
+\labelwidthstring 00.00.0000
+
+CURSES_*_API Those classes encapsulate the external features accessing the
+ various aspects of the Curses library.
+\layout Subsubsection
+
+Cluster
+\protected_separator 
+UTILITY 
+\layout List
+\labelwidthstring 00.00.0000
+
+CURSES_EVENT_MANAGER Basic event management logic.
+ This class is intented to be inherited and redefined.
+\layout List
+\labelwidthstring 00.00.0000
+
+CURSES_FRAME_PANEL Panel with a border and a clipped client area (borders
+ are not overwritten).
+ 
+\layout Section
+
+Questions and Answers
+\layout Subsection
+
+Status of the library
+\layout Standard
+
+It is the first publicly available version.
+ Work still has to be done in various directions like : assertions, documentatio
+n, tests.
+ Still, it works...
+\layout Standard
+
+ECurses has not been tested systematically.
+ It has been used to develop some nice terminal applications.
+ Only those features necessary to theses applications has been tested.
+\layout Standard
+
+ECurses does not provide access to all the features of Curses.
+ Applications need to be developed to get interesting feedback and evolution
+ of this library.
+\layout Subsection
+
+C wrapping
+\layout Standard
+
+On the C side, Curses functions are implemented either as functions or as
+ macros.
+ Library implementors make their own choice : a function implemented as
+ a macro in PDCurses is actually a function in NCurses.
+ That's why we have chosen for simple C wrapping rules applicable to both
+ implementations.
+\layout Standard
+
+We also wanted this wrapping to be as portable as possible among Eiffel
+ compilers.
+\layout Standard
+
+For each "function" F that can be called, a 
+\emph on 
+c_ecurses_F
+\emph toggle 
+ function is defined.
+ This function basically cares that argument types are converted the right
+ way.
+\layout Standard
+
+This mechanism is tedious (to type) but rather straightforward.
+ External clauses are simple, like defined in ETL (hope that SE and VE can
+ handle it...) :
+\layout Description
+
+Eiffel side (example)
+\layout LyX-Code
+
+F (w : POINTER; y, x : INTEGER): INTEGER is
+\layout LyX-Code
+
+external "C"
+\layout LyX-Code
+
+alias "c_ecurses_F"
+\layout LyX-Code
+
+end
+\layout Description
+
+C side
+\layout LyX-Code
+
+EIF_INTEGER c_ecurses_F (EIF_POINTER w, EIF_INTEGER y, EIF_INTEGER x)
+\layout LyX-Code
+
+{
+\layout LyX-Code
+
+
+\protected_separator 
+ 
+\protected_separator 
+ return (EIF_INTEGER) F((WINDOW*)w, (int)y, 
+\protected_separator 
+(int)
+\protected_separator 
+x);
+\layout LyX-Code
+
+}
+\layout Standard
+
+This C wrapping has been implemented for all CURSES_*_API classes.
+\layout Subsection
+
+Portability
+\layout Standard
+
+There are two kind of portability :
+\layout Enumerate
+
+Curses library portability
+\layout Enumerate
+
+Eiffel portability
+\layout Standard
+
+ECurses has been tested with PDCurses on Windows and NCurses on Linux.
+\layout Standard
+
+ECurses has been compiled using ISE Eiffel version 4.4 on Linux (Caldera
+ 2.3, kernel 2.210, glibc2.1, egcs 2.91.66), version 4.3 and 4.4 on Windows (MSVC
+ Compiler).
+ The library should be portable without too much effort since no compiler
+ or library idiosyncrasy has been used.
+ If some still remain, it is not intentional.
+\layout Standard
+
+One of the possible difficulties remain in getting and passing external
+ pointers, for STRINGs for example.
+\layout Subsection
+
+Console and X terminal emulations
+\layout Standard
+
+Curses applications are 
+\emph on 
+verrrry
+\emph toggle 
+ sensible to the choice of good TERMCAPS entries.
+ Before saying 
+\begin_inset Quotes eld
+\end_inset 
+
+it does not work
+\begin_inset Quotes erd
+\end_inset 
+
+, verify your console or terminal settings.
+\layout Standard
+
+Some X terminal emulations won't give expected behaviour to your applications.
+ Some characters do not appear because they do not exist in the used font.
+ Some keys are not recognized because of an incorrect termcap entry.
+\layout Standard
+
+Terminal emulators like
+\emph on 
+ xterm
+\emph toggle 
+ or 
+\emph on 
+xterm-color
+\emph toggle 
+ are known to work best.
+ Running your application in console mode can help you see how it should
+ work in your X terminal emulator.
+\layout Subsection
+
+Reading from the keyboard
+\layout Standard
+
+A CURSES_WINDOW object has features like 
+\emph on 
+read_character 
+\emph toggle 
+and 
+\emph on 
+read_line
+\emph toggle 
+.
+ A read_character always give two results : 
+\emph on 
+last_character
+\emph toggle 
+, and 
+\emph on 
+last_key
+\emph toggle 
+, which is an integer representing the key code.
+\layout Standard
+
+If you want to test for key codes, do not forget to 
+\emph on 
+enable_metacharacters
+\emph toggle 
+ on a window so that function or cursor keys end up in one code value.
+ Otherwise, you should get an escape sequence.
+ 
+\layout Standard
+
+If the keypad is to be used, use the feature
+\emph on 
+ enable_keypad
+\emph toggle 
+.
+\layout Section
+
+TODO
+\layout Itemize
+
+Make ECurses portable among Eiffel compilers.
+ Port ECurses to SmallEiffel, and use the GOBO library.
+ 
+\layout Itemize
+
+Software contracts could be extended and better reflect features specifications.
+ 
+\layout Itemize
+
+Documentation and sample programs should allow people to use ECurses, without
+ knowing much of Curses.
+\layout Section
+
+Copyright
+\layout Standard
+
+Copyright (C) 1999 by Paul G.
+ Crismer <pgcrism@attglobal.net> and Eric Fafchamps <eric.fafchamps@win.be>.
+\layout Standard
+
+This document and the ECurses library are licensed under the terms of the
+ Eiffel Forum Freeware License, version 1.
+ Please refer to http://www.eiffel-forum.org.
+\layout Quote
+
+Eiffel Forum Freeware License, version 1
+\layout Quote
+
+Permission is hereby granted, without written agreement and without license
+ or royalty fees, to use, copy, modify and/or distribute this package, provided
+ that:
+\layout Quote
+
+copyright notices are retained unchanged any distribution of this package,
+ whether modified or not, includes this file 
+\layout Quote
+
+Permission is hereby also granted, without written agreement and without
+ license or royalty fees, to distribute binary programs which depend on
+ this package, provided that:
+\layout Quote
+
+if the binary program depends on a modified version of this package, you
+ must publicly release the modified version of this package - for example
+ by submitting it to the Eiffel Forum archive (http://www.eiffel-forum.org/archive
+/) 
+\layout Quote
+
+THIS PACKAGE IS PROVIDED "AS IS" AND WITHOUT WARRANTY.
+ ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+ WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ DISCLAIMED.
+ IN NO EVENT SHALL THE AUTHORS BE LIABLE TO ANY PARTY FOR ANY DIRECT, INDIRECT,
+ INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES ARISING IN ANY
+ WAY OUT OF THE USE OF THIS PACKAGE.
+\layout Section
+\bibitem {5}
+
+Appendix - Patching PDCurses
+\layout Standard
+
+Let $PDCURSES be the PDCurses installation directory.
+\layout Standard
+
+Edit the file $PDCURSES/panel/panel.c.
+\layout Standard
+
+Function __panel_is_linked do not return correct error codes.
+ The first return instruction should return OK, the second one should return
+ ERR.
+\layout Standard
+
+Here is the difference report of diff -p panel.c panel.c.old : The last lines
+ are the buggy ones.
+\layout LyX-Code
+
+
+\size footnotesize 
+*** panel.c
+\protected_separator 
+
+\protected_separator 
+
+\protected_separator 
+
+\protected_separator 
+
+\protected_separator 
+Sat Jul
+\protected_separator 
+ 3 15:49:40 1999
+\layout LyX-Code
+
+
+\size footnotesize 
+--- panel.c.old
+\protected_separator 
+Sat Jul
+\protected_separator 
+ 3 15:52:22 1999
+\layout LyX-Code
+
+
+\size footnotesize 
+*************** register PANEL *pan2 = __bottom_panel;
+\layout LyX-Code
+
+
+\size footnotesize 
+*** 346,355 ****
+\layout LyX-Code
+
+
+\size footnotesize 
+
+\protected_separator 
+ 
+\protected_separator 
+
+\protected_separator 
+
+\protected_separator 
+
+\protected_separator 
+
+\protected_separator 
+
+\protected_separator 
+while(pan2)
+\layout LyX-Code
+
+
+\size footnotesize 
+
+\protected_separator 
+ 
+\protected_separator 
+
+\protected_separator 
+
+\protected_separator 
+
+\protected_separator 
+
+\protected_separator 
+
+\protected_separator 
+{
+\layout LyX-Code
+
+
+\size footnotesize 
+
+\protected_separator 
+ 
+\protected_separator 
+
+\protected_separator 
+
+\protected_separator 
+
+\protected_separator 
+
+\protected_separator 
+
+\protected_separator 
+
+\protected_separator 
+
+\protected_separator 
+
+\protected_separator 
+
+\protected_separator 
+
+\protected_separator 
+
+\protected_separator 
+
+\protected_separator 
+
+\protected_separator 
+if(pan2 == pan)
+\layout LyX-Code
+
+
+\size footnotesize 
+! 
+\protected_separator 
+
+\protected_separator 
+
+\protected_separator 
+
+\protected_separator 
+
+\protected_separator 
+
+\protected_separator 
+
+\protected_separator 
+
+\protected_separator 
+
+\protected_separator 
+
+\protected_separator 
+
+\protected_separator 
+
+\protected_separator 
+
+\protected_separator 
+
+\protected_separator 
+
+\protected_separator 
+
+\protected_separator 
+
+\protected_separator 
+
+\protected_separator 
+
+\protected_separator 
+
+\protected_separator 
+
+\protected_separator 
+
+\protected_separator 
+return(OK);
+\layout LyX-Code
+
+
+\size footnotesize 
+
+\protected_separator 
+ 
+\protected_separator 
+
+\protected_separator 
+
+\protected_separator 
+
+\protected_separator 
+
+\protected_separator 
+
+\protected_separator 
+
+\protected_separator 
+
+\protected_separator 
+
+\protected_separator 
+
+\protected_separator 
+
+\protected_separator 
+
+\protected_separator 
+
+\protected_separator 
+
+\protected_separator 
+pan2 = pan2->above;
+\layout LyX-Code
+
+
+\size footnotesize 
+
+\protected_separator 
+ 
+\protected_separator 
+
+\protected_separator 
+
+\protected_separator 
+
+\protected_separator 
+
+\protected_separator 
+
+\protected_separator 
+}
+\layout LyX-Code
+
+
+\size footnotesize 
+! 
+\protected_separator 
+
+\protected_separator 
+
+\protected_separator 
+
+\protected_separator 
+
+\protected_separator 
+
+\protected_separator 
+return(ERR);
+\layout LyX-Code
+
+
+\size footnotesize 
+
+\protected_separator 
+ }
+\protected_separator 
+
+\protected_separator 
+
+\protected_separator 
+
+\protected_separator 
+
+\protected_separator 
+/* end of __panel_is_linked */
+\layout LyX-Code
+
+
+\size footnotesize 
+
+\protected_separator 
+ 
+\layout LyX-Code
+
+
+\size footnotesize 
+
+\protected_separator 
+ /*+-------------------------------------------------------------------------
+\layout LyX-Code
+
+
+\size footnotesize 
+--- 346,355 ----
+\layout LyX-Code
+
+
+\size footnotesize 
+
+\protected_separator 
+ 
+\protected_separator 
+
+\protected_separator 
+
+\protected_separator 
+
+\protected_separator 
+
+\protected_separator 
+
+\protected_separator 
+while(pan2)
+\layout LyX-Code
+
+
+\size footnotesize 
+
+\protected_separator 
+ 
+\protected_separator 
+
+\protected_separator 
+
+\protected_separator 
+
+\protected_separator 
+
+\protected_separator 
+
+\protected_separator 
+{
+\layout LyX-Code
+
+
+\size footnotesize 
+
+\protected_separator 
+ 
+\protected_separator 
+
+\protected_separator 
+
+\protected_separator 
+
+\protected_separator 
+
+\protected_separator 
+
+\protected_separator 
+
+\protected_separator 
+
+\protected_separator 
+
+\protected_separator 
+
+\protected_separator 
+
+\protected_separator 
+
+\protected_separator 
+
+\protected_separator 
+
+\protected_separator 
+if(pan2 == pan)
+\layout LyX-Code
+
+
+\size footnotesize 
+! 
+\protected_separator 
+
+\protected_separator 
+
+\protected_separator 
+
+\protected_separator 
+
+\protected_separator 
+
+\protected_separator 
+
+\protected_separator 
+
+\protected_separator 
+
+\protected_separator 
+
+\protected_separator 
+
+\protected_separator 
+
+\protected_separator 
+
+\protected_separator 
+
+\protected_separator 
+
+\protected_separator 
+
+\protected_separator 
+
+\protected_separator 
+
+\protected_separator 
+
+\protected_separator 
+
+\protected_separator 
+
+\protected_separator 
+
+\protected_separator 
+return(1);
+\layout LyX-Code
+
+
+\size footnotesize 
+
+\protected_separator 
+ 
+\protected_separator 
+
+\protected_separator 
+
+\protected_separator 
+
+\protected_separator 
+
+\protected_separator 
+
+\protected_separator 
+
+\protected_separator 
+
+\protected_separator 
+
+\protected_separator 
+
+\protected_separator 
+
+\protected_separator 
+
+\protected_separator 
+
+\protected_separator 
+
+\protected_separator 
+pan2 = pan2->above;
+\layout LyX-Code
+
+
+\size footnotesize 
+
+\protected_separator 
+ 
+\protected_separator 
+
+\protected_separator 
+
+\protected_separator 
+
+\protected_separator 
+
+\protected_separator 
+
+\protected_separator 
+}
+\layout LyX-Code
+
+
+\size footnotesize 
+! 
+\protected_separator 
+
+\protected_separator 
+
+\protected_separator 
+
+\protected_separator 
+
+\protected_separator 
+
+\protected_separator 
+return(OK);
+\layout LyX-Code
+
+
+\size footnotesize 
+
+\protected_separator 
+ }
+\protected_separator 
+
+\protected_separator 
+
+\protected_separator 
+
+\protected_separator 
+
+\protected_separator 
+/* end of __panel_is_linked */
+\layout LyX-Code
+
+
+\size footnotesize 
+
+\protected_separator 
+ 
+\layout LyX-Code
+
+
+\size footnotesize 
+
+\protected_separator 
+ /*+-------------------------------------------------------------------------
+\layout Bibliography
+\bibitem {1}
+
+
+\begin_inset Quotes eld
+\end_inset 
+
+Writing programs with NCURSES
+\begin_inset Quotes erd
+\end_inset 
+
+ by Eric S.
+ Raymond and Zeyd M.
+ Ben-Halim.
+\newline 
+ftp://ftp.clark.net/pub/dickey/ncurses/ncurses-intro.html
+\layout Bibliography
+\bibitem {2}
+
+man pages for NCurses
+\layout Bibliography
+\bibitem {3}
+
+A Hacker's Guide to NCURSES by ? 
+\newline 
+ftp://ftp.clark.net/pub/dickey/ncurses/hackguide.html
+\layout Bibliography
+\bibitem {4}
+
+NCurses FAQ
+\newline 
+ftp://ftp.clark.net/pub/dickey/ncurses/ncurses.faq.html
+\the_end

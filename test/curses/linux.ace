@@ -1,0 +1,40 @@
+system
+	ncurses
+
+root
+
+	NCURSES (root_cluster): "make"
+
+default
+
+	assertion (all);
+
+cluster
+	
+	root_cluster:   "$HOME/eiffel/library/ecurses/test/curses";
+
+	ecurses: "$HOME/eiffel/library/ecurses";
+	ecurses_base (ecurses):	"$/base";
+	ecurses_spec (ecurses) :	"$/spec";
+	ecurses_utility (ecurses) : "$/utility";
+	kernel:			"$EIFFEL4/library/base/kernel";
+	support:		"$EIFFEL4/library/base/support";
+	access:			"$EIFFEL4/library/base/structures/access";
+	cursors:		"$EIFFEL4/library/base/structures/cursors";
+	cursor_tree:	"$EIFFEL4/library/base/structures/cursor_tree";
+	dispenser:		"$EIFFEL4/library/base/structures/dispenser";
+	iteration:		"$EIFFEL4/library/base/structures/iteration";
+	list:			"$EIFFEL4/library/base/structures/list";
+	set:			"$EIFFEL4/library/base/structures/set";
+	sort:			"$EIFFEL4/library/base/structures/sort";
+	storage:		"$EIFFEL4/library/base/structures/storage";
+	table:			"$EIFFEL4/library/base/structures/table";
+	traversing:		"$EIFFEL4/library/base/structures/traversing";
+	tree:			"$EIFFEL4/library/base/structures/tree";
+
+external
+
+	Object: "-lpanel -lcurses /home/pgc/eiffel/library/ecurses/spec/linux/libecurses_c.a"
+	include_path: "/home/pgc/eiffel/library/ecurses/spec/linux";
+
+end
