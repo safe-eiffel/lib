@@ -1,0 +1,91 @@
+\documentclass{article}
+\usepackage{graphicx}
+\begin{document}
+
+\title{Ecurses-server: Requirements and design issues for an Ecurses-server}
+
+\author{Eric Fafchamps}
+
+\date{October 1,2001}
+
+\maketitle
+\begin{abstract}
+Ecurses-server is an extension to the current Ecurses library. It's main purpose is to offer a way to debug Ecurses applications.
+\end{abstract}
+
+\section{Introduction}
+This article contains a description of the limitations of the current Ecurses library, the new requirements and the design issues.
+
+\section{Limits of existing Ecurses library}
+Application developers using the Ecurses library can only debug there applications on ISE 4.5 on a (L)unix like  platforms. For the other compiler/Platform combinations debugging is impossible. The SmallEiffel debugger uses stdin and stdout for the user interaction in a debug session, and this is impossible when the terminal is initialised for Ecurses. On the Windows platform an Ecurses application launched from ISE bench terminates after the ecurses initialisation without any error code (although the executable works fine when launched outside of bench).
+
+\section{Requirements extension}
+R1: Make it possible to debug Ecurses applications from SmallEiffel or EiffelStudio on the (L)Unix and Windows platform.
+R2: Debugging an ecurses application should be possible without recompilation of the system. 
+R3: The behaviour of a debugged Ecurses application should be the same .
+R4: Compatibility with existing Ecurses applications should be maintained. 
+R5: Performance should be reasonable when debugging and maximal in production.
+
+\section{Future requirement}
+FR1: It should be possible to offer an implementation for a Character based simulation on a graphical system.
+
+\section{Limits of the new requirements}
+L1: Debugging an application that is allready running is not needed.
+L2: A terminal can't be shared, only one application may interact with it.
+
+\section{Possible solutions}
+S1:Try to modify the SmallEiffel and EiffelStudio to perform standard I/O on another terminal and to reserve Ecurses I/O on the current terminal.
+S2:Avoid interaction with the tty (console) of the debugged application. This is achieved by separating the application logique from it's presentation. An Ecurses-server is based on the same client-server model as X-Windows.
+ 
+\section{Selected solution}
+S1 means that modifications should be performed in all supported compilers, which can be rather difficult due to missing
+information of those systems.
+
+S2 means that effort should be done once in the Ecurses library.
+
+S2 is selected because it is less dependent of compiler evolutions. Effort is done once for all compilers/platforms.
+
+\section{Conditions for acceptance}
+
+All requirements should be met (functionally completeness)
+All Ecurses test suites and examples should behave the same in both access methods on Windows and Linux for SmallEiffel and EiffelStudio (reliability,compatibility)
+The Gessoc example application can be debugged on the Windows platform for SmallEiffel and EiffelStudio (Proof of usability)
+
+\section{Concepts in selected solution}
+An Ecurses application will at startup select an access method: direct access for production and remote access for debugging. This selection means that the implementation of all Ecurses services will be the implementation of the direct access or remote access method. 
+The direct access method will use the actual (before the introduction of Ecurses-server) implementation.
+The remote access method will start a terminal-server process and use an implementation which redirects all called services to the Ecurses-server. The remote access method is conceptually the same as the X-Windows client-server model. It differs from the X-Windows model in the following way : the communication is synchronous and an Ecurses-server can only serve one client at a time. 
+
+
+\section{Existing Design}
+The existing design of Ecurses used the mixed-in technique to implement the exported features of the client classes. If we look at the CURSES-WINDOW it inherits from CURSES-WINDOW-API for it's implementation (the API uses external features). 
+The library has not been designed to allow implementation selection at run-time, it is only possible to include another version of CURSES-WINDOW-API by selecting another cluster at compile-time. 
+The client classes like CURSES-WINDOW,CURSES-PANEL has their own state, they don't delegate everything to the CURSES-WINDOW-API, they were not designed designed with the proxy-pattern in mind. 
+All this architecural choises aren't errors because the prior requirements didn't need such design techniques.
+
+
+\includegraphics{test.ps}
+
+ 
+\section{Extending the existing design}
+To reach R1 the existing Ecurses library will be extended with another implementation of the services. This implementation will  translate the service call in a Ecurses-server request (remote access method), this request will be send to the Ecurses-server and the client will wait for a done-message from the server (synchronuous). At the server side requests will be decoded and the corresponding Ecurses services will be called using the direct access method, the server sends a done-message to the client, and waits for anew request. We see that at the client side the handling of the visible services are delegated to remote objets at the server side. This problem should be handled by the PROXY-PATTERN, which is a way to hide the fact that the used object is remote. The local object (proxy) inherits from the same interface as the real object, but has no state (except for one reference to an implementation object), the state and services are at the remote server.
+
+To reach R2 we should use a design technique that chooses at application startup, one of both implementations depending upon the selected access method. We can't use an implementation by inheriting from another CURSES-WINDOW-API as it is done in the existing Ecurses libarry, because this needs selecting another cluster and recompilation. A solution is to extract the existing implementation of all user classes (CURSES-WINDOW, CURSES-PANEL, ... ) and to delegate them to implementation-objects (BRIDGE-PATTERN). The creation of those implementation objects will be done by a factory. The factory itself is a singleton (one for each ecurses classe) that will be initialised at application startup with an instance of the appropriate factory classe (FACTORY and SINGLETON PATTERN).
+
+To reach R3 we keep the existing interface/contracts of all user classes.
+
+
+\includegraphics{new_architecture.ps}
+
+
+
+
+\section{consequences for Ecurses applications}
+Ecurses application should now select an access methode before initializing the Ecurses system. The implementation of redefined Ecurses features should be checked in descendants. They should at least contain a call to Precursor.
+
+\section{Increments}
+The first increment will consist of the application of the new design to the existing direct access method.
+The second increment will introduce a remote access implementation and a Ecurses server.
+\end{document}
+
+
