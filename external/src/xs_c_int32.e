@@ -24,6 +24,11 @@ feature -- Access
 		do
 			Result := c_memory_get_int32 (handle)
 		end
+
+	as_pointer : POINTER is
+		do
+			Result := c_memory_get_pointer (handle)
+		end
 		
 feature -- Measurement
 	
