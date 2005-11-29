@@ -53,7 +53,7 @@ feature {NONE} -- Initialization
 			a_datastore_not_void: a_datastore /= Void
 		do
 			datastore := a_datastore
-			datastore.register_adapter (Current)
+			datastore.register_adapter (as_adapter_persistent)
 			create {PO_HASHED_CACHE[G]}cache.make (10)
 			create last_cursor.make
 		ensure

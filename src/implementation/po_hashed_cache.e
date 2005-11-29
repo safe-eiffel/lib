@@ -18,6 +18,7 @@ feature -- Initialization
 	make (new_capacity : INTEGER) is
 		do
 			create table.make (new_capacity)
+			table.set_equality_tester (create {KL_EQUALITY_TESTER[G]})
 			create pid_list.make
 		end
 		
@@ -70,16 +71,28 @@ feature -- Element change
 	put (object : G) is
 		do
 			table.force (object, object.pid.as_string)
+			pid_list.put_last (object.pid)
 		end
 		
 	put_void (pid : PO_PID) is
 		do
 			table.force (Void, pid.as_string)	
+			pid_list.put_last (pid)
 		end
 
 	remove (pid : PO_PID) is
+		local
+			cursor : DS_LIST_CURSOR[PO_PID]
 		do
 			table.remove (pid.as_string)
+			cursor := pid_list.new_cursor
+			cursor.start
+			cursor.search_forth (pid)
+			if not cursor.off then
+				cursor.remove
+			end
+		ensure then
+			removed_from_list: not pid_list.has (pid)
 		end
 		
 feature -- Removal

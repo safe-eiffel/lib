@@ -333,8 +333,10 @@ feature -- Contract support
 	is_cached (object : like object_anchor) : BOOLEAN is
 			-- Is `object' in cache ?
 		require
-			persistent_object: object /= Void and then object.is_persistent
+			persistent_object: object /= Void
 		deferred
+		ensure
+			is_cached_implies_is_persistent: Result implies object.is_persistent
 		end
 	
 	as_adapter_persistent : PO_ADAPTER[PO_PERSISTENT] is

@@ -47,10 +47,6 @@ feature -- Access
 			Result := adapters_impl
 		end
 		
-feature -- Measurement
-
-feature -- Status report
-
 feature -- Status report
 
 	is_connected : BOOLEAN is
@@ -115,22 +111,6 @@ feature -- Status setting
 			session.disconnect
 		end
 
-feature -- Cursor movement
-
-feature -- Element change
-
-feature -- Removal
-
-feature -- Resizing
-
-feature -- Transformation
-
-feature -- Conversion
-
-feature -- Duplication
-
-feature -- Miscellaneous
-
 feature -- Basic operations
 
 	begin_transaction is
@@ -144,20 +124,16 @@ feature -- Basic operations
 			-- Commits the current transaction.
 		do
 			session.commit
-			transaction_level := transaction_level + 1			
+			transaction_level := transaction_level - 1			
 		end
 	
 	rollback_transaction is
 			-- Rollbacks the current transaction.
 		do
 			session.rollback
-			transaction_level := transaction_level + 1
+			transaction_level := transaction_level - 1
 		end
 		
-feature -- Obsolete
-
-feature -- Inapplicable
-
 feature {NONE} -- Implementation
 
 	session_impl : ECLI_SESSION

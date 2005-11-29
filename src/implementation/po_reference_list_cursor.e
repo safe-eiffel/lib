@@ -86,6 +86,14 @@ feature {PO_ADAPTER} -- Element change
 			create a_reference.set_pid_from_adapter (adapter)
 			add_reference (a_reference)
 		end
+
+	wipe_out is
+			-- Wipe out elements.
+		do
+			list.wipe_out
+		ensure
+			empty: is_empty
+		end
 		
 feature {NONE} -- Implementation
 

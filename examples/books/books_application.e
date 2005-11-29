@@ -9,7 +9,7 @@ class BOOKS_APPLICATION
 inherit
 
 	BOOKS_DATASTORE_ACCESS
-	
+		
 creation
 
 	make
@@ -25,9 +25,12 @@ feature -- Initialization
 				borrow_copy_to_borrower ("1", 1, 1)
 				borrow_copy_to_borrower ("1", 2, 2)
 				show
+				delete_copy ("1", 1)
 				store.disconnect				
 			end
 		end
+		
+		
 
 feature -- Access
 
@@ -209,6 +212,16 @@ feature -- Implementation
 			try_write (book_copy)
 		end
 
+	delete_copy (isbn : STRING; a_copy : INTEGER) is		
+		local
+			l_copy : COPY
+		do
+			copy_adapter.read_from_isbn_and_number (isbn, a_copy)
+			if copy_adapter.status.is_ok and then copy_adapter.last_cursor.count > 0 then
+				l_copy := copy_adapter.last_cursor.first
+				copy_adapter.delete (l_copy)
+			end
+		end
 		
 	try_write (o : PO_PERSISTENT) is
 			-- Try writing `o'.

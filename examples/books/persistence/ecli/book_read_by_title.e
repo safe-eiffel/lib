@@ -3,11 +3,8 @@ indexing
 	
 		description: "read book by title"
 	
-	warning: "Generated cursor 'BOOK_READ_BY_TITLE' : DO NOT EDIT !"
-	author: "QUERY_ASSISTANT"
-	date: "$Date : $"
-	revision: "$Revision : $"
-	licensing: "See notice at end of class"
+	status: "Cursor/Query automatically generated for 'BOOK_READ_BY_TITLE'. DO NOT EDIT!"
+	generated: "2005/08/11 12:39:01.656"
 
 class BOOK_READ_BY_TITLE
 
@@ -29,7 +26,7 @@ feature  -- -- Access
 feature  -- -- Element change
 
 	set_parameters_object (a_parameters_object: BOOK_READ_BY_TITLE_PARAMETERS) is
-			-- Set `parameters_object' to `a_parameters_object'.
+			-- set `parameters_object' to `a_parameters_object'
 		require
 			a_parameters_object_not_void: a_parameters_object /= Void
 		do
@@ -42,7 +39,7 @@ feature  -- -- Element change
 
 feature  -- Constants
 
-	definition: STRING is "select isbn, title, author from book where title like ?title%
+	definition: STRING is "select isbn, title, author from book where title like ?title%N%
 %	"
 
 feature {NONE} -- Implementation

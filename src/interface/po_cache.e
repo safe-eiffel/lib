@@ -14,6 +14,8 @@ feature -- Access
 			a_pid_not_void: a_pid /= Void
 			has_a_pid: has (a_pid)
 		deferred
+		ensure
+			same_pids: Result.pid.is_equal (a_pid) 
 		end
 		
 	new_cursor : DS_LIST_CURSOR[PO_PID] is
@@ -37,11 +39,13 @@ feature -- Measurement
 		
 feature -- Status report
 
-	has (pid : PO_PID) : BOOLEAN is
-			-- Has `pid' been associated ?
+	has (a_pid : PO_PID) : BOOLEAN is
+			-- Has `a_pid' been associated ?
 		require
-			pid_not_void: pid /= Void
+			a_pid_not_void: a_pid /= Void
 		deferred
+		ensure
+			definition: Result implies item (a_pid).pid.is_equal (a_pid)
 		end
 
 	has_item (object : G) : BOOLEAN is
@@ -49,9 +53,14 @@ feature -- Status report
 		require
 			object_not_void: object /= Void
 		do
-			Result := has (object.pid) and then item (object.pid) = object
+			if object.is_persistent then
+				search (object.pid)
+				if found then
+					Result := (object = found_item)
+				end
+			end
 		ensure
-			definition: Result implies has (object.pid) and then item (object.pid) = object
+			definition: Result implies (object.is_persistent and then has (object.pid) and then item (object.pid) = object)
 		end
 
 	found : BOOLEAN is
