@@ -39,7 +39,7 @@ feature -- Access
 		do
 			Result := Uint32_.get_bit (value, index)
 		end
-
+		
 feature -- Measurement
 
 	is_hexadecimal_string (string : STRING) : BOOLEAN is
@@ -123,7 +123,14 @@ feature -- Conversion
 			Result := Current
 			set_value (save)
 		ensure
-			definition: as_integer = a_value
+			definition: Result.as_integer = a_value
+		end
+		
+	from_double (a_value : DOUBLE) : UNSIGNED_32 is
+		do
+			Result := from_integer (a_value.truncated_to_integer)
+		ensure
+			definition: Result.as_integer = a_value.truncated_to_integer
 		end
 		
 	from_hex (a_string : STRING) : like Current is
@@ -203,7 +210,7 @@ feature -- Basic operations
 		end
 
 	right_shifted, infix "|>>" (count : INTEGER) : like Current is
-			-- Current left shifted by `count' bits.
+			-- Current right shifted by `count' bits.
 		require
 			count_within_limits: count >= 0 and then count <=32
 		do
