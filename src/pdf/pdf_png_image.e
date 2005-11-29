@@ -84,9 +84,9 @@ feature -- Status report
 	is_valid : BOOLEAN is
 			-- is this a valid image ?
 		do 
-			Result := (image /= Void)
+			Result := (image /= default_pointer)
 		ensure
-			definition: Result = (image /= Void)
+			definition: Result = (image /= default_pointer)
 		end
 		
 feature {NONE} -- Access
