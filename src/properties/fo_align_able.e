@@ -1,15 +1,20 @@
 indexing
-	description: "Objects that can be aligned, with different strategies if they are at the start or inside a collection, or as last element."
-	author: "Paul G. Crismer"
+	
+	description: 
+	
+		"Objects that can be aligned, with different strategies if they are at the start or inside a collection, or as last element."
+
+	library: "FO - Formatting Objects in Eiffel. Project SAFE."
+	copyright: "Copyright (c) 2006 - , Paul G. Crismer and others"
+	license: "Eiffel Forum License v2 (see forum.txt)"
 	date: "$Date$"
-	revision: "$Revision$"
 
 class
 	FO_ALIGN_ABLE
 
 feature -- Access
 
-	align_last: FO_ALIGNMENT
+--	align_last: FO_ALIGNMENT
 
 	align: FO_ALIGNMENT
 
@@ -23,15 +28,15 @@ feature -- Cursor movement
 
 feature -- Element change
 
-	set_align_last (a_align_last: FO_ALIGNMENT) is
-			-- Set `align_last' to `a_align_last'.
-		require
-			a_align_last_not_void: a_align_last /= Void
-		do
-			align_last := a_align_last
-		ensure
-			align_last_assigned: align_last = a_align_last
-		end
+--	set_align_last (a_align_last: FO_ALIGNMENT) is
+--			-- Set `align_last' to `a_align_last'.
+--		require
+--			a_align_last_not_void: a_align_last /= Void
+--		do
+--			align_last := a_align_last
+--		ensure
+--			align_last_assigned: align_last = a_align_last
+--		end
 
 	set_align (a_align: FO_ALIGNMENT) is
 			-- Set `align' to `a_align'.
@@ -64,8 +69,7 @@ feature -- Inapplicable
 feature {NONE} -- Implementation
 
 invariant
-	invariant_clause: True -- Your invariant here
 	align_not_void: align /= Void
-	align_last_not_void: align_last /= Void
+--	align_last_not_void: align_last /= Void
 
-end -- class FO_ALIGN_ABLE
+end

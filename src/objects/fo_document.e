@@ -1,8 +1,13 @@
 indexing
-	description: "Documents"
-	author: "Paul G. Crismer"
+
+	description: 
+	
+		"Documents"
+
+	library: "FO - Formatting Objects in Eiffel. Project SAFE."
+	copyright: "Copyright (c) 2006 - , Paul G. Crismer and others"
+	license: "Eiffel Forum License v2 (see forum.txt)"
 	date: "$Date$"
-	revision: "$Revision$"
 
 class
 	FO_DOCUMENT
@@ -90,6 +95,16 @@ feature -- Measurement
 		end
 		
 feature -- Element change
+
+	set_section (new_section: FO_SECTION) is
+			-- Set `current_section' to `new_section'.
+		require
+			new_section_not_void: new_section /= Void
+		do
+			current_section := new_section
+		ensure
+			current_section_set: current_section = new_section
+		end
 
 	set_title (new_title : STRING) is
 			-- Set `title' to `new_title'
@@ -256,9 +271,9 @@ feature -- Basic operations
 			pages.put_last (page)
 			pages_cursor.finish
 			available_render_region := margins.content_region (page_rectangle)
-			if not current_page.is_text_mode then
-				current_page.begin_text
-			end
+--			if not current_page.is_text_mode then
+--				current_page.begin_text
+--			end
 		end
 		
 	append_block (block : FO_BLOCK) is
@@ -285,6 +300,11 @@ feature -- Basic operations
 			render_renderable (block)
 		end
 
+	append_image (image : FO_IMAGE) is
+		do
+			render_renderable (image)
+		end
+		
 	append_row (row : FO_ROW) is	
 			-- Append `row'.
 		do
@@ -329,6 +349,7 @@ feature -- Basic operations
 				pages.put_last (page)
 				pages_cursor.finish
 				pdf_document.set_default_mediabox (page_rectangle.as_pdf)
+				current_page.set_mediabox (page_rectangle.as_pdf)
 			end
 		end
 		
@@ -412,6 +433,7 @@ feature {NONE} -- Implementation
 			-- Render header and footers on rendered pages.
 		local
 			header_region, footer_region : FO_RECTANGLE
+			page_section : FO_SECTION
 		do
 			from	
 				pages_cursor.start
@@ -419,27 +441,28 @@ feature {NONE} -- Implementation
 			until
 				pages_cursor.off
 			loop
+				page_section := pages_cursor.item.section
 				--| render header
-				if header /= Void then
+				if page_section.header /= Void then
 					--| header region
 					create header_region.make
 					header_region.set (
-						page_rectangle.left + margins.left,
-						page_rectangle.top - margins.top , -- + header.separation,
-						page_rectangle.right - margins.right,
-						page_rectangle.top)
+						page_section.page_rectangle.left + page_section.margins.left,
+						page_section.page_rectangle.top - page_section.margins.top , -- + header.separation,
+						page_section.page_rectangle.right - page_section.margins.right,
+						page_section.page_rectangle.top)
 					header.render_start (Current, header_region)
 					header.render_borders (Current, header.last_rendered_region)
 				end
 				--| render footer
-				if footer /= Void then
+				if page_section.footer /= Void then
 					--| footer region
 					create footer_region.make
 					footer_region.set (
-						page_rectangle.left + margins.left,
-						page_rectangle.bottom,
-						page_rectangle.right - margins.right,
-						page_rectangle.bottom + margins.bottom - footer.separation)
+						page_section.page_rectangle.left + page_section.margins.left,
+						page_section.page_rectangle.bottom,
+						page_section.page_rectangle.right - page_section.margins.right,
+						page_section.page_rectangle.bottom + page_section.margins.bottom - page_section.footer.separation)
 
 					footer.render_start (Current, footer_region)
 					footer.render_borders (Current, footer.last_rendered_region)
@@ -479,4 +502,4 @@ feature {FO_SPECIAL_INLINE} -- Implementation
 invariant
 	writer_exists: writer /= Void
 
-end -- class FO_DOCUMENT
+end

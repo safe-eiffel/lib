@@ -1,8 +1,13 @@
 indexing
-	description: "Blocks : rectangular section filled with text"
-	author: "Paul G. Crismer"
+
+	description: 
+	
+		"Blocks : rectangular sections filled with text"
+
+	library: "FO - Formatting Objects in Eiffel. Project SAFE."
+	copyright: "Copyright (c) 2006 - , Paul G. Crismer and others"
+	license: "Eiffel Forum License v2 (see forum.txt)"
 	date: "$Date$"
-	revision: "$Revision$"
 
 class
 	FO_BLOCK
@@ -47,9 +52,11 @@ feature {NONE} -- Initialization
 			create {DS_LINKED_LIST[FO_INLINE]}inlines.make
 			create max_font_width.points (0)
 			make_borders_none
+			create text_leading.points (0)
 		ensure
 			margins_set: margins = new_margins
 			is_left_justified: is_left_justified
+			leading_zero: text_leading.is_zero
 		end
 
 	make_right (new_margins : FO_MARGINS) is
@@ -62,6 +69,7 @@ feature {NONE} -- Initialization
 		ensure
 			margins_set: margins = new_margins
 			is_right_justified: is_right_justified
+			leading_zero: text_leading.is_zero
 		end
 		
 	make_center (new_margins : FO_MARGINS) is
@@ -72,18 +80,32 @@ feature {NONE} -- Initialization
 			make (new_margins)
 			justification := justify_center
 		ensure
+			leading_zero: text_leading.is_zero
 			margins_set: margins = new_margins
 			is_center_justified: is_center_justified
 		end
 		
 feature -- Access
 
-	lines : DS_LIST [FO_LINE]
-			-- Pre rendered lines.
-
 	justification : INTEGER
 			-- Justification mode.
 	
+	last_inline : FO_INLINE is
+		do
+			if not inlines.is_empty then
+				Result := inlines.last
+			end
+		end
+
+	text_leading : FO_MEASUREMENT
+			-- Space between two lines of text.
+			-- Zero means 'the height of each individual line'.
+		
+feature {NONE} -- Access
+
+	lines : DS_LIST [FO_LINE]
+			-- Pre rendered lines.
+		
 feature -- Constants
 
 	justify_left : INTEGER is 0
@@ -115,13 +137,14 @@ feature -- Measurement
 			until
 				lines.off
 			loop
-				Result := Result + lines.item_for_iteration.height
+				Result := Result + text_leading.max (lines.item_for_iteration.height)
 				lines.forth
 			end
 			Result := Result + margins.top + margins.bottom
 		end
 	
 	max_font_width : FO_MEASUREMENT	
+			-- Maximum font width.
 	
 feature -- Status report
 
@@ -141,6 +164,7 @@ feature -- Status report
 		end
 	
 	has (an_inline : FO_INLINE) : BOOLEAN is
+			-- Has Current `an_inline'?
 		require
 			an_inline_exists: an_inline /= Void
 		do
@@ -148,11 +172,15 @@ feature -- Status report
 		end
 
 	is_word_wrap : BOOLEAN
+			-- Must words be wrapped?
 			
 	is_renderable (region: FO_RECTANGLE) : BOOLEAN is
-			do
-				Result := margins.content_region (region).width > max_font_width
-			end
+			-- Is Current renderable in `region'?
+		do
+			Result := margins.content_region (region).width > max_font_width
+		ensure then
+			definition: Result = (margins.content_region (region).width > max_font_width)
+		end
 
 	is_page_break_before : BOOLEAN
 
@@ -222,8 +250,20 @@ feature -- Cursor movement
 
 feature -- Element change
 
+	set_text_leading (new_leading: FO_MEASUREMENT) is
+			-- Set `text_leading' to `new_leading'.
+		require
+			new_leading_not_void: new_leading /= Void
+		do
+			text_leading := new_leading
+		ensure
+			text_leading_set: text_leading = new_leading
+		end
+
 	append (new_inline : FO_INLINE) is
-			-- append `new_inline'
+			-- Append `new_inline'
+		require
+			new_inline_not_void: new_inline /= Void
 		local
 			font_b_box_width : FO_MEASUREMENT
 			em_size : FO_MEASUREMENT
@@ -234,8 +274,48 @@ feature -- Element change
 			max_font_width := max_font_width.max (font_b_box_width)
 		ensure
 			has_inline: has (new_inline)
+			last_inline_set: last_inline = new_inline
+		end
+
+	append_string (string : STRING) is		
+			-- Append `string' in last inline.
+		require
+			string_not_void: string /= Void
+			last_inline_not_void: last_inline /= Void
+		do
+			inlines.last.append_string (string)
 		end
 		
+	append_character (character : CHARACTER) is
+			-- Append `character' in last inline.
+		require
+			last_inline_not_void: last_inline /= Void
+		do
+			inlines.last.append_character (character)
+		end
+		
+feature -- Conversion
+
+	out : STRING is
+		do
+			Create Result.make (0)
+			from
+				inlines.start
+			until
+				inlines.off
+			loop
+				Result.append_string (inlines.item_for_iteration.out)
+				Result.append_character ('%N')
+				inlines.forth
+			end
+		end
+		
+feature -- Constants
+
+	c_new_line : CHARACTER is '%N'
+
+feature {FO_DOCUMENT, FO_RENDERABLE} -- Basic operations
+
 	pre_render (region: FO_RECTANGLE) is
 		local
 			line : FO_LINE
@@ -254,7 +334,7 @@ feature -- Element change
 			until
 				word_cursor.off
 			loop
-				create line.make_justified (actual_region.width, Current, Current, justification)
+				create line.make_justified (actual_region.width, text_leading, Current, justification)
 				from
 					create line_width.points (0)
 				until
@@ -268,7 +348,7 @@ feature -- Element change
 						end	
 						line.add_inline (current_inline)
 						lines.put_last (line)
-						create line.make_justified (actual_region.width, Current, Current, justification)
+						create line.make_justified (actual_region.width, text_leading, Current, justification)
 						create line_width.points (0)
 					else
 						word_cursor.append_item (line)
@@ -290,45 +370,6 @@ feature -- Element change
 			end
 			precursor (region)
 		end
-					
-feature -- Removal
-
-feature -- Resizing
-
-feature -- Transformation
-
-feature -- Conversion
-
-feature -- Duplication
-
-feature -- Constants
-
-	c_new_line : CHARACTER is '%N'
-
-feature -- Basic operations
-
-	out : STRING is
-		do
-			Create Result.make (0)
-			from
-				inlines.start
-			until
-				inlines.off
-			loop
-				Result.append_string (inlines.item_for_iteration.out)
-				Result.append_character ('%N')
-				inlines.forth
-			end
-		end
-		
-feature -- Comparison
-
-	is_equal (other : like Current) : BOOLEAN is
-		do
-			Result := same_colorable (other)  and same_marginable (other)
-		end
-		
-feature -- Inapplicable
 
 	render_forth (document : FO_DOCUMENT; region : FO_RECTANGLE) is
 		local
@@ -337,8 +378,6 @@ feature -- Inapplicable
 			done : BOOLEAN
 			use_top_margins : BOOLEAN
 			use_bottom_margins : BOOLEAN
-			y_bottom : DOUBLE
-			gy, gh : DOUBLE
 		do
 			if last_rendered_region = Void then
 				create last_rendered_region.set (region.left, region.top - margins.top,
@@ -363,7 +402,7 @@ feature -- Inapplicable
 					render_cursor := lines.new_cursor
 					render_cursor.start
 				end
-				if not render_cursor.off and available_region.height <= render_cursor.item.height then
+				if not render_cursor.off and available_region.height <= text_leading.max (render_cursor.item.height) then
 					done := True
 				end
 			until
@@ -371,7 +410,7 @@ feature -- Inapplicable
 			loop
 				create line_region.set (available_region.left + margins.left, available_region.bottom,
 					available_region.right - margins.right,	available_region.top)
-				if line_region.height >= render_cursor.item.height then
+				if line_region.height >= text_leading.max (render_cursor.item.height) then
 					render_cursor.item.render_start (document, line_region)
 					if render_cursor.item.is_prerendered then
 						last_rendered_region := last_rendered_region.merged (render_cursor.item.last_rendered_region)
@@ -379,7 +418,7 @@ feature -- Inapplicable
 						do_nothing
 					end
 					if available_region.height > render_cursor.item.height then
-						available_region := available_region.shrinked_top (render_cursor.item.height)
+						available_region := available_region.shrinked_top (text_leading.max (render_cursor.item.height))
 					else
 						done := True
 					end
@@ -402,47 +441,11 @@ feature -- Inapplicable
 				is_render_off := False
 			end
 			debug ("fo_show_block_margins")
-				document.current_page.gsave
-				document.current_page.move (0,0)
-				if lines.count > 0 then
-					y_bottom := last_rendered_region.bottom.as_points + (lines.last.bounding_box.bottom).as_points  -- / create {FO_MEASUREMENT}.points (1000) * lines.last.height).as_points ,
-					gy := last_rendered_region.bottom.as_points + (lines.last.bounding_box.bottom).as_points -- / create {FO_MEASUREMENT}.points (1000) * lines.last.height).as_points
-				else
-					y_bottom := last_rendered_region.bottom.as_points
-					gy := last_rendered_region.bottom.as_points
-				end
-				document.current_page.rectangle (
-					last_rendered_region.left.as_points, 
-					y_bottom, 
-					last_rendered_region.width.as_points, 
-					last_rendered_region.height.as_points)			
-				document.current_page.stroke
-				document.current_page.grestore
-				document.current_page.gsave
-				document.current_page.set_gray_stroke (0.5)
-				document.current_page.set_line_dash (<< 1,  3>>, 0)
-				document.current_page.move (0,0)
-				gh := last_rendered_region.height.as_points
-				if use_bottom_margins then
-					gy := gy + margins.bottom.as_points
-					gh := gh - margins.bottom.as_points
-				end
-				if use_top_margins then
-					gh := gh - margins.top.as_points
-				end
-				
-				document.current_page.rectangle (
-					(last_rendered_region.left + margins.left).as_points,
-					gy,
-					(last_rendered_region.width - (margins.left + margins.right)).as_points, 
-					gh)
-				document.current_page.stroke
-				document.current_page.grestore
+				show_margins (document, use_top_margins, use_bottom_margins)
 			end
 			last_region := region
 		end
 		
-
 	render_start (document : FO_DOCUMENT; region : FO_RECTANGLE) is
 			-- Start rendering on `document' within `region'.
 		do
@@ -460,6 +463,60 @@ feature -- Inapplicable
 			end
 		end
 
+					
+feature -- Comparison
+
+	is_equal (other : like Current) : BOOLEAN is
+		do
+			Result := same_colorable (other)  and same_marginable (other)
+		end
+		
+feature -- Inapplicable
+
+	show_margins (document : FO_DOCUMENT; use_top_margins, use_bottom_margins : BOOLEAN) is
+		local
+			gy : DOUBLE
+			y_bottom : DOUBLE
+			gh : DOUBLE
+		do
+			document.current_page.gsave
+			document.current_page.move (0,0)
+--			if lines.count > 0 then
+--				y_bottom := last_rendered_region.bottom.as_points + (lines.last.bounding_box.bottom).as_points  -- / create {FO_MEASUREMENT}.points (1000) * lines.last.height).as_points ,
+--				gy := last_rendered_region.bottom.as_points + (lines.last.bounding_box.bottom).as_points -- / create {FO_MEASUREMENT}.points (1000) * lines.last.height).as_points
+--			else
+				y_bottom := last_rendered_region.bottom.as_points
+				gy := last_rendered_region.bottom.as_points
+--			end
+			document.current_page.rectangle (
+				last_rendered_region.left.as_points, 
+				y_bottom, 
+				last_rendered_region.width.as_points, 
+				last_rendered_region.height.as_points)			
+			document.current_page.stroke
+			document.current_page.grestore
+			document.current_page.gsave
+			document.current_page.set_gray_stroke (0.5)
+			document.current_page.set_line_dash (<< 1,  3>>, 0)
+			document.current_page.move (0,0)
+			gh := last_rendered_region.height.as_points
+			if use_bottom_margins then
+				gy := gy + margins.bottom.as_points
+				gh := gh - margins.bottom.as_points
+			end
+			if use_top_margins then
+				gh := gh - margins.top.as_points
+			end
+			
+			document.current_page.rectangle (
+				(last_rendered_region.left + margins.left).as_points,
+				gy,
+				(last_rendered_region.width - (margins.left + margins.right)).as_points, 
+				gh)
+			document.current_page.stroke
+			document.current_page.grestore
+		end
+		
 	show_paragraph_mark (inline : FO_INLINE) is		
 		do
 				inline.append_character (inlines.first.font.pdf_encoding.code_of_name ("paragraph").to_character)	
@@ -477,7 +534,9 @@ feature {NONE} -- Implementation
 	word_cursor : FO_INLINES_WORD_CURSOR
 			
 invariant
-	inlines_exist: inlines /= Void
+
+	inlines_not_void: inlines /= Void
+	text_leading_not_void: text_leading /= Void
 	
-end -- class FO_BLOCK
+end
 

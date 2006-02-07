@@ -1,14 +1,12 @@
 indexing
-	description: "Objects that..."
+	description: 
+	
+		"Objects that describe the layout of pages : header/footer, page size and orientation."
 
-	usage: ""
-	quality: ""
-	refactoring: ""
-
-	status: "see notice at end of class";
-	date: "$Date$";
-	revision: "$Revision$";
-	author: ""
+	library: "FO - Formatting Objects in Eiffel. Project SAFE."
+	copyright: "Copyright (c) 2006 - , Paul G. Crismer and others"
+	license: "Eiffel Forum License v2 (see forum.txt)"
+	date: "$Date$"
 
 class FO_SECTION
 

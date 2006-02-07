@@ -1,14 +1,13 @@
 indexing
-	description: "Objects that..."
 
-	usage: ""
-	quality: ""
-	refactoring: ""
+	description: 
+	
+		"Vertical sequence of objects that should be rendered on a single page."
 
-	status: "see notice at end of class";
-	date: "$Date$";
-	revision: "$Revision$";
-	author: ""
+	library: "FO - Formatting Objects in Eiffel. Project SAFE."
+	copyright: "Copyright (c) 2006 - , Paul G. Crismer and others"
+	license: "Eiffel Forum License v2 (see forum.txt)"
+	date: "$Date$"
 
 class FO_UNBREAKABLE
 
@@ -31,43 +30,32 @@ feature {NONE} -- Initialization
 feature -- Access
 
 	unbreakables : DS_LIST[FO_RENDERABLE]
+			-- Unbreakable parts.
 
 feature -- Measurement
 
 	height : FO_MEASUREMENT
+			-- Height after pre-rendering.
 	
 feature -- Comparison
 
 feature -- Status report
 
 	is_page_break_before: BOOLEAN is
+			-- Must a page break occur before rendering?
 		do
 			if unbreakables.count > 1 then
 				Result := unbreakables.first.is_page_break_before
 			end
 		end
 		
-	is_keep_with_next: BOOLEAN is do  end
+	is_keep_with_next: BOOLEAN is 
+		do  
+		ensure then
+			definition: not Result
+		end
 	
-feature -- Status setting
-
-feature -- Cursor movement
-
-feature -- Element change
-
-feature -- Removal
-
-feature -- Resizing
-
-feature -- Transformation
-
-feature -- Conversion
-
-feature -- Duplication
-
-feature -- Miscellaneous
-
-feature -- Basic operations
+feature {FO_DOCUMENT, FO_RENDERABLE} -- Basic operations
 
 	render_start (document: FO_DOCUMENT; region: FO_RECTANGLE) is
 		local
@@ -117,18 +105,6 @@ feature -- Basic operations
 			end
 		end
 		
-feature -- Obsolete
-
-feature -- Inapplicable
-
-feature -- Constants
-
-feature {NONE} -- Implementation
-		
-invariant
-
-	
-
 end
 
 

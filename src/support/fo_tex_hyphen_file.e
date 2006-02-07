@@ -1,14 +1,13 @@
 indexing
-	description: "Objects that..."
 
-	usage: ""
-	quality: ""
-	refactoring: ""
+	description: 
+	
+		"Tex hyphenation files."
 
-	status: "see notice at end of class";
-	date: "$Date$";
-	revision: "$Revision$";
-	author: ""
+	library: "FO - Formatting Objects in Eiffel. Project SAFE."
+	copyright: "Copyright (c) 2006 - , Paul G. Crismer and others"
+	license: "Eiffel Forum License v2 (see forum.txt)"
+	date: "$Date$"
 
 class FO_TEX_HYPHEN_FILE
 
@@ -21,38 +20,18 @@ inherit
 create
 	make
 	
-feature {NONE} -- Initialization
-
 feature -- Access
 
 	last_pattern : STRING
 	
 	last_hyph : STRING
-	
-feature -- Measurement
-
-feature -- Comparison
 
 feature -- Status report
 
-feature -- Status setting
-
-feature -- Cursor movement
-
-feature -- Element change
-
-feature -- Removal
-
-feature -- Resizing
-
-feature -- Transformation
-
-feature -- Conversion
-
-feature -- Duplication
-
-feature -- Miscellaneous
-
+	end_of_patterns : BOOLEAN
+	
+	end_of_hyphenation : BOOLEAN
+	
 feature -- Basic operations
 
 	open_read is
@@ -81,6 +60,29 @@ feature -- Basic operations
 		
 	read_pattern is
 		do
+			read_tex_word
+			if last_string.is_equal("}") then
+				end_of_patterns := True
+				search_for_hyphenation
+			end
+			if (not end_of_file or not end_of_patterns) and then last_string.count > 0 then
+				analyze_pattern
+			end
+		end
+					
+	read_hyphenation is	
+		do
+			read_tex_word
+			if last_string.is_equal ("}") then
+				end_of_hyphenation := True
+			end	
+		end
+		
+feature {NONE} -- Implementation
+
+	read_tex_word is
+			-- Read tex word, skip comments
+		do
 			from
 				read_word
 			until
@@ -91,26 +93,33 @@ feature -- Basic operations
 					read_word
 				end
 			end
-			if last_string.is_equal("}") then
-				end_of_file := True
-			end
-			if not end_of_file and then last_string.count > 0 then
-				analyze_pattern
-			end
 		end
 		
-feature -- Obsolete
-
-feature -- Inapplicable
-
-feature -- Constants
-
-feature {NONE} -- Implementation
-
+	hyphenation_regex : RX_PCRE_REGULAR_EXPRESSION is
+		once
+			create Result.make
+			Result.compile ("\hyphenation{")
+		end
+		
 	patterns_regex: RX_PCRE_REGULAR_EXPRESSION is
 		once
 			create Result.make
 			Result.compile ("\patterns{")
+		end
+		
+	search_for_hyphenation is
+		do
+			from
+				
+			until
+				end_of_input or else hyphenation_regex.matches (last_string)
+			loop
+				read_word				
+			end
+			if end_of_input then
+				end_of_file := True
+				end_of_hyphenation := True
+			end
 		end
 		
 	analyze_pattern is

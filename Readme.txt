@@ -4,7 +4,7 @@ Eiffel Formatting Objects provides a library that enables developers
 write applications generating PDF documents.
 
 
-References:
+References/inspiration:
 - XML:FO
 - iText
 

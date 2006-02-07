@@ -1,14 +1,13 @@
 indexing
-	description: "Objects that..."
 
-	usage: ""
-	quality: ""
-	refactoring: ""
+	description: 
+	
+		"Cursor on words among a sequence of inlines."
 
-	status: "see notice at end of class";
-	date: "$Date$";
-	revision: "$Revision$";
-	author: ""
+	library: "FO - Formatting Objects in Eiffel. Project SAFE."
+	copyright: "Copyright (c) 2006 - , Paul G. Crismer and others"
+	license: "Eiffel Forum License v2 (see forum.txt)"
+	date: "$Date$"
 
 class FO_INLINES_WORD_CURSOR
 
@@ -116,6 +115,7 @@ feature -- Miscellaneous
 feature -- Basic operations
 
 	item_head (width : FO_MEASUREMENT) is
+			-- Keep head of item not larger than `width'.
 		require
 			width_less_item_width: width /= Void and (width < item_width)
 		local
@@ -392,7 +392,7 @@ feature {NONE} -- Implementation
 		do
 			word_text.append_character (last_char)
 			must_consume_last_char := False
-			word_width := word_width + internal_cursor.item.character_width (last_char)
+			word_width := word_width + word_end.first.character_width (last_char)
 			if word_end.second > 1 then
 				create next_word_begin.make (word_end.first, word_end.second)				
 				word_end.put_second (word_end.second - 1)
@@ -492,9 +492,7 @@ feature {NONE} -- Implementation
 		end
 		
 	is_discardable_character (c : CHARACTER) : BOOLEAN is
-		do
-			
+		do			
 		end
-
 
 end

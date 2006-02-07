@@ -1,14 +1,12 @@
 indexing
-	description: "Objects that..."
+	description: 
+	
+		"Inlines whose current text represent the total pages count in a document."
 
-	usage: ""
-	quality: ""
-	refactoring: ""
-
-	status: "see notice at end of class";
-	date: "$Date$";
-	revision: "$Revision$";
-	author: ""
+	library: "FO - Formatting Objects in Eiffel. Project SAFE."
+	copyright: "Copyright (c) 2006 - , Paul G. Crismer and others"
+	license: "Eiffel Forum License v2 (see forum.txt)"
+	date: "$Date$"
 
 class FO_PAGE_COUNT
 
@@ -25,7 +23,6 @@ feature -- Basic operations
 			set_text (document.page_count.out)
 		end
 		
-invariant
 end
 
 

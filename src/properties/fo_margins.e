@@ -1,8 +1,13 @@
 indexing
-	description: "Margins"
-	author: "Paul G. Crismer"
+
+	description: 
+	
+		"Margins"
+
+	library: "FO - Formatting Objects in Eiffel. Project SAFE."
+	copyright: "Copyright (c) 2006 - , Paul G. Crismer and others"
+	license: "Eiffel Forum License v2 (see forum.txt)"
 	date: "$Date$"
-	revision: "$Revision$"
 
 class
 	FO_MARGINS
@@ -31,4 +36,5 @@ feature -- Measurement
 			content_region_bottom: Result.bottom.is_equal (box.bottom + bottom)
 		end
 
-end -- class FO_ABLE
+end
+

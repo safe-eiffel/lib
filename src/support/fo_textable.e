@@ -1,14 +1,13 @@
 indexing
-	description: "Textable objects."
 
-	usage: ""
-	quality: ""
-	refactoring: ""
+	description: 
+	
+		"Objects that can render text."
 
-	status: "see notice at end of class";
-	date: "$Date$";
-	revision: "$Revision$";
-	author: ""
+	library: "FO - Formatting Objects in Eiffel. Project SAFE."
+	copyright: "Copyright (c) 2006 - , Paul G. Crismer and others"
+	license: "Eiffel Forum License v2 (see forum.txt)"
+	date: "$Date$"
 
 deferred class FO_TEXTABLE
 
@@ -31,42 +30,7 @@ inherit
 			is_equal
 		end
 
-
-feature {NONE} -- Initialization
-
-feature -- Access
-
-feature -- Measurement
-
 feature -- Comparison
-
-feature -- Status report
-
-feature -- Status setting
-
-feature -- Cursor movement
-
-feature -- Element change
-
-feature -- Removal
-
-feature -- Resizing
-
-feature -- Transformation
-
-feature -- Conversion
-
-feature -- Duplication
-
-feature -- Miscellaneous
-
-feature -- Basic operations
-
-feature -- Obsolete
-
-feature -- Inapplicable
-
-feature -- Constants
 
 	is_equal (other : like Current) : BOOLEAN is
 		do

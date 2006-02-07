@@ -1,8 +1,13 @@
 indexing
-	description: "Borders"
-	author: "Paul G. Crismer"
+
+	description: 
+	
+		"Borders around a rectangular area."
+
+	library: "FO - Formatting Objects in Eiffel. Project SAFE."
+	copyright: "Copyright (c) 2006 - , Paul G. Crismer and others"
+	license: "Eiffel Forum License v2 (see forum.txt)"
 	date: "$Date$"
-	revision: "$Revision$"
 
 class
 	FO_BORDER
@@ -56,6 +61,8 @@ feature -- Access
 				create Result.make (<<3,3>>, 0)
 			when style_dotted then
 				create Result.make (<<1, 3>>,0)
+			when style_dot_dash then
+				create Result.make (<<1, 3, 3, 3>>,0)
 			else	
 				create Result.make (<<>>,0)
 			end
@@ -128,4 +135,4 @@ invariant
 	width_not_void: not is_none implies width /= Void
 	width_positive: not is_none implies width.sign = 1
 	
-end -- class FO_BORDER
+end

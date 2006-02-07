@@ -1,8 +1,13 @@
 indexing
-	description: "Objects that can be rendered on a document."
-	author: "Paul G. Crismer"
+
+	description: 
+	
+		"Objects that can be rendered on a document."
+
+	library: "FO - Formatting Objects in Eiffel. Project SAFE."
+	copyright: "Copyright (c) 2006 - , Paul G. Crismer and others"
+	license: "Eiffel Forum License v2 (see forum.txt)"
 	date: "$Date$"
-	revision: "$Revision$"
 
 deferred class
 	FO_RENDERABLE
@@ -17,6 +22,8 @@ feature -- Access
 
 	height : FO_MEASUREMENT is									
 			-- Height of prerendered items.
+		require
+			is_prerendered: is_prerendered
 		deferred
 		ensure
 			height_not_void: height /= Void
@@ -29,11 +36,13 @@ feature -- Status report
 	is_render_inside : BOOLEAN
 		
 	is_renderable (region : FO_RECTANGLE) : BOOLEAN is	
+			-- Can Current be rendered totally in `region'?
 		do
 			Result := True
 		end
 
 	is_prerendered : BOOLEAN
+			-- Has the prerendering stage occured?
 
 	is_page_break_before : BOOLEAN is
 			-- Must a page break occure before rendering?
@@ -45,10 +54,8 @@ feature -- Status report
 		deferred
 		end
 		
-					
 feature -- Basic operations
 
-	
 	render_start (document : FO_DOCUMENT; region : FO_RECTANGLE) is
 			-- Render Current on `document', stopping after rendering region.height
 		require
@@ -90,8 +97,9 @@ feature -- Basic operations
 			is_prerendered := True
 		ensure
 			last_region_set: last_region = region
+			is_prerendered: is_prerendered
 		end
 
 feature {NONE} -- Implementation
 
-end -- class FO_RENDERABLE
+end

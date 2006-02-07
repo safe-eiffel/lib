@@ -24,26 +24,19 @@ feature -- Initialization
 		end
 		
 feature -- Access
-
-	--| Relative to reading direction.
-	
---	border_before : FO_BORDER
---	border_after : FO_BORDER
---	border_start : FO_BORDER
---	border_end  : FO_BORDER
-
-	--| Relative to page.
 	
 	border_top : FO_BORDER
-		
+			-- Top border.
+					
 	border_bottom : FO_BORDER
-		
+			-- Bottom border.
+			
 	border_left : FO_BORDER
-		
+			-- Left border.
+			
 	border_right : FO_BORDER
-		
-feature -- Measurement
-
+			-- Right border.
+			
 feature -- Status report
 
 	is_borders_uniform : BOOLEAN is
@@ -53,14 +46,11 @@ feature -- Status report
 				Result := True
 			end
 		end
-		
-feature -- Status setting
-
-feature -- Cursor movement
 
 feature -- Element change
 
 	set_uniform_borders (a_border : like border_top) is
+			-- Set all borders to `a_border'
 		require
 			a_border_not_void: a_border /= Void
 		do
@@ -68,9 +58,16 @@ feature -- Element change
 			set_border_left (a_border)
 			set_border_right (a_border)
 			set_border_top (a_border)
+		ensure
+			border_bottom_set: border_bottom = a_border
+			border_left_set: border_left = a_border
+			border_right_set: border_right = a_border
+			border_top_set: border_top = a_border
+			is_borders_uniform: is_borders_uniform
 		end
 		
 	set_border_top (a_border : like border_top) is
+			-- Set top border to `a_border'.
 		require
 			a_border_not_void: a_border /= Void
 		do
@@ -80,6 +77,7 @@ feature -- Element change
 		end
 
 	set_border_bottom (a_border : like border_bottom) is
+			-- Set bottom border to `a_border'.
 		require
 			a_border_not_void: a_border /= Void
 		do
@@ -89,6 +87,7 @@ feature -- Element change
 		end
 		
 	set_border_left (a_border : like border_left) is
+			-- Set left border to `a_border'.
 		require
 			a_border_not_void: a_border /= Void
 		do
@@ -98,6 +97,7 @@ feature -- Element change
 		end
 		
 	set_border_right (a_border : like border_right) is
+			-- Set right border to `a_border'.
 		require
 			a_border_not_void: a_border /= Void
 		do
@@ -106,13 +106,6 @@ feature -- Element change
 			border_right_set: border_right = a_border
 		end
 		
-		
-feature -- Removal
-
-feature -- Resizing
-
-feature -- Transformation
-
 feature -- Comparison
 
 	same_borders (other : FO_BORDER_ABLE) : BOOLEAN is
@@ -126,10 +119,6 @@ feature -- Comparison
 					  border_bottom.is_equal (other.border_bottom)
 		end
 		
-feature -- Duplication
-
-feature -- Miscellaneous
-
 feature -- Basic operations
 	
 	render_borders (document : FO_DOCUMENT; region : FO_RECTANGLE) is
@@ -181,10 +170,6 @@ feature -- Basic operations
 			end
 		end
 		
-feature -- Obsolete
-
-feature -- Inapplicable
-
 feature {NONE} -- Implementation
 
 	set_line_properties (page : PDF_PAGE; border : FO_BORDER) is
@@ -218,4 +203,4 @@ invariant
 	border_top_not_void: border_top /= Void
 	border_bottom_not_void: border_bottom /= Void
 
-end -- class FO_BORDER_ABLE
+end

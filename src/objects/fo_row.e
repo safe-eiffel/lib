@@ -1,14 +1,12 @@
 indexing
-	description: "Rows containing multiple successive blocks."
+	description: 
+	
+		"Objects that contain horizontally consecutive renderable items."
 
-	usage: ""
-	quality: ""
-	refactoring: ""
-
-	status: "see notice at end of class";
-	date: "$Date$";
-	revision: "$Revision$";
-	author: ""
+	library: "FO - Formatting Objects in Eiffel. Project SAFE."
+	copyright: "Copyright (c) 2006 - , Paul G. Crismer and others"
+	license: "Eiffel Forum License v2 (see forum.txt)"
+	date: "$Date$"
 
 class FO_ROW
 
@@ -16,12 +14,12 @@ inherit
 	
 	FO_RENDERABLE
 		redefine
-			pre_render, render_forth
+			render_forth, pre_render, is_renderable
 		end
-
+		
 	FO_BORDER_ABLE
 		redefine
-			render_borders
+			render_forth, render_borders
 		end
 		
 	KL_IMPORTED_ARRAY_ROUTINES
@@ -33,11 +31,11 @@ create
 feature {NONE} -- Initialization
 
 	make (n : INTEGER; desired_total_width : FO_MEASUREMENT) is
-			-- Row of `desired_total_width' made of `n' blocks.
+			-- Row of `desired_total_width' made of `n' items.
 		local
 		do
 			make_borders_none
-			initialize_blocks (n)
+			initialize_items (n)
 			initialize_widths (n, desired_total_width)
 			width := desired_total_width
 		ensure
@@ -46,7 +44,7 @@ feature {NONE} -- Initialization
 		end
 		
 	make_widths (n : INTEGER; desired_widths : ARRAY[FO_MEASUREMENT]) is
-			-- Row of `n' blocks, with `desired_widths' for each block.
+			-- Row of `n' items, with `desired_widths' for each block.
 		require
 			positive_n: n > 0
 			desired_widths_not_void: desired_widths /= Void
@@ -54,7 +52,7 @@ feature {NONE} -- Initialization
 			desired_widths_no_void: not ANY_ARRAY_.has (desired_widths, Void)
 		do
 			make_borders_none
-			initialize_blocks (n)
+			initialize_items (n)
 			block_widths := desired_widths
 			width := sum_of_widths
 		ensure
@@ -63,9 +61,14 @@ feature {NONE} -- Initialization
 		
 feature -- Access
 
-	blocks : ARRAY [FO_BLOCK]
-		-- Blocks.
-		
+	item (index: INTEGER) : FO_BORDER_ABLE is
+			-- `index'-th borderable in row.
+		require
+			index_within_limits: index >= 1 and index <= capacity
+		do
+			Result := items.item (index)
+		end
+
 	block_widths : ARRAY [FO_MEASUREMENT]
 		-- Desired widths.
 		
@@ -82,7 +85,7 @@ feature -- Measurement
 
 	capacity : INTEGER is
 		do
-			Result := blocks.capacity
+			Result := items.capacity
 		end
 			
 feature -- Comparison
@@ -94,11 +97,11 @@ feature -- Status report
 			i : INTEGER
 		do
 			from
-				i := blocks.lower
+				i := items.lower
 			until
-				i > blocks.upper
+				i > items.upper
 			loop
-				Result := Result or blocks.item (i) /= Void and then blocks.item (i).is_page_break_before
+				Result := Result or items.item (i) /= Void and then items.item (i).is_page_break_before
 				i := i + 1
 			end
 		end
@@ -108,11 +111,27 @@ feature -- Status report
 			i : INTEGER
 		do
 			from
-				i := blocks.lower
+				i := items.lower
 			until
-				i > blocks.upper
+				i > items.upper
 			loop
-				Result := Result or blocks.item (i) /= Void and then blocks.item (i).is_keep_with_next
+				Result := Result or items.item (i) /= Void and then items.item (i).is_keep_with_next
+				i := i + 1
+			end
+		end
+	
+	is_renderable (region: FO_RECTANGLE) : BOOLEAN is	
+		local
+			i : INTEGER
+		do
+			compute_regions (region)
+			from
+				i := items.lower
+				Result := True
+			until
+				not Result or else i > items.upper
+			loop
+				Result := Result and (items.item (i) /= Void and then items.item (i).is_renderable (render_regions.item (i)))
 				i := i + 1
 			end
 		end
@@ -123,6 +142,15 @@ feature -- Cursor movement
 
 feature -- Element change
 
+	put (a_borderable : FO_BORDER_ABLE; index : INTEGER) is
+			-- Put `a_borderable' at `index'-th position.
+		require
+			a_borderable_not_void: a_borderable /= Void
+			index_within_limits: index >= 1 and index <= capacity
+		do
+			items.put (a_borderable, index)
+		end
+		
 feature -- Removal
 
 feature -- Resizing
@@ -135,7 +163,7 @@ feature -- Duplication
 
 feature -- Miscellaneous
 
-feature -- Basic operations
+feature {FO_DOCUMENT, FO_BORDER_ABLE} -- Basic operations
 
 	pre_render (region: FO_RECTANGLE) is
 		local
@@ -159,16 +187,16 @@ feature -- Basic operations
 					right,
 					region.top)
 				last_regions.put (current_region, i)
-				blocks.item (i).pre_render (current_region)
+				items.item (i).pre_render (current_region)
 				if height = Void then
-					height := blocks.item (i).height
+					height := items.item (i).height
 				else
-					height := height.max (blocks.item (i).height)
+					height := height.max (items.item (i).height)
 				end
 				
 				i := i + 1
 			end
-			precursor {FO_RENDERABLE} (region)
+			precursor {FO_RENDERABLE}(region)
 		end
 		
 	render_start (document: FO_DOCUMENT; region : FO_RECTANGLE) is
@@ -181,17 +209,17 @@ feature -- Basic operations
 			last_rendered_region := Void
 			compute_regions (region)
 			from 
-				i := blocks.lower
+				i := items.lower
 				is_render_off := True
-			until i > blocks.upper
+			until i > items.upper
 			loop
-				blocks.item (i).render_start (document, render_regions.item (i))
-				is_render_off := is_render_off and blocks.item (i).is_render_off
-				is_render_inside := is_render_inside or blocks.item (i).is_render_inside
+				items.item (i).render_start (document, render_regions.item (i))
+				is_render_off := is_render_off and items.item (i).is_render_off
+				is_render_inside := is_render_inside or items.item (i).is_render_inside
 				if last_rendered_region = Void then
-					last_rendered_region := blocks.item (i).last_rendered_region
-				elseif blocks.item (i).is_prerendered then
-					last_rendered_region := last_rendered_region.merged (blocks.item (i).last_rendered_region)
+					last_rendered_region := items.item (i).last_rendered_region
+				elseif items.item (i).is_prerendered then
+					last_rendered_region := last_rendered_region.merged (items.item (i).last_rendered_region)
 				end
 				i := i + 1
 			end
@@ -205,18 +233,18 @@ feature -- Basic operations
 			compute_regions (region)
 			from 
 				last_rendered_region := Void
-				i := blocks.lower
+				i := items.lower
 				is_render_off := True
-			until i > blocks.upper
+			until i > items.upper
 			loop
-				if not blocks.item (i).is_render_off then
-					blocks.item (i).render_forth (document, render_regions.item (i))
-					is_render_off := is_render_off and blocks.item (i).is_render_off
-					is_render_inside := is_render_inside and blocks.item (i).is_render_inside
+				if not items.item (i).is_render_off then
+					items.item (i).render_forth (document, render_regions.item (i))
+					is_render_off := is_render_off and items.item (i).is_render_off
+					is_render_inside := is_render_inside and items.item (i).is_render_inside
 					if last_rendered_region = Void then
-						last_rendered_region := blocks.item (i).last_rendered_region
-				elseif blocks.item (i).is_prerendered then
-					last_rendered_region := last_rendered_region.merged (blocks.item (i).last_rendered_region)
+						last_rendered_region := items.item (i).last_rendered_region
+				elseif items.item (i).is_prerendered then
+					last_rendered_region := last_rendered_region.merged (items.item (i).last_rendered_region)
 					end
 				end
 				i := i + 1
@@ -230,11 +258,11 @@ feature -- Basic operations
 		do		
 			compute_regions (region)
 			from
-				i := blocks.lower
+				i := items.lower
 			until
-				i > blocks.upper
+				i > items.upper
 			loop
-				blocks.item (i).render_borders (document, render_regions.item (i))
+				items.item (i).render_borders (document, render_regions.item (i))
 				i := i + 1
 			end
 		end
@@ -247,9 +275,9 @@ feature -- Constants
 
 feature {NONE} -- Implementation
 
-	initialize_blocks (n : INTEGER) is
+	initialize_items (n : INTEGER) is
 		do
-			create blocks.make (1,n)
+			create items.make (1,n)
 		end
 		
 --	initialize_margins (n : INTEGER) is
@@ -328,10 +356,14 @@ feature {NONE} -- Implementation
 				i := i + 1
 			end
 		end
+
 		
+	items : ARRAY [FO_BORDER_ABLE]
+		-- items.
+				
 invariant		
 	
-	blocks_not_void: blocks /= Void
+	items_not_void: items /= Void
 	block_widths_not_void: block_widths /= Void
 	block_widths_have_no_void: not ANY_ARRAY_.has (block_widths, Void)
 	

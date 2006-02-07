@@ -1,8 +1,13 @@
 indexing
-	description: "Fonts"
-	author: "Paul G. Crismer"
+
+	description: 
+	
+		"Fonts"
+
+	library: "FO - Formatting Objects in Eiffel. Project SAFE."
+	copyright: "Copyright (c) 2006 - , Paul G. Crismer and others"
+	license: "Eiffel Forum License v2 (see forum.txt)"
 	date: "$Date$"
-	revision: "$Revision$"
 
 class
 	FO_FONT
@@ -28,10 +33,8 @@ feature {NONE} -- Initialization
 			style := new_style
 			create size.points (0)
 			internal_font := corresponding_internal_font
-			stretch := 100.0
 			encoding := corresponding_internal_font.encoding.name.value
 		ensure
-			no_stretch: stretch = 100
 			family_set: family = new_family
 			weight_set: weight = new_weight
 			style_set: style = new_style
@@ -50,9 +53,6 @@ feature -- Access
 	encoding : STRING
 			-- Encoding.
 		
-	stretch: DOUBLE
-			-- Streching factor. 100 = no stretch.
-
 	style: STRING
 			-- Style name.
 
@@ -114,9 +114,9 @@ feature -- Access
 			Result := internal_font.encoding_scheme
 		end
 		
-	cap_height : INTEGER is
+	cap_height : FO_MEASUREMENT is
 		do
-			Result := internal_font.cap_height
+			create Result.points (internal_font.cap_height / em_size * size.as_points)
 		end
 		
 	x_height : INTEGER is
@@ -151,20 +151,27 @@ feature -- Access
 		
 feature -- Measurement
 
-	string_width (string : STRING) : FO_MEASUREMENT is
+	string_width (string : STRING; character_spacing, word_spacing : FO_MEASUREMENT; stretch : FO_MEASUREMENT) : FO_MEASUREMENT is
 			-- Width of `string' rendered using Current.
 		require
-			string_exists: string /= Void
+			string_not_void: string /= Void
+			character_spacing_not_void: character_spacing /= Void
+			word_spacing_not_void: word_spacing /= Void
+			stretch_not_void: stretch /= Void
 		do
-			create Result.points (internal_font.string_width (string, size.as_points, 0, 0, stretch))
+			create Result.points (internal_font.string_width (string, size.as_points, character_spacing.as_points, 0, stretch.as_points))
 		ensure
 			result_exists: Result /= Void
 		end
 	
-	character_width (c : CHARACTER) : FO_MEASUREMENT is
+	character_width (c : CHARACTER; character_spacing, word_spacing : FO_MEASUREMENT; stretch : FO_MEASUREMENT) : FO_MEASUREMENT is
 			-- Width of `c' rendered using Current.
+		require
+			character_spacing_not_void: character_spacing /= Void
+			word_spacing_not_void: word_spacing /= Void
+			stretch_not_void: stretch /= Void
 		do
-			create Result.points (internal_font.character_width (c,size.as_points, 0, 0, stretch))
+			create Result.points (internal_font.character_width (c,size.as_points,  character_spacing.as_points, word_spacing.as_points, stretch.as_points))
 		end
 		
 feature -- Status report
@@ -174,16 +181,6 @@ feature -- Status setting
 feature -- Cursor movement
 
 feature -- Element change
-
-	set_stretch (a_stretch: DOUBLE) is
-			-- Set `stretch' to `a_stretch'.
-		require
-			stretch_is_a_percentage: a_stretch > 0
-		do
-			stretch := a_stretch
-		ensure
-			stretch_assigned: stretch = a_stretch
-		end
 
 	set_size (a_size: FO_MEASUREMENT) is
 			-- Set `size' to `a_size'.
@@ -224,4 +221,4 @@ invariant
 	size_not_void: size /= Void
 	internal_font_not_void: internal_font /= Void
 	
-end -- class FO_FONT_ABLE
+end

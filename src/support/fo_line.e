@@ -1,8 +1,13 @@
 indexing
-	description: "Blocks whose components reside on the same horizontal line."
-	author: "Paul G. Crismer"
+
+	description: 
+	
+		"Sequences of inlines that reside on the same horizontal line."
+
+	library: "FO - Formatting Objects in Eiffel. Project SAFE."
+	copyright: "Copyright (c) 2006 - , Paul G. Crismer and others"
+	license: "Eiffel Forum License v2 (see forum.txt)"
 	date: "$Date$"
-	revision: "$Revision$"
 
 class
 	FO_LINE
@@ -42,11 +47,15 @@ feature {NONE} -- Initialization
 			height_zero: height.is_equal (create {FO_MEASUREMENT}.points(0))
 		end
 
-	make_justified (new_maximum_width : FO_MEASUREMENT; renderable : FO_RENDERABLE; marginable : FO_MARGIN_ABLE; a_justification : INTEGER) is		
+	make_justified (new_maximum_width : FO_MEASUREMENT; 
+				--	renderable : FO_RENDERABLE; 
+					new_text_leading : FO_MEASUREMENT;
+					marginable : FO_MARGIN_ABLE; a_justification : INTEGER) is		
 		require
 			new_maximum_width_exists: new_maximum_width /= Void
 			new_maximum_width_positive: new_maximum_width.sign = 1
-			renderable_not_void: renderable /= Void
+			new_text_leading_positive: new_text_leading /= Void and then new_maximum_width.sign = 1
+--			renderable_not_void: renderable /= Void
 			marginable_not_void: marginable /= Void
 		do
 			justification := a_justification
@@ -55,6 +64,7 @@ feature {NONE} -- Initialization
 			create {DS_LINKED_LIST[FO_INLINE]}inlines.make
 			set_margins (marginable.margins)
 			create height.points (0)
+			text_leading := new_text_leading
 		ensure
 			justification_set: justification = a_justification
 			maximum_width_set: maximum_width = new_maximum_width
@@ -70,30 +80,36 @@ feature -- Access
 	justify_left : INTEGER is 0
 	justify_right: INTEGER is 1
 	justify_center : INTEGER is 2
-	
-	last_descender : FO_MEASUREMENT
-	
+		
 feature -- Measurement
 
 	width : FO_MEASUREMENT
-	
+
+	text_leading : FO_MEASUREMENT
+		
 	bounding_box : FO_RECTANGLE is	
 		local
 			c : DS_LIST_CURSOR[FO_INLINE]
+			zero : FO_MEASUREMENT
 		do
-			--| find the greatest bounding box of all fonts.
-			from	
-				c := inlines.new_cursor
-				c.start
-			until
-				c.off
-			loop
-				if Result = Void then
-					Result := c.item.font.bounding_box
-				else
-					Result := Result.merged (c.item.font.bounding_box)
+			if inlines.count > 0 then
+				--| find the greatest bounding box of all fonts.
+				from	
+					c := inlines.new_cursor
+					c.start
+				until
+					c.off
+				loop
+					if Result = Void then
+						Result := c.item.font.bounding_box
+					else
+						Result := Result.merged (c.item.font.bounding_box)
+					end
+					c.forth
 				end
-				c.forth
+			else
+				create zero.points (0)
+				create Result.set (zero, zero, zero, text_leading)
 			end
 		end
 		
@@ -266,7 +282,7 @@ feature -- Comparison
 				inlines.is_equal (other.inlines)
 		end
 		
-feature -- Inapplicable
+feature {FO_DOCUMENT, FO_RENDERABLE} -- Basic operations
 
 	pre_render (region: FO_RECTANGLE) is
 		local
@@ -308,11 +324,10 @@ feature -- Inapplicable
 			end
 			create last_rendered_region.set (
 					region.left,
-					region.top - line_height,
+					region.top - bounding_box.height,
 					region.right,
 					region.top)
 			--| establish postcondition
-			last_descender := bounding_box.bottom
 			is_render_off := True
 			is_render_inside := False
 		end
@@ -338,4 +353,4 @@ feature {FO_LINE, FO_DOCUMENT} -- Access
 			page.set_text_origin (x.as_points, y.as_points)
 		end
 	
-end -- class FO_LINE
+end

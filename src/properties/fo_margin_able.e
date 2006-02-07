@@ -1,8 +1,13 @@
 indexing
-	description: "Objects that have margins"
-	author: "Paul G. Crismer"
+
+	description: 
+	
+		"Objects that have margins"
+
+	library: "FO - Formatting Objects in Eiffel. Project SAFE."
+	copyright: "Copyright (c) 2006 - , Paul G. Crismer and others"
+	license: "Eiffel Forum License v2 (see forum.txt)"
 	date: "$Date$"
-	revision: "$Revision$"
 
 class
 	FO_MARGIN_ABLE
@@ -45,4 +50,4 @@ feature -- Comparison
 invariant
 	margins_exist: margins /= Void
 	
-end -- class FO_MARGIN_ABLE
+end
