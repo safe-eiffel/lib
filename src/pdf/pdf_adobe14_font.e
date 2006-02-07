@@ -57,6 +57,10 @@ feature -- Access
 		
 	encoding : PDF_CHARACTER_ENCODING
 	
+feature -- Measurement
+
+	em_size : INTEGER is 1000
+	
 feature -- Conversion
 
 	to_pdf : STRING is

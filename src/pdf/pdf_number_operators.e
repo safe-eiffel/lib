@@ -23,5 +23,31 @@ feature -- Status report
 
 feature -- Conversion
 
-
+	formatted (d : DOUBLE) : STRING is
+			-- format 'iiiiii' or 'iiiii.ffff'
+		local
+			integral, fraction : INTEGER
+			sign : INTEGER
+		do
+			create Result.make (10)
+			sign := d.sign
+			integral := d.truncated_to_integer
+			fraction := ((d - integral) * 10000 * sign).truncated_to_integer
+			if integral = 0 and sign = - 1 then
+				Result.append_character ('-')
+			end
+			Result.append_string (integral.out)
+			if fraction > 0 then
+				Result.append_character ('.')
+				if fraction < 10 then
+					Result.append_string ("000")
+				elseif fraction < 100 then
+					Result.append_string ("00")
+				elseif fraction < 1000 then
+					Result.append_string ("0")
+				end
+				Result.append_string (fraction.out)
+			end
+		end
+		
 end -- class PDF_NUMBER_OPERATORS

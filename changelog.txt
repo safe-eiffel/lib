@@ -1,3 +1,8 @@
+* Version 1.2
+
+	Reworked gen_type1 utility. (2006-01-*)
+	Fonts now expose more measurement features. (2006-01-*)
+	
 * Version 1.1 
 	PNG Images
 	Document outline

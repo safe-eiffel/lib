@@ -32,6 +32,70 @@ feature -- Access
 			-- BaseFont name
 		deferred
 		end
+
+	full_name : STRING is
+		deferred
+		end
+		
+	family_name : STRING is
+		deferred
+		end
+		
+	weight : STRING is
+		deferred
+		end
+		
+	italic_angle : INTEGER is
+		deferred
+		end
+		
+	is_fixed_pitch : BOOLEAN is
+		deferred
+		end
+		
+	character_set : STRING  is
+		deferred
+		end
+		
+	font_b_box : PDF_RECTANGLE is
+		deferred
+		end
+		
+	underline_position : INTEGER is
+		deferred
+		end
+		
+	underline_thickness : INTEGER is
+		deferred
+		end
+		
+	encoding_scheme : STRING is
+		deferred
+		end
+		
+	cap_height : INTEGER is
+		deferred
+		end
+		
+	x_height : INTEGER is
+		deferred
+		end
+		
+	ascender : INTEGER is
+		deferred
+		end
+		
+	descender : INTEGER is
+		deferred
+		end
+		
+	std_hw : INTEGER is
+		deferred
+		end
+		
+	std_vw : INTEGER is
+		deferred
+		end
 		
 	firstchar : INTEGER is
 			-- First character code defined in font widths array
@@ -48,6 +112,14 @@ feature -- Access
 		deferred
 		end
 
+feature -- Measurement
+
+	em_size : INTEGER is
+			-- Size of the unit square in for Glyp measurements.
+			-- 1000 for Type 1 fonts; 2048 for TrueType fonts.
+		deferred
+		end
+		
 	wx (code : INTEGER) : INTEGER is
 			-- width in 'x' direction of character 'code'
 		do
@@ -88,7 +160,7 @@ feature -- Access
 		end
 
 	string_width (string : STRING; a_font_size, a_character_spacing, a_word_spacing, a_horizontal_scaling : DOUBLE) : DOUBLE is
-			-- width of `string' using current font, sized to `a_font_size' and saled by `a_horizontal_scaling'/100
+			-- width of `string' using current font, sized to `a_font_size' and scaled by `a_horizontal_scaling'/100
 			-- spaced using `a_character_spacing', `a_word_spacing'
 		local
 			i_begin, i_end : INTEGER

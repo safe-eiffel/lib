@@ -109,6 +109,18 @@ feature -- Access
 	viewer_preferences : PDF_VIEWER_PREFERENCES
 			-- UI preferences for PDF Viewer
 	
+feature -- Status report
+
+	valid_encoding (encoding_name : STRING) : BOOLEAN is
+		do
+			if encoding_name /= Void then
+				Result := encoding_name.is_equal (Encoding_winansi) or else
+				encoding_name.is_equal (Encoding_mac) or else
+				encoding_name.is_equal (Encoding_standard) or else
+				encoding_name.is_equal (Encoding_pdf)
+			end
+		end
+		
 feature {NONE} -- Measurement
 
 	count : INTEGER is
@@ -311,10 +323,7 @@ feature -- Basic operations
 			-- find the 'font_name' font with 'encoding_name' encoding
 			-- last_font /= Void if found...
 		require
-			good_encoding_name: encoding_name.is_equal (Encoding_winansi) or else
-				encoding_name.is_equal (Encoding_mac) or else
-				encoding_name.is_equal (Encoding_standard) or else
-				encoding_name.is_equal (Encoding_pdf)
+			good_encoding_name: valid_encoding (encoding_name)
 			font_name_exists: font_name /= Void
 		local
 			font_key : STRING

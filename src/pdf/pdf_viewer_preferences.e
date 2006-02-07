@@ -1,6 +1,6 @@
 indexing
-	description: "Objects that ..."
-	author: ""
+	description: "PDF Viewer preferences."
+	author: "Paul G. Crismer"
 	date: "$Date$"
 	revision: "$Revision$"
 
@@ -131,16 +131,6 @@ feature -- Status setting
 			not is_display_document_title
 		end
 
-feature -- Cursor movement
-
-feature -- Element change
-
-feature -- Removal
-
-feature -- Resizing
-
-feature -- Transformation
-
 feature -- Conversion
 
 	to_pdf : STRING is
@@ -192,19 +182,5 @@ feature -- Conversion
 			medium.put_string (Object_footer)
 		end
 
-feature -- Duplication
-
-feature -- Miscellaneous
-
-feature -- Basic operations
-
-feature -- Obsolete
-
-feature -- Inapplicable
-
-feature {NONE} -- Implementation
-
-invariant
-	invariant_clause: True -- Your invariant here
 
 end -- class PDF_VIEWER_PREFERENCES

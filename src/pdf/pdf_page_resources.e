@@ -1,23 +1,15 @@
 indexing
-	description: "Objects that ..."
-	author: ""
+	description: "Page resources."
+	author: "Paul G. Crismer"
 	date: "$Date$"
 	revision: "$Revision$"
 
 class
 	PDF_PAGE_RESOURCES
 
-	-- Replace ANY below by the name of parent class if any (adding more parents
-	-- if necessary); otherwise you can remove inheritance clause altogether.
 inherit
 	PDF_DICTIONARY
 	
--- The following Creation_clause can be removed if you need no other
--- procedure than `default_create':
-
-creation
-	default_create
-
 feature -- Initialization
 
 feature -- Access
@@ -25,6 +17,7 @@ feature -- Access
 	fonts : PDF_DICTIONARY
 	
 	procset : ARRAY[STRING]
+	
 feature -- Measurement
 
 feature -- Status report

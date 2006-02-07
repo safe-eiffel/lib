@@ -19,7 +19,7 @@ inherit
 
 	EPDF_IMPORTED_MATH
 	
-creation
+creation {PDF_DOCUMENT}
 	
 	make
 
@@ -59,8 +59,6 @@ feature -- Element change
 	move_text_origin (x, y : DOUBLE) is
 			-- begin a new line, with an (x,y) offset from the previous one
 		do
---			text_origin_x := text_origin_x + x
---			text_origin_y := text_origin_y + x
 			content_append_double (x)
 			content.append_character (' ')
 			content_append_double (y)
