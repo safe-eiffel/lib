@@ -1,21 +1,24 @@
 create table COPY (
- isbn varchar(14),
- serial_number integer,
- loc_store integer,
- loc_shelf integer,
- loc_row integer,
- borrower integer
+ isbn VARCHAR(14),
+ serial_number INTEGER,
+ purchased DATE,
+ price FLOAT,
+ loc_store INTEGER,
+ loc_shelf INTEGER,
+ loc_row INTEGER,
+ borrower INTEGER,
+ borrow_time TIMESTAMP
 );
 
 create table BORROWER (
- id integer,
- name varchar (30),
- address varchar (50)
+ id INTEGER,
+ name VARCHAR (30),
+ address VARCHAR (50)
 );
 
 create table BOOK (
- isbn varchar(14),
- title varchar(100),
- author varchar(30)
+ isbn VARCHAR(14),
+ title VARCHAR(100),
+ author VARCHAR(30)
 );
 
