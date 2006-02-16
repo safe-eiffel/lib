@@ -45,11 +45,12 @@ feature {NONE} -- Initialization
 		local
 			wh : DS_PAIR[FO_MEASUREMENT,FO_MEASUREMENT]
 			zero : FO_MEASUREMENT
+			canonic : STRING
 		do
 			create zero.points (0)
-			media.search (name)
-			if media.found then
-				wh := media.found_item
+			canonic := canonic_name (name)
+			if canonic /= Void then
+				wh := media.item (canonic)
 			else
 				wh := media.item ("A4")
 			end
@@ -75,7 +76,7 @@ feature -- Access
 			name_not_void: name /= Void
 			media_names_has_name: media_names.has (name)
 		do
-			Result := media.item (name).first
+			Result := media.item (canonic_name (name)).first
 		ensure
 			width_of_name_not_void: Result /= Void
 		end
@@ -86,7 +87,7 @@ feature -- Access
 			name_not_void: name /= Void
 			media_names_has_name: media_names.has (name)
 		do
-			Result := media.item (name).second
+			Result := media.item (canonic_name (name)).second
 		ensure
 			height_of_name_not_void: Result /= Void
 		end
@@ -103,12 +104,26 @@ feature -- Access
 		
 feature {NONE} -- Implementation
 
+	canonic_name (a_name : STRING) : STRING is
+			-- Canonic medium name.
+		do
+			media_names.start
+			media_names.search_forth (a_name)
+			if not media_names.off then
+				Result := media_names.item_for_iteration
+			end
+		ensure
+			not_void_if_has: media_names.has (a_name) implies Result /= Void
+		end
+		
 	media_names_impl : DS_LIST[STRING] is
 		local
 			c : DS_HASH_TABLE_CURSOR[DS_PAIR[FO_MEASUREMENT, FO_MEASUREMENT], STRING]
+			ci_tester : KL_CASE_INSENSITIVE_STRING_EQUALITY_TESTER
 		once
 			create {DS_LINKED_LIST[STRING]}Result.make
-			Result.set_equality_tester (create {KL_EQUALITY_TESTER[STRING]})
+			create ci_tester
+			Result.set_equality_tester (ci_tester)
 			from
 				c := media.new_cursor
 				c.start
@@ -123,8 +138,12 @@ feature {NONE} -- Implementation
 	
 	media : DS_HASH_TABLE [DS_PAIR[FO_MEASUREMENT, FO_MEASUREMENT], STRING] is
 			-- Media table.
+		local
+			ci_tester: KL_CASE_INSENSITIVE_STRING_EQUALITY_TESTER
 		once
 			create Result.make (150)
+			create ci_tester
+			Result.set_key_equality_tester (ci_tester)
 			media.force (pair_wh (720, 792), "10x11")
 			media.force (pair_wh (720, 936), "10x13")
 			media.force (pair_wh (720, 1008), "10x14")

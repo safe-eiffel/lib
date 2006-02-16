@@ -27,19 +27,24 @@ feature -- Initialization
 
 	make is
 			-- Creation procedure.
+		local
+			p : FO_PAGE_SIZE
+			f : FO_CONFIGURABLE_FACTORY
 		do
+			create p.make ("a4")
+			
 			setup_document
 			show_inline_properties
 			show_font_properties
 			close_document
 			--| Add your code here
---			test_trie
---			test_hyphen
---			use_classes
+			test_trie
+			test_hyphen
+			use_classes
 --			test_measurement
---			test_multiple_fonts
+			test_multiple_fonts
 		end
-
+		
 feature -- Access
 
 	document : FO_DOCUMENT
@@ -61,12 +66,11 @@ feature -- Basic operations
 			create writer.make ("c:\ereport.pdf")
 			create l_margins.set (cm (2), cm (2), cm (2), cm (2))
 			create l_page_size.make_a4
-			create document.make (l_page_size, writer)
+			create document.make_rectangle (l_page_size, writer)
 			document.set_margins (l_margins)
 			document.open
-			font_factory.find_font ("Helvetica", "","",font_factory.encoding_winansi)
+			font_factory.find_font ("Helvetica", "","", points (12))
 			helvetica_12 := font_factory.last_font
-			helvetica_12.set_size (points (12))
 		end
 
 	show_inline_properties is		
@@ -133,9 +137,9 @@ feature -- Basic operations
 		do
 			create tries.make
 			create hy.make (file_system.nested_pathname (execution_environment.variable_value ("SAFE"), <<"lib","fo","src", "support", "hyphen", "frhyph.tex">>))
-			create hypen.make ('-', hy)
+			create hypen.make ('-', 2, 2, hy)
 			hypen.hyphenate ("appelle")
-			hypen.hyphenate ("anticonstitutionnellement")
+			hypen.hyphenate ("ANTICONSTITUtionnellement")
 			hypen.hyphenate ("Isabelle")
 			hypen.hyphenate ("Zarathoustra")
 		end
@@ -199,11 +203,10 @@ feature -- Basic operations
 			margins : FO_MARGINS
 			measurement : FO_MEASUREMENT
 		do
-			font_factory.find_font ("Helvetica", "", "", font_factory.encoding_winansi)
+			font_factory.find_font ("Helvetica", "", "", points (12))
 			if font_factory.last_font /= Void then
 				font := font_factory.last_font
 				create measurement.points (12)
-				font.set_size (measurement)
 				create inline.make_with_font ("This is a content that I know is%
 				% completely useless, except for the example I am ", font)
 				create margins.make
@@ -211,8 +214,7 @@ feature -- Basic operations
 				create block.make (margins)
 				
 				block.append (inline)
-				font_factory.find_font ("Helvetica", "", "italic", font_factory.encoding_winansi)
-				font_factory.last_font.set_size (create {FO_MEASUREMENT}.points (12))
+				font_factory.find_font ("Helvetica", "", "italic", points (12))
 				do_nothing
 				create inline.make_with_font ("try", font_factory.last_font)
 				inline.set_foreground_color (create {FO_COLOR}.make_rgb (255, 0, 0))
@@ -228,8 +230,7 @@ feature -- Basic operations
 				create inline.make_with_font ("o emphasize.", font_factory.last_font)
 				inline.set_foreground_color (create {FO_COLOR}.make_rgb (255, 64, 64))
 				block.append (inline)
-				font_factory.find_font ("Times", "bold", "", font_factory.encoding_winansi)
-				font_factory.last_font.set_size (create {FO_MEASUREMENT}.points (14))
+				font_factory.find_font ("Times", "bold", "", points (14))
 				do_nothing
 				create inline.make_with_font ("%N%NAnd this is the last trial I'm doing before arriving %
 				%at Brussels-North. Now it is time for me to continue to work this way because %N%NI%N%N%N think %Nthis is better.", font_factory.last_font)
@@ -259,7 +260,7 @@ feature -- Basic operations
 			create a297.centimeters (29.7)
 			create a0.points (0)
 			create rectangle.set (a0, a0, a210, a297)
-			create a_document.make (rectangle, a_writer)
+			create a_document.make_rectangle (rectangle, a_writer)
 			create margins.make
 			margins.set_bottom (create {FO_MEASUREMENT}.centimeters (2))
 			margins.set_top (create {FO_MEASUREMENT}.centimeters (2))
@@ -351,8 +352,7 @@ feature -- Basic operations
 			
 			create b.make (margins)
 
-			font_factory.find_font ("Helvetica", "", "italic", font_factory.encoding_winansi)
-			font_factory.last_font.set_size (create {FO_MEASUREMENT}.points (12))
+			font_factory.find_font ("Helvetica", "", "italic", points (12))
 			create i.make_with_font ("", font_factory.last_font)
 			b.append (i)
 			b.append_string ("[
@@ -388,8 +388,7 @@ other people.
 			
 			create b.make (margins)
 
-			font_factory.find_font ("Helvetica", "", "italic", font_factory.encoding_winansi)
-			font_factory.last_font.set_size (create {FO_MEASUREMENT}.points (12))
+			font_factory.find_font ("Helvetica", "", "italic", points (12))
 			create i.make_with_font ("", font_factory.last_font)
 			b.append (i)
 			b.append_string ("[
@@ -423,8 +422,7 @@ other people.
 			
 			create b.make (margins)
 
-			font_factory.find_font ("Helvetica", "", "italic", font_factory.encoding_winansi)
-			font_factory.last_font.set_size (create {FO_MEASUREMENT}.points (12))
+			font_factory.find_font ("Helvetica", "", "italic", points (12))
 			create i.make_with_font ("", font_factory.last_font)
 			b.append (i)
 			b.append_string ("[

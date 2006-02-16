@@ -36,7 +36,7 @@ feature -- Status report
 	is_render_inside : BOOLEAN
 		
 	is_renderable (region : FO_RECTANGLE) : BOOLEAN is	
-			-- Can Current be rendered totally in `region'?
+			-- Can Current be rendered in `region'?
 		do
 			Result := True
 		end

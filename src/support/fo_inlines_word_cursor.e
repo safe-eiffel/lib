@@ -50,6 +50,10 @@ feature -- Access
 		end
 		
 	item_character (n : INTEGER) : DS_PAIR[FO_INLINE,INTEGER] is		
+			-- Coordinates of n-th character of current word.
+		require
+			n_positive: n > 0
+			n_less_text_count: n <= item_text.count
 		local
 			count, i : INTEGER
 			c : DS_LIST_CURSOR[FO_INLINE]
@@ -66,8 +70,7 @@ feature -- Access
 						i := word_begin.second
 					else
 						i := 1
-					end
-					
+					end				
 				until
 					count = n or else i > c.item.count or else c.off
 				loop
@@ -82,9 +85,27 @@ feature -- Access
 				create Result.make (c.item, i - 1)
 			end
 		end
-				
+
+	last_hyphen : CHARACTER
+					
 feature -- Measurement
 
+	prefix_width_hyphenated (prefix_end : INTEGER; hyphen : CHARACTER) : FO_MEASUREMENT is
+			-- width of word prefix [1..prefix_end] + hyphen.
+		require
+			prefix_end_valid: prefix_end > 0 and prefix_end <= item_text.count
+		local
+			pair : DS_PAIR[FO_MEASUREMENT,FO_MEASUREMENT]
+		do
+			pair := prefix_extra_width (prefix_end, hyphen)
+			Result := pair.first + pair.second
+		end
+
+	prefix_width (prefix_end : INTEGER) : FO_MEASUREMENT is		
+		do
+			Result := prefix_extra_width (prefix_end, '%U').first
+		end
+		
 feature -- Comparison
 
 feature -- Status report
@@ -114,8 +135,8 @@ feature -- Miscellaneous
 
 feature -- Basic operations
 
-	item_head (width : FO_MEASUREMENT) is
-			-- Keep head of item not larger than `width'.
+	keep_head_not_greater (width : FO_MEASUREMENT) is
+			-- Keep head of word not larger than `width'.
 		require
 			width_less_item_width: width /= Void and (width < item_width)
 		local
@@ -127,6 +148,7 @@ feature -- Basic operations
 			wtext : STRING
 			c : CHARACTER
 		do
+			--| find longest prefix
 			from
 				create wwidth.points (0)
 				wcount := 1
@@ -151,39 +173,62 @@ feature -- Basic operations
 			--| always one character too far
 			wcount := wcount - 1
 			if wcount <= item_text.count then
-				check done: done end
-				--| [wcount + 1 ..] = remaining word
-				remaining_subword_begin := item_character (wcount + 1)
-				remaining_subword_end := word_end
-				--| [1..wcount] = new word.
-				word_end := cpairlast
-				from
-					item_inlines.start
-				until
-					item_inlines.off or else item_inlines.item_for_iteration = word_end.first
-				loop
-					item_inlines.forth
-				end
-				create {DS_LINKED_LIST[FO_INLINE]}remaining_subword.make
-				if word_end.first = remaining_subword_begin.first then
-					remaining_subword.put_last (word_end.first)
-				end	
-				--| save then remove inlines for remaining_subword							
-				from
-					item_inlines.forth
-				until
-					item_inlines.off
-				loop
-					remaining_subword.put_last (item_inlines.item_for_iteration)
-					item_inlines.remove_at	
-				end
-				remaining_subword_width := item_width - wwidth
-				word_width := wwidth
-				remaining_subword_text := item_text.substring (wcount + 1, item_text.count)
-				word_text := item_text.substring (1, wcount)
+				keep_head (wcount)
 			end
 		ensure
 			item_width_le_width: item_width <= width
+		end
+		
+	keep_head (wcount : INTEGER) is
+			-- Keep `wcount' characters of current word
+		require
+			wcount_positive: wcount > 0
+			wcount_less_text_count: wcount <= item_text.count
+		local
+			cpairlast : DS_PAIR[FO_INLINE,INTEGER]
+			wwidth : FO_MEASUREMENT
+		do
+			--| keep w_count characters
+			cpairlast := item_character (wcount)
+--				check done: done end
+			--| [wcount + 1 ..] = remaining word
+			remaining_subword_begin := item_character (wcount + 1)
+			remaining_subword_end := word_end
+			--| [1..wcount] = new word.
+			word_end := cpairlast
+			from
+				item_inlines.start
+			until
+				item_inlines.off or else item_inlines.item_for_iteration = word_end.first
+			loop
+				item_inlines.forth
+			end
+			create {DS_LINKED_LIST[FO_INLINE]}remaining_subword.make
+			if word_end.first = remaining_subword_begin.first then
+				remaining_subword.put_last (word_end.first)
+			end	
+			--| save then remove inlines for remaining_subword							
+			from
+				item_inlines.forth
+			until
+				item_inlines.off
+			loop
+				remaining_subword.put_last (item_inlines.item_for_iteration)
+				item_inlines.remove_at	
+			end
+			wwidth := prefix_width (wcount)
+			remaining_subword_width := item_width - wwidth
+			word_width := wwidth
+			remaining_subword_text := item_text.substring (wcount + 1, item_text.count)
+			word_text := item_text.substring (1, wcount)
+		ensure
+			word_text_head: word_text.is_equal ((old word_text).substring (1, wcount))
+		end
+	
+	keep_head_hyphenated (prefix_end : INTEGER; hyphen : CHARACTER) is	
+		do
+			keep_head (prefix_end)
+			last_hyphen := hyphen
 		end
 		
 	append_item (line : FO_LINE) is
@@ -210,6 +255,10 @@ feature -- Basic operations
 					item_inlines_cursor.forth
 				end
 			end
+			if last_hyphen /= '%U' then
+				line.append_character (last_hyphen)
+			end
+			last_hyphen := '%U'
 		end
 		
 	start is
@@ -495,4 +544,30 @@ feature {NONE} -- Implementation
 		do			
 		end
 
+	prefix_extra_width (prefix_end : INTEGER; extra : CHARACTER) : DS_PAIR[FO_MEASUREMENT, FO_MEASUREMENT] is
+		require
+			prefix_end_valid: prefix_end > 0 and prefix_end <= item_text.count
+		local
+			index : INTEGER
+			pair : DS_PAIR[FO_INLINE, INTEGER]
+			p_width, e_width : FO_MEASUREMENT
+		do
+			create p_width.points (0)
+			from
+				index := 1
+			until
+				index > prefix_end
+			loop
+				pair := item_character (index)
+				p_width := p_width + pair.first.character_width (pair.first.item (pair.second))
+				index := index + 1
+			end
+			if pair /= Void and then extra /= '%U' then
+				e_width := pair.first.character_width (extra)
+			else
+				create e_width.points (0)
+			end
+			create Result.make (p_width, e_width)
+		end
+		
 end

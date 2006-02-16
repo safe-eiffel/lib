@@ -153,7 +153,7 @@ feature -- Basic operations
 				section := section_catalog.found_item
 				l_rectangle := x_new_page_rectangle (section.page, error_handler)
 			end
-			create last_document.make (l_rectangle, a_writer)
+			create last_document.make_rectangle (l_rectangle, a_writer)
 		end
 		
 	create_section (name : STRING) is
@@ -243,11 +243,16 @@ feature -- Basic operations
 			name_not_void: name /= Void
 		local
 			font : FO_FONT
+			xfont : XFOCFG_FONT
 		do
 			style_catalog.search (name)
 			if style_catalog.found then
-				font := x_new_font (style_catalog.found_item.font, error_handler)
+				xfont := style_catalog.found_item.font
+				font := x_new_font (xfont, error_handler)
 				create last_inline.make_with_font ("",font)
+				if xfont.attribute_stretch /= Void then
+					last_inline.set_stretch (unit (xfont.attribute_stretch.item))
+				end
 			end
 		end
 	
@@ -393,13 +398,9 @@ feature {NONE} -- Implementation
 				if size = Void then
 					create size.points (12)
 				end
-				font_factory.find_font (family, weight, style, font_factory.encoding_winansi)
+				font_factory.find_font (family, weight, style, size)
 				if font_factory.last_font /= Void then
 					Result := font_factory.last_font
-					Result.set_size (size)
-					if xfont.attribute_stretch /= Void then
-						Result.set_stretch (xfont.attribute_stretch)
-					end
 				end
 			end
 		end

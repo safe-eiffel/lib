@@ -17,7 +17,9 @@ inherit
 		export
 			{ANY} Encoding_mac, Encoding_pdf, Encoding_standard, Encoding_winansi
 		end
-		
+
+	FO_SHARED_DEFAULTS
+			
 creation
 	make
 
@@ -54,11 +56,29 @@ feature {NONE} -- Initialization
 feature -- Access
 
 	last_font : FO_FONT
+
+	default_font : FO_FONT is
+		do
+			if default_font_impl = Void then
+				find_font (shared_defaults.font_family, "", "", shared_defaults.font_size)
+				default_font_impl := last_font
+			end
+			Result := default_font_impl
+		end
 		
+			
 feature -- Measurement
 
 feature -- Status report
 
+	is_default (a_font : FO_FONT) : BOOLEAN is
+			-- Is `a_font' same as `default_font'?
+		require
+			a_font_not_void: a_font /= Void
+		do
+			Result := default_font.is_equal (a_font)
+		end
+		
 	valid_family (family : STRING) : BOOLEAN is
 			-- is `family' a valid font family ?
 		do
@@ -98,7 +118,22 @@ feature -- Cursor movement
 
 feature -- Element change
 
-	find_font (name, weight, style, encoding : STRING) is
+	set_default_font (new_font: FO_FONT) is
+			-- Set `default_font' to `new_font'.
+		require
+			new_font_not_void: new_font /= Void
+		do
+			default_font_impl := new_font
+		ensure
+			default_font_set: default_font = new_font
+		end
+
+	find_font (name, weight, style : STRING; size : FO_MEASUREMENT) is
+		do
+			find_font_weight_style_encoding (name, weight, style, shared_defaults.font_encoding, size)
+		end
+		
+	find_font_weight_style_encoding (name, weight, style, encoding : STRING; size : FO_MEASUREMENT) is
 			-- Find font with `name', `weight', `style', `encoding'
 		do
 			font_table.search (font_key (name, weight, style))
@@ -106,11 +141,20 @@ feature -- Element change
 				if supported_encodings.has (encoding) then
 					dummy_document.find_font (font_table.found_item, encoding)
 					if dummy_document.last_font /= Void then
-						create last_font.make (name, weight, style, dummy_document.last_font)
+						create last_font.make (name, weight, style, dummy_document.last_font, size)
 					end
 				end
-			else
-				last_font := Void
+			end
+			if last_font = Void then
+				if default_font /= Void then
+					find_font_weight_style_encoding (default_font.family,
+						default_font.weight,
+						default_font.style,
+						default_font.encoding,
+						default_font.size)
+				else
+					find_font_weight_style_encoding (shared_defaults.font_family, "","", shared_defaults.font_encoding, shared_defaults.font_size)
+				end
 			end
 		ensure
 			found_name: last_font /= Void implies last_font.family.is_equal (name)
@@ -180,4 +224,6 @@ feature {NONE} -- Implementation
 
 	dummy_document : PDF_DOCUMENT
 
+	default_font_impl : FO_FONT
+	
 end

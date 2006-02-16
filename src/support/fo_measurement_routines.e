@@ -11,7 +11,7 @@ indexing
 
 class FO_MEASUREMENT_ROUTINES
 
-feature -- Access
+feature {NONE} -- Access
 
 	cm, centimeters (p_cm : DOUBLE) : FO_MEASUREMENT is
 		do

@@ -18,12 +18,27 @@ inherit
 		redefine
 			out
 		end
+
+	FO_SHARED_FONT_FACTORY
+		undefine		
+			is_equal, out
+		end
 		
 create
-	make_with_font, make_inherit
+	make, make_with_font, make_inherit
 
 feature {NONE} -- Initialization
 
+	make (new_content : STRING) is
+			-- Make with default font.
+		require
+			new_content_not_void: new_content /= Void
+		local
+			new_font : FO_FONT
+		do
+			make_with_font (new_content, font_factory.default_font)
+		end
+		
 	make_with_font (new_content : STRING; new_font : FO_FONT) is
 			-- 
 		require

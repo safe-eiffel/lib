@@ -20,25 +20,26 @@ creation
 	
 feature {NONE} -- Initialization
 
-	make (new_family, new_weight, new_style : STRING; corresponding_internal_font : PDF_FONT) is
+	make (new_family, new_weight, new_style : STRING; corresponding_internal_font : PDF_FONT; new_size : FO_MEASUREMENT) is
 			-- Make with `new_family', `new_weight', `new_style', and `corresponding_internal_font'.
 		require
 			valid_family: font_factory.valid_family (new_family)
 			valid_weight: font_factory.valid_weight (new_weight)
 			valid_style: font_factory.valid_style (new_style)
 			corresponding_internal_font_exists: corresponding_internal_font /= Void
+			valid_size: new_size /= Void and then new_size.sign = 1
 		do
 			family := new_family
 			weight := new_weight
 			style := new_style
-			create size.points (0)
+			size := new_size
 			internal_font := corresponding_internal_font
 			encoding := corresponding_internal_font.encoding.name.value
 		ensure
 			family_set: family = new_family
 			weight_set: weight = new_weight
 			style_set: style = new_style
-			size_zero: size.as_points = 0
+			size_set: size = new_size
 			internal_font_set: internal_font = corresponding_internal_font
 		end
 		
@@ -97,7 +98,9 @@ feature -- Access
 				create {FO_MEASUREMENT}.points (r.lly.truncated_to_integer) / ratio,
 				create {FO_MEASUREMENT}.points (r.urx.truncated_to_integer) / ratio,
 				create {FO_MEASUREMENT}.points (r.ury.truncated_to_integer) / ratio)
-			end
+		ensure
+			bound_box_not_void: Result /= Void
+		end
 		
 	underline_position : INTEGER is
 		do

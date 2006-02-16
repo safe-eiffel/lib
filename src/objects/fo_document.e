@@ -12,13 +12,22 @@ indexing
 class
 	FO_DOCUMENT
 
+inherit
+	
+	FO_SHARED_DEFAULTS
+		undefine
+			is_equal, out
+		end
+		
+	FO_COLOR_ABLE
+	
 create
-	make
+	make, make_rectangle
 
 feature {NONE} -- Initialization
 
-	make (new_page_rectangle: FO_RECTANGLE; new_writer : FO_DOCUMENT_WRITER) is
-			-- Initialize `Current'.
+	make_rectangle (new_page_rectangle: FO_RECTANGLE; new_writer : FO_DOCUMENT_WRITER) is
+			-- Initialize `Current' with `new_page_rectangle' and `new_writer'.
 		require
 			new_writer_exists: new_writer /= Void
 			new_writer_not_open: not new_writer.is_open
@@ -26,14 +35,29 @@ feature {NONE} -- Initialization
 		do
 			writer := new_writer
 			page_rectangle := new_page_rectangle
-			create margins.make
 			create {DS_LINKED_LIST[FO_PAGE]}pages.make
 			pages_cursor := pages.new_cursor
+			margins := shared_defaults.document_margins
+			create background_color.make_rgb (255,255,255)
+			create foreground_color.make_rgb (0,0,0)
 		ensure
 			writer_set: writer = new_writer
 			page_rectangle_set: page_rectangle = new_page_rectangle
+			margins_default: margins /= Void and then margins.is_equal (shared_defaults.document_margins)
 		end
 
+	make (new_writer : FO_DOCUMENT_WRITER) is
+			-- Initialize `Current' with `new_writer'.
+		require
+			new_writer_exists: new_writer /= Void
+			new_writer_not_open: not new_writer.is_open
+		do
+			make_rectangle (shared_defaults.document_rectangle, new_writer)
+		ensure
+			writer_set: writer = new_writer
+			page_rectangle_default: page_rectangle /= Void and then page_rectangle.is_equal (shared_defaults.document_rectangle)
+		end
+		
 feature -- Access
 
 	page_rectangle : FO_RECTANGLE
@@ -70,6 +94,7 @@ feature -- Access
 			-- Currently available rendering region.
 
 	header : FO_HEADER_FOOTER is
+			-- Header of current section.
 		do
 			Result := current_section.header
 		ensure
@@ -78,6 +103,7 @@ feature -- Access
 		
 	
 	footer : FO_HEADER_FOOTER is
+			-- Footer of current section.
 		do
 			Result := current_section.footer
 		ensure
@@ -86,6 +112,7 @@ feature -- Access
 		
 	
 	current_section : FO_SECTION
+			-- Current section.
 	
 feature -- Measurement
 
@@ -256,10 +283,8 @@ feature -- Miscellaneous
 
 feature -- Basic operations
 
-	do_page_break is
-			-- Break current page.
-		local
-			page : FO_PAGE
+	append_page_break is
+			-- Append page break.
 		do
 			pages_cursor.item.set_rendered_region (available_render_region)
 			if current_page.is_text_mode then
@@ -267,36 +292,13 @@ feature -- Basic operations
 			end
 			show_page_margins
 			pdf_document.add_page
-			create page.make (pdf_document.last_page, current_section)
-			pages.put_last (page)
-			pages_cursor.finish
+			setup_page
 			available_render_region := margins.content_region (page_rectangle)
---			if not current_page.is_text_mode then
---				current_page.begin_text
---			end
 		end
 		
 	append_block (block : FO_BLOCK) is
 			-- Append `block' of text.
 		do
---			if block.is_keep_with_next then
---				if last_unbreakable = Void then
---					create last_unbreakable.make
---				end
---				last_unbreakable.unbreakables.put_last (block)
---			else
---				if last_unbreakable /= Void then
---					last_unbreakable.unbreakables.put_last (block)
---					last_unbreakable.pre_render (available_render_region)
---					if last_unbreakable.height > available_render_region then
---						do_page_break
---					end
---					last_unbreakable.render_start (current, available_render_region)
---					last_unbreakable := Void
---				else
---					render_renderable (block)
---				end	
---			end
 			render_renderable (block)
 		end
 
@@ -344,13 +346,17 @@ feature -- Basic operations
 					writer.document.information.set_modification_date (modification_date)
 				end
 				available_render_region := margins.content_region (page_rectangle)
-				create current_section.make ("default", page_rectangle, margins)
-				create page.make (writer.current_page, current_section)
-				pages.put_last (page)
-				pages_cursor.finish
+				if current_section = Void then
+					create current_section.make ("default", page_rectangle, margins)
+				end
+				setup_page
 				pdf_document.set_default_mediabox (page_rectangle.as_pdf)
 				current_page.set_mediabox (page_rectangle.as_pdf)
+			else
+				do_nothing
 			end
+		ensure
+			current_section_not_void: current_section /= Void
 		end
 		
 	close is
@@ -402,13 +408,13 @@ feature {NONE} -- Implementation
 					unbreakable.unbreakables.put_last (renderable)
 					unbreakable.pre_render (available_render_region)
 					if unbreakable.height > available_render_region.height then
-						do_page_break
+						append_page_break
 					end
 					render_renderable (unbreakable) --unbreakable.render_start (current, available_render_region)
 				else
 					borderable ?= renderable
 					if renderable.is_page_break_before then
-						do_page_break
+						append_page_break
 					end
 					from
 						renderable.render_start(Current, available_render_region)
@@ -418,7 +424,7 @@ feature {NONE} -- Implementation
 					until
 						renderable.is_render_off
 					loop
-						do_page_break
+						append_page_break
 						renderable.render_forth (Current, margins.content_region (page_rectangle))
 						if borderable /= Void then
 							borderable.render_borders (Current, renderable.last_rendered_region)
@@ -494,7 +500,29 @@ feature {NONE} -- Implementation
 	pages_cursor : DS_LIST_CURSOR[FO_PAGE]
 		
 	last_unbreakable : FO_UNBREAKABLE
-	
+
+	setup_page is
+		local
+			page : FO_PAGE
+		do		
+			create page.make (pdf_document.last_page, current_section)
+			pages.put_last (page)
+			pages_cursor.finish
+			if background_color /= Void then
+				if current_page.is_text_mode then
+					current_page.end_text
+				end
+				current_page.gsave
+				current_page.set_mediabox (current_section.page_rectangle.as_pdf)
+				current_page.set_rgb_color (background_color.red / 255,
+					background_color.green / 255,
+					background_color.blue / 255)
+				current_page.rectangle (0, 0, current_page.mediabox.urx, current_page.mediabox.ury)
+				current_page.fill
+				current_page.grestore
+			end
+		end	
+		
 feature {FO_SPECIAL_INLINE} -- Implementation
 
 	current_page_number : INTEGER

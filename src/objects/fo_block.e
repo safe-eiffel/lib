@@ -35,12 +35,27 @@ inherit
 		undefine		
 			is_equal, out
 		end
+
+	FO_SHARED_DEFAULTS
+		undefine		
+			is_equal, out
+		end
 		
 creation
-	make, make_right, make_center
+	make, make_right, make_center, make_default
 
 feature {NONE} -- Initialization
 
+	make_default is
+			-- Make with default margins and default inline.
+		local
+			inline : FO_INLINE
+		do
+			make (shared_defaults.block_margins)
+			create inline.make ("")
+			append (inline)
+		end
+		
 	make (new_margins : FO_MARGINS) is
 			-- Make with `new_margins' with left justification.
 		require
@@ -357,7 +372,7 @@ feature {FO_DOCUMENT, FO_RENDERABLE} -- Basic operations
 					word_cursor.forth
 				end
 				if word_cursor.item_width > actual_region.width then
-					word_cursor.item_head (actual_region.width)
+					word_cursor.keep_head_not_greater (actual_region.width)
 					if word_cursor.item_text.count > 0 and line_width + word_cursor.item_width <= actual_region.width then
 						word_cursor.append_item (line)
 						line_width := line_width + word_cursor.item_width

@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 
-<system name="ereport">
+<system name="tutorial">
 	<description>
 		system:      "Reports with Formatting Objects"
 
@@ -11,7 +11,7 @@
 		revision:    "$Revision$"
 	</description>
 
-	<root class="EREPORT" creation="make"/>
+	<root class="EFOTUTORIAL" creation="make"/>
 	<option unless="${DEBUG}">
 		<option name="assertion" value="none"/>
 		<option name="finalize" value="true" unless="${GOBO_EIFFEL}=ve"/>
@@ -21,7 +21,7 @@
 		<option name="finalize" value="false"/>
 	</option>
 
-	<cluster name="root_cluster" location="${SAFE}/lib/fo/examples/ereport"/>
+	<cluster name="root_cluster" location="${SAFE}/lib/fo/examples/tutorial"/>
 
 	<mount location="${SAFE_KERNEL}/xml/library.xace"/>
 	<mount location="${SAFE}/lib/fo/library.xace"/>
