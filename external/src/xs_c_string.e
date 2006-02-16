@@ -43,8 +43,10 @@ feature {NONE} -- Initialization
 				make_shared_from_pointer (empty_string.handle, 0)
 			end
 			capacity := a_capacity
+			count := -1
 		ensure
 			capacity_set: capacity = a_capacity
+			count_minus_1: count = -1
 			shared_when_empty: (a_capacity = 0) implies (Current = empty_string or else (is_shared and then handle = empty_string.handle))
 		end
 
@@ -71,6 +73,8 @@ feature {NONE} -- Initialization
 		do
 			handle := p
 			capacity := a_capacity
+			count := -1 -- External
+--			count := external_string_length (handle)
 		ensure
 			handle_set: handle = p
 			capacity_set: capacity = a_capacity
@@ -86,6 +90,7 @@ feature -- Initialization
 		do
 			handle := p
 			capacity := a_capacity
+			count := -1 -- external_string_length (handle)
 			is_shared := True
 		ensure
 			handle_set: handle = p
@@ -97,7 +102,10 @@ feature -- Access
 
 	capacity : INTEGER
 			-- string capacity
-			
+	
+	count : INTEGER
+			-- Count of characters in string.
+					
 	item (c : INTEGER) : CHARACTER is
 		require
 			c_within_limits: c >= 1 and c <= capacity
@@ -218,7 +226,11 @@ feature -- Conversion
 		require
 			valid: is_valid
 		do
-			Result := pointer_to_string (handle)
+			if count >= 0 then
+				Result := substring (1, count)
+			else
+				Result := pointer_to_string (handle)
+			end
 		end
 
 feature -- Constants
@@ -262,6 +274,7 @@ feature -- Element change
 				index := index + 1
 			end
 			c_memory_put_uint8 (c_memory_pointer_plus (handle, s.count), 0)
+			count := s.count
 		ensure
 			equal_strings: equal_string (s)
 		end
@@ -308,6 +321,20 @@ feature {NONE} -- Implementation
 			end
 		end
 
+	external_string_length (a_handle : POINTER) : INTEGER is
+		local
+			index : INTEGER
+		do
+			from
+				index := 0
+			until
+				index = capacity or else c_memory_get_uint8 (c_memory_pointer_plus (a_handle, index)) = 0
+			loop
+				index := index + 1
+			end
+			Result := index
+		end
+		
 invariant
 	is_valid_or_released: is_valid or else is_released
 		
