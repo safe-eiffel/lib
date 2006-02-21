@@ -1,5 +1,5 @@
 indexing
-	description: "Objects that..."
+	description: "Cells of a trie."
 
 	usage: ""
 	quality: ""
@@ -13,6 +13,7 @@ indexing
 class DS_TRIE_CELL [G]
 
 inherit
+	
 	ANY
 		redefine
 			out
@@ -25,13 +26,14 @@ create
 feature {NONE} -- Initialization
 
 	make (a_key : CHARACTER) is
-			-- make cell with `a_key' and `an_item'.
+			-- Make cell with `a_key' and `an_item'.
 		do
 			key := a_key
 			create subkeys.make (5)
 		end
 
 	make_root is		
+			-- Make as root cell.
 		do
 			is_root := True
 			create subkeys.make (5)
@@ -40,58 +42,70 @@ feature {NONE} -- Initialization
 feature -- Access
 
 	key : CHARACTER
-	
+			-- Key character of Current.
+			
 	item : G
-	
+			-- Associated item.
+			
 	found_item : like Current
-	
-feature -- Measurement
-
-feature -- Comparison
-
+			-- Item found after last search or search_key operation.
 feature -- Status report
 
 	found : BOOLEAN
-
+			-- Has last `search' or `search_key' operation succeeded?
+			
 	is_root : BOOLEAN
-	
+			-- Is current a root cell?
+			
 	is_set : BOOLEAN
-		
+			-- Is current cell associated with an item?
+			
 feature -- Element change
 
 	set_item (an_item : G) is
+			-- Associate `an_item' to Current.
 		do
 			item := an_item
 			is_set := True
 		ensure
 			item_set: item = an_item
 		end
+	
+	clear is
+			-- Clear `item'.
+		do
+			item := Void
+			is_set := False
+		ensure
+			item_void: item = Void
+			not_is_set: not is_set
+		end
 		
 feature -- Basic operations
 
-	search (string : STRING; index_start : INTEGER) is
-			-- Search for suffix of `string' starting at `index_start'.
-		require
-			string_not_void: string /= Void
-			index_start_within_bounds: index_start >= 1 and index_start <= string.count
-			index_start_consistent: index_start > 1 implies string.item (index_start - 1) = key
-		do
-			found_item := Void
-			found := False
-			subkeys.search (string.item (index_start))
-			if subkeys.found then
-				if index_start = string.count then
-					found_item := subkeys.found_item
-					found := found_item.is_set
-				else
-					subkeys.found_item.search (string, index_start + 1)
-					found := subkeys.found_item.found and then subkeys.found_item.found_item.is_set
-					if found then
-						found_item := subkeys.found_item.found_item
-					end
-				end
-			end
-		end
+--	search (string : STRING; index_start : INTEGER) is
+--			-- Search for suffix of `string' starting at `index_start'.
+--		require
+--			string_not_void: string /= Void
+--			index_start_within_bounds: index_start >= 1 and index_start <= string.count
+--			index_start_consistent: index_start > 1 implies string.item (index_start - 1) = key
+--		do
+--			found_item := Void
+--			found := False
+--			subkeys.search (string.item (index_start))
+--			if subkeys.found then
+--				if index_start = string.count then
+--					found_item := subkeys.found_item
+--					found := found_item.is_set
+--				else
+--					subkeys.found_item.search (string, index_start + 1)
+--					found := subkeys.found_item.found and then subkeys.found_item.found_item.is_set
+--					if found then
+--						found_item := subkeys.found_item.found_item
+--					end
+--				end
+--			end
+--		end
 
 	search_key (string : STRING; index_start : INTEGER) is
 			-- Search for suffix of `string' starting at `index_start'.
@@ -108,7 +122,7 @@ feature -- Basic operations
 					found_item := subkeys.found_item
 					found := True
 				else
-					subkeys.found_item.search (string, index_start + 1)
+					subkeys.found_item.search_key (string, index_start + 1)
 					found := subkeys.found_item.found
 					if found then
 						found_item := subkeys.found_item.found_item
