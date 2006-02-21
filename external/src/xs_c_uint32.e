@@ -121,7 +121,7 @@ feature -- Basic operations
 	infix "*" (other : like Current) : like Current is
 			-- Current multiplied by `other'.
 		do
-			Create Result.make
+			create Result.make
 			Result.put (multiply (item, other.item))
 		end
 	infix "+" (other : like Current) : like Current is
@@ -152,8 +152,7 @@ feature -- Basic operations
 			Result.put (remainder (item, other.item))
 		end
 		
-	infix "@<<" (n : INTEGER) : like Current is
-			-- Current shifted left by `n' bits
+	infix "|<<" (n : INTEGER) : like Current is
 		require
 			n_within_limits: n >= 0 and n <= bit_count
 		do
@@ -161,8 +160,7 @@ feature -- Basic operations
 			Result.put (left_shift (item, n))
 		end
 
-	infix "@>>" (n : INTEGER) : like Current is
-			-- Current shifted right by `n' bits
+	infix "|>>" (n : INTEGER) : like Current is
 		require
 			n_within_limits: n >= 0 and n <= bit_count
 		do
@@ -170,29 +168,25 @@ feature -- Basic operations
 			Result.put (right_shift (item, n))
 		end
 		
-	infix "@and" (other : like Current) : like Current is
-			-- Current bits and-ed with `other' bits.
+	infix "and" (other : like Current) : like Current is
 		do
 			create Result.make
 			Result.put (u_and (item, other.item))
 		end
 		
-	infix "@or" (other : like Current) : like Current is
-			-- Current bits or-ed with `other' bits.
+	infix "or" (other : like Current) : like Current is
 		do
 			create Result.make
 			Result.put (u_or (item, other.item))
 		end
 		
-	infix "@xor" (other : like Current) : like Current is
-			-- Current bits xor-ed with `other' bits.
+	infix "xor" (other : like Current) : like Current is
 		do
 			create Result.make
 			Result.put (u_xor (item, other.item))
 		end
 			
-	prefix "@not" : like Current is
-			-- Current bits negated.
+	prefix "not" : like Current is
 		do
 			create Result.make
 			Result.put (u_not (item))
