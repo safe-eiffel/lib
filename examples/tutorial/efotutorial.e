@@ -26,6 +26,7 @@ feature -- Initialization
 			-- Creation procedure.
 		do
 			test_chapter_1
+			test_tables
 		end
 		
 	test_chapter_1 is
@@ -36,6 +37,13 @@ feature -- Initialization
 	test_hello_world is	
 		local
 			test : TUTORIAL_HELLO_WORLD
+		do
+			create test.execute
+		end
+		
+	test_tables is
+		local
+			test : TUTORIAL_SHOW_TABLES
 		do
 			create test.execute
 		end

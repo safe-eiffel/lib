@@ -13,6 +13,8 @@ class FO_IMAGE
 
 inherit
 	FO_RENDERABLE
+		undefine
+			post_render
 		redefine
 			pre_render, is_equal, render_forth
 		end
@@ -177,7 +179,7 @@ feature {FO_DOCUMENT, FO_RENDERABLE} -- Basic operations
 			last_region := region
 			is_prerendered := True
 		end
-		
+
 feature -- Obsolete
 
 feature -- Comparison

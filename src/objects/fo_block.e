@@ -21,6 +21,8 @@ inherit
 		end
 
 	FO_RENDERABLE
+		undefine
+			post_render
 		redefine
 			pre_render, is_equal, out,
 			render_forth, is_renderable

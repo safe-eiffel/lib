@@ -78,6 +78,7 @@ feature {FO_DOCUMENT, FO_RENDERABLE} -- Basic operations
 					last_rendered_region := last_rendered_region.merged (c.item.last_rendered_region)
 				end
 				height := height + c.item.height
+				c.item.post_render (document, c.item.last_rendered_region)
 				is_render_off := is_render_off and c.item.is_render_off
 				c.forth
 			end

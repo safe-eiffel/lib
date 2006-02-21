@@ -10,7 +10,7 @@ deferred class
 inherit
 	FO_RENDERABLE
 		undefine
-			is_renderable, render_forth, pre_render
+			is_renderable, render_forth, pre_render, post_render
 		end
 		
 feature -- Initialization
@@ -121,6 +121,37 @@ feature -- Comparison
 		
 feature -- Basic operations
 	
+	post_render (document: FO_DOCUMENT; region: FO_RECTANGLE) is
+		do
+			render_borders (document, region)
+		end
+		
+feature {NONE} -- Implementation
+
+	set_line_properties (page : PDF_PAGE; border : FO_BORDER) is
+			-- Set line properties (style/color) of `border' into `page'.
+		local
+			rule : DS_PAIR[ARRAY[INTEGER],INTEGER]
+		do
+			if border.style = border.style_none then
+				page.set_line_solid
+			else
+				rule := border.style_rule
+				page.set_line_dash (rule.first, rule.second)
+			end
+			if border.color /= Void then
+				page.set_rgb_color_stroke (border.color.red/255, border.color.green/255, border.color.blue/255)
+			end
+			if border.width /= Void then
+				page.set_line_width (border.width.as_points)
+			end
+		end
+		
+	border_none : FO_BORDER is
+		once
+			create Result.make_none
+		end
+
 	render_borders (document : FO_DOCUMENT; region : FO_RECTANGLE) is
 			-- Render borders in `document' into `region'.
 		local
@@ -168,32 +199,6 @@ feature -- Basic operations
 				end
 				page.grestore
 			end
-		end
-		
-feature {NONE} -- Implementation
-
-	set_line_properties (page : PDF_PAGE; border : FO_BORDER) is
-			-- Set line properties (style/color) of `border' into `page'.
-		local
-			rule : DS_PAIR[ARRAY[INTEGER],INTEGER]
-		do
-			if border.style = border.style_none then
-				page.set_line_solid
-			else
-				rule := border.style_rule
-				page.set_line_dash (rule.first, rule.second)
-			end
-			if border.color /= Void then
-				page.set_rgb_color_stroke (border.color.red/255, border.color.green/255, border.color.blue/255)
-			end
-			if border.width /= Void then
-				page.set_line_width (border.width.as_points)
-			end
-		end
-		
-	border_none : FO_BORDER is
-		once
-			create Result.make_none
 		end
 		
 invariant

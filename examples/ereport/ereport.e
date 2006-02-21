@@ -320,17 +320,17 @@ feature -- Basic operations
 			block.margins.set_right (create {FO_MEASUREMENT}.centimeters (1))
 			a_document.append_block (block)
 			
---			create image.make_from_png ("C:\User\eiffel\safe\safe\lib\ecli\examples\books\data\nvc.png", a_document)
---			image.set_width (create {FO_MEASUREMENT}.centimeters (10))
---			create border.make ({FO_BORDER}.style_dot_dash, create {FO_MEASUREMENT}.points (1),
---				create {FO_COLOR}.make_rgb (255, 0, 0))
---			image.align.make_center
---			image.margins.set_left (create {FO_MEASUREMENT}.centimeters (1))
---			image.margins.set_right (create {FO_MEASUREMENT}.centimeters (1))
---			image.margins.set_top (create {FO_MEASUREMENT}.centimeters (1))
---			image.margins.set_bottom (create {FO_MEASUREMENT}.centimeters (1))
---			image.set_uniform_borders (border)
---			a_document.append_image (image)
+			create image.make_from_png ("C:\User\eiffel\safe\safe\lib\ecli\examples\books\data\nvc.png", a_document)
+			image.set_width (create {FO_MEASUREMENT}.centimeters (10))
+			create border.make ({FO_BORDER}.style_dot_dash, create {FO_MEASUREMENT}.points (1),
+				create {FO_COLOR}.make_rgb (255, 0, 0))
+			image.align.make_center
+			image.margins.set_left (create {FO_MEASUREMENT}.centimeters (1))
+			image.margins.set_right (create {FO_MEASUREMENT}.centimeters (1))
+			image.margins.set_top (create {FO_MEASUREMENT}.centimeters (1))
+			image.margins.set_bottom (create {FO_MEASUREMENT}.centimeters (1))
+			image.set_uniform_borders (border)
+			a_document.append_image (image)
 			test_row_single (a_document)
 			test_row_multiple (a_document)
 			a_document.close

@@ -14,14 +14,9 @@ inherit
 	
 	FO_RENDERABLE
 		redefine
-			render_forth, pre_render, is_renderable
+			render_forth, pre_render, is_renderable, post_render
 		end
-		
-	FO_BORDER_ABLE
-		redefine
-			render_forth, render_borders
-		end
-		
+				
 	KL_IMPORTED_ARRAY_ROUTINES
 	
 create
@@ -32,9 +27,7 @@ feature {NONE} -- Initialization
 
 	make (n : INTEGER; desired_total_width : FO_MEASUREMENT) is
 			-- Row of `desired_total_width' made of `n' items.
-		local
 		do
-			make_borders_none
 			initialize_items (n)
 			initialize_widths (n, desired_total_width)
 			width := desired_total_width
@@ -51,7 +44,6 @@ feature {NONE} -- Initialization
 			desired_widths_count_n: desired_widths.count = n
 			desired_widths_no_void: not ANY_ARRAY_.has (desired_widths, Void)
 		do
-			make_borders_none
 			initialize_items (n)
 			block_widths := desired_widths
 			width := sum_of_widths
@@ -61,7 +53,7 @@ feature {NONE} -- Initialization
 		
 feature -- Access
 
-	item (index: INTEGER) : FO_BORDER_ABLE is
+	item (index: INTEGER) : FO_RENDERABLE is
 			-- `index'-th borderable in row.
 		require
 			index_within_limits: index >= 1 and index <= capacity
@@ -142,13 +134,13 @@ feature -- Cursor movement
 
 feature -- Element change
 
-	put (a_borderable : FO_BORDER_ABLE; index : INTEGER) is
-			-- Put `a_borderable' at `index'-th position.
+	put (a_renderable : FO_RENDERABLE; index : INTEGER) is
+			-- Put `a_renderable' at `index'-th position.
 		require
-			a_borderable_not_void: a_borderable /= Void
+			a_renderable_not_void: a_renderable /= Void
 			index_within_limits: index >= 1 and index <= capacity
 		do
-			items.put (a_borderable, index)
+			items.put (a_renderable, index)
 		end
 		
 feature -- Removal
@@ -163,7 +155,7 @@ feature -- Duplication
 
 feature -- Miscellaneous
 
-feature {FO_DOCUMENT, FO_BORDER_ABLE} -- Basic operations
+feature {FO_DOCUMENT, FO_BORDER_ABLE, FO_TABLE} -- Basic operations
 
 	pre_render (region: FO_RECTANGLE) is
 		local
@@ -252,7 +244,7 @@ feature {FO_DOCUMENT, FO_BORDER_ABLE} -- Basic operations
 			last_region := region
 		end
 
-	render_borders (document : FO_DOCUMENT; region : FO_RECTANGLE) is
+	post_render (document : FO_DOCUMENT; region : FO_RECTANGLE) is
 		local
 			i : INTEGER
 		do		
@@ -262,7 +254,7 @@ feature {FO_DOCUMENT, FO_BORDER_ABLE} -- Basic operations
 			until
 				i > items.upper
 			loop
-				items.item (i).render_borders (document, render_regions.item (i))
+				items.item (i).post_render (document, render_regions.item (i))
 				i := i + 1
 			end
 		end
@@ -358,7 +350,7 @@ feature {NONE} -- Implementation
 		end
 
 		
-	items : ARRAY [FO_BORDER_ABLE]
+	items : ARRAY [FO_RENDERABLE]
 		-- items.
 				
 invariant		

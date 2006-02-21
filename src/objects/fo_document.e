@@ -40,6 +40,7 @@ feature {NONE} -- Initialization
 			margins := shared_defaults.document_margins
 			create background_color.make_rgb (255,255,255)
 			create foreground_color.make_rgb (0,0,0)
+			create {DS_LINKED_LIST[FO_PAGE_BREAK_EVENT_CALLBACK]}page_break_event_callbacks.make
 		ensure
 			writer_set: writer = new_writer
 			page_rectangle_set: page_rectangle = new_page_rectangle
@@ -58,6 +59,10 @@ feature {NONE} -- Initialization
 			page_rectangle_default: page_rectangle /= Void and then page_rectangle.is_equal (shared_defaults.document_rectangle)
 		end
 		
+feature {FO_RENDERABLE} -- Access
+
+	page_break_event_callbacks: DS_LIST [FO_PAGE_BREAK_EVENT_CALLBACK]
+
 feature -- Access
 
 	page_rectangle : FO_RECTANGLE
@@ -285,6 +290,8 @@ feature -- Basic operations
 
 	append_page_break is
 			-- Append page break.
+		local
+			callbacks : DS_LIST_CURSOR[FO_PAGE_BREAK_EVENT_CALLBACK]
 		do
 			pages_cursor.item.set_rendered_region (available_render_region)
 			if current_page.is_text_mode then
@@ -294,6 +301,15 @@ feature -- Basic operations
 			pdf_document.add_page
 			setup_page
 			available_render_region := margins.content_region (page_rectangle)
+			from
+				callbacks := page_break_event_callbacks.new_cursor
+				callbacks.start
+			until
+				callbacks.off
+			loop
+				callbacks.item.on_page_break (Current)
+				callbacks.forth
+			end
 		end
 		
 	append_block (block : FO_BLOCK) is
@@ -313,6 +329,12 @@ feature -- Basic operations
 			render_renderable (row)
 		end
 
+	append_table (table : FO_TABLE) is
+			-- Append `table'.
+		do
+			render_renderable (table)
+		end
+		
 	open is
 			-- Open.
 		local
@@ -412,22 +434,21 @@ feature {NONE} -- Implementation
 					end
 					render_renderable (unbreakable) --unbreakable.render_start (current, available_render_region)
 				else
-					borderable ?= renderable
 					if renderable.is_page_break_before then
 						append_page_break
 					end
 					from
 						renderable.render_start(Current, available_render_region)
-						if borderable /= Void and then renderable.last_rendered_region /= Void then
-							borderable.render_borders (Current, renderable.last_rendered_region)
+						if renderable.last_rendered_region /= Void then
+							renderable.post_render (Current, renderable.last_rendered_region)
 						end
 					until
 						renderable.is_render_off
 					loop
 						append_page_break
 						renderable.render_forth (Current, margins.content_region (page_rectangle))
-						if borderable /= Void then
-							borderable.render_borders (Current, renderable.last_rendered_region)
+						if renderable.last_rendered_region /= Void then
+							renderable.post_render (Current, renderable.last_rendered_region)
 						end
 					end
 					available_render_region := available_render_region.shrinked_top (renderable.last_rendered_region.height)
@@ -458,7 +479,7 @@ feature {NONE} -- Implementation
 						page_section.page_rectangle.right - page_section.margins.right,
 						page_section.page_rectangle.top)
 					header.render_start (Current, header_region)
-					header.render_borders (Current, header.last_rendered_region)
+					header.post_render (Current, header.last_rendered_region)
 				end
 				--| render footer
 				if page_section.footer /= Void then
@@ -471,7 +492,7 @@ feature {NONE} -- Implementation
 						page_section.page_rectangle.bottom + page_section.margins.bottom - page_section.footer.separation)
 
 					footer.render_start (Current, footer_region)
-					footer.render_borders (Current, footer.last_rendered_region)
+					footer.post_render (Current, footer.last_rendered_region)
 				end
 				current_page_number := current_page_number + 1
 				pages_cursor.forth
