@@ -16,10 +16,10 @@ inherit
 
 	KL_IMPORTED_INTEGER_ROUTINES
 	KL_IMPORTED_STRING_ROUTINES
-	
+
 creation
 	{PDF_DOCUMENT} make
-	
+
 feature {NONE} -- Initialization
 
 	make (object_number, image_width, image_height, sample_colors, color_precision : INTEGER) is
@@ -43,10 +43,10 @@ feature {NONE} -- Initialization
 			color_count_set: color_count = sample_colors
 			color_bits_set: color_bits = color_precision
 		end
-		
+
 feature -- Access
 
-	sample (x, y : INTEGER) : INTEGER is 
+	sample (x, y : INTEGER) : INTEGER is
 			-- sample at (x,y)
 		require
 			x_within_limits: x >= 1 and x <= width
@@ -58,7 +58,7 @@ feature -- Access
 			if color_count = 1 then
 				Result := samples.item (index).code
 			else
-				compose_sample (samples.item (index).code, 
+				compose_sample (samples.item (index).code,
 					samples.item (index + 1).code,
 					samples.item (index + 2).code)
 				Result := last_sample
@@ -67,7 +67,7 @@ feature -- Access
 			valid_sample: valid_sample (Result)
 		end
 
-	color_at (x, y, n : INTEGER) : INTEGER is 
+	color_at (x, y, n : INTEGER) : INTEGER is
 			-- n-th color component at (x,y)
 		require
 			x >=1 and x <= width
@@ -88,7 +88,7 @@ feature -- Access
 
 	alpha : PDF_IMAGE
 			-- transparency image, also known as `alpha'
-			
+
 feature -- Status report
 
 	valid_color (c : INTEGER) : BOOLEAN is
@@ -105,7 +105,7 @@ feature -- Status report
 				Result := (c >= 0 and then c <= 255)
 			end
 		end
-		
+
 	valid_sample (s : INTEGER) : BOOLEAN is
 			-- is `s' a valid sample ?
 		do
@@ -115,21 +115,21 @@ feature -- Status report
 				Result := valid_color (color_1)
 			else
 				Result := valid_color (color_1) and then valid_color (color_2) and then valid_color (color_3)
-			end			
+			end
 		end
-		
+
 feature -- Measurement
 
-	width : INTEGER 
+	width : INTEGER
 			-- number of columns
-			
-	height : INTEGER 
+
+	height : INTEGER
 			-- number of rows
-			
-	color_count : INTEGER 
-			-- number of color components per sample; 1 DeviceGray - 3 DeviceRGB 
-			
-	color_bits : INTEGER 
+
+	color_count : INTEGER
+			-- number of color components per sample; 1 DeviceGray - 3 DeviceRGB
+
+	color_bits : INTEGER
 			-- number of bits per color component; 1, 2, 4, 8
 
 feature -- Element change
@@ -146,7 +146,7 @@ feature -- Element change
 		ensure
 			alpha_set: alpha = new_alpha
 		end
-		
+
 	put_sample (some_sample, x, y : INTEGER) is
 			-- put `some_sample' at `x', `y' coordinates
 		require
@@ -204,13 +204,13 @@ feature -- Element change
 		end
 
 feature {NONE} -- Conversion
-		
+
 	put_pdf_content (medium : PDF_OUTPUT_MEDIUM) is
 			-- put PDF content of image in `medium'
 		local
-			n_type, n_subtype, 
-			n_width, n_height, 
-			n_colorspace, n_bitspercomponent, 
+			n_type, n_subtype,
+			n_width, n_height,
+			n_colorspace, n_bitspercomponent,
 			n_length, n_filter,n_smask : PDF_NAME
 			encoded_stream : STRING
 			encoded_stream_length : INTEGER
@@ -218,7 +218,7 @@ feature {NONE} -- Conversion
 		do
 			create zlib_format
 			encoded_stream := zlib_format.encode (samples)
-			encoded_stream_length := encoded_stream.count 
+			encoded_stream_length := encoded_stream.count
 			create n_type.make ("Type")
 			create n_subtype.make ("Subtype")
 			create n_width.make ("Width")
@@ -227,7 +227,7 @@ feature {NONE} -- Conversion
 			create n_bitspercomponent.make ("BitsPerComponent")
 			create n_length.make ("Length")
 			create n_filter.make ("Filter")
-			
+
 			medium.put_string (begin_dictionary)
 			medium.put_string (dictionary_entry (n_type, "/XObject"))
 			medium.put_string (dictionary_entry (n_subtype, "/Image"))
@@ -254,15 +254,15 @@ feature {NONE} -- Conversion
 			medium.put_string ("endstream")
 			medium.put_new_line
 		end
-		
+
 feature {NONE} -- Implementation
 
 	samples : STRING
 
 	color_1, color_2, color_3 : INTEGER
-	
+
 	last_sample : INTEGER
-	
+
 	decompose_sample (s : INTEGER) is
 		local
 			divider : INTEGER
@@ -295,7 +295,7 @@ feature {NONE} -- Implementation
 		ensure
 			valid_sample (last_sample)
 		end
-		
+
 	division_factors : ARRAY[INTEGER] is
 		once
 			create Result.make (1, 8)
@@ -308,7 +308,7 @@ feature {NONE} -- Implementation
 			Result.put (128, 7)
 			Result.put (256, 8)
 		end
-		
+
 	sample_index (x,y : INTEGER) : INTEGER is
 		local
 			row_length : INTEGER
@@ -316,17 +316,20 @@ feature {NONE} -- Implementation
 			row_length := width * color_count
 			Result := 1 + (x-1) * color_count + (y-1) * row_length
 		end
-					
+
 	create_samples (the_width, the_height, the_sample_colors : INTEGER) is
-			-- 
+			--
 		do
-			samples := STRING_.make_filled ('%/0/', the_width * the_height * the_sample_colors)
+			samples_capacity := the_width * the_height * the_sample_colors
+			 create samples.make_filled ('%/0/', samples_capacity)
 		ensure
 			samples_exist: samples /= Void
-			samples_capacity: samples.capacity = (the_width * the_height * the_sample_colors)
+			samples_capacity: samples_capacity = (the_width * the_height * the_sample_colors)
 		end
 
+	samples_capacity : INTEGER
+	
 invariant
 	samples_exist: samples /= Void
-	
+
 end -- class PDF_IMAGE

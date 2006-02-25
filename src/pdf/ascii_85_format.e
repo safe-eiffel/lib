@@ -11,18 +11,18 @@ inherit
 	XS_IMPORTED_UINT32_ROUTINES
 	KL_IMPORTED_INTEGER_ROUTINES
 	KL_IMPORTED_STRING_ROUTINES
-	
+
 feature -- Access
 
 	last_encoded : STRING
-	
+
 feature -- Measurement
 
 	last_encoded_count (medium : PDF_OUTPUT_MEDIUM) : INTEGER is
 		do
 			Result := 	last_encoded.count - 2 --+ last_encoded.occurrences ('%N') * (medium.eol_count - 1)
 		end
-		
+
 feature -- Status report
 
 feature -- Status setting
@@ -48,7 +48,6 @@ feature -- Basic operations
 	encode (data : STRING) : STRING is
 			-- encode  `data' in ASCII85 format
 		local
-			hex : STRING
 			index : INTEGER
 			nibble : INTEGER
 			remaining : INTEGER
@@ -70,13 +69,13 @@ feature -- Basic operations
 						Result.append_character ('%N')
 						line_count := 0
 					end
-				end	
+				end
 				index := index + 1
 			end
 			remaining := (index - 1) \\ 4
 			if remaining /= 0 then
 				nibble := UINT32_.left_shift (nibble, remaining * 8)
-				Result.append_string (as_ascii_85 (nibble, 4 - remaining)) 
+				Result.append_string (as_ascii_85 (nibble, 4 - remaining))
 			end
 			Result.append_string ("~>")
 			last_encoded := Result
@@ -115,7 +114,7 @@ feature {NONE} -- Implementation
 			end
 			if count < 4 then
 				Result.keep_head (count + 1)
-			end				
+			end
 		end
 
 end -- class ASCII_85_FORMAT
