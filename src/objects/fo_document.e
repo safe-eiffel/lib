@@ -1,7 +1,7 @@
 indexing
 
-	description: 
-	
+	description:
+
 		"Documents"
 
 	library: "FO - Formatting Objects in Eiffel. Project SAFE."
@@ -13,14 +13,14 @@ class
 	FO_DOCUMENT
 
 inherit
-	
+
 	FO_SHARED_DEFAULTS
 		undefine
 			is_equal, out
 		end
-		
+
 	FO_COLOR_ABLE
-	
+
 create
 	make, make_rectangle
 
@@ -40,7 +40,6 @@ feature {NONE} -- Initialization
 			margins := shared_defaults.document_margins
 			create background_color.make_rgb (255,255,255)
 			create foreground_color.make_rgb (0,0,0)
-			create {DS_LINKED_LIST[FO_PAGE_BREAK_EVENT_CALLBACK]}page_break_event_callbacks.make
 		ensure
 			writer_set: writer = new_writer
 			page_rectangle_set: page_rectangle = new_page_rectangle
@@ -58,42 +57,15 @@ feature {NONE} -- Initialization
 			writer_set: writer = new_writer
 			page_rectangle_default: page_rectangle /= Void and then page_rectangle.is_equal (shared_defaults.document_rectangle)
 		end
-		
-feature {FO_RENDERABLE} -- Access
-
-	page_break_event_callbacks: DS_LIST [FO_PAGE_BREAK_EVENT_CALLBACK]
 
 feature -- Access
 
+
 	page_rectangle : FO_RECTANGLE
-			-- Page rectangle.
-	
+			-- Current Page rectangle.
+
 	margins : FO_MARGINS
-			-- Document margins.
-	
-	title : STRING
-			-- Title.
-		
-	author : STRING
-			-- Author.
-		
-	subject : STRING
-			-- Subject.
-		
-	keywords : STRING
-			-- Keywords.
-		
-	creator : STRING
-			-- Creator.
-		
-	producer : STRING
-			-- Producer.
-		
-	creation_date : DT_DATE_TIME
-			-- Creation date.
-		
-	modification_date : DT_DATE_TIME
-			-- Modification date.
+			-- Current Document margins.
 
 	available_render_region : FO_RECTANGLE
 			-- Currently available rendering region.
@@ -105,8 +77,7 @@ feature -- Access
 		ensure
 			definition: Result = current_section.header
 		end
-		
-	
+
 	footer : FO_HEADER_FOOTER is
 			-- Footer of current section.
 		do
@@ -114,22 +85,51 @@ feature -- Access
 		ensure
 			definition: Result = current_section.footer
 		end
-		
-	
+
 	current_section : FO_SECTION
 			-- Current section.
-	
+
+	writer : FO_DOCUMENT_WRITER
+			-- Writer
+
+feature -- Metadata
+
+	title : STRING
+			-- Title.
+
+	author : STRING
+			-- Author.
+
+	subject : STRING
+			-- Subject.
+
+	keywords : STRING
+			-- Keywords.
+
+	creator : STRING
+			-- Creator.
+
+	producer : STRING
+			-- Producer.
+
+	creation_date : DT_DATE_TIME
+			-- Creation date.
+
+	modification_date : DT_DATE_TIME
+			-- Modification date.
+
 feature -- Measurement
 
-	page_count : INTEGER is			
+	page_count : INTEGER is
 		do
 			Result := pages.count
 		end
-		
+
 feature -- Element change
 
 	set_section (new_section: FO_SECTION) is
 			-- Set `current_section' to `new_section'.
+			-- `new_section' shall be active after `open' or after the next page break.
 		require
 			new_section_not_void: new_section /= Void
 		do
@@ -137,6 +137,19 @@ feature -- Element change
 		ensure
 			current_section_set: current_section = new_section
 		end
+
+	set_margins (new_margins : FO_MARGINS) is
+			-- Set `margins' to `new_margins'
+		require
+			new_margins_exist: new_margins /= Void
+			not_open: not is_open
+		do
+			margins := new_margins
+		ensure
+			margins_set: margins = new_margins
+		end
+
+feature -- Metadata change
 
 	set_title (new_title : STRING) is
 			-- Set `title' to `new_title'
@@ -148,7 +161,7 @@ feature -- Element change
 		ensure
 			title_set: title = new_title
 		end
-		
+
 	set_author (new_author : STRING) is
 			-- Set `author' to `new_author'
 		require
@@ -159,7 +172,7 @@ feature -- Element change
 		ensure
 			author_set: author = new_author
 		end
-		
+
 	set_subject (new_subject : STRING) is
 			-- Set `subject' to `new_subject'
 		require
@@ -170,7 +183,7 @@ feature -- Element change
 		ensure
 			subject_set: subject = new_subject
 		end
-		
+
 	set_keywords (new_keywords : STRING) is
 			-- Set `keywords' to `new_keywords'
 		require
@@ -181,7 +194,7 @@ feature -- Element change
 		ensure
 			keywords_set: keywords = new_keywords
 		end
-		
+
 	set_creator (new_creator : STRING) is
 			-- Set `creator' to `new_creator'
 		require
@@ -192,7 +205,7 @@ feature -- Element change
 		ensure
 			creator_set: creator = new_creator
 		end
-		
+
 	set_producer (new_producer : STRING) is
 			-- Set `producer' to `new_producer'
 		require
@@ -203,7 +216,7 @@ feature -- Element change
 		ensure
 			producer_set: producer = new_producer
 		end
-		
+
 	set_creation_date (new_creation_date : DT_DATE_TIME) is
 			-- Set `creation_date' to `new_creation_date'
 		require
@@ -214,7 +227,7 @@ feature -- Element change
 		ensure
 			creation_date_set: creation_date = new_creation_date
 		end
-	
+
 	set_modification_date (new_modification_date : DT_DATE_TIME) is
 			-- Set `modification_date' to `new_modification_date'
 		require
@@ -225,38 +238,21 @@ feature -- Element change
 		ensure
 			modification_date_set: modification_date = new_modification_date
 		end
-	
-	set_margins (new_margins : FO_MARGINS) is
-			-- Set `margins' to `new_margins'
-		require
-			new_margins_exist: new_margins /= Void
-			not_open: not is_open
-		do
-			margins := new_margins
-		ensure
-			margins_set: margins = new_margins
-		end
-		
 
-feature -- Access
-
-	writer : FO_DOCUMENT_WRITER
-			-- Writer
-	
 feature -- Measurement
 
 feature -- Status report
 
 	is_open : BOOLEAN
 			-- Is the document open ?
-					
+
 feature -- Status setting
 
 feature -- Cursor movement
 
 feature -- Element change
 
-	set_header (a_header : FO_HEADER_FOOTER) is	
+	set_header (a_header : FO_HEADER_FOOTER) is
 			-- Set `header' to `a_header'.
 		require
 			a_header_not_void: a_header /= Void
@@ -264,7 +260,7 @@ feature -- Element change
 		do
 			current_section.set_header (a_header)
 		end
-		
+
 	set_footer (a_footer : FO_HEADER_FOOTER) is
 			-- Set `footer' to `a_footer'.
 		require
@@ -273,7 +269,7 @@ feature -- Element change
 		do
 			current_section.set_footer (a_footer)
 		end
-		
+
 feature -- Removal
 
 feature -- Resizing
@@ -290,8 +286,6 @@ feature -- Basic operations
 
 	append_page_break is
 			-- Append page break.
-		local
-			callbacks : DS_LIST_CURSOR[FO_PAGE_BREAK_EVENT_CALLBACK]
 		do
 			pages_cursor.item.set_rendered_region (available_render_region)
 			if current_page.is_text_mode then
@@ -301,17 +295,8 @@ feature -- Basic operations
 			pdf_document.add_page
 			setup_page
 			available_render_region := margins.content_region (page_rectangle)
-			from
-				callbacks := page_break_event_callbacks.new_cursor
-				callbacks.start
-			until
-				callbacks.off
-			loop
-				callbacks.item.on_page_break (Current)
-				callbacks.forth
-			end
 		end
-		
+
 	append_block (block : FO_BLOCK) is
 			-- Append `block' of text.
 		do
@@ -319,11 +304,12 @@ feature -- Basic operations
 		end
 
 	append_image (image : FO_IMAGE) is
+			-- Append `Image'.
 		do
 			render_renderable (image)
 		end
-		
-	append_row (row : FO_ROW) is	
+
+	append_row (row : FO_ROW) is
 			-- Append `row'.
 		do
 			render_renderable (row)
@@ -334,11 +320,9 @@ feature -- Basic operations
 		do
 			render_renderable (table)
 		end
-		
+
 	open is
 			-- Open.
-		local
-			page : FO_PAGE
 		do
 			writer.open
 			if writer.is_open then
@@ -380,7 +364,7 @@ feature -- Basic operations
 		ensure
 			current_section_not_void: current_section /= Void
 		end
-		
+
 	close is
 			-- Close.
 		require
@@ -395,14 +379,14 @@ feature -- Basic operations
 		ensure
 			closed: not is_open
 		end
-	
+
 feature {FO_RENDERABLE} -- Basic operations
 
 feature -- Obsolete
 
 feature -- Inapplicable
 
-feature {FO_RENDERABLE} -- Access
+feature {FO_RENDERABLE, FO_BORDER_ABLE} -- Access
 
 	pdf_document : PDF_DOCUMENT is do Result := writer.document end
 
@@ -410,12 +394,12 @@ feature {FO_RENDERABLE} -- Access
 		do
 			Result := pages_cursor.item.page
 		end
-		
+
 feature {NONE} -- Implementation
 
-	render_renderable (renderable : FO_RENDERABLE) is		
+	render_renderable (renderable : FO_RENDERABLE) is
+			-- Render renderable items.
 		local
-			borderable : FO_BORDER_ABLE
 			unbreakable : FO_UNBREAKABLE
 		do
 			if renderable.is_keep_with_next then
@@ -432,7 +416,7 @@ feature {NONE} -- Implementation
 					if unbreakable.height > available_render_region.height then
 						append_page_break
 					end
-					render_renderable (unbreakable) --unbreakable.render_start (current, available_render_region)
+					render_renderable (unbreakable)
 				else
 					if renderable.is_page_break_before then
 						append_page_break
@@ -455,14 +439,14 @@ feature {NONE} -- Implementation
 				end
 			end
 		end
-	
+
 	render_header_footer is
 			-- Render header and footers on rendered pages.
 		local
 			header_region, footer_region : FO_RECTANGLE
 			page_section : FO_SECTION
 		do
-			from	
+			from
 				pages_cursor.start
 				current_page_number := 1
 			until
@@ -499,7 +483,7 @@ feature {NONE} -- Implementation
 			end
 		end
 
-	show_page_margins is		
+	show_page_margins is
 		local
 			r : FO_RECTANGLE
 		do
@@ -517,24 +501,28 @@ feature {NONE} -- Implementation
 		end
 
 	pages : DS_LIST[FO_PAGE]
-	
+
 	pages_cursor : DS_LIST_CURSOR[FO_PAGE]
-		
+
 	last_unbreakable : FO_UNBREAKABLE
 
 	setup_page is
 		local
 			page : FO_PAGE
-		do		
+		do
+			page_rectangle := current_section.page_rectangle
+			margins := current_section.margins 
+			
 			create page.make (pdf_document.last_page, current_section)
 			pages.put_last (page)
 			pages_cursor.finish
+
+			current_page.set_mediabox (current_section.page_rectangle.as_pdf)
 			if background_color /= Void then
 				if current_page.is_text_mode then
 					current_page.end_text
 				end
 				current_page.gsave
-				current_page.set_mediabox (current_section.page_rectangle.as_pdf)
 				current_page.set_rgb_color (background_color.red / 255,
 					background_color.green / 255,
 					background_color.blue / 255)
@@ -542,12 +530,15 @@ feature {NONE} -- Implementation
 				current_page.fill
 				current_page.grestore
 			end
-		end	
-		
+		ensure
+			page_rectangle_set: page_rectangle = current_section.page_rectangle
+			margins_set: margins = current_section.margins
+		end
+
 feature {FO_SPECIAL_INLINE} -- Implementation
 
 	current_page_number : INTEGER
-				
+
 invariant
 	writer_exists: writer /= Void
 

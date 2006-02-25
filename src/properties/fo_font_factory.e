@@ -1,6 +1,6 @@
 indexing
 
-	description: 
+	description:
 
 		"Factories of fonts"
 
@@ -19,7 +19,7 @@ inherit
 		end
 
 	FO_SHARED_DEFAULTS
-			
+
 creation
 	make
 
@@ -35,24 +35,24 @@ feature {NONE} -- Initialization
 			create equality_tester
 			families.set_equality_tester (equality_tester)
 			create dummy_document.make
-			
+
 			key := font_key ("Helvetica", "", "")
 			add_font ("Helvetica", "Helvetica", "","")
 			add_font ("Helvetica-Bold", "Helvetica", "bold", "")
 			add_font ("Helvetica-Oblique", "Helvetica", "", "italic")
 			add_font ("Helvetica-BoldOblique", "Helvetica", "bold", "italic")
 
-			add_font ("Times-Roman", "Times", "","")			
+			add_font ("Times-Roman", "Times", "","")
 			add_font ("Times-Bold", "Times", "bold", "")
 			add_font ("Times-Italic", "Times", "", "italic")
 			add_font ("Times-BoldItalic", "Helvetica", "bold", "italic")
 
-			add_font ("Courier", "Courier", "","")			
+			add_font ("Courier", "Courier", "","")
 			add_font ("Courier-Bold", "Courier", "bold", "")
 			add_font ("Courier-Oblique", "Courier", "", "italic")
 			add_font ("Courier-BoldOblique", "Courier", "bold", "italic")
 		end
-		
+
 feature -- Access
 
 	last_font : FO_FONT
@@ -65,8 +65,8 @@ feature -- Access
 			end
 			Result := default_font_impl
 		end
-		
-			
+
+
 feature -- Measurement
 
 feature -- Status report
@@ -78,7 +78,7 @@ feature -- Status report
 		do
 			Result := default_font.is_equal (a_font)
 		end
-		
+
 	valid_family (family : STRING) : BOOLEAN is
 			-- is `family' a valid font family ?
 		do
@@ -88,7 +88,7 @@ feature -- Status report
 		ensure
 			definition: Result implies family /= Void
 		end
-		
+
 	valid_weight (weight : STRING) : BOOLEAN is
 			-- is `weight' a valid font weight ?
 		do
@@ -99,7 +99,7 @@ feature -- Status report
 		ensure
 			definition: Result implies weight /= Void
 		end
-		
+
 	valid_style (style : STRING) : BOOLEAN is
 			-- is `style' a valid font style ?
 		do
@@ -110,8 +110,8 @@ feature -- Status report
 		ensure
 			definition: Result implies style /= Void
 		end
-		
-	
+
+
 feature -- Status setting
 
 feature -- Cursor movement
@@ -132,7 +132,7 @@ feature -- Element change
 		do
 			find_font_weight_style_encoding (name, weight, style, shared_defaults.font_encoding, size)
 		end
-		
+
 	find_font_weight_style_encoding (name, weight, style, encoding : STRING; size : FO_MEASUREMENT) is
 			-- Find font with `name', `weight', `style', `encoding'
 		do
@@ -184,15 +184,18 @@ feature -- Constants
 	style_italic : STRING is once Result := "italic" end
 
 	supported_encodings : DS_LINKED_LIST[STRING] is
+		local
+			tester : KL_EQUALITY_TESTER[STRING]
 		once
 			create Result.make
-			Result.set_equality_tester (create {KL_EQUALITY_TESTER[STRING]})
+			create tester
+			Result.set_equality_tester (tester)
 			Result.put_last (dummy_document.encoding_mac)
 			Result.put_last (dummy_document.encoding_pdf)
 			Result.put_last (dummy_document.encoding_standard)
 			Result.put_last (dummy_document.encoding_winansi)
 		end
-		
+
 feature -- Inapplicable
 
 feature {NONE} -- Implementation
@@ -204,10 +207,10 @@ feature {NONE} -- Implementation
 			weight_exists: weight /= Void
 			style_exists: style /= Void
 		do
-			font_table.force (actual_name, font_key (family_name, weight, style))	
-			families.force (family_name) 
+			font_table.force (actual_name, font_key (family_name, weight, style))
+			families.force (family_name)
 		end
-		
+
 	font_table : DS_HASH_TABLE [STRING, STRING]
 
 	font_key (name, weight, style : STRING) : STRING is
@@ -219,11 +222,11 @@ feature {NONE} -- Implementation
 			Result.append_character ('-')
 			Result.append_string (style)
 		end
-	
+
 	families : DS_HASH_SET [STRING]
 
 	dummy_document : PDF_DOCUMENT
 
 	default_font_impl : FO_FONT
-	
+
 end

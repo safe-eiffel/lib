@@ -1,7 +1,7 @@
 indexing
 
-	description: 
-	
+	description:
+
 		"Objects that represent a length measurement."
 
 	library: "FO - Formatting Objects in Eiffel. Project SAFE."
@@ -13,19 +13,19 @@ class
 	FO_MEASUREMENT
 
 inherit
-	NUMERIC
+	KL_NUMERIC
 		undefine
 			is_equal, out
 		end
-	
+
 	COMPARABLE
 		redefine
 			is_equal, out
 		end
-	
+
 create
 	centimeters, millimeters, points, inches, make_zero
-	
+
 feature {NONE} -- Initialization
 
 	centimeters (v : DOUBLE) is
@@ -35,7 +35,7 @@ feature {NONE} -- Initialization
 		ensure
 			set: is_equal_centimeters (v)
 		end
-		
+
 	millimeters (v : DOUBLE) is
 			-- Set Current to `v' millimeters.
 		do
@@ -43,7 +43,7 @@ feature {NONE} -- Initialization
 		ensure
 			set: is_equal_millimeters (v)
 		end
-		
+
 	points (v : DOUBLE) is
 			-- Set Current to `v' points.
 		do
@@ -51,7 +51,7 @@ feature {NONE} -- Initialization
 		ensure
 			set: is_equal_points (v)
 		end
-		
+
 	inches (v : DOUBLE) is
 			-- Set Current to `v' inches.
 		do
@@ -59,7 +59,7 @@ feature {NONE} -- Initialization
 		ensure
 			set: is_equal_inches (v)
 		end
-		
+
 	make_zero is
 			-- Make Zero.
 		do
@@ -67,7 +67,7 @@ feature {NONE} -- Initialization
 		ensure
 			is_zero: is_zero
 		end
-		
+
 feature -- Access
 
 	tolerance : DOUBLE is 1.0e-6
@@ -88,7 +88,7 @@ feature -- Access
 			zero_is_zero: as_points = 0 implies Result = 0
 			minus_one_negative: as_points < 0 implies Result = 1
 		end
-		
+
 feature -- Measurement
 
 feature -- Status report
@@ -97,7 +97,7 @@ feature -- Status report
 		do
 			Result := value.abs < tolerance
 		end
-		
+
 feature -- Status setting
 
 feature -- Cursor movement
@@ -115,19 +115,19 @@ feature -- Comparison
 		do
 			Result := tolerant_equal (as_points, v)
 		end
-		
+
 	is_equal_inches (v : DOUBLE) : BOOLEAN is
 			-- Is `v' inches equal to Current ?
 		do
 			Result := tolerant_equal (as_inches, v)
 		end
-		
+
 	is_equal_centimeters (v : DOUBLE) : BOOLEAN is
 			-- Is `v' centimeters equal to Current ?
 		do
 			Result := tolerant_equal (as_centimeters, v)
 		end
-		
+
 	is_equal_millimeters (v : DOUBLE) : BOOLEAN is
 			-- Is `v' millimeters equal to Current.
 		do
@@ -143,41 +143,41 @@ feature -- Conversion
 		do
 			Result := value
 		end
-		
+
 	as_centimeters : DOUBLE is
 			-- Current in centimeters
 		do
 			Result := value / points_in_centimeters
 		end
-		
+
 	as_millimeters : DOUBLE is
 			-- Current in millimeters
 		do
 			Result := value / points_in_millimeters
 		end
-		
+
 	as_inches : DOUBLE is
 			-- Current is inches
 		do
 			Result := value / points_in_inches
 		end
-		
+
 feature -- Duplication
 
 feature -- Miscellaneous
 
-	is_equal (other : FO_MEASUREMENT) : BOOLEAN is
+	is_equal (other : like Current) : BOOLEAN is
 			-- Is `other' equal to Current ?
 		do
 			Result := (as_points = other.as_points)
 		end
-		
-	infix "<" (other : FO_MEASUREMENT) : BOOLEAN is
+
+	infix "<" (other : like Current) : BOOLEAN is
 			-- Is `other' less than Current ?
 		do
 			Result := (as_points < other.as_points)
 		end
-		
+
 feature -- Basic operations
 
 	prefix "-" : like Current is
@@ -185,13 +185,13 @@ feature -- Basic operations
 		do
 			Create Result.points (-as_points)
 		end
-		
+
 	prefix "+" : like Current is
 			-- Current plussed.
 		do
 			Create Result.points (as_points)
 		end
-		
+
 	infix "/" (other : like Current) : like Current is
 			-- Current divided by `other'.
 		do
@@ -215,7 +215,7 @@ feature -- Basic operations
 		do
 			Create Result.points (as_points - other.as_points)
 		end
-		
+
 	exponentiable (other : like Current) : BOOLEAN is
 			-- Is Current exponentiable by `other'?
 		do
@@ -227,9 +227,9 @@ feature -- Basic operations
 		do
 			Result := other.as_points /= 0.
 		end
-		
+
 	zero : like Current is do create result.points (0) end
-	
+
 	one : like Current is do create result.points (1) end
 
 feature -- Obsolete
@@ -242,16 +242,8 @@ feature -- Conversion
 			Result.append_double (as_points)
 			Result.append_string ("pts")
 		end
-		
 
---	negate is
---			-- 
---		do
---			value := - value
---		ensure
---			negated: as_points = - (old as_points)
---		end
-		
+
 feature {NONE} -- Implementation
 
 	value : DOUBLE
@@ -260,9 +252,9 @@ feature {NONE} -- Implementation
 	points_in_inches : DOUBLE is 72.0
 	points_in_centimeters : DOUBLE is once Result := points_in_inches / inches_in_centimeters end
 	points_in_millimeters : DOUBLE is once Result := points_in_centimeters / 10 end
-	
+
 	tolerant_equal (u, v : DOUBLE) : BOOLEAN is
-			-- Are `u' and `v' distant from less than `tolerance'? 
+			-- Are `u' and `v' distant from less than `tolerance'?
 		do
 			Result := (u - v).abs <= tolerance
 		end

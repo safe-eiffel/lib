@@ -1,7 +1,7 @@
 indexing
 
-	description: 
-	
+	description:
+
 		"Sequences of inlines that reside on the same horizontal line."
 
 	library: "FO - Formatting Objects in Eiffel. Project SAFE."
@@ -19,15 +19,20 @@ inherit
 		redefine
 			pre_render
 		end
-		
+
 	FO_MARGIN_ABLE
 		redefine
 			out, is_equal
 		end
-	
-create {FO_BLOCK} 
+
+	FO_MEASUREMENT_ROUTINES
+		undefine
+			out, is_equal
+		end
+		
+create {FO_BLOCK}
 	make, make_justified
-	
+
 feature {NONE} -- Initialization
 
 	make (new_maximum_width : FO_MEASUREMENT; renderable : FO_RENDERABLE; marginable : FO_MARGIN_ABLE) is
@@ -44,13 +49,13 @@ feature {NONE} -- Initialization
 			create height.points (0)
 		ensure
 			maximum_width_set: maximum_width = new_maximum_width
-			height_zero: height.is_equal (create {FO_MEASUREMENT}.points(0))
+			height_zero: height.is_equal (points(0))
 		end
 
-	make_justified (new_maximum_width : FO_MEASUREMENT; 
-				--	renderable : FO_RENDERABLE; 
+	make_justified (new_maximum_width : FO_MEASUREMENT;
+				--	renderable : FO_RENDERABLE;
 					new_text_leading : FO_MEASUREMENT;
-					marginable : FO_MARGIN_ABLE; a_justification : INTEGER) is		
+					marginable : FO_MARGIN_ABLE; a_justification : INTEGER) is
 		require
 			new_maximum_width_exists: new_maximum_width /= Void
 			new_maximum_width_positive: new_maximum_width.sign = 1
@@ -68,33 +73,34 @@ feature {NONE} -- Initialization
 		ensure
 			justification_set: justification = a_justification
 			maximum_width_set: maximum_width = new_maximum_width
-			height_zero: height.is_equal (create {FO_MEASUREMENT}.points(0))
+			height_zero: height.is_equal (points(0))
 		end
-		
-		
+
+
 feature -- Access
 
 
 	justification : INTEGER
-	
+
 	justify_left : INTEGER is 0
 	justify_right: INTEGER is 1
 	justify_center : INTEGER is 2
-		
+
 feature -- Measurement
 
 	width : FO_MEASUREMENT
 
 	text_leading : FO_MEASUREMENT
-		
-	bounding_box : FO_RECTANGLE is	
+
+	bounding_box : FO_RECTANGLE is
+			-- Smallest box enclosing the whole line.
 		local
 			c : DS_LIST_CURSOR[FO_INLINE]
 			zero : FO_MEASUREMENT
 		do
 			if inlines.count > 0 then
 				--| find the greatest bounding box of all fonts.
-				from	
+				from
 					c := inlines.new_cursor
 					c.start
 				until
@@ -112,9 +118,9 @@ feature -- Measurement
 				create Result.set (zero, zero, zero, text_leading)
 			end
 		end
-		
+
 	height : FO_MEASUREMENT
-	
+
 	maximum_width : FO_MEASUREMENT
 
 	text : STRING is
@@ -132,7 +138,7 @@ feature -- Measurement
 				cursor.forth
 			end
 		end
-		
+
 feature -- Measurement
 
 --	fitting_string (inline : FO_INLINE) : STRING is
@@ -181,9 +187,9 @@ feature -- Measurement
 --				end
 --			end
 --		ensure
---			definition: Result /= Void and then inline.font.string_width (Result) + width <= maximum_width 
+--			definition: Result /= Void and then inline.font.string_width (Result) + width <= maximum_width
 --		end
-		
+
 feature -- Status report
 
 	has (inline : FO_INLINE) : BOOLEAN is
@@ -202,15 +208,15 @@ feature -- Status report
 		do
 			Result := justification = justify_right
 		end
-		
+
 	is_center_justified : BOOLEAN is
 		do
 			Result := justification = justify_center
 		end
 
-	is_page_break_before : BOOLEAN is do  end		
-	is_keep_with_next : BOOLEAN is do  end	
-	
+	is_page_break_before : BOOLEAN is do  end
+	is_keep_with_next : BOOLEAN is do  end
+
 feature -- Status setting
 
 feature -- Cursor movement
@@ -243,8 +249,8 @@ feature -- Element change
 			inlines.last.append_character (a_character)
 			width := width + inlines.last.character_width (a_character)
 		end
-		
-	merge_last (list : DS_LIST[FO_INLINE]) is		
+
+	merge_last (list : DS_LIST[FO_INLINE]) is
 		require
 			list_not_void: list /= Void
 		local
@@ -260,7 +266,7 @@ feature -- Element change
 				c.forth
 			end
 		end
-		
+
 feature -- Removal
 
 feature -- Resizing
@@ -281,15 +287,15 @@ feature -- Conversion
 				inlines.forth
 			end
 		end
-		
+
 feature -- Comparison
 
 	is_equal (other : like Current) : BOOLEAN is
 		do
-			Result := precursor {FO_MARGIN_ABLE} (other) and precursor {FO_RENDERABLE} (other) and
+			Result := precursor {FO_MARGIN_ABLE} (other) and
 				inlines.is_equal (other.inlines)
 		end
-		
+
 feature {FO_DOCUMENT, FO_RENDERABLE} -- Basic operations
 
 	pre_render (region: FO_RECTANGLE) is
@@ -307,7 +313,7 @@ feature {FO_DOCUMENT, FO_RENDERABLE} -- Basic operations
 			end
 			precursor (region)
 		end
-		
+
 	render_start (document : FO_DOCUMENT; region : FO_RECTANGLE) is
 		local
 			line_height : FO_MEASUREMENT
@@ -354,11 +360,11 @@ feature {FO_LINE, FO_DOCUMENT} -- Access
 			when Justify_right then
 				x := region.right - width
 			when Justify_center then
-				x := region.left + (region.width - width) / create {FO_MEASUREMENT}.points (2)
+				x := region.left + (region.width - width) / points (2)
 			else
 				x := region.left
 			end
 			page.set_text_origin (x.as_points, y.as_points)
 		end
-	
+
 end

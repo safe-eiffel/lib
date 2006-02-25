@@ -1,7 +1,7 @@
 indexing
 
-	description: 
-		
+	description:
+
 		"Text portions of same characteristics : font, color."
 
 	library: "FO - Formatting Objects in Eiffel. Project SAFE."
@@ -20,10 +20,10 @@ inherit
 		end
 
 	FO_SHARED_FONT_FACTORY
-		undefine		
+		undefine
 			is_equal, out
 		end
-		
+
 create
 	make, make_with_font, make_inherit
 
@@ -33,14 +33,12 @@ feature {NONE} -- Initialization
 			-- Make with default font.
 		require
 			new_content_not_void: new_content /= Void
-		local
-			new_font : FO_FONT
 		do
 			make_with_font (new_content, font_factory.default_font)
 		end
-		
+
 	make_with_font (new_content : STRING; new_font : FO_FONT) is
-			-- 
+			--
 		require
 			new_content_not_void: new_content /= Void
 		do
@@ -54,7 +52,7 @@ feature {NONE} -- Initialization
 		ensure
 			text_set: text = new_content
 		end
-		
+
 	make_inherit (new_content : STRING; renderable : FO_TEXTABLE) is
 			-- make with `new_content', inheriting graphic attributes from `renderable'.
 		require
@@ -73,12 +71,12 @@ feature {NONE} -- Initialization
 			same_foreground_color: foreground_color = renderable.foreground_color
 			same_background_color: background_color = renderable.background_color
 		end
-			
+
 feature -- Access
 
 	text : STRING
 
-	item (index : INTEGER) : CHARACTER is		
+	item (index : INTEGER) : CHARACTER is
 		require
 			index_positive: index >= 1
 			index_not_greater_text_count: index <= count
@@ -87,7 +85,7 @@ feature -- Access
 		ensure
 			definition: Result = text.item (index)
 		end
-		
+
 --	splitted (a_width : FO_MEASUREMENT) : DS_LIST[FO_INLINE] is
 --		require
 --			a_width_not_void: a_width /= Void
@@ -130,7 +128,7 @@ feature -- Access
 ----			end
 --		end
 
-	substring (i_begin, i_end : INTEGER) : FO_INLINE is		
+	substring (i_begin, i_end : INTEGER) : FO_INLINE is
 			-- Inline with text substring [i_begin..i_end].
 		require
 			i_begin_positive: i_begin >= 1
@@ -139,12 +137,12 @@ feature -- Access
 			i_end_not_greater_text_count: i_end <= text.count
 		do
 			create Result.make_inherit (text.substring (i_begin, i_end), Current)
-		ensure		
+		ensure
 			substring_not_void: Result /= Void
 			same_rendering: True
 			text_substring: Result.text.is_equal (text.substring (i_begin, i_end))
 		end
-		
+
 feature -- Measurement
 
 	width : FO_MEASUREMENT is
@@ -162,19 +160,19 @@ feature -- Measurement
 			definition: Result = font.size
 		end
 
-	count : INTEGER is	
+	count : INTEGER is
 		do
 			Result := text.count
 		end
-		
-	character_width (c : CHARACTER) : FO_MEASUREMENT is	
+
+	character_width (c : CHARACTER) : FO_MEASUREMENT is
 		do
 			Result := font.character_width (c, character_spacing, word_spacing, stretch)
 		ensure
 			character_width_not_void: Result /= Void
 			character_width_not_negative: Result.sign >= 0
 		end
-		
+
 	string_width (s : STRING) : FO_MEASUREMENT is
 		require
 			s_not_void: s /= Void
@@ -197,11 +195,8 @@ feature -- Status report
 		end
 
 	is_page_break_before : BOOLEAN is do end
-	is_keep_with_next : BOOLEAN is do  end	
-	
-feature -- Status setting
+	is_keep_with_next : BOOLEAN is do  end
 
-feature -- Cursor movement
 
 feature -- Element change
 
@@ -222,7 +217,7 @@ feature -- Element change
 			text.append_string (other.text)
 		end
 
-	append_string (s : STRING) is		
+	append_string (s : STRING) is
 			-- Append `s' to `text'.
 		require
 			s_not_void: s /= Void
@@ -232,23 +227,17 @@ feature -- Element change
 			text_appended: text.substring (text.count - s.count+1, text.count).is_equal (s)
 		end
 
-	append_integer (i : INTEGER) is		
+	append_integer (i : INTEGER) is
 			-- Append `i' to `text'.
 		do
 			text.append_integer (i)
 		end
 
-	append_character (c : CHARACTER) is		
+	append_character (c : CHARACTER) is
 			-- Append `c' to `text'.
 		do
 			text.append_character (c)
 		end
-		
-feature -- Removal
-
-feature -- Resizing
-
-feature -- Transformation
 
 feature -- Conversion
 
@@ -256,17 +245,9 @@ feature -- Conversion
 		do
 			create Result.make_from_string (text)
 		end
-		
-feature -- Duplication
-
-feature -- Miscellaneous
-
-feature -- Basic operations
-
-feature -- Obsolete
 
 feature {FO_DOCUMENT, FO_RENDERABLE} -- Basic operations
-		
+
 	render_start (document : FO_DOCUMENT; region : FO_RECTANGLE) is
 		local
 			pdf : PDF_DOCUMENT
@@ -284,7 +265,7 @@ feature {FO_DOCUMENT, FO_RENDERABLE} -- Basic operations
 				y_baseline + fontbbox.bottom,
 				x_baseline + width,
 				y_baseline + font.cap_height)
-			
+
 			pdf.find_font (font.name, font.encoding)
 			if pdf.last_font /= Void then
 				page.set_font (pdf.last_font, font.size.as_points)
@@ -306,10 +287,12 @@ feature {FO_DOCUMENT, FO_RENDERABLE} -- Basic operations
 			end
 			--| foreground color
 			page.set_rgb_color (foreground_color.red/255,foreground_color.green/255,foreground_color.blue/255)
+
 			page.set_horizontal_scaling (stretch.as_points)
 			page.set_character_spacing (character_spacing.as_points)
 			page.set_word_spacing (word_spacing.as_points)
-			page.put_string (text)				  
+
+			page.put_string (text)
 			is_render_off := True
 			is_render_inside := False
 		end

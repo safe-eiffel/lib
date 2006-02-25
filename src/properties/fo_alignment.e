@@ -13,23 +13,15 @@ class
 	FO_ALIGNMENT
 
 create
-	make_start, make_end, make_left, make_right, make_center
+	make_left, make_right, make_center
 
 feature -- Initialization
-
-	make_start is
-			-- Initialize `Current'.
-		do
-			value := a_start
-		ensure is_start end
-
-	make_end is do value := a_end ensure is_end end
 	
-	make_left is do value := a_left ensure is_left end
+	make_left is do value := align_left ensure is_left end
 	
-	make_right is do value := a_right ensure is_right end
+	make_right is do value := align_right ensure is_right end
 	
-	make_center is do value := a_center ensure is_center end
+	make_center is do value := align_center ensure is_center end
 	
 feature -- Access
 
@@ -39,45 +31,19 @@ feature -- Measurement
 
 feature -- Status report
 
-	is_start : BOOLEAN is do Result := value = a_start end
+	is_left : BOOLEAN is do Result := value = align_left end
 
-	is_end : BOOLEAN is do Result := value = a_end end
+	is_right : BOOLEAN is do Result := value = align_right end
 
-	is_left : BOOLEAN is do Result := value = a_left end
+	is_center : BOOLEAN is do Result := value = align_center end
 
-	is_right : BOOLEAN is do Result := value = a_right end
+feature -- Constants
 
-	is_center : BOOLEAN is do Result := value = a_center end
-
-feature -- Status setting
-
-feature -- Cursor movement
-
-feature -- Element change
-
-feature -- Removal
-
-feature -- Resizing
-
-feature -- Transformation
-
-feature -- Conversion
-
-feature -- Duplication
-
-feature -- Miscellaneous
-
-feature -- Basic operations
-
-feature -- Obsolete
-
-feature -- Inapplicable
-
-feature {NONE} -- Implementation
-
-	a_start, a_end, a_left, a_right, a_center : INTEGER is unique
+	align_left : INTEGER is 0
+	align_right : INTEGER is 1
+	align_center : INTEGER is 3
 	
 invariant
-	exclusive_value: is_start xor is_end xor is_left xor is_right xor is_center
+	exclusive_value: is_left xor is_right xor is_center
 
 end

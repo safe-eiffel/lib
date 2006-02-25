@@ -1,9 +1,9 @@
 indexing
 
-	description: 
-	
+	description:
+
 		"Objects that provide features for hyphenating a word."
-		
+
 	library: "FO - Formatting Objects in Eiffel. Project SAFE."
 	copyright: "Copyright (c) 2006 - , Paul G. Crismer and others"
 	license: "Eiffel Forum License v2 (see forum.txt)"
@@ -13,13 +13,15 @@ class FO_HYPHENATION
 
 create
 	make
-	
+
 feature {NONE} -- Initialization
 
 	make (hyphen_character : CHARACTER; min_begin, min_end : INTEGER; tex_hyphen_file : FO_TEX_HYPHEN_FILE) is
 		require
 			tex_hyphen_file_not_void: tex_hyphen_file /= Void
 			tex_hyphen_file_not_open: not tex_hyphen_file.is_open_read
+		local
+			tester : KL_EQUALITY_TESTER[STRING]
 		do
 			hyphen := hyphen_character
 			create dictionary.make
@@ -28,7 +30,7 @@ feature {NONE} -- Initialization
 			from
 				tex_hyphen_file.open_read
 			until
-				tex_hyphen_file.end_of_patterns			
+				tex_hyphen_file.end_of_patterns
 			loop
 				tex_hyphen_file.read_pattern
 				if not tex_hyphen_file.end_of_input then
@@ -37,7 +39,8 @@ feature {NONE} -- Initialization
 			end
 			from
 				create exceptions.make (50)
-				exceptions.set_key_equality_tester (create {KL_EQUALITY_TESTER[STRING]})
+				create tester
+				exceptions.set_key_equality_tester (tester)
 			until
 				tex_hyphen_file.end_of_hyphenation
 			loop
@@ -48,30 +51,30 @@ feature {NONE} -- Initialization
 			minimum_begin_set: minimum_begin = min_begin
 			minimum_end: minimum_end = min_end
 		end
-		
+
 feature -- Access
 
 	word : STRING
 
 	lower_case_word : STRING
-		
+
 	hyphenated_word : STRING
-	
+
 	hyphenation_points : DS_LIST[INTEGER]
 			-- List of substring ends for hyphenation.
-			
+
 	hyphen : CHARACTER
 
 	hyphenation_position_vector : STRING
-		
+
 feature -- Measurement
 
 	minimum_begin : INTEGER
 			-- Minimum number of characters at word begin, without hyphenation.
-	
+
 	minimum_end : INTEGER
 			-- Minimum number of characters at word end, without hyphenation.
-			
+
 feature -- Basic operations
 
 	hyphenate (a_word : STRING) is
@@ -127,11 +130,11 @@ feature {NONE} -- Implementation
 
 	exceptions : DS_HASH_TABLE [STRING, STRING]
 			-- Hyphenation exceptions.
-					
+
 	hword : STRING
 			-- Word to be hyphenated, w_indexth begin and end marks '.'
 
-	add_hyphenation (string : STRING) is			
+	add_hyphenation (string : STRING) is
 		local
 			key : STRING
 			i : INTEGER
@@ -151,10 +154,10 @@ feature {NONE} -- Implementation
 			end
 			exceptions.force (string, key)
 		end
-		
+
 	word_mark : CHARACTER is '.'
 
-	setup_hyphenation is		
+	setup_hyphenation is
 		require
 			word_not_void: word /= Void
 		do
@@ -167,7 +170,7 @@ feature {NONE} -- Implementation
 			hyphenation_position_vector_setup: hyphenation_position_vector /= Void and hyphenation_position_vector.occurrences ('0') = hyphenation_position_vector.count
 			hyphenation_position_vector_count: hyphenation_position_vector.count = lower_case_word.count + 3
 		end
-		
+
 	setup_hyphenated_word is
 		local
 			h_index, w_index : INTEGER
@@ -196,7 +199,7 @@ feature {NONE} -- Implementation
 			hyphenated_word.append_string (word.substring (end_index, word.count))
 		end
 
-	setup_hyphenation_points is		
+	setup_hyphenation_points is
 		require
 			hyphenated_word_not_void: hyphenated_word /= Void
 		local
@@ -217,7 +220,7 @@ feature {NONE} -- Implementation
 				i := i + 1
 			end
 		end
-		
+
 	handle_vector (vector : STRING; substring_start, substring_end : INTEGER) is
 		local
 			index : INTEGER
@@ -231,7 +234,7 @@ feature {NONE} -- Implementation
 				index > vector.count
 			loop
 --				if hyphenation_position_vector.item (index + d) < vector.item (index) then
---					hyphenation_position_vector.put (vector.item (index), index + d)					
+--					hyphenation_position_vector.put (vector.item (index), index + d)
 --				end
 				k := substring_start - 1 + index
 				if hyphenation_position_vector.item (k) < vector.item (index) then
@@ -241,8 +244,8 @@ feature {NONE} -- Implementation
 			end
 		end
 
-invariant		
-	
+invariant
+
 	minimum_begin_positive: minimum_begin > 0
 	minimum_end_positive: minimum_end > 0
 end

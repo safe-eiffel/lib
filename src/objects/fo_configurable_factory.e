@@ -1,6 +1,6 @@
 indexing
-	description: 
-	
+	description:
+
 		"Factories of fo_objects, configurable by an XML file."
 
 	library: "FO - Formatting Objects in Eiffel. Project SAFE."
@@ -12,12 +12,12 @@ indexing
 class FO_CONFIGURABLE_FACTORY
 
 inherit
-	
+
 	FO_MEASUREMENT_ROUTINES
-	
+
 create
 	make
-	
+
 feature {NONE} -- Initialization
 
 	make (file_name : STRING; an_error_handler : UT_ERROR_HANDLER) is
@@ -30,10 +30,11 @@ feature {NONE} -- Initialization
 			sections: DS_LIST_CURSOR[XFOCFG_SECTION]
 			section : XFOCFG_SECTION
 			style : XFOCFG_STYLE
+			tester : KL_EQUALITY_TESTER[STRING]
 		do
 			error_handler := an_error_handler
 			create parser.make
-			create tree_pipe.make	
+			create tree_pipe.make
 			parser.set_callbacks (tree_pipe.start)
 			create input.make (file_name)
 			input.open_read
@@ -44,9 +45,11 @@ feature {NONE} -- Initialization
 				create style_catalog.make (10)
 				create section_catalog.make (10)
 				create style_names_impl.make
-				style_names_impl.set_equality_tester (create {KL_EQUALITY_TESTER[STRING]})
+				create tester
+				style_names_impl.set_equality_tester (tester)
 				create section_names_impl.make
-				section_names_impl.set_equality_tester (create {KL_EQUALITY_TESTER[STRING]})
+				create tester
+				section_names_impl.set_equality_tester (tester)
 				from
 					sections := xml_document.section_collection.new_cursor
 					sections.start
@@ -56,7 +59,7 @@ feature {NONE} -- Initialization
 					section := sections.item
 					section_catalog.force (section, section.attribute_name)
 					section_names_impl.put_last (section.attribute_name)
-					sections.forth	
+					sections.forth
 				end
 				from
 					styles := xml_document.style_collection.new_cursor
@@ -72,35 +75,35 @@ feature {NONE} -- Initialization
 			else
 				error_handler.report_error_message (parser.last_error_extended_description)
 				is_error := True
-			end		
+			end
 		ensure
 			error_handler_set: error_handler = an_error_handler
 		end
-	
-		
+
+
 feature -- Access
 
 	error_handler : UT_ERROR_HANDLER
-	
+
 	last_document : FO_DOCUMENT
 			-- Last created document.
-	
+
 	last_section : FO_SECTION
 			-- Last created section.
-	
+
 	last_block : FO_BLOCK
 			-- Last created block.
-	
+
 	last_inline : FO_INLINE
 			-- Last created inline.
-			
+
 	last_row : FO_ROW
 			-- Last created row.
-	
+
 	xml_document : XFOCFG_DOCUMENT
 			-- XML document.
-			
-	section_names : DS_LIST[STRING] is	
+
+	section_names : DS_LIST[STRING] is
 			-- Names of available sections.
 		do
 			Result := section_names_impl
@@ -108,20 +111,20 @@ feature -- Access
 			section_names_not_void: Result /= Void
 		end
 
-	style_names : DS_LIST[STRING] is	
+	style_names : DS_LIST[STRING] is
 			-- Names of available styles.
 		do
 			Result := style_names_impl
 		ensure
 			style_names_not_void: Result /= Void
 		end
-		
+
 feature -- Status report
 
 	is_error : BOOLEAN
 
 	is_ok : BOOLEAN is do Result := not is_error end
-	
+
 	has_style (name : STRING) : BOOLEAN is
 			-- Does style `name' exist?
 		require
@@ -129,15 +132,15 @@ feature -- Status report
 		do
 			Result := style_catalog.has (name)
 		end
-		
+
 	has_section (name : STRING) : BOOLEAN is
 			-- Does section `name' exist?
 		require
 			name_not_void: name /= Void
-		do 
+		do
 			Result := section_catalog.has (name)
 		end
-		
+
 feature -- Basic operations
 
 	create_document (a_writer : FO_DOCUMENT_WRITER) is
@@ -155,7 +158,7 @@ feature -- Basic operations
 			end
 			create last_document.make_rectangle (l_rectangle, a_writer)
 		end
-		
+
 	create_section (name : STRING) is
 			-- Create section corresponding to `name'.
 		require
@@ -191,7 +194,7 @@ feature -- Basic operations
 				end
 			end
 		end
-		
+
 	create_block (name : STRING) is
 			-- Create block corresponding to `name'.
 		require
@@ -220,11 +223,11 @@ feature -- Basic operations
 							last_block.right_justify
 						end
 					end
-				end	
+				end
 			end
 		end
 
-	create_block_inline (style : STRING) is		
+	create_block_inline (style : STRING) is
 			-- Create block whith inline corresponding to `style'.
 		require
 			style_not_void: style /= Void
@@ -236,7 +239,7 @@ feature -- Basic operations
 			last_block_not_void: last_block /= Void
 			last_block_has_last_inline: last_block.last_inline = last_inline
 		end
-		
+
 	create_inline (name : STRING) is
 		require
 			is_ok: is_ok
@@ -255,8 +258,8 @@ feature -- Basic operations
 				end
 			end
 		end
-	
---	create_row (name : STRING) is	
+
+--	create_row (name : STRING) is
 --		require
 --			name_not_void: name /= Void
 --		do
@@ -288,9 +291,9 @@ feature -- Basic operations
 				else
 					do_nothing
 				end
-			end				
+			end
 		end
-		
+
 feature {NONE} -- Implementation
 
 	parser : XM_EIFFEL_PARSER
@@ -300,14 +303,14 @@ feature {NONE} -- Implementation
 	input : KL_TEXT_INPUT_FILE
 
 	factory : XFOCFG_DOCUMENT_FACTORY
-	
-	points_regex : RX_PCRE_REGULAR_EXPRESSION is		
+
+	points_regex : RX_PCRE_REGULAR_EXPRESSION is
 		once
 			create Result.make
 			Result.compile ("([+\-]?[0-9]+(\.[0-9]*)?)((in)|(pt)|(cm)|(mm))")
 		end
-	
-	style_catalog : DS_HASH_TABLE[XFOCFG_STYLE, STRING]	
+
+	style_catalog : DS_HASH_TABLE[XFOCFG_STYLE, STRING]
 	section_catalog : DS_HASH_TABLE [XFOCFG_SECTION, STRING]
 
 	x_new_document (xdocument : XFOCFG_DOCUMENT; eh : UT_ERROR_HANDLER) : FO_DOCUMENT is
@@ -315,9 +318,9 @@ feature {NONE} -- Implementation
 			xdocument_not_void: xdocument /= Void
 			eh_not_void: eh /= Void
 		do
-			
+
 		end
-		
+
 	x_new_margins (xmargins : XFOCFG_MARGINS; eh : UT_ERROR_HANDLER) : FO_MARGINS is
 		require
 			xmargins_not_void: xmargins /= Void
@@ -365,7 +368,7 @@ feature {NONE} -- Implementation
 			create Result.make
 			if xpage.attribute_height /= Void then
 				height := new_measurement (xpage.attribute_height)
-			end				
+			end
 			if xpage.attribute_width /= Void then
 				width := new_measurement (xpage.attribute_width)
 			end
@@ -377,7 +380,7 @@ feature {NONE} -- Implementation
 			end
 		end
 
-	x_new_font (xfont : XFOCFG_FONT; eh : UT_ERROR_HANDLER) : FO_FONT is	
+	x_new_font (xfont : XFOCFG_FONT; eh : UT_ERROR_HANDLER) : FO_FONT is
 		require
 			xfont_not_void: xfont /= Void
 		local
@@ -404,7 +407,7 @@ feature {NONE} -- Implementation
 				end
 			end
 		end
-		
+
 	font_factory : FO_FONT_FACTORY is
 		once
 			create Result.make
@@ -414,11 +417,11 @@ feature {NONE} -- Implementation
 
 	style_names_impl : DS_LINKED_LIST[STRING]
 	section_names_impl : DS_LINKED_LIST[STRING]
-	
-invariant		
-	
+
+invariant
+
 	style_names_impl_not_void: style_names_impl /= Void
 	section_names_impl_not_void: section_names_impl /= Void
-	
+
 end
 

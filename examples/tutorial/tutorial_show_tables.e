@@ -103,12 +103,12 @@ feature {NONE} -- Implementation
 			a_table.last_row.put (a_block, 1)
 			
 			create a_block.make_default
-			a_block.append_string ("Phone "+i.out)
+			a_block.append_string (i.out+"-23456")
 			
 			a_table.last_row.put (a_block, 2)
 			
 			create a_block.make_default
-			a_block.append_string ("e-mail "+i.out)
+			a_block.append_string ("e"+i.out+"@mail.com")
 			
 			table.last_row.put (a_block, 3)
 		end

@@ -1,6 +1,6 @@
 indexing
-	description: 
-	
+	description:
+
 		"Objects that contain horizontally consecutive renderable items."
 
 	library: "FO - Formatting Objects in Eiffel. Project SAFE."
@@ -11,18 +11,18 @@ indexing
 class FO_ROW
 
 inherit
-	
+
 	FO_RENDERABLE
 		redefine
 			render_forth, pre_render, is_renderable, post_render
 		end
-				
+
 	KL_IMPORTED_ARRAY_ROUTINES
-	
+
 create
 
 	make, make_widths
-	
+
 feature {NONE} -- Initialization
 
 	make (n : INTEGER; desired_total_width : FO_MEASUREMENT) is
@@ -35,7 +35,7 @@ feature {NONE} -- Initialization
 			width_set: width = desired_total_width
 			capacity_set: capacity = n
 		end
-		
+
 	make_widths (n : INTEGER; desired_widths : ARRAY[FO_MEASUREMENT]) is
 			-- Row of `n' items, with `desired_widths' for each block.
 		require
@@ -50,7 +50,7 @@ feature {NONE} -- Initialization
 		ensure
 			capacity_set: capacity = n
 		end
-		
+
 feature -- Access
 
 	item (index: INTEGER) : FO_RENDERABLE is
@@ -63,9 +63,9 @@ feature -- Access
 
 	block_widths : ARRAY [FO_MEASUREMENT]
 		-- Desired widths.
-		
+
 	width : FO_MEASUREMENT
-		-- Desired Width of Row.		
+		-- Desired Width of Row.
 
 	height : FO_MEASUREMENT
 		-- Height of pre-rendered Row.
@@ -77,9 +77,9 @@ feature -- Measurement
 
 	capacity : INTEGER is
 		do
-			Result := items.capacity
+			Result := items.upper - items.lower + 1
 		end
-			
+
 feature -- Comparison
 
 feature -- Status report
@@ -111,8 +111,8 @@ feature -- Status report
 				i := i + 1
 			end
 		end
-	
-	is_renderable (region: FO_RECTANGLE) : BOOLEAN is	
+
+	is_renderable (region: FO_RECTANGLE) : BOOLEAN is
 		local
 			i : INTEGER
 		do
@@ -127,7 +127,7 @@ feature -- Status report
 				i := i + 1
 			end
 		end
-		
+
 feature -- Status setting
 
 feature -- Cursor movement
@@ -142,7 +142,7 @@ feature -- Element change
 		do
 			items.put (a_renderable, index)
 		end
-		
+
 feature -- Removal
 
 feature -- Resizing
@@ -185,12 +185,12 @@ feature {FO_DOCUMENT, FO_BORDER_ABLE, FO_TABLE} -- Basic operations
 				else
 					height := height.max (items.item (i).height)
 				end
-				
+
 				i := i + 1
 			end
 			precursor {FO_RENDERABLE}(region)
 		end
-		
+
 	render_start (document: FO_DOCUMENT; region : FO_RECTANGLE) is
 		local
 			i : INTEGER
@@ -200,7 +200,7 @@ feature {FO_DOCUMENT, FO_BORDER_ABLE, FO_TABLE} -- Basic operations
 			is_render_inside := False
 			last_rendered_region := Void
 			compute_regions (region)
-			from 
+			from
 				i := items.lower
 				is_render_off := True
 			until i > items.upper
@@ -217,13 +217,13 @@ feature {FO_DOCUMENT, FO_BORDER_ABLE, FO_TABLE} -- Basic operations
 			end
 			last_region := region
 		end
-		
+
 	render_forth (document : FO_DOCUMENT; region : FO_RECTANGLE) is
 		local
 			i : INTEGER
 		do
 			compute_regions (region)
-			from 
+			from
 				last_rendered_region := Void
 				i := items.lower
 				is_render_off := True
@@ -235,8 +235,8 @@ feature {FO_DOCUMENT, FO_BORDER_ABLE, FO_TABLE} -- Basic operations
 					is_render_inside := is_render_inside and items.item (i).is_render_inside
 					if last_rendered_region = Void then
 						last_rendered_region := items.item (i).last_rendered_region
-				elseif items.item (i).is_prerendered then
-					last_rendered_region := last_rendered_region.merged (items.item (i).last_rendered_region)
+					elseif items.item (i).is_prerendered then
+						last_rendered_region := last_rendered_region.merged (items.item (i).last_rendered_region)
 					end
 				end
 				i := i + 1
@@ -247,7 +247,7 @@ feature {FO_DOCUMENT, FO_BORDER_ABLE, FO_TABLE} -- Basic operations
 	post_render (document : FO_DOCUMENT; region : FO_RECTANGLE) is
 		local
 			i : INTEGER
-		do		
+		do
 			compute_regions (region)
 			from
 				i := items.lower
@@ -258,7 +258,7 @@ feature {FO_DOCUMENT, FO_BORDER_ABLE, FO_TABLE} -- Basic operations
 				i := i + 1
 			end
 		end
-		
+
 feature -- Obsolete
 
 feature -- Inapplicable
@@ -271,12 +271,7 @@ feature {NONE} -- Implementation
 		do
 			create items.make (1,n)
 		end
-		
---	initialize_margins (n : INTEGER) is
---		do
---			
---		end
-		
+
 	initialize_widths (n : INTEGER; desired_width : FO_MEASUREMENT) is
 		local
 			proportion, current_width : FO_MEASUREMENT
@@ -312,7 +307,7 @@ feature {NONE} -- Implementation
 
 	render_regions : ARRAY[FO_RECTANGLE]
 
-	compute_regions (region : FO_RECTANGLE) is			
+	compute_regions (region : FO_RECTANGLE) is
 			-- Compute `render_regions' based on the total `region'.
 		require
 			region_not_void: region /= Void
@@ -336,7 +331,7 @@ feature {NONE} -- Implementation
 				left := region.left + total_width
 				if i = block_widths.upper then
 					right := region.right
-				else	
+				else
 					right := left + current_width
 				end
 				create current_region.set (left,
@@ -349,15 +344,15 @@ feature {NONE} -- Implementation
 			end
 		end
 
-		
+
 	items : ARRAY [FO_RENDERABLE]
 		-- items.
-				
-invariant		
-	
+
+invariant
+
 	items_not_void: items /= Void
 	block_widths_not_void: block_widths /= Void
 	block_widths_have_no_void: not ANY_ARRAY_.has (block_widths, Void)
-	
+
 end
 

@@ -1,7 +1,7 @@
 indexing
 
-	description: 
-	
+	description:
+
 		"EREPORT System's root class"
 
 	library: "FO - Formatting Objects in Eiffel. Project SAFE."
@@ -12,14 +12,14 @@ indexing
 class
 	EREPORT
 
-inherit	
-	
+inherit
+
 	KL_SHARED_EXECUTION_ENVIRONMENT
 	KL_SHARED_FILE_SYSTEM
-	
+
 	FO_MEASUREMENT_ROUTINES
 	FO_SHARED_FONT_FACTORY
-	
+
 creation
 	make
 
@@ -29,10 +29,9 @@ feature -- Initialization
 			-- Creation procedure.
 		local
 			p : FO_PAGE_SIZE
-			f : FO_CONFIGURABLE_FACTORY
 		do
 			create p.make ("a4")
-			
+
 			setup_document
 			show_inline_properties
 			show_font_properties
@@ -44,17 +43,17 @@ feature -- Initialization
 --			test_measurement
 			test_multiple_fonts
 		end
-		
+
 feature -- Access
 
 	document : FO_DOCUMENT
-	
+
 	writer : FO_DOCUMENT_WRITER
-	
+
 	page_rectangle : FO_RECTANGLE
-	
+
 	helvetica_12 : FO_FONT
-	
+
 feature -- Basic operations
 
 	setup_document is
@@ -73,7 +72,7 @@ feature -- Basic operations
 			helvetica_12 := font_factory.last_font
 		end
 
-	show_inline_properties is		
+	show_inline_properties is
 		local
 			l_block : FO_BLOCK
 			l_inline : FO_INLINE
@@ -83,9 +82,9 @@ feature -- Basic operations
 		do
 			create l_margins.make
 			create l_inline.make_with_font ("This is an inline in helvetica 12 points%N", helvetica_12)
-			create l_block.make (l_margins)	
+			create l_block.make (l_margins)
 			l_block.append (l_inline)
-			
+
 			create l_inline.make_with_font ("This is an inline in helvetica 12, red foreground.%N", helvetica_12)
 			create l_red.make_rgb (255, 0, 0)
 			l_inline.set_foreground_color (l_red)
@@ -101,35 +100,35 @@ feature -- Basic operations
 			create l_inline.make_with_font ("This is an inline in helvetica 12 points, stretch 150%N", helvetica_12)
 			l_inline.set_stretch (unit (150))
 			l_block.append (l_inline)
-			
+
 			create l_inline.make_with_font ("This is an inline in helvetica 12 points, word spacing 5%N", helvetica_12)
 			l_inline.set_word_spacing (unit (5))
 			l_block.append (l_inline)
-			
+
 			create l_inline.make_with_font ("This is an inline in helvetica 12 points, character spacing 3%N", helvetica_12)
 			l_inline.set_character_spacing (unit (3))
 			l_block.append (l_inline)
-			
+
 
 			document.append_block (l_block)
 		end
 
-	close_document is	
+	close_document is
 		do
 			document.close
 		end
-		
+
 	show_block_properties is
 		do
-			
+
 		end
-		
+
 	show_font_properties is
 		do
-			
+
 		end
-		
-	
+
+
 	test_hyphen is
 		local
 			hy : FO_TEX_HYPHEN_FILE
@@ -145,7 +144,7 @@ feature -- Basic operations
 		end
 
 	tries : DS_TRIE[STRING]
-			
+
 	test_trie is
 		local
 			t : DS_TRIE[STRING]
@@ -160,9 +159,9 @@ feature -- Basic operations
 			t.put ("7", "zu")
 			print (t)
 		end
-		
+
 	test_measurement is
-			-- 
+			--
 		local
 			m : FO_MEASUREMENT
 		do
@@ -179,7 +178,7 @@ feature -- Basic operations
 		end
 
 	show_measurement (m : FO_MEASUREMENT; value, unit_string : STRING) is
-			-- 
+			--
 		do
 			print (value + " " + unit_string + " = %N")
 			print ("  " + m.as_inches.out + "%Tinches%N")
@@ -190,18 +189,13 @@ feature -- Basic operations
 	block : FO_BLOCK
 
 	use_classes is
-			-- 
+			--
 		local
-			alignable : FO_ALIGN_ABLE
-			alignment : FO_ALIGNMENT
-			color : FO_COLOR
-			colorable : FO_COLOR_ABLE
-			fontable : FO_FONT_ABLE
 			font : FO_FONT
 			inline : FO_INLINE
-			marginable : FO_MARGIN_ABLE
 			margins : FO_MARGINS
 			measurement : FO_MEASUREMENT
+			red, yellow, blue2, green, magenta : FO_COLOR
 		do
 			font_factory.find_font ("Helvetica", "", "", points (12))
 			if font_factory.last_font /= Void then
@@ -210,25 +204,33 @@ feature -- Basic operations
 				create inline.make_with_font ("This is a content that I know is%
 				% completely useless, except for the example I am ", font)
 				create margins.make
-				margins.set_left (create {FO_MEASUREMENT}.centimeters (0))
+				margins.set_left (cm (0))
 				create block.make (margins)
-				
+
 				block.append (inline)
 				font_factory.find_font ("Helvetica", "", "italic", points (12))
 				do_nothing
 				create inline.make_with_font ("try", font_factory.last_font)
-				inline.set_foreground_color (create {FO_COLOR}.make_rgb (255, 0, 0))
-				inline.set_background_color (create {FO_COLOR}.make_rgb (255,255,0))
+				create red.make_rgb (255, 0, 0)
+				create yellow.make_rgb (255,255,0)
+				inline.set_foreground_color (red)
+				inline.set_background_color (yellow)
 				inline.set_stretch (unit (260))
 				block.append (inline)
+				
 				create inline.make_with_font ("i", font_factory.last_font)
-				inline.set_foreground_color (create {FO_COLOR}.make_rgb (0, 255, 0))
+				create green.make_rgb (0, 255, 0)
+				inline.set_foreground_color (green)
 				block.append (inline)
+				
 				create inline.make_with_font ("ng t", font_factory.last_font)
-				inline.set_foreground_color (create {FO_COLOR}.make_rgb (0, 255, 255))
+				create magenta.make_rgb (0, 255, 255)
+				inline.set_foreground_color (magenta)
 				block.append (inline)
+				
 				create inline.make_with_font ("o emphasize.", font_factory.last_font)
-				inline.set_foreground_color (create {FO_COLOR}.make_rgb (255, 64, 64))
+				create blue2.make_rgb (255, 64, 64)
+				inline.set_foreground_color (blue2)
 				block.append (inline)
 				font_factory.find_font ("Times", "bold", "", points (14))
 				do_nothing
@@ -242,7 +244,7 @@ feature -- Basic operations
 		end
 
 	test_multiple_fonts is
-			-- 
+			--
 		local
 			a_document : FO_DOCUMENT
 			rectangle : FO_RECTANGLE
@@ -254,6 +256,8 @@ feature -- Basic operations
 			block2 : FO_BLOCK
 			image : FO_IMAGE
 			border : FO_BORDER
+			red : FO_COLOR
+			border_constants : FO_BORDER
 		do
 			create a_writer.make ("c:\ereport.pdf")
 			create a210.centimeters (21)
@@ -262,12 +266,12 @@ feature -- Basic operations
 			create rectangle.set (a0, a0, a210, a297)
 			create a_document.make_rectangle (rectangle, a_writer)
 			create margins.make
-			margins.set_bottom (create {FO_MEASUREMENT}.centimeters (2))
-			margins.set_top (create {FO_MEASUREMENT}.centimeters (2))
-			margins.set_left (create {FO_MEASUREMENT}.centimeters (2))
-			margins.set_right (create {FO_MEASUREMENT}.centimeters (2))
+			margins.set_bottom (centimeters (2))
+			margins.set_top (centimeters (2))
+			margins.set_left (centimeters (2))
+			margins.set_right (centimeters (2))
 			a_document.set_margins (margins)
-		
+
 			--|
 --			page := a_document.last_page
 --			a_document.find_font ("Helvetica", a_document.Encoding_winansi)
@@ -284,29 +288,29 @@ feature -- Basic operations
 --			page.put_string ("grande")
 --			page.end_text
 			a_document.open
-			block.margins.set_top (create {FO_MEASUREMENT}.centimeters (0.5))
-			block.margins.set_bottom (create {FO_MEASUREMENT}.centimeters (0.5))
-			block.margins.set_right (create {FO_MEASUREMENT}.centimeters (0.5))
-			block.margins.set_left (create {FO_MEASUREMENT}.centimeters (0.5))
+			block.margins.set_top (centimeters (0.5))
+			block.margins.set_bottom (centimeters (0.5))
+			block.margins.set_right (centimeters (0.5))
+			block.margins.set_left (centimeters (0.5))
 			a_document.append_block (block)
-			block.margins.set_left (create {FO_MEASUREMENT}.centimeters (0.5))
+			block.margins.set_left (centimeters (0.5))
 			a_document.append_block (block)
-			block.margins.set_left (create {FO_MEASUREMENT}.centimeters (1.5))
-			block.margins.set_top (create {FO_MEASUREMENT}.centimeters (1))
+			block.margins.set_left (centimeters (1.5))
+			block.margins.set_top (centimeters (1))
 			a_document.append_block (block)
-			block.margins.set_top (create {FO_MEASUREMENT}.centimeters (0.5))
+			block.margins.set_top (centimeters (0.5))
 			a_document.append_block (block)
-			create row.make_widths (2, << create {FO_MEASUREMENT}.points (300), create {FO_MEASUREMENT}.points (100)>>)
-			block.margins.set_top (create {FO_MEASUREMENT}.centimeters (0.2))
-			block.margins.set_bottom (create {FO_MEASUREMENT}.centimeters (0.2))
-			block.margins.set_right (create {FO_MEASUREMENT}.centimeters (0.2))
-			block.margins.set_left (create {FO_MEASUREMENT}.centimeters (0.2))
+			create row.make_widths (2, << points (300), points (100)>>)
+			block.margins.set_top (centimeters (0.2))
+			block.margins.set_bottom (centimeters (0.2))
+			block.margins.set_right (centimeters (0.2))
+			block.margins.set_left (centimeters (0.2))
 			row.put (block, 1)
 			create margins.make
-			margins.set_top (create {FO_MEASUREMENT}.centimeters (1))
-			margins.set_bottom (create {FO_MEASUREMENT}.centimeters (2))
-			margins.set_right (create {FO_MEASUREMENT}.centimeters (0.2))
-			margins.set_left (create {FO_MEASUREMENT}.centimeters (0.2))
+			margins.set_top (centimeters (1))
+			margins.set_bottom (centimeters (2))
+			margins.set_right (centimeters (0.2))
+			margins.set_left (centimeters (0.2))
 			create block2.make (margins)
 			create inline.make_with_font ("Ceci est un essai que j'espère concluant.  En effet, il est difficile de savoir comment le truc va se comporter.",
 				font_factory.last_font)
@@ -314,21 +318,23 @@ feature -- Basic operations
 			row.put (block2, 2)
 			a_document.append_row (row)
 			a_document.append_block (block)
-			a_document.append_block (block2)	
-			block.margins.set_top (create {FO_MEASUREMENT}.centimeters (2))
-			block.margins.set_bottom (create {FO_MEASUREMENT}.centimeters (1))
-			block.margins.set_right (create {FO_MEASUREMENT}.centimeters (1))
+			a_document.append_block (block2)
+			block.margins.set_top (centimeters (2))
+			block.margins.set_bottom (centimeters (1))
+			block.margins.set_right (centimeters (1))
 			a_document.append_block (block)
-			
+
 			create image.make_from_png ("C:\User\eiffel\safe\safe\lib\ecli\examples\books\data\nvc.png", a_document)
-			image.set_width (create {FO_MEASUREMENT}.centimeters (10))
-			create border.make ({FO_BORDER}.style_dot_dash, create {FO_MEASUREMENT}.points (1),
-				create {FO_COLOR}.make_rgb (255, 0, 0))
+			image.set_width (centimeters (10))
+			create red.make_rgb (255, 0, 0)
+			create border_constants.make_none
+			create border.make (border_constants.style_dot_dash, points (1),
+				red)
 			image.align.make_center
-			image.margins.set_left (create {FO_MEASUREMENT}.centimeters (1))
-			image.margins.set_right (create {FO_MEASUREMENT}.centimeters (1))
-			image.margins.set_top (create {FO_MEASUREMENT}.centimeters (1))
-			image.margins.set_bottom (create {FO_MEASUREMENT}.centimeters (1))
+			image.margins.set_left (centimeters (1))
+			image.margins.set_right (centimeters (1))
+			image.margins.set_top (centimeters (1))
+			image.margins.set_bottom (centimeters (1))
 			image.set_uniform_borders (border)
 			a_document.append_image (image)
 			test_row_single (a_document)
@@ -343,13 +349,13 @@ feature -- Basic operations
 			b : FO_BLOCK
 			image : FO_IMAGE
 			i : FO_INLINE
-			
+
 			margins : FO_MARGINS
 		do
 			create row.make_widths (2, << cm (5), cm (7)>>)
-			
+
 			create margins.set (mm(2), mm(2), mm(2), mm(2)) --| no margins.
-			
+
 			create b.make (margins)
 
 			font_factory.find_font ("Helvetica", "", "italic", points (12))
@@ -366,26 +372,25 @@ other people.
 
 			create image.make_from_png (nvc_image_file, a_document)
 			image.set_width (cm (5))
-			
+
 			row.put (image, 1)
 			row.put (b, 2)
-			
+
 			a_document.append_row (new_nvc_row (a_document))
 		end
-		
+
 	test_row_multiple (a_document : FO_DOCUMENT) is
 		local
 			row : FO_ROW
 			b : FO_BLOCK
-			image : FO_IMAGE
 			i : FO_INLINE
-			
+
 			margins : FO_MARGINS
 		do
 			create row.make_widths (2, << cm (5), cm (7)>>)
-			
+
 			create margins.set (mm(0), mm(0), mm(0), mm(0)) --| no margins.
-			
+
 			create b.make (margins)
 
 			font_factory.find_font ("Helvetica", "", "italic", points (12))
@@ -403,7 +408,7 @@ other people.
 
 			row.put (b, 2)
 			row.put (new_nvc_row (a_document), 1)
-			
+
 			a_document.append_row (row)
 		end
 
@@ -413,13 +418,13 @@ other people.
 			b : FO_BLOCK
 			image : FO_IMAGE
 			i : FO_INLINE
-			
+
 			margins : FO_MARGINS
 		do
 			create row.make_widths (2, << cm (5), cm (7)>>)
-			
+
 			create margins.set (mm(0), mm(0), mm(0), mm(0)) --| no margins.
-			
+
 			create b.make (margins)
 
 			font_factory.find_font ("Helvetica", "", "italic", points (12))
@@ -436,12 +441,12 @@ other people.
 
 			create image.make_from_png (nvc_image_file, a_document)
 			image.set_width (cm (2))
-			
+
 			row.put (image, 1)
 			row.put (b, 2)
 			Result := row
 		end
-				
+
 	nvc_image_file : STRING is "C:\User\eiffel\safe\safe\lib\ecli\examples\books\data\nvc.png"
-	
+
 end -- class EREPORT

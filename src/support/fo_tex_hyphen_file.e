@@ -1,7 +1,7 @@
 indexing
 
-	description: 
-	
+	description:
+
 		"Tex hyphenation files."
 
 	library: "FO - Formatting Objects in Eiffel. Project SAFE."
@@ -16,22 +16,22 @@ inherit
 		redefine
 			open_read
 		end
-		
+
 create
 	make
-	
+
 feature -- Access
 
 	last_pattern : STRING
-	
+
 	last_hyph : STRING
 
 feature -- Status report
 
 	end_of_patterns : BOOLEAN
-	
+
 	end_of_hyphenation : BOOLEAN
-	
+
 feature -- Basic operations
 
 	open_read is
@@ -41,14 +41,14 @@ feature -- Basic operations
 			Precursor
 			if is_open_read then
 				from
-					
+
 				until
 					end_of_input or else done
 				loop
 					read_word
 					if not end_of_input and then last_string.is_equal ("\patterns{") then
 						done := True
-					end			
+					end
 				end
 				if end_of_input then
 					close
@@ -57,7 +57,7 @@ feature -- Basic operations
 			create last_pattern.make (10)
 			create last_hyph.make (10)
 		end
-		
+
 	read_pattern is
 		do
 			read_tex_word
@@ -69,15 +69,15 @@ feature -- Basic operations
 				analyze_pattern
 			end
 		end
-					
-	read_hyphenation is	
+
+	read_hyphenation is
 		do
 			read_tex_word
 			if last_string.is_equal ("}") then
 				end_of_hyphenation := True
-			end	
+			end
 		end
-		
+
 feature {NONE} -- Implementation
 
 	read_tex_word is
@@ -94,19 +94,19 @@ feature {NONE} -- Implementation
 				end
 			end
 		end
-		
+
 	hyphenation_regex : RX_PCRE_REGULAR_EXPRESSION is
 		once
 			create Result.make
 			Result.compile ("\\hyphenation\{")
 		end
-		
+
 	patterns_regex: RX_PCRE_REGULAR_EXPRESSION is
 		once
 			create Result.make
 			Result.compile ("\\patterns\{")
 		end
-		
+
 	search_for_hyphenation is
 		do
 			from
@@ -115,13 +115,13 @@ feature {NONE} -- Implementation
 				end_of_file or else hyphenation_regex.matches (last_string)
 			loop
 				hyphenation_regex.wipe_out
-				read_tex_word				
+				read_tex_word
 			end
 			if end_of_file then
 				end_of_hyphenation := True
 			end
 		end
-		
+
 	analyze_pattern is
 		local
 			pattern_index : INTEGER
@@ -165,10 +165,10 @@ feature {NONE} -- Implementation
 			one_more:last_hyph.count-last_pattern.count = 1
 		end
 
-	translate_character (c1,c2 : CHARACTER) : CHARACTER is		
+	translate_character (c1,c2 : CHARACTER) : CHARACTER is
 		do
 			inspect c1
-			when ''' then
+			when '%'' then
 				inspect c2
 				when 'a' then
 					Result := 'á'
@@ -181,7 +181,7 @@ feature {NONE} -- Implementation
 				when 'u' then
 					Result := 'ú'
 				else
-					
+
 				end
 			when '`' then
 				inspect c2
@@ -196,7 +196,7 @@ feature {NONE} -- Implementation
 				when 'u' then
 					Result := 'ù'
 				else
-					
+
 				end
 			when '^' then
 				inspect c2
@@ -211,7 +211,7 @@ feature {NONE} -- Implementation
 				when 'u' then
 					Result := 'û'
 				else
-					
+
 				end
 			when '¨' then
 				inspect c2
@@ -226,19 +226,19 @@ feature {NONE} -- Implementation
 				when 'u' then
 					Result := 'ü'
 				else
-					
+
 				end
 			when 'o' then
 				inspect c2
 				when 'e'  then
 					Result := 'œ'
 				else
-					
+
 				end
 			else
-				
+
 			end
 		end
-		
+
 end
 

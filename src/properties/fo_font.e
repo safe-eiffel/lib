@@ -1,7 +1,7 @@
 indexing
 
-	description: 
-	
+	description:
+
 		"Fonts"
 
 	library: "FO - Formatting Objects in Eiffel. Project SAFE."
@@ -14,10 +14,11 @@ class
 
 inherit
 	FO_SHARED_FONT_FACTORY
-	
+	FO_MEASUREMENT_ROUTINES
+
 creation
 	{FO_FONT_FACTORY} make
-	
+
 feature {NONE} -- Initialization
 
 	make (new_family, new_weight, new_style : STRING; corresponding_internal_font : PDF_FONT; new_size : FO_MEASUREMENT) is
@@ -42,7 +43,7 @@ feature {NONE} -- Initialization
 			size_set: size = new_size
 			internal_font_set: internal_font = corresponding_internal_font
 		end
-		
+
 feature -- Access
 
 	name : STRING is
@@ -50,10 +51,10 @@ feature -- Access
 		do
 			Result := internal_font.basefont.value
 		end
-	
+
 	encoding : STRING
 			-- Encoding.
-		
+
 	style: STRING
 			-- Style name.
 
@@ -62,11 +63,11 @@ feature -- Access
 
 	family : STRING
 			-- Family name.
-			
+
 	weight : STRING
 			-- Weight name.
 
-	pdf_encoding : PDF_CHARACTER_ENCODING is			
+	pdf_encoding : PDF_CHARACTER_ENCODING is
 		do
 			Result := internal_font.encoding
 		end
@@ -75,83 +76,83 @@ feature -- Access
 		do
 			Result := internal_font.italic_angle
 		end
-		
+
 	is_fixed_pitch : BOOLEAN is
 		do
 			Result := internal_font.is_fixed_pitch
 		end
-		
+
 	character_set : STRING  is
 		do
 			Result := internal_font.character_set
 		end
-		
+
 	bounding_box : FO_RECTANGLE is
 		local
 			r : PDF_RECTANGLE
 			ratio : FO_MEASUREMENT
-		do		
+		do
 			r := internal_font.font_b_box
-			ratio := create {FO_MEASUREMENT}.points (em_size) / size
+			ratio := points (em_size) / size
 			create Result.set (
-				create {FO_MEASUREMENT}.points (r.llx.truncated_to_integer) / ratio,
-				create {FO_MEASUREMENT}.points (r.lly.truncated_to_integer) / ratio,
-				create {FO_MEASUREMENT}.points (r.urx.truncated_to_integer) / ratio,
-				create {FO_MEASUREMENT}.points (r.ury.truncated_to_integer) / ratio)
+				points (r.llx.truncated_to_integer) / ratio,
+				points (r.lly.truncated_to_integer) / ratio,
+				points (r.urx.truncated_to_integer) / ratio,
+				points (r.ury.truncated_to_integer) / ratio)
 		ensure
 			bound_box_not_void: Result /= Void
 		end
-		
+
 	underline_position : INTEGER is
 		do
 			Result := internal_font.underline_position
 		end
-		
+
 	underline_thickness : INTEGER is
 		do
 			Result := internal_font.underline_thickness
 		end
-		
+
 	encoding_scheme : STRING is
-		do		
+		do
 			Result := internal_font.encoding_scheme
 		end
-		
+
 	cap_height : FO_MEASUREMENT is
 		do
 			create Result.points (internal_font.cap_height / em_size * size.as_points)
 		end
-		
+
 	x_height : INTEGER is
 		do
 			Result := internal_font.x_height
 		end
-		
+
 	ascender : INTEGER is
 		do
 			Result := internal_font.ascender
 		end
-		
+
 	descender : INTEGER is
 		do
 			Result := internal_font.descender
 		end
-		
+
 	std_hw : INTEGER is
 		do
 			Result := internal_font.std_hw
 		end
-		
+
 	std_vw : INTEGER is
 		do
 			Result := internal_font.std_vw
 		end
-	
-	em_size : INTEGER is	
+
+	em_size : INTEGER is
 		do
 			Result := internal_font.em_size
 		end
-		
+
 feature -- Measurement
 
 	string_width (string : STRING; character_spacing, word_spacing : FO_MEASUREMENT; stretch : FO_MEASUREMENT) : FO_MEASUREMENT is
@@ -166,7 +167,7 @@ feature -- Measurement
 		ensure
 			result_exists: Result /= Void
 		end
-	
+
 	character_width (c : CHARACTER; character_spacing, word_spacing : FO_MEASUREMENT; stretch : FO_MEASUREMENT) : FO_MEASUREMENT is
 			-- Width of `c' rendered using Current.
 		require
@@ -176,9 +177,9 @@ feature -- Measurement
 		do
 			create Result.points (internal_font.character_width (c,size.as_points,  character_spacing.as_points, word_spacing.as_points, stretch.as_points))
 		end
-		
+
 feature -- Status report
-		
+
 feature -- Status setting
 
 feature -- Cursor movement
@@ -194,7 +195,7 @@ feature -- Element change
 		ensure
 			size_assigned: size = a_size
 		end
-		
+
 feature -- Removal
 
 feature -- Resizing
@@ -202,7 +203,7 @@ feature -- Resizing
 feature -- Transformation
 
 feature -- Constants
-	
+
 feature -- Duplication
 
 feature -- Miscellaneous
@@ -216,12 +217,12 @@ feature -- Inapplicable
 feature {NONE} -- Implementation
 
 	internal_font : PDF_FONT
-	
+
 invariant
 	family_not_void: family /= Void and then font_factory.valid_family (family)
 	weight_not_void: size /= Void and then Font_factory.valid_weight (weight)
 	style_not_void: style /= Void and then Font_factory.valid_style (style)
 	size_not_void: size /= Void
 	internal_font_not_void: internal_font /= Void
-	
+
 end

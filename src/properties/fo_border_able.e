@@ -6,12 +6,6 @@ indexing
 
 deferred class
 	FO_BORDER_ABLE
-
-inherit
-	FO_RENDERABLE
-		undefine
-			is_renderable, render_forth, pre_render, post_render
-		end
 		
 feature -- Initialization
 
