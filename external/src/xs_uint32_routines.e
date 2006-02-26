@@ -1,21 +1,21 @@
 indexing
 	description: "UINT 32 routines"
 	author: "Paul G. Crismer"
-	
+
 	library: "XS_C : eXternal Support C"
-	
+
 	date: "$Date$"
 	revision: "$Revision$"
 	licensing: "See notice at end of class"
 
 class
 	XS_UINT32_ROUTINES
-	
+
 inherit
 	KL_IMPORTED_STRING_ROUTINES
 
 	KL_IMPORTED_CHARACTER_ROUTINES
-	
+
 feature -- Basic operations
 
 	add (e1 : INTEGER; e2 : INTEGER)  : INTEGER is
@@ -101,7 +101,7 @@ feature -- Basic operations
 		external "C"
 		alias "c_u_setbit32"
 		end
-		
+
 	get_bit (el,  n : INTEGER) : INTEGER is
 			-- get n-th bit of e1
 		external "C"
@@ -180,7 +180,7 @@ feature -- Conversion
 				v := v-1
 			end
 		end
-		
+
 feature -- Status report
 
 	is_hexadecimal_string (string : STRING) : BOOLEAN is
@@ -200,22 +200,20 @@ feature -- Status report
 			loop
 				c := string.item (i)
 				inspect c
-				when '0'..'9', 'a'..'f', 'A'..'F' then		
+				when '0'..'9', 'a'..'f', 'A'..'F' then
 				else
 					Result := False
 				end
 				i := i + 1
 			end
 		end
-	
+
 feature {NONE}  -- Implementation
 
 	hexadecimal_digit (n : INTEGER; upper_case : BOOLEAN) : CHARACTER is
 		require
 			n_positive: n > 0
 			n_less_16: n < 16
-		local
-			code : INTEGER
 		do
 			Result := hexadecimal_digits.item (n+1)
 			if upper_case then
@@ -227,7 +225,7 @@ feature {NONE}  -- Implementation
 		once
 			Result := "0123456789abcdef" -- <<'0','1','2','3','4','5','6','7','8','9','a','b','c','d','e','f'>>
 		end
-		
+
 end -- class XS_UINT32_ROUTINES
 --
 -- Copyright: 2003; Paul G. Crismer; <pgcrism@users.sourceforge.net>
