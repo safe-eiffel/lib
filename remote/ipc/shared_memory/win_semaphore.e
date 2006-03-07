@@ -4,10 +4,13 @@ indexing
 	usage: "Controlling a shared ressource"
 	refactoring: ""
 
-	status: "see notice at end of class";
-	date: "$ Date: $";
-	revision: "$ Revision: $";
-	author: ""
+	library: "ECURSES : Eiffel Curses wrapping Library. Project SAFE."
+	copyright: "Copyright (c) 2001-2006, Paul G. Crismer and others"
+	license: "Eiffel Forum License v2 (see forum.txt)"
+
+	date: "$Date$";
+	revision: "$Revision$";
+	author: "Eric Fafchamps"
 
 class
 	WIN_SEMAPHORE
@@ -153,12 +156,4 @@ feature {NONE} -- Implementation
 	handle: INTEGER
 			-- Handle to system semaphore.
 	
-end -- class WIN_SEMAPHORE
-
---
---    copyright: "Groupe S (c) 1997-2002"
---    licence: "All rights reserved. Duplication and distribution prohibited."
---
---    source: "$ Source: $";
--- $ Log: $
-
+end

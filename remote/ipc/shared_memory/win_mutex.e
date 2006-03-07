@@ -4,9 +4,12 @@ indexing
 	usage: "Coordinating mutually exclusive access to a shared resource. "
 	refactoring: ""
 
-	status: "see notice at end of class";
-	date: "$ Date: $";
-	revision: "$ Revision: $";
+	library: "ECURSES : Eiffel Curses wrapping Library. Project SAFE."
+	copyright: "Copyright (c) 2001-2006, Paul G. Crismer and others"
+	license: "Eiffel Forum License v2 (see forum.txt)"
+
+	date: "$Date$";
+	revision: "$Revision$";
 	author: ""
 
 class
@@ -196,12 +199,4 @@ feature {NONE} -- Implementation
 invariant
 	is_owner implies is_open
 	
-end -- class WIN_MUTEX
-
---
---    copyright: "Groupe S (c) 1997-2002"
---    licence: "All rights reserved. Duplication and distribution prohibited."
---
---    source: "$ Source: $";
--- $ Log: $
-
+end

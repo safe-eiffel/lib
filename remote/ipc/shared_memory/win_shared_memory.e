@@ -1,12 +1,12 @@
 indexing
 	description: "Objects that shares memory between processes"
 
-	usage: ""
-	refactoring: ""
+	library: "ECURSES : Eiffel Curses wrapping Library. Project SAFE."
+	copyright: "Copyright (c) 2001-2006, Paul G. Crismer and others"
+	license: "Eiffel Forum License v2 (see forum.txt)"
 
-	status: "see notice at end of class";
-	date: "$ Date: $";
-	revision: "$ Revision: $";
+	date: "$Date$";
+	revision: "$Revision$";
 	author: "Fafchamps Eric"
 
 class
@@ -134,12 +134,4 @@ feature {NONE} -- Implementation
 		external "C"
 		end
 		
-end -- class WIN_SHARED_MEMORY
-
---
---    copyright: "Groupe S (c) 1997-2002"
---    licence: "All rights reserved. Duplication and distribution prohibited."
---
---    source: "$ Source: $";
--- $ Log: $
-
+end
