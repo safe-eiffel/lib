@@ -13,10 +13,20 @@ class FO_CURRENT_PAGE_NUMBER
 
 inherit
 	FO_SPECIAL_INLINE
+		rename
+			make as make_inline
+		end
 
 create
-	make_inherit, make_with_font
+	make_inherit, make_with_font, make
 	
+feature {NONE} -- Initialization
+
+	make is
+			do
+				make_inline ("")
+			end
+		
 feature -- Basic operations
 
 	update_text (document: FO_DOCUMENT; region: FO_RECTANGLE) is

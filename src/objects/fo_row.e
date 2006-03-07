@@ -194,6 +194,7 @@ feature {FO_DOCUMENT, FO_BORDER_ABLE, FO_TABLE} -- Basic operations
 	render_start (document: FO_DOCUMENT; region : FO_RECTANGLE) is
 		local
 			i : INTEGER
+			current_item : FO_RENDERABLE
 		do
 			is_prerendered := False
 			is_render_off := True
@@ -205,12 +206,13 @@ feature {FO_DOCUMENT, FO_BORDER_ABLE, FO_TABLE} -- Basic operations
 				is_render_off := True
 			until i > items.upper
 			loop
-				items.item (i).render_start (document, render_regions.item (i))
+				current_item := items.item (i)
+				current_item.render_start (document, render_regions.item (i))
 				is_render_off := is_render_off and items.item (i).is_render_off
 				is_render_inside := is_render_inside or items.item (i).is_render_inside
 				if last_rendered_region = Void then
 					last_rendered_region := items.item (i).last_rendered_region
-				elseif items.item (i).is_prerendered then
+				elseif items.item (i).last_rendered_region /= Void then
 					last_rendered_region := last_rendered_region.merged (items.item (i).last_rendered_region)
 				end
 				i := i + 1

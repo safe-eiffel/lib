@@ -234,9 +234,7 @@ feature -- Element change
 					inlines.put_last (inline)
 			end
 			width := width + inline.width
-			if height = Void or else height < inline.height then
-				height := inline.height
-			end
+			height := height.max (inline.height)
 		ensure
 			width_adapted: width.is_equal ((old width) + inline.width)
 			heigh_adapted: height.is_equal ((old height).max (inline.height))
@@ -338,7 +336,7 @@ feature {FO_DOCUMENT, FO_RENDERABLE} -- Basic operations
 			end
 			create last_rendered_region.set (
 					region.left,
-					region.top - bounding_box.height,
+					region.top - height, --bounding_box.height,
 					region.right,
 					region.top)
 			--| establish postcondition

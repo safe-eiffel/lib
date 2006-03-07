@@ -34,6 +34,11 @@ feature -- Access
 			Result := word_width
 		end
 
+	item_height : FO_MEASUREMENT is
+		do
+			Result := word_height
+		end
+		
 	item_begin : DS_PAIR[FO_INLINE, INTEGER] is			
 		do
 			Result := word_begin
@@ -218,6 +223,7 @@ feature -- Basic operations
 			end
 			wwidth := prefix_width (wcount)
 			remaining_subword_width := item_width - wwidth
+			remaining_subword_height := item_height
 			word_width := wwidth
 			remaining_subword_text := item_text.substring (wcount + 1, item_text.count)
 			word_text := item_text.substring (1, wcount)
@@ -285,6 +291,7 @@ feature {NONE} -- Implementation
 	remaining_subword_end : like word_end
 	remaining_subword_text : like item_text
 	remaining_subword_width : like item_width
+	remaining_subword_height : like item_height
 	
 	word_start is	
 		do
@@ -335,11 +342,13 @@ feature {NONE} -- Implementation
 				remaining_subword := Void
 				word_text := remaining_subword_text
 				word_width := remaining_subword_width
+				word_height := remaining_subword_height
 			else
 				create {DS_LINKED_LIST[FO_INLINE]}word_inlines.make
 				create word_end.make (word_begin.first, word_begin.second)
 				create word_text.make (100)
 				create word_width.points (0)
+				create word_height.points (0)
 				from
 					--| sweep through different inlines
 					word_done := False
@@ -442,6 +451,7 @@ feature {NONE} -- Implementation
 			word_text.append_character (last_char)
 			must_consume_last_char := False
 			word_width := word_width + word_end.first.character_width (last_char)
+			word_height := word_height.max (word_end.first.height)
 			if word_end.second > 1 then
 				create next_word_begin.make (word_end.first, word_end.second)				
 				word_end.put_second (word_end.second - 1)
@@ -457,6 +467,7 @@ feature {NONE} -- Implementation
 			word_text.append_character (last_char)
 			must_consume_last_char := False
 			word_width := word_width + last_char_inline.character_width (last_char)	
+			word_height := word_height.max (last_char_inline.height)
 			forth_word_end		
 		end
 
@@ -494,6 +505,8 @@ feature {NONE} -- Implementation
 	
 	word_begin : DS_PAIR[FO_INLINE, INTEGER]
 	word_end : DS_PAIR[FO_INLINE, INTEGER]
+	
+	word_height : FO_MEASUREMENT
 	
 	next_word_begin : DS_PAIR [FO_INLINE, INTEGER]
 	

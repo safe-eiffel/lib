@@ -102,7 +102,7 @@ feature -- Basic operations
 						done_substring or else substring_end > hword.count
 					loop
 						dictionary.search_key (hword.substring (substring_begin, substring_end))
-						if dictionary.found then
+						if dictionary.found_key then
 							if dictionary.found_item /= Void then
 								handle_vector (dictionary.found_item, substring_begin, substring_end)
 							end

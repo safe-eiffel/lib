@@ -86,48 +86,6 @@ feature -- Access
 			definition: Result = text.item (index)
 		end
 
---	splitted (a_width : FO_MEASUREMENT) : DS_LIST[FO_INLINE] is
---		require
---			a_width_not_void: a_width /= Void
---			a_width_positive: a_width.sign = 1
---		local
---			index, first, last : INTEGER
---			current_width : FO_MEASUREMENT
---			inline, remaining : FO_INLINE
---			done : BOOLEAN
---		do
-----			from
---				create {DS_LINKED_LIST[FO_INLINE]}Result.make
---				index := 1
-----			until
-----				index > text.count
-----			loop
---				from
---					create current_width.points (0.0)
---					done := False
---					first := index
---				until
---					index > text.count or else done
---				loop
---					current_width := current_width + font.character_width (text.item (index))
---					if current_width <= a_width then
---						index := index + 1
---					else
---						last := index - 1
---						done := True
---						if last > first then
---							create inline.make_inherit (text.substring (first, last), Current)
---							Result.put_last (inline)
---						end
---					end
---				end
---				if inline /= Void and then index <= text.count then
---					create remaining.make_inherit (text.substring (index, text.count), Current)
---					Result.put_last (remaining)
---				end
-----			end
---		end
-
 	substring (i_begin, i_end : INTEGER) : FO_INLINE is
 			-- Inline with text substring [i_begin..i_end].
 		require
@@ -157,7 +115,7 @@ feature -- Measurement
 		do
 			Result := font.size
 		ensure then
-			definition: Result = font.size
+			definition: Result.is_equal (font.size)
 		end
 
 	count : INTEGER is

@@ -34,11 +34,11 @@ feature -- Initialization
 
 			setup_document
 			show_inline_properties
-			show_font_properties
+--			show_font_properties
 			close_document
 			--| Add your code here
-			test_trie
-			test_hyphen
+--			test_trie
+--			test_hyphen
 			use_classes
 --			test_measurement
 			test_multiple_fonts
@@ -62,7 +62,7 @@ feature -- Basic operations
 			l_margins : FO_MARGINS
 			l_page_size : FO_PAGE_SIZE
 		do
-			create writer.make ("c:\ereport.pdf")
+			create writer.make ("c:\ereport0.pdf")
 			create l_margins.set (cm (2), cm (2), cm (2), cm (2))
 			create l_page_size.make_a4
 			create document.make_rectangle (l_page_size, writer)
@@ -338,7 +338,7 @@ feature -- Basic operations
 			image.set_uniform_borders (border)
 			a_document.append_image (image)
 			test_row_single (a_document)
-			test_row_multiple (a_document)
+		test_row_multiple (a_document)
 			a_document.close
 
 		end

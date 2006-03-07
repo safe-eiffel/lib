@@ -25,8 +25,9 @@ feature -- Initialization
 	make is
 			-- Creation procedure.
 		do
-			test_chapter_1
-			test_tables
+--			test_chapter_1
+--			test_tables
+			test_show_section
 		end
 		
 	test_chapter_1 is
@@ -47,5 +48,13 @@ feature -- Initialization
 		do
 			create test.execute
 		end
+		
+	test_show_section is
+		local
+			test : TUTORIAL_SHOW_SECTION
+		do
+			create test.execute
+		end
+		
 		
 end -- class EFOTUTORIAL

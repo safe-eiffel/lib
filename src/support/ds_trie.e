@@ -19,10 +19,10 @@ inherit
 			out
 		end
 
-	DS_SEARCHABLE [STRING]
-		undefine
-			is_empty, out
-		end
+--	DS_SEARCHABLE [STRING]
+--		undefine
+--			is_empty, out
+--		end
 		
 create		
 	
@@ -84,6 +84,8 @@ feature -- Status report
 		end
 
 	found : BOOLEAN
+	
+	found_key : BOOLEAN
 			
 feature -- Comparison
 
@@ -156,12 +158,17 @@ feature -- Basic operations
 			-- A key may exist in a trie without an associated item.
 		require
 			k_not_void: k /= Void
+		local
+			default_value : G
 		do
+			found_item := default_value
 			root.search_key (k, 1)
-			found := root.found
-			if found then
+			found_key := root.found
+			if found_key then
 				found_item := root.found_item.item
 			end
+		ensure
+			found_item: (found_key and has (k)) implies found_item = item (k)
 		end
 		
 feature {NONE} -- Implementation

@@ -125,6 +125,9 @@ feature -- Measurement
 			Result := pages.count
 		end
 
+	column_count : INTEGER
+			-- Current column count on current page.
+		
 feature -- Element change
 
 	set_section (new_section: FO_SECTION) is
@@ -286,6 +289,8 @@ feature -- Basic operations
 
 	append_page_break is
 			-- Append page break.
+		require
+			is_open: is_open
 		do
 			pages_cursor.item.set_rendered_region (available_render_region)
 			if current_page.is_text_mode then
@@ -294,35 +299,61 @@ feature -- Basic operations
 			show_page_margins
 			pdf_document.add_page
 			setup_page
-			available_render_region := margins.content_region (page_rectangle)
+			column_count := 1
+--			available_render_region := margins.content_region (page_rectangle)
+			setup_available_region
+		ensure
+			column_count_1: column_count = 1
 		end
 
+	append_break is
+			-- Append column/page break.
+		do
+			if column_count = current_section.column_count then
+				append_page_break
+				column_count := 1
+			else
+				column_count := column_count + 1
+			end
+			setup_available_region
+		end
+		
 	append_block (block : FO_BLOCK) is
 			-- Append `block' of text.
+		require
+			is_open: is_open
 		do
 			render_renderable (block)
 		end
 
 	append_image (image : FO_IMAGE) is
 			-- Append `Image'.
+		require
+			is_open: is_open
 		do
 			render_renderable (image)
 		end
 
 	append_row (row : FO_ROW) is
 			-- Append `row'.
+		require
+			is_open: is_open
 		do
 			render_renderable (row)
 		end
 
 	append_table (table : FO_TABLE) is
 			-- Append `table'.
+		require
+			is_open: is_open
 		do
 			render_renderable (table)
 		end
 
 	open is
 			-- Open.
+		require
+			not_open: not is_open
 		do
 			writer.open
 			if writer.is_open then
@@ -358,11 +389,15 @@ feature -- Basic operations
 				setup_page
 				pdf_document.set_default_mediabox (page_rectangle.as_pdf)
 				current_page.set_mediabox (page_rectangle.as_pdf)
+				column_count := 1
+				available_render_region := current_section.region (column_count)
+				is_open := True
 			else
 				do_nothing
 			end
 		ensure
-			current_section_not_void: current_section /= Void
+			open_implies_current_section_not_void: is_open implies current_section /= Void
+			open_implies_column_count_1: is_open implies column_count = 1
 		end
 
 	close is
@@ -399,6 +434,8 @@ feature {NONE} -- Implementation
 
 	render_renderable (renderable : FO_RENDERABLE) is
 			-- Render renderable items.
+		require
+			is_open: is_open
 		local
 			unbreakable : FO_UNBREAKABLE
 		do
@@ -414,12 +451,14 @@ feature {NONE} -- Implementation
 					unbreakable.unbreakables.put_last (renderable)
 					unbreakable.pre_render (available_render_region)
 					if unbreakable.height > available_render_region.height then
-						append_page_break
+						-- append_page_break
+						append_break
 					end
 					render_renderable (unbreakable)
 				else
 					if renderable.is_page_break_before then
-						append_page_break
+						-- append_page_break
+						append_break
 					end
 					from
 						renderable.render_start(Current, available_render_region)
@@ -429,13 +468,16 @@ feature {NONE} -- Implementation
 					until
 						renderable.is_render_off
 					loop
-						append_page_break
-						renderable.render_forth (Current, margins.content_region (page_rectangle))
+						-- append_page_break
+						append_break
+						renderable.render_forth (Current, available_render_region)
 						if renderable.last_rendered_region /= Void then
 							renderable.post_render (Current, renderable.last_rendered_region)
 						end
 					end
-					available_render_region := available_render_region.shrinked_top (renderable.last_rendered_region.height)
+					if renderable.last_rendered_region /= Void then
+						available_render_region := available_render_region.shrinked_top (renderable.last_rendered_region.height)
+					end
 				end
 			end
 		end
@@ -535,6 +577,11 @@ feature {NONE} -- Implementation
 			margins_set: margins = current_section.margins
 		end
 
+	setup_available_region is
+		do
+			available_render_region := current_section.region (column_count)			
+		end
+		
 feature {FO_SPECIAL_INLINE} -- Implementation
 
 	current_page_number : INTEGER

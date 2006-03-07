@@ -127,6 +127,12 @@ feature {NONE} -- Access
 	lines : DS_LIST [FO_LINE]
 			-- Pre rendered lines.
 
+	render_state : INTEGER
+	
+	render_state_before : INTEGER is 0
+	render_state_inside : INTEGER is 1
+	render_state_after : INTEGER is 2
+	
 feature -- Constants
 
 	justify_left : INTEGER is 0
@@ -149,21 +155,25 @@ feature -- Measurement
 			width_definition: Result.is_equal (inner_line_width +  margins.left + margins.right)
 		end
 
-	height : FO_MEASUREMENT is
-			-- Height of whole block, including margins.
-		do
-			create Result.points (0)
-			from
-				lines.start
-			until
-				lines.off
-			loop
-				Result := Result + text_leading.max (lines.item_for_iteration.height)
-				lines.forth
-			end
-			Result := Result + margins.top + margins.bottom
-		end
+--	height : FO_MEASUREMENT is
+--			-- Height of whole block, including margins.
+--		do
+--			create Result.points (0)
+--			from
+--				lines.start
+--			until
+--				lines.off
+--			loop
+--				Result := Result + text_leading.max (lines.item_for_iteration.height)
+--				lines.forth
+--			end
+--			inspect render_state
+--			when render_state_off then
+--				 Result := Result + margins.top + margins.bottom
+--		end
 
+	height : FO_MEASUREMENT
+	
 	max_font_width : FO_MEASUREMENT
 			-- Maximum font width.
 
@@ -341,35 +351,65 @@ feature -- Constants
 feature {FO_DOCUMENT, FO_RENDERABLE} -- Basic operations
 
 	pre_render (region: FO_RECTANGLE) is
-		local
-			actual_region : FO_RECTANGLE
 		do
 			last_region := region
-			actual_region := margins.content_region (region)
-			compute_lines (actual_region.width)
+			compute_available_region (region)
+			compute_lines (available_region)
 			precursor (region)
+			--| adjust height
+			if render_state = render_state_before then
+				height := height + margins.top
+			end
+			if word_cursor.off and height + margins.bottom <= region.height  then
+				height := height + margins.bottom
+			end
+		ensure then
+			available_region_not_void: available_region /= Void
 		end
+		
+	available_region : FO_RECTANGLE
+			-- Region where real rendering can take place.
+			-- Margins are
 
+	compute_available_region (a_region : FO_RECTANGLE) is
+			-- Compute available region based on `a_region'.
+		local
+			l_left, l_right, l_top, l_bottom : FO_MEASUREMENT
+		do
+			l_left := a_region.left + margins.left
+			l_right := a_region.right - margins.right
+			inspect render_state
+			when render_state_before then
+					l_top := a_region.top - margins.top
+					l_bottom := a_region.bottom
+			when render_state_inside then
+					l_top := a_region.top
+					l_bottom := a_region.bottom
+			else
+				l_top := a_region.top
+				l_bottom := a_region.bottom - margins.bottom
+			end
+			create available_region.set (l_left, l_bottom, l_right, l_top)
+		ensure
+			available_region_not_void: available_region /= Void
+		end
+		
 	render_forth (document : FO_DOCUMENT; region : FO_RECTANGLE) is
 		local
 			line_region : FO_RECTANGLE
-			available_region : FO_RECTANGLE
-			done : BOOLEAN
 			use_top_margins : BOOLEAN
 			use_bottom_margins : BOOLEAN
+			last_descender : FO_MEASUREMENT
 		do
 			if last_rendered_region = Void then
 				create last_rendered_region.set (region.left, region.top - margins.top,
 					region.right, region.top)
-				create available_region.set (region.left,region.bottom,
-					region.right, region.top - margins.top)
 				use_top_margins := True
 			else
-				create available_region.copy (region)
 				last_rendered_region.set (region.left, region.top,
 					region.right, region.top)
 			end
-			if not is_prerendered then
+			if not is_prerendered or else not last_region.is_equal (region) then
 				pre_render (region)
 			end
 			-- Render one line at a time
@@ -377,52 +417,50 @@ feature {FO_DOCUMENT, FO_RENDERABLE} -- Basic operations
 				document.current_page.begin_text
 			end
 			from
-				if render_cursor = Void then
 					render_cursor := lines.new_cursor
 					render_cursor.start
-				end
-				if not render_cursor.off and available_region.height <= text_leading.max (render_cursor.item.height) then
-					done := True
-				end
 			until
-				render_cursor.off or else done
+				render_cursor.off -- or else done
 			loop
-				create line_region.set (available_region.left + margins.left, available_region.bottom,
-					available_region.right - margins.right,	available_region.top)
-				if line_region.height >= text_leading.max (render_cursor.item.height) then
+				create line_region.set (available_region.left, available_region.bottom,
+					available_region.right,	available_region.top)
 					render_cursor.item.render_start (document, line_region)
-					if render_cursor.item.is_prerendered then
+					if render_cursor.item.last_rendered_region /= Void then
 						last_rendered_region := last_rendered_region.merged (render_cursor.item.last_rendered_region)
+						available_region := available_region.shrinked_top (text_leading.max (render_cursor.item.last_rendered_region.height))
+						last_descender := render_cursor.item.bounding_box.bottom
 					else
-						do_nothing
-					end
-					if available_region.height > render_cursor.item.height then
-						available_region := available_region.shrinked_top (text_leading.max (render_cursor.item.height))
-					else
-						done := True
+						create last_descender.points (0)
 					end
 					render_cursor.forth
-				else
-					done := True
-				end
 			end
 			if document.current_page.is_text_mode then
 				document.current_page.end_text
 			end
-			if render_cursor.off and last_rendered_region.height + margins.bottom <= region.height then
-				is_render_inside := not render_cursor.off
-				is_render_off := render_cursor.off
+--			if render_cursor.off and last_rendered_region.height + margins.bottom <= region.height then
+			if word_cursor.off and last_rendered_region.height + margins.bottom <= region.height then
+				if render_cursor.off then
+					set_render_after
+				else
+					set_render_inside
+				end
 				render_cursor := Void
 				last_rendered_region := last_rendered_region.shrinked_bottom (margins.bottom)
 				use_bottom_margins := True
 			else
-				is_render_inside := True
-				is_render_off := False
+				set_render_inside
+			end
+			if is_render_inside then
+				if last_descender /= Void then
+					available_region := available_region.shrinked_top (- last_descender)
+					last_rendered_region := last_rendered_region.shrinked_bottom (- last_descender)
+				end
 			end
 			debug ("fo_show_block_margins")
 				show_margins (document, use_top_margins, use_bottom_margins)
 			end
 			last_region := region
+			is_prerendered := False
 		end
 
 	render_start (document : FO_DOCUMENT; region : FO_RECTANGLE) is
@@ -430,14 +468,16 @@ feature {FO_DOCUMENT, FO_RENDERABLE} -- Basic operations
 		do
 			is_prerendered := False
 			if region.height > margins.top + margins.bottom then
+				line := Void
+				word_cursor := Void
+				set_render_before
 				pre_render (region)
-				is_render_inside := True
+				set_render_inside
 				last_rendered_region := Void
 				render_forth (document, region)
 			else
 				last_rendered_region := Void
-				is_render_inside := True
-				is_render_off := False
+				set_render_inside
 				last_region := region
 			end
 		end
@@ -460,13 +500,8 @@ feature -- Inapplicable
 		do
 			document.current_page.gsave
 			document.current_page.move (0,0)
---			if lines.count > 0 then
---				y_bottom := last_rendered_region.bottom.as_points + (lines.last.bounding_box.bottom).as_points  -- / create {FO_MEASUREMENT}.points (1000) * lines.last.height).as_points ,
---				gy := last_rendered_region.bottom.as_points + (lines.last.bounding_box.bottom).as_points -- / create {FO_MEASUREMENT}.points (1000) * lines.last.height).as_points
---			else
-				y_bottom := last_rendered_region.bottom.as_points
-				gy := last_rendered_region.bottom.as_points
---			end
+			y_bottom := last_rendered_region.bottom.as_points
+			gy := last_rendered_region.bottom.as_points
 			document.current_page.rectangle (
 				last_rendered_region.left.as_points,
 				y_bottom,
@@ -513,30 +548,41 @@ feature {FO_DOCUMENT} -- Implementation
 
 feature {NONE} -- Implementation
 
+	set_render_before is do render_state := render_state_before ; is_render_off := True; is_render_inside := False end
+	set_render_inside is do render_state := render_state_inside ; is_render_off := False; is_render_inside := True end
+	set_render_after is do render_state := render_state_after; is_render_off := True; is_render_inside := False end
+	
 	word_cursor : FO_INLINES_WORD_CURSOR
 
-	compute_lines (line_width : FO_MEASUREMENT) is
+	compute_lines (region : FO_RECTANGLE) is
 			-- Compute lines for `line_width'.
 		local
-			line : FO_LINE
+			line_width : FO_MEASUREMENT
 			current_inline : FO_INLINE
---			line_width : FO_MEASUREMENT
+			current_height : FO_MEASUREMENT
 			s : STRING
 			current_width : FO_MEASUREMENT
 		do
+			line_width := region.width
 			inner_line_width := line_width
 			from
-				create word_cursor.make (inlines)
-				word_cursor.start
+				if word_cursor = Void then
+					create word_cursor.make (inlines)
+					word_cursor.start
+				end
 				create {DS_LINKED_LIST[FO_LINE]}lines.make
+				create current_height.points (0)
 			until
-				word_cursor.off
+				word_cursor.off 
+				or else current_height + text_leading.max (word_cursor.item_height) > region.height
 			loop
 				create line.make_justified (line_width, text_leading, Current, justification)
+				create current_width.points (0)
 				from
-					create current_width.points (0)
 				until
-					word_cursor.off or else current_width + word_cursor.item_width > line_width
+					word_cursor.off 
+					or else current_height + text_leading.max (word_cursor.item_height) > region.height 
+					or else current_width + word_cursor.item_width > line_width
 				loop
 					if word_cursor.item_text.item (1) = c_new_line then
 						create s.make (1)
@@ -546,6 +592,7 @@ feature {NONE} -- Implementation
 						end
 						line.add_inline (current_inline)
 						lines.put_last (line)
+						current_height := current_height + text_leading.max(line.height)
 						create line.make_justified (line_width, text_leading, Current, justification)
 						create current_width.points (0)
 					else
@@ -565,6 +612,30 @@ feature {NONE} -- Implementation
 					end
 				end
 				lines.put_last (line)
+				current_height := current_height + text_leading.max(line.height)
+			end
+			height := current_height
+		ensure
+			height_not_void: height /= Void
+			lines_not_void: lines /= Void
+			height_not_greater_region_height: height <= region.height
+		end
+
+	line : FO_LINE
+	
+	lines_height : FO_MEASUREMENT is
+		local
+			cursor : DS_LIST_CURSOR[FO_LINE]
+		do
+			from
+				cursor := lines.new_cursor
+				cursor.start
+				create Result.points (0)
+			until
+				cursor.off
+			loop
+				Result := text_leading.max (cursor.item.height) + Result
+				cursor.forth
 			end
 		end
 		
