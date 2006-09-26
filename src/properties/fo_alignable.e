@@ -10,7 +10,7 @@ indexing
 	date: "$Date$"
 
 class
-	FO_ALIGN_ABLE
+	FO_ALIGNABLE
 
 feature -- Access
 

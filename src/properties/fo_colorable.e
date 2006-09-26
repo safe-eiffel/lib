@@ -10,7 +10,7 @@ indexing
 	date: "$Date$"
 
 class
-	FO_COLOR_ABLE
+	FO_COLORABLE
 
 inherit
 	

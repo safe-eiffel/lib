@@ -19,7 +19,7 @@ inherit
 			is_equal, out
 		end
 
-	FO_COLOR_ABLE
+	FO_COLORABLE
 
 create
 	make, make_rectangle
@@ -421,7 +421,7 @@ feature -- Obsolete
 
 feature -- Inapplicable
 
-feature {FO_RENDERABLE, FO_BORDER_ABLE} -- Access
+feature {FO_RENDERABLE, FO_BORDERABLE} -- Access
 
 	pdf_document : PDF_DOCUMENT is do Result := writer.document end
 

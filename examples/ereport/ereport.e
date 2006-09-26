@@ -2,7 +2,9 @@ indexing
 
 	description:
 
-		"EREPORT System's root class"
+		"[
+		EREPORT System's root class
+		]"
 
 	library: "FO - Formatting Objects in Eiffel. Project SAFE."
 	copyright: "Copyright (c) 2006 - , Paul G. Crismer and others"
@@ -217,17 +219,17 @@ feature -- Basic operations
 				inline.set_background_color (yellow)
 				inline.set_stretch (unit (260))
 				block.append (inline)
-				
+
 				create inline.make_with_font ("i", font_factory.last_font)
 				create green.make_rgb (0, 255, 0)
 				inline.set_foreground_color (green)
 				block.append (inline)
-				
+
 				create inline.make_with_font ("ng t", font_factory.last_font)
 				create magenta.make_rgb (0, 255, 255)
 				inline.set_foreground_color (magenta)
 				block.append (inline)
-				
+
 				create inline.make_with_font ("o emphasize.", font_factory.last_font)
 				create blue2.make_rgb (255, 64, 64)
 				inline.set_foreground_color (blue2)

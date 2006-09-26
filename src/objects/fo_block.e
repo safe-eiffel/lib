@@ -13,7 +13,7 @@ class
 	FO_BLOCK
 
 inherit
-	FO_MARGIN_ABLE
+	FO_MARGINABLE
 		undefine
 			is_equal, out
 		end
@@ -26,12 +26,12 @@ inherit
 			render_forth, is_renderable
 		end
 
-	FO_COLOR_ABLE
+	FO_COLORABLE
 		undefine
 			is_equal, out
 		end
 
-	FO_BORDER_ABLE
+	FO_BORDERABLE
 		undefine
 			is_equal, out
 		end
@@ -45,7 +45,7 @@ inherit
 		undefine
 			is_equal, out
 		end
-			
+
 creation
 	make, make_right, make_center, make_default
 
@@ -80,7 +80,7 @@ feature {NONE} -- Initialization
 		end
 
 	make_right (new_margins : FO_MARGINS) is
-			-- Make with `new_margins' with right justification.
+			-- Make with `new_margins' and right justification.
 		require
 			new_margins: new_margins /= Void
 		do
@@ -93,7 +93,7 @@ feature {NONE} -- Initialization
 		end
 
 	make_center (new_margins : FO_MARGINS) is
-			-- Make with `new_margins' with center justification.
+			-- Make with `new_margins' and center justification.
 		require
 			new_margins: new_margins /= Void
 		do
@@ -116,6 +116,8 @@ feature -- Access
 			if not inlines.is_empty then
 				Result := inlines.last
 			end
+		ensure
+			last_inline_not_void_when_not_empty: not is_empty implies Result /= Void
 		end
 
 	text_leading : FO_MEASUREMENT
@@ -128,11 +130,11 @@ feature {NONE} -- Access
 			-- Pre rendered lines.
 
 	render_state : INTEGER
-	
+
 	render_state_before : INTEGER is 0
 	render_state_inside : INTEGER is 1
 	render_state_after : INTEGER is 2
-	
+
 feature -- Constants
 
 	justify_left : INTEGER is 0
@@ -145,7 +147,7 @@ feature -- Measurement
 			-- Width of pre-rendered lines.
 
 	width : FO_MEASUREMENT is
-			-- Total width
+			-- Total width.
 		require
 			inner_line_width_not_void: inner_line_width /= Void
 		do
@@ -155,27 +157,11 @@ feature -- Measurement
 			width_definition: Result.is_equal (inner_line_width +  margins.left + margins.right)
 		end
 
---	height : FO_MEASUREMENT is
---			-- Height of whole block, including margins.
---		do
---			create Result.points (0)
---			from
---				lines.start
---			until
---				lines.off
---			loop
---				Result := Result + text_leading.max (lines.item_for_iteration.height)
---				lines.forth
---			end
---			inspect render_state
---			when render_state_off then
---				 Result := Result + margins.top + margins.bottom
---		end
-
 	height : FO_MEASUREMENT
-	
+			-- Height.
+
 	max_font_width : FO_MEASUREMENT
-			-- Maximum font width.
+			-- Maximum font width in current block.
 
 feature -- Status report
 
@@ -197,6 +183,12 @@ feature -- Status report
 			Result := justification = justify_center
 		end
 
+	is_empty : BOOLEAN is
+			-- Is the block empty?
+		do
+			Result := inlines.is_empty
+		end
+
 	has (an_inline : FO_INLINE) : BOOLEAN is
 			-- Has Current `an_inline'?
 		require
@@ -213,14 +205,14 @@ feature -- Status report
 		do
 			Result := margins.content_region (region).width > max_font_width
 		ensure then
-			definition: Result = (margins.content_region (region).width > max_font_width)
+			one_character_is_at_least_renderable: Result = (margins.content_region (region).width > max_font_width)
 		end
 
 	is_page_break_before : BOOLEAN
 			-- Must a page break occur before rendering?
 
 	is_keep_with_next : BOOLEAN
-			-- Must this block be kept with next on the same page?
+			-- Must this block be kept with next block on the same page?
 
 feature -- Status setting
 
@@ -309,6 +301,7 @@ feature -- Element change
 		ensure
 			has_inline: has (new_inline)
 			last_inline_set: last_inline = new_inline
+			max_font_width_adapted: max_font_width >= old max_font_width
 		end
 
 	append_string (string : STRING) is
@@ -331,6 +324,7 @@ feature -- Element change
 feature -- Conversion
 
 	out : STRING is
+			-- Terse printable representation.
 		do
 			Create Result.make (0)
 			from
@@ -347,6 +341,7 @@ feature -- Conversion
 feature -- Constants
 
 	c_new_line : CHARACTER is '%N'
+			-- New line character.
 
 feature {FO_DOCUMENT, FO_RENDERABLE} -- Basic operations
 
@@ -366,10 +361,9 @@ feature {FO_DOCUMENT, FO_RENDERABLE} -- Basic operations
 		ensure then
 			available_region_not_void: available_region /= Void
 		end
-		
+
 	available_region : FO_RECTANGLE
 			-- Region where real rendering can take place.
-			-- Margins are
 
 	compute_available_region (a_region : FO_RECTANGLE) is
 			-- Compute available region based on `a_region'.
@@ -393,7 +387,7 @@ feature {FO_DOCUMENT, FO_RENDERABLE} -- Basic operations
 		ensure
 			available_region_not_void: available_region /= Void
 		end
-		
+
 	render_forth (document : FO_DOCUMENT; region : FO_RECTANGLE) is
 		local
 			line_region : FO_RECTANGLE
@@ -551,7 +545,7 @@ feature {NONE} -- Implementation
 	set_render_before is do render_state := render_state_before ; is_render_off := True; is_render_inside := False end
 	set_render_inside is do render_state := render_state_inside ; is_render_off := False; is_render_inside := True end
 	set_render_after is do render_state := render_state_after; is_render_off := True; is_render_inside := False end
-	
+
 	word_cursor : FO_INLINES_WORD_CURSOR
 
 	compute_lines (region : FO_RECTANGLE) is
@@ -573,15 +567,15 @@ feature {NONE} -- Implementation
 				create {DS_LINKED_LIST[FO_LINE]}lines.make
 				create current_height.points (0)
 			until
-				word_cursor.off 
+				word_cursor.off
 				or else current_height + text_leading.max (word_cursor.item_height) > region.height
 			loop
 				create line.make_justified (line_width, text_leading, Current, justification)
 				create current_width.points (0)
 				from
 				until
-					word_cursor.off 
-					or else current_height + text_leading.max (word_cursor.item_height) > region.height 
+					word_cursor.off
+					or else current_height + text_leading.max (word_cursor.item_height) > region.height
 					or else current_width + word_cursor.item_width > line_width
 				loop
 					if word_cursor.item_text.item (1) = c_new_line then
@@ -602,6 +596,8 @@ feature {NONE} -- Implementation
 					word_cursor.forth
 				end
 				if word_cursor.item_width > line_width then
+-- Cut...
+-- Here hyphenation takes place.
 					word_cursor.keep_head_not_greater (line_width)
 					if word_cursor.item_text.count > 0 and current_width + word_cursor.item_width <= line_width then
 						word_cursor.append_item (line)
@@ -622,7 +618,7 @@ feature {NONE} -- Implementation
 		end
 
 	line : FO_LINE
-	
+
 	lines_height : FO_MEASUREMENT is
 		local
 			cursor : DS_LIST_CURSOR[FO_LINE]
@@ -638,7 +634,7 @@ feature {NONE} -- Implementation
 				cursor.forth
 			end
 		end
-		
+
 invariant
 
 	inlines_not_void: inlines /= Void

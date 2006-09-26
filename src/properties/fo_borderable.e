@@ -4,9 +4,10 @@ indexing
 	date: "$Date$"
 	revision: "$Revision$"
 
-deferred class
-	FO_BORDER_ABLE
-		
+class
+
+	FO_BORDERABLE
+
 feature -- Initialization
 
 	make_borders_none is
@@ -14,23 +15,23 @@ feature -- Initialization
 			create border_top.make_none
 			create border_bottom.make_none
 			create border_left.make_none
-			create border_right.make_none	
+			create border_right.make_none
 		end
-		
+
 feature -- Access
-	
+
 	border_top : FO_BORDER
 			-- Top border.
-					
+
 	border_bottom : FO_BORDER
 			-- Bottom border.
-			
+
 	border_left : FO_BORDER
 			-- Left border.
-			
+
 	border_right : FO_BORDER
 			-- Right border.
-			
+
 feature -- Status report
 
 	is_borders_uniform : BOOLEAN is
@@ -59,7 +60,7 @@ feature -- Element change
 			border_top_set: border_top = a_border
 			is_borders_uniform: is_borders_uniform
 		end
-		
+
 	set_border_top (a_border : like border_top) is
 			-- Set top border to `a_border'.
 		require
@@ -79,7 +80,7 @@ feature -- Element change
 		ensure
 			border_bottom_set: border_bottom = a_border
 		end
-		
+
 	set_border_left (a_border : like border_left) is
 			-- Set left border to `a_border'.
 		require
@@ -89,7 +90,7 @@ feature -- Element change
 		ensure
 			border_left_set: border_left = a_border
 		end
-		
+
 	set_border_right (a_border : like border_right) is
 			-- Set right border to `a_border'.
 		require
@@ -99,10 +100,10 @@ feature -- Element change
 		ensure
 			border_right_set: border_right = a_border
 		end
-		
+
 feature -- Comparison
 
-	same_borders (other : FO_BORDER_ABLE) : BOOLEAN is
+	same_borders (other : FO_BORDERABLE) : BOOLEAN is
 			-- Has `other' the same borders as `Current'?
 		require
 			other_not_void: other /= Void
@@ -112,14 +113,14 @@ feature -- Comparison
 					  border_top.is_equal (other.border_top) and
 					  border_bottom.is_equal (other.border_bottom)
 		end
-		
+
 feature -- Basic operations
-	
+
 	post_render (document: FO_DOCUMENT; region: FO_RECTANGLE) is
 		do
 			render_borders (document, region)
 		end
-		
+
 feature {NONE} -- Implementation
 
 	set_line_properties (page : PDF_PAGE; border : FO_BORDER) is
@@ -140,7 +141,7 @@ feature {NONE} -- Implementation
 				page.set_line_width (border.width.as_points)
 			end
 		end
-		
+
 	border_none : FO_BORDER is
 		once
 			create Result.make_none
@@ -164,7 +165,7 @@ feature {NONE} -- Implementation
 					page.rectangle (region.left.as_points, region.bottom.as_points, region.width.as_points, region.height.as_points)
 					page.stroke
 				else
-					
+
 					--| draw borders.
 					if border_left /= Void and then not border_left.is_none then
 						set_line_properties (page, border_left)
@@ -194,9 +195,9 @@ feature {NONE} -- Implementation
 				page.grestore
 			end
 		end
-		
+
 invariant
-	
+
 	border_left_not_void: border_left /= Void
 	border_right_not_void: border_right /= Void
 	border_top_not_void: border_top /= Void

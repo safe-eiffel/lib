@@ -58,12 +58,15 @@ feature -- Access
 	last_font : FO_FONT
 
 	default_font : FO_FONT is
+			-- Default font.
 		do
 			if default_font_impl = Void then
 				find_font (shared_defaults.font_family, "", "", shared_defaults.font_size)
 				default_font_impl := last_font
 			end
 			Result := default_font_impl
+		ensure
+			default_font_not_void: Result /= Void
 		end
 
 
@@ -129,13 +132,21 @@ feature -- Element change
 		end
 
 	find_font (name, weight, style : STRING; size : FO_MEASUREMENT) is
+			-- Find font with `name', `weight', `style', and shared_defaults.font_encoding
 		do
 			find_font_weight_style_encoding (name, weight, style, shared_defaults.font_encoding, size)
 		end
 
 	find_font_weight_style_encoding (name, weight, style, encoding : STRING; size : FO_MEASUREMENT) is
 			-- Find font with `name', `weight', `style', `encoding'
+		require
+			name_not_void: name /= Void
+			weight_not_void: weight /= Void
+			style_not_void: style /= Void
+			encoding_not_void: encoding /= Void
+			size_not_void: size /= Void
 		do
+			last_font := Void
 			font_table.search (font_key (name, weight, style))
 			if font_table.found then
 				if supported_encodings.has (encoding) then
@@ -146,21 +157,15 @@ feature -- Element change
 				end
 			end
 			if last_font = Void then
-				if default_font /= Void then
-					find_font_weight_style_encoding (default_font.family,
-						default_font.weight,
-						default_font.style,
-						default_font.encoding,
-						default_font.size)
-				else
-					find_font_weight_style_encoding (shared_defaults.font_family, "","", shared_defaults.font_encoding, shared_defaults.font_size)
-				end
+				find_font_weight_style_encoding (default_font.name, default_font.weight, default_font.style, default_font.encoding,size)
 			end
 		ensure
-			found_name: last_font /= Void implies last_font.family.is_equal (name)
-			found_weight: last_font /= Void implies last_font.weight.is_equal (weight)
-			found_style: last_font /= Void implies last_font.style.is_equal (style)
-			found_encoding: last_font /= Void implies last_font.encoding.is_equal (encoding)
+			last_font_not_void: last_font /= Void
+			last_font_size: last_font.size.is_equal (size)
+--			found_name: last_font /= Void implies last_font.family.is_equal (name)
+--			found_weight: last_font /= Void implies last_font.weight.is_equal (weight)
+--			found_style: last_font /= Void implies last_font.style.is_equal (style)
+--			found_encoding: last_font /= Void implies last_font.encoding.is_equal (encoding)
 		end
 
 feature -- Removal

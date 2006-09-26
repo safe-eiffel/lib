@@ -1,7 +1,7 @@
-indexing	
-	
-	description: 
-	
+indexing
+
+	description:
+
 		"Objects that contain a vertical sequence of horizontally consecutive renderable items."
 
 	library: "FO - Formatting Objects in Eiffel. Project SAFE."
@@ -12,20 +12,20 @@ indexing
 class FO_TABLE
 
 inherit
-	
+
 	FO_RENDERABLE
 		redefine
 			render_forth, pre_render, is_renderable
 		end
-			
-	FO_ALIGN_ABLE
-			
+
+	FO_ALIGNABLE
+
 	KL_IMPORTED_ARRAY_ROUTINES
-	
+
 create
 
 	make
-	
+
 feature {NONE} -- Initialization
 
 	make (desired_columns : INTEGER; desired_widths : ARRAY[FO_MEASUREMENT]) is
@@ -44,29 +44,29 @@ feature {NONE} -- Initialization
 			column_count_set: column_count = desired_columns
 			widths_set: widths = desired_widths
 		end
-		
+
 feature -- Access
 
 	header_row : FO_ROW
-		
+
 	last_row : FO_ROW
-	
+
 	widths : ARRAY[FO_MEASUREMENT]
-	
+
 feature -- Measurement
 
 	column_count : INTEGER
 			-- Number of columns.
-			
+
 	row_count : INTEGER is
 			-- Current number of rows.
 		do
 			Result := rows.count
 		end
-	
+
 	height : FO_MEASUREMENT
 
-	width : FO_MEASUREMENT is		
+	width : FO_MEASUREMENT is
 		local
 			i : INTEGER
 		do
@@ -82,8 +82,6 @@ feature -- Measurement
 		ensure
 			width_not_void: Result /= Void
 		end
-		
-feature -- Comparison
 
 feature -- Status report
 
@@ -97,29 +95,27 @@ feature -- Status report
 					Result := rows.last.is_renderable (region)
 				end
 			end
-			
+
 		end
-	
+
 	is_repeat_header_on_new_page : BOOLEAN
-	
+
 	is_page_break_before : BOOLEAN
-	
+
 	is_keep_with_next : BOOLEAN
-	
-	has (a_row : FO_ROW) : BOOLEAN is	
+
+	has (a_row : FO_ROW) : BOOLEAN is
 			-- Has Current `a_row' ?
 		do
 			Result := rows.has (a_row)
 		end
-		
+
 feature -- Status setting
 
 	enable_header_row_on_new_page is
 		do
 			is_repeat_header_on_new_page := True
 		end
-		
-feature -- Cursor movement
 
 feature -- Element change
 
@@ -142,22 +138,10 @@ feature -- Element change
 			new_last_row: last_row /= Void and then last_row /= old last_row
 			last_row_appended: has (last_row)
 		end
-		
-feature -- Removal
-
-feature -- Resizing
-
-feature -- Transformation
-
-feature -- Conversion
-
-feature -- Duplication
-
-feature -- Miscellaneous
 
 feature -- Basic operations
 
-	pre_render (region: FO_RECTANGLE) is	
+	pre_render (region: FO_RECTANGLE) is
 		local
 			c : DS_LIST_CURSOR[FO_ROW]
 		do
@@ -181,7 +165,7 @@ feature -- Basic operations
 			is_prerendered := True
 			last_region := region
 		end
-		
+
 	render_start (document: FO_DOCUMENT; region: FO_RECTANGLE) is
 		local
 			done : BOOLEAN
@@ -230,7 +214,7 @@ feature -- Basic operations
 				end
 			end
 		end
-	
+
 	render_forth (document: FO_DOCUMENT; region: FO_RECTANGLE) is
 		local
 			done : BOOLEAN
@@ -240,7 +224,7 @@ feature -- Basic operations
 			available_region := region
 			create last_rendered_region.set (
 				region.left, region.top, region.right, region.top)
-	
+
 			if is_repeat_header_on_new_page or rendering_state = state_rendering_header then
 				if rendering_state = state_rendering_header then
 					header_row.render_forth (document, available_region)
@@ -261,7 +245,7 @@ feature -- Basic operations
 					render_cursor.start
 				end
 				from
-					
+
 				until
 					render_cursor.off or else done
 				loop
@@ -285,19 +269,15 @@ feature -- Basic operations
 				end
 			end
 		end
-		
-feature -- Obsolete
-
-feature -- Inapplicable
 
 feature -- Constants
 
-	state_rendering_none : INTEGER is 1
+	state_rendering_none : INTEGER is 0
 	state_rendering_header : INTEGER is 1
 	state_rendering_rows : INTEGER is 2
-	
+
 	rendering_state : INTEGER
-	
+
 feature {NONE} -- Implementation
 
 --	post_render (renderable : FO_RENDERABLE; document : FO_DOCUMENT) is
@@ -309,23 +289,23 @@ feature {NONE} -- Implementation
 --				borderable.render_borders (document, borderable.last_rendered_region)
 --			end
 --		end
-		
+
 	rows : DS_LINKED_LIST[FO_ROW]
 
 	render_cursor : DS_LIST_CURSOR[FO_ROW]
 
 	create_row is
 			-- Create a new row.
-		do			
+		do
 			create last_row.make_widths (column_count, widths)
 		ensure
 			last_row_not_void: last_row /= Void
 		end
-		
-			
-invariant	
-	
+
+
+invariant
+
 	rows_not_void: rows /= Void
 	column_count_positive: column_count > 0
-	
+
 end

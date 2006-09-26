@@ -155,7 +155,7 @@ feature -- Duplication
 
 feature -- Miscellaneous
 
-feature {FO_DOCUMENT, FO_BORDER_ABLE, FO_TABLE} -- Basic operations
+feature {FO_DOCUMENT, FO_BORDERABLE, FO_TABLE} -- Basic operations
 
 	pre_render (region: FO_RECTANGLE) is
 		local

@@ -10,7 +10,7 @@ indexing
 	date: "$Date$"
 
 class
-	FO_FONT_ABLE
+	FO_FONTABLE
 	
 inherit
 	ANY

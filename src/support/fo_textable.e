@@ -18,12 +18,12 @@ inherit
 			is_equal
 		end
 
-	FO_FONT_ABLE
+	FO_FONTABLE
 		undefine
 			out, is_equal
 		end
 		
-	FO_COLOR_ABLE
+	FO_COLORABLE
 		undefine
 			out
 		redefine

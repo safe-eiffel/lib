@@ -17,6 +17,8 @@ create
 feature {NONE} -- Initialization
 
 	make (hyphen_character : CHARACTER; min_begin, min_end : INTEGER; tex_hyphen_file : FO_TEX_HYPHEN_FILE) is
+			-- Make hyphenation with `hyphen_caracter', keeping `min_begin' and `min_end' characters at the start and at then
+			-- end of words respectively and using `tex_hyphen_file' as input.
 		require
 			tex_hyphen_file_not_void: tex_hyphen_file /= Void
 			tex_hyphen_file_not_open: not tex_hyphen_file.is_open_read
@@ -115,11 +117,13 @@ feature -- Basic operations
 				end
 				setup_hyphenated_word
 			else
+				hyphenated_word := exceptions.found_item
 			end
 			setup_hyphenation_points
 		ensure
 			word_set: word = a_word
 			hyphenated_word_not_void: hyphenated_word /= Void
+			hyphenation_points_not_void: hyphenation_points /= Void
 		end
 
 feature {NONE} -- Implementation

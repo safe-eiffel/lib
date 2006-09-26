@@ -19,17 +19,17 @@ inherit
 			pre_render, is_equal, render_forth
 		end
 
-	FO_MARGIN_ABLE
+	FO_MARGINABLE
 		redefine
 			is_equal
 		end
 
-	FO_ALIGN_ABLE
+	FO_ALIGNABLE
 		undefine
 			is_equal
 		end
 
-	FO_BORDER_ABLE
+	FO_BORDERABLE
 		undefine
 			is_equal
 		end

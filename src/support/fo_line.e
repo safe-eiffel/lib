@@ -20,7 +20,7 @@ inherit
 			pre_render
 		end
 
-	FO_MARGIN_ABLE
+	FO_MARGINABLE
 		redefine
 			out, is_equal
 		end
@@ -35,7 +35,7 @@ create {FO_BLOCK}
 
 feature {NONE} -- Initialization
 
-	make (new_maximum_width : FO_MEASUREMENT; renderable : FO_RENDERABLE; marginable : FO_MARGIN_ABLE) is
+	make (new_maximum_width : FO_MEASUREMENT; renderable : FO_RENDERABLE; marginable : FO_MARGINABLE) is
 		require
 			new_maximum_width_exists: new_maximum_width /= Void
 			new_maximum_width_positive: new_maximum_width.sign = 1
@@ -55,7 +55,7 @@ feature {NONE} -- Initialization
 	make_justified (new_maximum_width : FO_MEASUREMENT;
 				--	renderable : FO_RENDERABLE;
 					new_text_leading : FO_MEASUREMENT;
-					marginable : FO_MARGIN_ABLE; a_justification : INTEGER) is
+					marginable : FO_MARGINABLE; a_justification : INTEGER) is
 		require
 			new_maximum_width_exists: new_maximum_width /= Void
 			new_maximum_width_positive: new_maximum_width.sign = 1
@@ -290,7 +290,7 @@ feature -- Comparison
 
 	is_equal (other : like Current) : BOOLEAN is
 		do
-			Result := precursor {FO_MARGIN_ABLE} (other) and
+			Result := precursor {FO_MARGINABLE} (other) and
 				inlines.is_equal (other.inlines)
 		end
 

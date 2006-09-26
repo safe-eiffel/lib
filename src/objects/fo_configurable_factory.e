@@ -15,6 +15,8 @@ inherit
 
 	FO_MEASUREMENT_ROUTINES
 
+	FO_SHARED_DEFAULTS
+
 create
 	make
 
@@ -100,9 +102,6 @@ feature -- Access
 	last_row : FO_ROW
 			-- Last created row.
 
-	xml_document : XFOCFG_DOCUMENT
-			-- XML document.
-
 	section_names : DS_LIST[STRING] is
 			-- Names of available sections.
 		do
@@ -144,6 +143,7 @@ feature -- Status report
 feature -- Basic operations
 
 	create_document (a_writer : FO_DOCUMENT_WRITER) is
+			-- Create document from `a_writer'.
 		require
 			is_ok: is_ok
 			a_writer_not_void: a_writer /= Void
@@ -157,6 +157,8 @@ feature -- Basic operations
 				l_rectangle := x_new_page_rectangle (section.page, error_handler)
 			end
 			create last_document.make_rectangle (l_rectangle, a_writer)
+		ensure
+			last_document_not_void: last_document /= Void
 		end
 
 	create_section (name : STRING) is
@@ -192,7 +194,11 @@ feature -- Basic operations
 				if is_landscape then
 					last_section.set_orientation_landscape
 				end
+			else
+				create last_section.make ("default", shared_defaults.document_rectangle, shared_defaults.document_margins)
 			end
+		ensure
+			last_section_not_void: last_section /= Void
 		end
 
 	create_block (name : STRING) is
@@ -224,7 +230,11 @@ feature -- Basic operations
 						end
 					end
 				end
+			else
+				create last_block.make_default
 			end
+		ensure
+			last_block_not_void: last_block /= Void
 		end
 
 	create_block_inline (style : STRING) is
@@ -241,6 +251,7 @@ feature -- Basic operations
 		end
 
 	create_inline (name : STRING) is
+			-- Create inline with style `name'.
 		require
 			is_ok: is_ok
 			name_not_void: name /= Void
@@ -256,7 +267,11 @@ feature -- Basic operations
 				if xfont.attribute_stretch /= Void then
 					last_inline.set_stretch (unit (xfont.attribute_stretch.item))
 				end
+			else
+				create last_inline.make ("")
 			end
+		ensure
+			last_inline_not_void: last_inline /= Void
 		end
 
 --	create_row (name : STRING) is
@@ -265,34 +280,6 @@ feature -- Basic operations
 --		do
 --			create last_row.
 --		end
-
-	new_measurement (m : STRING) : FO_MEASUREMENT is
-		require
-			m_not_void: m /= Void
-		local
-			value : STRING
-			v : DOUBLE
-			measurement_unit : STRING
-		do
-			create Result.points (0)
-			points_regex.match (m)
-			if points_regex.has_matched then
-				value := points_regex.captured_substring (1)
-				measurement_unit := points_regex.captured_substring (3)
-				v := value.to_double
-				if measurement_unit.is_equal ("cm") then
-					create Result.centimeters (v)
-				elseif measurement_unit.is_equal ("pt") then
-					create Result.points (v)
-				elseif measurement_unit.is_equal ("mm") then
-					create Result.millimeters (v)
-				elseif measurement_unit.is_equal ("in") then
-					create Result.inches (v)
-				else
-					do_nothing
-				end
-			end
-		end
 
 feature {NONE} -- Implementation
 
@@ -417,6 +404,37 @@ feature {NONE} -- Implementation
 
 	style_names_impl : DS_LINKED_LIST[STRING]
 	section_names_impl : DS_LINKED_LIST[STRING]
+
+	new_measurement (m : STRING) : FO_MEASUREMENT is
+		require
+			m_not_void: m /= Void
+		local
+			value : STRING
+			v : DOUBLE
+			measurement_unit : STRING
+		do
+			create Result.points (0)
+			points_regex.match (m)
+			if points_regex.has_matched then
+				value := points_regex.captured_substring (1)
+				measurement_unit := points_regex.captured_substring (3)
+				v := value.to_double
+				if measurement_unit.is_equal ("cm") then
+					create Result.centimeters (v)
+				elseif measurement_unit.is_equal ("pt") then
+					create Result.points (v)
+				elseif measurement_unit.is_equal ("mm") then
+					create Result.millimeters (v)
+				elseif measurement_unit.is_equal ("in") then
+					create Result.inches (v)
+				else
+					do_nothing
+				end
+			end
+		end
+
+	xml_document : XFOCFG_DOCUMENT
+			-- XML document.
 
 invariant
 

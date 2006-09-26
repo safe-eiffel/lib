@@ -11,5 +11,5 @@ References:
 License:
 - Eiffel Forum License version 2.0
 
-(C) Paul G. Crismer
+(C) 2006- Paul G. Crismer
 2006-01-26
