@@ -1,9 +1,9 @@
 indexing
 	description: "Routines that give access to C memory."
 	author: "Paul G. Crismer"
-	
+
 	library: "XS_C : eXternal Support C"
-	
+
 	date: "$Date$"
 	revision: "$Revision$"
 	licensing: "See notice at end of class"
@@ -25,7 +25,7 @@ feature {NONE} -- Implementation
 	c_memory_put_int8 (pointer : POINTER; v : INTEGER)  is
 		require
 			valid_pointer: pointer /= default_pointer
-			int8_limits: v >= -256 and v < 256
+			int8_limits: v >= -128 and v < 128
 		external "C"
 		alias "c_memory_put_int8"
 		ensure
@@ -45,7 +45,7 @@ feature {NONE} -- Implementation
 	c_memory_put_uint8 (pointer : POINTER; v : INTEGER)  is
 		require
 			valid_pointer: pointer /= default_pointer
-			uint8_limits: v >= 0 and v < 256 
+			uint8_limits: v >= 0 and v < 256
 		external "C"
 		alias "c_memory_put_uint8"
 		ensure
@@ -110,6 +110,8 @@ feature {NONE} -- Implementation
 			valid_pointer: pointer /= default_pointer
 		external "C"
 		alias "c_memory_get_int8"
+		ensure
+			int8: Result >= -128 and Result < 128
 		end
 
 	c_memory_get_int16 (pointer : POINTER) : INTEGER is
@@ -117,6 +119,8 @@ feature {NONE} -- Implementation
 			valid_pointer: pointer /= default_pointer
 		external "C"
 		alias "c_memory_get_int16"
+		ensure
+			int16: Result >= -16384 and Result < 16384
 		end
 
 	c_memory_get_uint8 (pointer : POINTER) : INTEGER is
@@ -124,6 +128,8 @@ feature {NONE} -- Implementation
 			valid_pointer: pointer /= default_pointer
 		external "C"
 		alias "c_memory_get_uint8"
+		ensure
+			uint8: Result >= 0 and Result < 256
 		end
 
 	c_memory_get_uint16 (pointer : POINTER) : INTEGER is
@@ -131,6 +137,8 @@ feature {NONE} -- Implementation
 			valid_pointer: pointer /= default_pointer
 		external "C"
 		alias "c_memory_get_uint16"
+		ensure
+			uint16: Result >= 0 and Result < 32768
 		end
 
 	c_memory_get_int32 (pointer : POINTER) : INTEGER is

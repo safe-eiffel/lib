@@ -1,9 +1,9 @@
 indexing
 	description: "C allocated strings"
 	author: "Paul G. Crismer"
-	
+
 	library: "XS_C : eXternal Support C"
-	
+
 	date: "$Date$"
 	revision: "$Revision$"
 	licensing: "See notice at end of class"
@@ -26,10 +26,15 @@ inherit
 		undefine
 			is_equal
 		end
-	
+
+	KL_IMPORTED_ANY_ROUTINES
+		undefine
+			is_equal
+		end
+
 creation
 	make, make_from_string, make_shared_from_pointer, make_from_pointer, set_empty
-	
+
 feature {NONE} -- Initialization
 
 	make (a_capacity : INTEGER) is
@@ -43,10 +48,10 @@ feature {NONE} -- Initialization
 				make_shared_from_pointer (empty_string.handle, 0)
 			end
 			capacity := a_capacity
-			count := -1
+			internal_count := -1
 		ensure
 			capacity_set: capacity = a_capacity
-			count_minus_1: count = -1
+			internal_count_minus_1: internal_count = -1
 			shared_when_empty: (a_capacity = 0) implies (Current = empty_string or else (is_shared and then handle = empty_string.handle))
 		end
 
@@ -54,6 +59,7 @@ feature {NONE} -- Initialization
 			-- make from `s'
 		require
 			s_not_void: s /= Void
+			s_string_type: is_string_type (s)
 		do
 			make (s.count)
 			if not is_shared then
@@ -73,8 +79,7 @@ feature {NONE} -- Initialization
 		do
 			handle := p
 			capacity := a_capacity
-			count := -1 -- External
---			count := external_string_length (handle)
+			internal_count := -1
 		ensure
 			handle_set: handle = p
 			capacity_set: capacity = a_capacity
@@ -90,7 +95,7 @@ feature -- Initialization
 		do
 			handle := p
 			capacity := a_capacity
-			count := -1 -- external_string_length (handle)
+			internal_count := -1 -- external_string_length (handle)
 			is_shared := True
 		ensure
 			handle_set: handle = p
@@ -102,10 +107,17 @@ feature -- Access
 
 	capacity : INTEGER
 			-- string capacity
-	
-	count : INTEGER
+
+	count : INTEGER is
 			-- Count of characters in string.
-					
+			do
+				if internal_count >= 0 then
+					Result := internal_count
+				else
+					Result := external_string_length (handle)
+				end
+			end
+
 	item (c : INTEGER) : CHARACTER is
 		require
 			c_within_limits: c >= 1 and c <= capacity
@@ -121,7 +133,7 @@ feature -- Access
 		do
 			Result := c_memory_get_uint8 (c_memory_pointer_plus (handle, c - 1))
 		end
-		
+
 	substring (i_start, i_end : INTEGER) : STRING is
 			-- substring made of characters [i_start..i_end]
 		require
@@ -140,7 +152,7 @@ feature -- Access
 				index := index + 1
 			end
 		end
-	
+
 	copy_substring_to (i_start, i_end : INTEGER; string : STRING) is
 			-- copy substring [i_start..i_end] to string
 		require
@@ -174,14 +186,14 @@ feature -- Access
 		ensure
 			string_set: string.substring (old (string.count) + 1, string.count).is_equal (substring (i_start, i_end))
 		end
-		
+
 feature -- Status report
 
-	is_shared : BOOLEAN 
+	is_shared : BOOLEAN
 		-- is the handle of this string shared with other objects ?
-		
+
 	is_released : BOOLEAN
-	
+
 	is_empty : BOOLEAN is
 			-- Is this an empty C string ?
 		do
@@ -189,6 +201,9 @@ feature -- Status report
 		end
 
 	equal_string (s : STRING) : BOOLEAN is
+			-- Are the strings equal ?
+		require
+			s_not_void: s /= Void
 		do
 			if s.count > 0 then
 				Result := substring (1, s.count).is_equal (s)
@@ -199,7 +214,18 @@ feature -- Status report
 			definition: s.count > 0 implies Result = substring (1, s.count).is_equal (s)
 			definition_empty: s.count = 0 implies Result = True
 		end
-		
+
+	is_string_type (s : STRING) : BOOLEAN is
+			-- Is `s' of type STRING ?
+		require
+			s_not_void: s /= Void
+		local
+			t : STRING
+		do
+			create t.make (0)
+			Result := ANY_.same_types (t, s)
+		end
+
 feature -- Element change
 
 	wipe_out is
@@ -208,7 +234,7 @@ feature -- Element change
 		ensure
 			is_empty: is_empty
 		end
-		
+
 	put (c : CHARACTER; index : INTEGER) is
 			-- put `c' at `index'
 		require
@@ -218,7 +244,7 @@ feature -- Element change
 		ensure
 			item_set: item (index) = c
 		end
-		
+
 feature -- Conversion
 
 	as_string : STRING is
@@ -254,7 +280,7 @@ feature -- Comparison
 				end
 			end
 		end
-		
+
 feature -- Element change
 
 	from_string (s : STRING) is
@@ -270,17 +296,17 @@ feature -- Element change
 			until
 				index > s.count
 			loop
-				c_memory_put_uint8 (c_memory_pointer_plus (handle, index-1), s.item (index).code)				
+				c_memory_put_uint8 (c_memory_pointer_plus (handle, index-1), s.item (index).code)
 				index := index + 1
 			end
 			c_memory_put_uint8 (c_memory_pointer_plus (handle, s.count), 0)
-			count := s.count
+			internal_count := s.count
 		ensure
 			equal_strings: equal_string (s)
 		end
 
 	dispose is
-			-- 
+			--
 		do
 			if not is_shared and handle /= default_pointer then
 				Precursor {XS_C_MEMORY}
@@ -308,10 +334,10 @@ feature -- Basic operations
 		ensure
 			s_equal_as_string: as_string.is_equal (s)
 		end
-		
+
 feature {NONE} -- Implementation
 
-	set_empty is 
+	set_empty is
 		do
 			if empty_string /= Void then
 				make_shared_from_pointer (empty_string.handle, 0)
@@ -334,10 +360,13 @@ feature {NONE} -- Implementation
 			end
 			Result := index
 		end
-		
+
+	internal_count : INTEGER
+			-- Count obtained from an internal Eiffel String.
+
 invariant
 	is_valid_or_released: is_valid or else is_released
-		
+
 end -- class XS_C_STRING
 --
 -- Copyright: 2003, Paul G. Crismer, <pgcrism@users.sourceforge.net>
