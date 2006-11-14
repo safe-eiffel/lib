@@ -41,6 +41,7 @@ feature {NONE} -- Initialization
 			create input.make (file_name)
 			input.open_read
 			parser.parse_from_stream (input)
+			
 			create factory.make
 			if not tree_pipe.error.has_error then
 				xml_document := factory.new_document (tree_pipe.document.root_element)

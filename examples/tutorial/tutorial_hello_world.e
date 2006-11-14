@@ -1,6 +1,6 @@
 indexing
-	description: "Objects that ..."
-	author: ""
+	description: "FO Test for 'hello world'."
+	author: "Paul G. Crismer"
 	date: "$Date$"
 	revision: "$Revision$"
 
@@ -8,10 +8,10 @@ class
 	TUTORIAL_HELLO_WORLD
 
 inherit
-	
+
 	FO_SHARED_FONT_FACTORY
 	FO_MEASUREMENT_ROUTINES
-	
+
 create
 	execute
 
@@ -26,13 +26,13 @@ feature {NONE} -- Initialization
 
 			--| 2
 			document.open
-			
+
 			--| 3
 			create block.make_default
-			
+
 			--| 4
 			block.append_string ("Hello World")
-			
+
 			--| 5
 			document.append_block (block)
 
@@ -43,10 +43,9 @@ feature {NONE} -- Initialization
 feature -- Access
 
 	document : FO_DOCUMENT
-	
+
 	writer : FO_DOCUMENT_WRITER
-	
+
 	block : FO_BLOCK
-	
-	
+
 end
