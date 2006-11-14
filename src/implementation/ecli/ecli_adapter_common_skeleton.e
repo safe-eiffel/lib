@@ -99,7 +99,7 @@ feature {PO_LAUNCHER} -- Element change
 		
 feature -- Basic operations
 
-	exists (a_pid: like last_pid): BOOLEAN is
+	exists (a_pid: PO_PID): BOOLEAN is
 			-- Does an object identified by `a_pid' exist? Uses `Sql_exists'.
 		do
 			create last_cursor.make

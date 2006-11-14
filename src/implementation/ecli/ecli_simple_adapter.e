@@ -513,16 +513,9 @@ feature  {NONE} -- Implementation facilities for descendants
 				end
 			else
 				status.set_datastore_error (row_cursor.native_code, row_cursor.diagnostic_message)
-			end
+			end			
 			
-			if not is_error then
-				if last_cursor.count = 1 then
-					last_cursor.start
-					last_object := last_cursor.item
-				else
-					last_object := Void
-				end
-			end
+			last_object := Void
 		end
 		
 feature  {NONE} -- Implementation	

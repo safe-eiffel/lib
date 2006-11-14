@@ -1,0 +1,7 @@
+EPOM V1.2
+	. Added PO_CACHE, which is deferred and allows for different implementations. 
+	. PO_HASHED_CACHE implements a cache with a hash-table.
+	. All ECLI*SKELETON are adapted so that they use a PO_HASHED_CACHE.  
+	. Suppressed feature `cache' from PO_ADAPTER.
+	. PO_MANAGER.add_adapter : post_condition changed.
+	. ECLI_ADAPTER_REFRESH_SKELETON.refresh: postcondition ensured (object_fresh: not status.is_error implies not object.is_modified).

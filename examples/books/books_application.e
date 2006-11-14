@@ -1,15 +1,15 @@
 indexing
 
 	description	: "Books sample application for EPOM"
-	
+
 	copyright: "(c) 2004, Paul G. Crismer and others"
-	
+
 class BOOKS_APPLICATION
 
 inherit
 
 	BOOKS_DATASTORE_ACCESS
-		
+
 creation
 
 	make
@@ -26,18 +26,16 @@ feature -- Initialization
 				borrow_copy_to_borrower ("1", 2, 2)
 				show
 				delete_copy ("1", 1)
-				store.disconnect				
+				store.disconnect
 			end
 		end
-		
-		
 
 feature -- Access
 
 	last_book : BOOK
-	
+
 	books : ARRAY[BOOK]
-	
+
 feature -- Basic operations
 
 	populate is
@@ -48,7 +46,7 @@ feature -- Basic operations
 			populate_copies
 		end
 
-		
+
 	borrow_copy_to_borrower (book_isbn : STRING; copy_number : INTEGER; borrower_id : INTEGER) is
 			-- Borrow some copy identified by (`book_isbn',`copy_number') for borrower `borrower_id'.
 		require
@@ -60,7 +58,7 @@ feature -- Basic operations
 			borrower : BORROWER
 		do
 			copy_adapter.read_from_isbn_and_number (book_isbn,copy_number)
-			check 
+			check
 				copy_adapter.status.is_ok
 			end
 			if copy_adapter.last_cursor.count > 0 then
@@ -75,7 +73,7 @@ feature -- Basic operations
 						book_copy.borrow (borrower)
 						book_copy.update
 					end
-				end 
+				end
 			end
 		end
 
@@ -85,7 +83,7 @@ feature -- Basic operations
 			show_books
 			show_borrowed_copies
 		end
-		
+
 
 feature -- Implementation
 
@@ -181,7 +179,7 @@ feature -- Implementation
 				end
 			end
 		end
-		
+
 
 	write_book (book_isbn, book_title, book_author : STRING; adapter : BOOK_ADAPTER) is
 			-- Write new book object [`book_isbn', `book_title', `book_author'] through `adapter'.
@@ -192,7 +190,7 @@ feature -- Implementation
 			try_write (b)
 			last_book := b
 		end
-	
+
 	write_borrower (borrower_id : INTEGER; borrower_name, borrower_address : STRING) is
 			-- Write new borrower object [`borrower_id', `borrower_name', `borrower_address'].
 		local
@@ -212,7 +210,7 @@ feature -- Implementation
 			try_write (book_copy)
 		end
 
-	delete_copy (isbn : STRING; a_copy : INTEGER) is		
+	delete_copy (isbn : STRING; a_copy : INTEGER) is
 		local
 			l_copy : COPY
 		do
@@ -222,7 +220,7 @@ feature -- Implementation
 				copy_adapter.delete (l_copy)
 			end
 		end
-		
+
 	try_write (o : PO_PERSISTENT) is
 			-- Try writing `o'.
 		do
@@ -232,6 +230,10 @@ feature -- Implementation
 					print (o.status.message)
 				end
 			end
-		end		
+		end
+
+invariant
+
+	books_not_void: books /= Void
 
 end
