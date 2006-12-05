@@ -16,9 +16,9 @@ inherit
 
 feature -- Access report
 
-	can_update : BOOLEAN is 
-		do 
-			Result := True 
+	can_update : BOOLEAN is
+		do
+			Result := True
 		ensure then
 			can_update: Result
 		end
@@ -27,14 +27,14 @@ feature -- Basic operations
 
 	update (object: like object_anchor) is
 			-- Update `object' on datastore using `update_query'.
-		do  
+		do
 			status.reset
 			if object.is_volatile then
 				create_pid_from_object (object)
 			else
 				last_pid ?= object.pid
 			end
-			
+
 			last_object := Void
 			if last_pid /= Void then
 				init_parameters_for_update (object, last_pid)
@@ -47,20 +47,23 @@ feature -- Basic operations
 					status.set_datastore_error (update_query.native_code, update_query.diagnostic_message					)
 				end
 			else
-				--| non_conformant_pid 
+				--| non_conformant_pid
 				status.set_framework_error (status.error_non_conformant_pid)
-			end		
+			end
 		end
-	
+
 feature {PO_ADAPTER} -- Basic operations
 
 	init_parameters_for_update (object : like last_object; a_pid : like last_pid) is
 			-- Initialize parameters of `update_query' with information from `object' and `a_pid'.
+		require
+			object_not_void: object /= Void
+			a_pid_not_void: a_pid /= Void
 		deferred
 		end
 
 feature {PO_ADAPTER} -- Implementation
-	
+
 	update_query : ECLI_QUERY is
 		deferred
 		end

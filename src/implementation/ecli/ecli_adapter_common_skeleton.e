@@ -16,14 +16,14 @@ inherit
 		undefine
 			on_adapter_connected, on_adapter_disconnect
 		end
-			
+
 	PO_SHARED_MANAGER
 		export
 			{NONE} all
 		end
-	
+
 	PO_CACHE_USE [G]
-	
+
 feature {NONE} -- Initialization
 
 	make (a_datastore : ECLI_DATASTORE) is
@@ -51,7 +51,7 @@ feature {NONE} -- Initialization
 			datastore_set: datastore = a_datastore
 			cache_set: cache = a_cache
 		end
-		
+
 feature {PO_ADAPTER} -- Access
 
 	last_object: G
@@ -61,23 +61,23 @@ feature {PO_ADAPTER} -- Access
 		-- Last created pid
 
 feature -- Access
-	
+
 	datastore: ECLI_DATASTORE
 		-- current datastore
 
 	last_cursor: PO_REFERENCE_LIST_CURSOR [G]
 		-- Cursor the handles a linked list of PO_REFERENCE, i.e implementing load-on-demand of objects
-		
+
 feature -- Status report
-		
+
 	is_enabled_cache_on_write : BOOLEAN
 			-- Are written objects inserted in cache ?
 
 	is_enabled_cache_on_read : BOOLEAN
 			-- Are read objects inserted in cache ?
-			
+
 feature -- Status setting
-		
+
 feature -- Measurement
 
 	cache_count : INTEGER is
@@ -96,7 +96,7 @@ feature {PO_LAUNCHER} -- Element change
 				on_adapter_connected
 			end
 		end
-		
+
 feature -- Basic operations
 
 	exists (a_pid: PO_PID): BOOLEAN is
@@ -104,11 +104,11 @@ feature -- Basic operations
 		do
 			create last_cursor.make
 			last_object := Void
-			
+
 			check
 				exists_cursor_not_void: exists_cursor /= Void
 			end
-			
+
 			status.reset
 			init_parameters_for_exists (a_pid)
 			exists_cursor.execute
@@ -124,26 +124,28 @@ feature -- Basic operations
 		do
 			is_enabled_cache_on_read := True
 		end
-		
+
 	disable_cache_on_read is
 		do
 			is_enabled_cache_on_read := False
 		end
-		
+
 	enable_cache_on_write is
-		do 
-			is_enabled_cache_on_write := True 
+		do
+			is_enabled_cache_on_write := True
 		end
 
 	disable_cache_on_write is
-		do 
-			is_enabled_cache_on_write := False 
+		do
+			is_enabled_cache_on_write := False
 		end
-	
+
 feature {PO_ADAPTER} -- Basic operations
 
 	init_parameters_for_exists (a_pid : like last_pid) is
 			-- Initialize parameters of `Sql_exists' with information from `a_pid'.
+		require
+			a_pid_not_void: a_pid /= Void
 		deferred
 		end
 
@@ -157,13 +159,13 @@ feature {PO_ADAPTER} -- Implementation
 		require
 			a_string_not_void: a_string /= Void
 		do
-			query_error_message := a_string		
+			query_error_message := a_string
 		ensure
 			query_error_message_set: query_error_message = a_string
 		end
 
 feature {PO_ADAPTER} -- Implementation
-	
+
 	exists_cursor : ECLI_CURSOR is
 		deferred
 		end
@@ -177,5 +179,5 @@ feature {PO_ADAPTER} -- Implementation
 		ensure
 			a_cursor_after: a_cursor.after
 		end
-	
+
 end

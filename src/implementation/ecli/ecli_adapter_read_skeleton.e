@@ -13,14 +13,14 @@ deferred class ECLI_ADAPTER_READ_SKELETON[G->PO_PERSISTENT]
 inherit
 
 	ECLI_ADAPTER_COMMON_SKELETON[G]
-		
+
 feature -- Status report
 
-	can_read : BOOLEAN is 
-		do 
-			Result := True 
+	can_read : BOOLEAN is
+		do
+			Result := True
 		ensure then
-			can_read: Result	
+			can_read: Result
 		end
 
 feature -- Basic operations
@@ -41,7 +41,7 @@ feature -- Basic operations
 			end
 			if not is_enabled_cache_on_read or else not cache.found then
 				init_parameters_for_read (a_pid)
-				read_cursor.execute	
+				read_cursor.execute
 				if read_cursor.is_ok then
 					load_results (read_cursor, a_pid)
 				else
@@ -49,11 +49,13 @@ feature -- Basic operations
 				end
 			end
 		end
-	
+
 feature {PO_ADAPTER} -- Basic operations
 
 	init_parameters_for_read (a_pid : like last_pid) is
 			-- Initialize parameters of `read_cursor' with information from `a_pid'.
+		require
+			a_pid_not_void: a_pid /= Void
 		deferred
 		ensure
 			bound_parameters: read_cursor.bound_parameters
@@ -67,6 +69,7 @@ feature {NONE} -- Factory
 		require
 			last_object_void: last_object = Void
 			a_cursor_not_void: a_cursor /= Void
+			a_pid_not_void: a_pid /= Void
 			something_read : not a_cursor.off
 		deferred
 		ensure
@@ -102,7 +105,7 @@ feature {NONE} -- Implementation
 				if not a_cursor.off then
 					create_object_from_read_cursor (a_cursor, a_pid)
 					if last_object /= Void then
-						fill_object_from_read_cursor (a_cursor, last_object)				
+						fill_object_from_read_cursor (a_cursor, last_object)
 						if status.is_ok then
 							last_object.set_pid (a_pid)
 							if is_enabled_cache_on_read then
