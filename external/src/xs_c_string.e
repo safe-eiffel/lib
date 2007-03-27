@@ -300,7 +300,32 @@ feature -- Element change
 				index := index + 1
 			end
 			c_memory_put_uint8 (c_memory_pointer_plus (handle, s.count), 0)
-			internal_count := s.count
+		ensure
+			equal_strings: equal_string (s)
+		end
+
+	from_substring (s : STRING; i_start, i_end : INTEGER) is
+			-- Copy `s' into Current
+		require
+			s_not_void: s /= Void
+			enough_capacity: capacity >= i_end - i_start + 1
+			i_start_within_bounds: i_start >= 1 and i_start <= s.count
+			i_end_within_bounds: i_end >= i_start and i_end <= s.count
+		local
+			index : INTEGER
+			offset : INTEGER
+		do
+			from
+				index := i_start
+				offset := 0
+			until
+				index > i_end
+			loop
+				c_memory_put_uint8 (c_memory_pointer_plus (handle, offset), s.item (index).code)
+				index := index + 1
+				offset := offset + 1
+			end
+			c_memory_put_uint8 (c_memory_pointer_plus (handle, offset), 0)
 		ensure
 			equal_strings: equal_string (s)
 		end
@@ -369,7 +394,7 @@ invariant
 
 end -- class XS_C_STRING
 --
--- Copyright: 2003, Paul G. Crismer, <pgcrism@users.sourceforge.net>
+-- Copyright: 2003-now, Paul G. Crismer, <pgcrism@users.sourceforge.net>
 -- Released under the Eiffel Forum License <www.eiffel-forum.org>
 -- See file <forum.txt>
 --
