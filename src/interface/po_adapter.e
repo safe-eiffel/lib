@@ -80,6 +80,8 @@ feature -- Access
 			created_for_volatile: object.is_volatile implies Result = last_pid
 		end
 
+	error_handler : PO_ERROR_HANDLER
+
 feature {PO_ADAPTER, PO_CURSOR, PO_REFERENCE, PO_PERSISTENT, PO_REFERENCE_ACCESS} -- Access
 
 	last_pid : PO_PID is
@@ -367,5 +369,6 @@ invariant
 	registered_to_datastore: datastore.adapters.has (Current.as_adapter_persistent)
 	valid_last_pid: last_pid /= Void implies is_pid_valid (last_pid)
 	last_cursor_not_void: last_cursor /= Void
-
+	error_handler_not_void: error_handler /= Void
+	
 end

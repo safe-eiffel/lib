@@ -29,7 +29,7 @@ feature -- Basic operations
 			-- Delete `object' from datastore using `delete_query'.
 		do
 			status.reset
-			last_pid ?= object.pid
+			last_pid ?= pid_for_object (object)
 
 			last_object := Void
 			if last_pid /= Void then
@@ -43,10 +43,12 @@ feature -- Basic operations
 					end
 					object.set_deleted
 				else
-					status.set_datastore_error (delete_query.native_code, delete_query.diagnostic_message						)
+					status.set_datastore_error (delete_query.native_code, delete_query.diagnostic_message)
+					error_handler.report_datastore_error (generator, "delete", delete_query.native_code, delete_query.diagnostic_message)
 				end
 			else
 				status.set_framework_error (status.error_non_conformant_pid)
+				error_handler.report_non_conformant_pid (generator, "delete", persistent_class_name, object.persistent_class_name)
 			end
 		end
 

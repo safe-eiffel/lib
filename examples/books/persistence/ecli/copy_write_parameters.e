@@ -1,7 +1,8 @@
 indexing
 
-	description: "Results objects "
+	description: "Buffer objects for database transfer."
 	status: "Automatically generated.  DOT NOT MODIFY !"
+	generated: "2007/01/30 15:29:38.782"
 
 class COPY_WRITE_PARAMETERS
 
@@ -12,7 +13,7 @@ creation
 feature {NONE} -- Initialization
 
 	make is
-			-- -- Creation of buffers
+			-- Creation of buffers
 		do
 			create loc_store.make
 			create loc_shelf.make
@@ -20,6 +21,13 @@ feature {NONE} -- Initialization
 			create borrower.make
 			create isbn.make (14)
 			create serial_number.make
+		ensure
+			loc_store_is_null: loc_store.is_null
+			loc_shelf_is_null: loc_shelf.is_null
+			loc_row_is_null: loc_row.is_null
+			borrower_is_null: borrower.is_null
+			isbn_is_null: isbn.is_null
+			serial_number_is_null: serial_number.is_null
 		end
 
 feature  -- Access
@@ -36,4 +44,4 @@ feature  -- Access
 
 	serial_number: ECLI_INTEGER
 
-end
+end -- class COPY_WRITE_PARAMETERS

@@ -16,9 +16,9 @@ inherit
 
 feature -- Status report
 
-	can_refresh : BOOLEAN is 
-		do 
-			Result := True 
+	can_refresh : BOOLEAN is
+		do
+			Result := True
 		ensure then
 			can_refresh: Result
 		end
@@ -27,7 +27,7 @@ feature -- Basic operations
 
 	refresh (object: like last_object) is
 			-- Refresh `object' using `refresh_cursor'.
-		do 
+		do
 			status.reset
 			last_pid ?= object.pid
 			if last_pid /= Void then
@@ -41,15 +41,18 @@ feature -- Basic operations
 						end
 					else
 						status.set_framework_error (status.Error_could_not_refresh_object)
+						error_handler.report_could_not_refresh_object (object)
 					end
 				else
-					status.set_datastore_error (refresh_cursor.native_code, refresh_cursor.diagnostic_message						)
+					status.set_datastore_error (refresh_cursor.native_code, refresh_cursor.diagnostic_message)
+					error_handler.report_datastore_error (generator, "refresh", refresh_cursor.native_code, refresh_cursor.diagnostic_message)
 				end
 			else
 				status.set_framework_error (status.Error_non_conformant_pid)
-			end		
+				error_handler.report_non_conformant_pid (generator, "refresh", persistent_class_name, object.persistent_class_name)
+			end
 		end
-	
+
 feature {PO_ADAPTER} -- Basic operations
 
 	init_parameters_for_refresh (a_pid : like last_pid) is

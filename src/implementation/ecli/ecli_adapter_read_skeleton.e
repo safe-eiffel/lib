@@ -46,11 +46,12 @@ feature -- Basic operations
 					load_results (read_cursor, a_pid)
 				else
 					status.set_datastore_error (read_cursor.native_code, read_cursor.diagnostic_message)
+					error_handler.report_datastore_error (generator, "read", read_cursor.native_code, read_cursor.diagnostic_message)
 				end
 			end
 		end
 
-feature {PO_ADAPTER} -- Basic operations
+feature {NONE} -- Basic operations
 
 	init_parameters_for_read (a_pid : like last_pid) is
 			-- Initialize parameters of `read_cursor' with information from `a_pid'.
@@ -84,7 +85,7 @@ feature {NONE} -- Factory
 		deferred
 		end
 
-feature {PO_ADAPTER} -- Implementation
+feature {NONE} -- Implementation
 
 	read_cursor : ECLI_CURSOR is
 		deferred
@@ -118,6 +119,7 @@ feature {NONE} -- Implementation
 						end
 					else
 						status.set_framework_error (status.error_could_not_create_object)
+						error_handler.report_could_not_create_object (generator, "read", persistent_class_name)
 					end
 				else
 					if is_enabled_cache_on_read then
@@ -126,6 +128,7 @@ feature {NONE} -- Implementation
 				end
 			else
 				status.set_datastore_error (a_cursor.native_code, a_cursor.diagnostic_message)
+				error_handler.report_datastore_error (generator, "load_results", a_cursor.native_code, a_cursor.diagnostic_message)
 			end
 		end
 

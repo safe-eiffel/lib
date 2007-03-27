@@ -3,11 +3,8 @@ indexing
 	
 		description: "Read copy"
 	
-	warning: "Generated cursor 'COPY_READ' : DO NOT EDIT !"
-	author: "QUERY_ASSISTANT"
-	date: "$Date : $"
-	revision: "$Revision : $"
-	licensing: "See notice at end of class"
+	status: "Cursor/Query automatically generated for 'COPY_READ'. DO NOT EDIT!"
+	generated: "2007/01/30 15:29:38.766"
 
 class COPY_READ
 
@@ -29,7 +26,7 @@ feature  -- -- Access
 feature  -- -- Element change
 
 	set_parameters_object (a_parameters_object: COPY_ID) is
-			-- Set `parameters_object' to `a_parameters_object'.
+			-- set `parameters_object' to `a_parameters_object'
 		require
 			a_parameters_object_not_void: a_parameters_object /= Void
 		do
@@ -43,16 +40,16 @@ feature  -- -- Element change
 
 feature  -- Constants
 
-	definition: STRING is "%
-% select isbn, serial_number, LOC_STORE, LOC_SHELF, LOC_ROW, BORROWER %
-% from COPY %
-% where isbn=?isbn and serial_number=?serial_number %
-% "
+	definition: STRING is "[
+select isbn, serial_number, LOC_STORE, LOC_SHELF, LOC_ROW, BORROWER 
+from COPY 
+where isbn=?isbn and serial_number=?serial_number
+]"
 
 feature {NONE} -- Implementation
 
 	create_buffers is
-			-- -- Creation of buffers
+			-- Creation of buffers
 		local
 			buffers: ARRAY[like value_anchor]
 		do
@@ -67,4 +64,4 @@ feature {NONE} -- Implementation
 			set_results (buffers)
 		end
 
-end
+end -- class COPY_READ

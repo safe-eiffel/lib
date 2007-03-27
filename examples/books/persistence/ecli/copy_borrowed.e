@@ -3,11 +3,8 @@ indexing
 	
 		description: "Get the borrowed copies"
 	
-	warning: "Generated cursor 'COPY_BORROWED' : DO NOT EDIT !"
-	author: "QUERY_ASSISTANT"
-	date: "$Date : $"
-	revision: "$Revision : $"
-	licensing: "See notice at end of class"
+	status: "Cursor/Query automatically generated for 'COPY_BORROWED'. DO NOT EDIT!"
+	generated: "2007/01/30 15:29:38.750"
 
 class COPY_BORROWED
 
@@ -26,14 +23,14 @@ feature  -- -- Access
 
 feature  -- Constants
 
-	definition: STRING is " %
-% select isbn, serial_number from copy where borrower is not null %
-% "
+	definition: STRING is "[
+select isbn, serial_number from copy where borrower is not null and borrower > 0
+]"
 
 feature {NONE} -- Implementation
 
 	create_buffers is
-			-- -- Creation of buffers
+			-- Creation of buffers
 		local
 			buffers: ARRAY[like value_anchor]
 		do
@@ -44,4 +41,4 @@ feature {NONE} -- Implementation
 			set_results (buffers)
 		end
 
-end
+end -- class COPY_BORROWED

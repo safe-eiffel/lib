@@ -71,8 +71,14 @@ insert into copy values (?isbn, ?serial_number, ?loc_store, ?loc_shelf, ?loc_row
 	</description>
 	<sql>
 update copy 
-set loc_store=?loc_store, loc_shelf = ?loc_shelf, loc_row=?loc_row, borrower=?borrower 
-where isbn=?isbn and serial_number =?serial_number
+set 
+	loc_store=?loc_store, 
+	loc_shelf = ?loc_shelf, 
+	loc_row=?loc_row, 
+	borrower=?borrower 
+where 
+	isbn=?isbn 
+	and serial_number =?serial_number
 	</sql>
 	<parameter_set>
 		<parameter name="loc_store" table="COPY" column="loc_store" sample="1"/> 

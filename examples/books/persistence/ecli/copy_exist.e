@@ -3,11 +3,8 @@ indexing
 	
 		description: "Does a COPY exist?"
 	
-	warning: "Generated cursor 'COPY_EXIST' : DO NOT EDIT !"
-	author: "QUERY_ASSISTANT"
-	date: "$Date : $"
-	revision: "$Revision : $"
-	licensing: "See notice at end of class"
+	status: "Cursor/Query automatically generated for 'COPY_EXIST'. DO NOT EDIT!"
+	generated: "2007/01/30 15:29:38.750"
 
 class COPY_EXIST
 
@@ -29,7 +26,7 @@ feature  -- -- Access
 feature  -- -- Element change
 
 	set_parameters_object (a_parameters_object: COPY_ID) is
-			-- Set `parameters_object' to `a_parameters_object'.
+			-- set `parameters_object' to `a_parameters_object'
 		require
 			a_parameters_object_not_void: a_parameters_object /= Void
 		do
@@ -43,14 +40,14 @@ feature  -- -- Element change
 
 feature  -- Constants
 
-	definition: STRING is "%
-% select count (*) as exists_count from COPY where isbn=?isbn and serial_number=?serial_number %
-% "
+	definition: STRING is "[
+select count (*) as exists_count from COPY where isbn=?isbn and serial_number=?serial_number
+]"
 
 feature {NONE} -- Implementation
 
 	create_buffers is
-			-- -- Creation of buffers
+			-- Creation of buffers
 		local
 			buffers: ARRAY[like value_anchor]
 		do
@@ -60,4 +57,4 @@ feature {NONE} -- Implementation
 			set_results (buffers)
 		end
 
-end
+end -- class COPY_EXIST

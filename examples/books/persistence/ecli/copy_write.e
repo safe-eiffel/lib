@@ -3,11 +3,8 @@ indexing
 	
 		description: "Insert a copy"
 	
-	warning: "Generated cursor 'COPY_WRITE' : DO NOT EDIT !"
-	author: "QUERY_ASSISTANT"
-	date: "$Date : $"
-	revision: "$Revision : $"
-	licensing: "See notice at end of class"
+	status: "Cursor/Query automatically generated for 'COPY_WRITE'. DO NOT EDIT!"
+	generated: "2007/01/30 15:29:38.782"
 
 class COPY_WRITE
 
@@ -27,7 +24,7 @@ feature  -- -- Access
 feature  -- -- Element change
 
 	set_parameters_object (a_parameters_object: COPY_WRITE_PARAMETERS) is
-			-- Set `parameters_object' to `a_parameters_object'.
+			-- set `parameters_object' to `a_parameters_object'
 		require
 			a_parameters_object_not_void: a_parameters_object /= Void
 		do
@@ -45,8 +42,8 @@ feature  -- -- Element change
 
 feature  -- Constants
 
-	definition: STRING is " %
-% insert into copy values (?isbn, ?serial_number, ?loc_store, ?loc_shelf, ?loc_row, ?borrower ) %
-% "
+	definition: STRING is "[
+insert into copy values (?isbn, ?serial_number, ?loc_store, ?loc_shelf, ?loc_row, ?borrower )
+]"
 
-end
+end -- class COPY_WRITE

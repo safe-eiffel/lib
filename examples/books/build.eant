@@ -26,6 +26,8 @@
 	</target>
 
 	<target name="xace" depend="init">
+		<argument name="a_compiler"/>
+		<argument name="a_output"/>
 		<description>
 			Build Ace file or ESD file for Eiffel compiler ${eiffel}.
 			Generate file in ${gexace_output} if specified.

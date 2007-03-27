@@ -3,11 +3,8 @@ indexing
 	
 		description: "Update copy"
 	
-	warning: "Generated cursor 'COPY_UPDATE' : DO NOT EDIT !"
-	author: "QUERY_ASSISTANT"
-	date: "$Date : $"
-	revision: "$Revision : $"
-	licensing: "See notice at end of class"
+	status: "Cursor/Query automatically generated for 'COPY_UPDATE'. DO NOT EDIT!"
+	generated: "2007/01/30 15:29:38.797"
 
 class COPY_UPDATE
 
@@ -27,7 +24,7 @@ feature  -- -- Access
 feature  -- -- Element change
 
 	set_parameters_object (a_parameters_object: COPY_UPDATE_PARAMETERS) is
-			-- Set `parameters_object' to `a_parameters_object'.
+			-- set `parameters_object' to `a_parameters_object'
 		require
 			a_parameters_object_not_void: a_parameters_object /= Void
 		do
@@ -45,10 +42,16 @@ feature  -- -- Element change
 
 feature  -- Constants
 
-	definition: STRING is "%
-% update copy %
-% set loc_store=?loc_store, loc_shelf = ?loc_shelf, loc_row=?loc_row, borrower=?borrower %
-% where isbn=?isbn and serial_number =?serial_number %
-% "
+	definition: STRING is "[
+update copy 
+set 
+	loc_store=?loc_store, 
+	loc_shelf = ?loc_shelf, 
+	loc_row=?loc_row, 
+	borrower=?borrower 
+where 
+	isbn=?isbn 
+	and serial_number =?serial_number
+]"
 
-end
+end -- class COPY_UPDATE

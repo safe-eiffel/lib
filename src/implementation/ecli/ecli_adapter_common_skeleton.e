@@ -117,6 +117,7 @@ feature -- Basic operations
 			end
 			if not exists_cursor.is_ok then
 				status.set_datastore_error (exists_cursor.native_code, exists_cursor.diagnostic_message)
+				error_handler.report_datastore_error (generator, "exists", exists_cursor.native_code, exists_cursor.diagnostic_message)
 			end
 		end
 

@@ -2,7 +2,7 @@ indexing
 
 	description: "Buffer objects for database transfer."
 	status: "Automatically generated.  DOT NOT MODIFY !"
-	generated: "2005/08/11 12:39:02.546"
+	generated: "2007/01/30 15:29:38.797"
 
 class EXISTS_COUNT
 
@@ -13,7 +13,7 @@ creation
 feature {NONE} -- Initialization
 
 	make is
-			-- -- Creation of buffers
+			-- Creation of buffers
 		do
 			create exists_count.make
 		ensure

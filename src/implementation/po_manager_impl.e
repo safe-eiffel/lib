@@ -13,11 +13,11 @@ class PO_MANAGER_IMPL
 inherit
 
 	PO_MANAGER
-	
+
 creation
 
 	make
-	
+
 feature {NONE} -- Initialization
 
 	make is
@@ -26,7 +26,7 @@ feature {NONE} -- Initialization
 		do
 			create adapters_table.make (10)
 		end
-		
+
 feature -- Access
 
 	adapters : DS_LIST [PO_ADAPTER[PO_PERSISTENT]] is
@@ -44,21 +44,22 @@ feature -- Access
 				cursor.forth
 			end
 		end
-		
-feature -- Measurement
 
-feature -- Status report
+feature -- Measurement
 
 	count: INTEGER is
 		do
 			Result := adapters_table.count
 		end
-		
+
+feature -- Status report
+
+
 	found: BOOLEAN is
 		do
 			Result := adapters_table.found
 		end
-		
+
 	has_adapter (class_name: STRING): BOOLEAN is
 		do
 			last_adapter := Void
@@ -69,10 +70,6 @@ feature -- Status report
 			end
 		end
 
-feature -- Status setting
-
-feature -- Cursor movement
-
 feature -- Element change
 
 feature {PO_LAUNCHER} -- Element change
@@ -81,18 +78,6 @@ feature {PO_LAUNCHER} -- Element change
 		do
 			adapters_table.force (an_adapter, an_adapter.persistent_class_name)
 		end
-
-feature -- Removal
-
-feature -- Resizing
-
-feature -- Transformation
-
-feature -- Conversion
-
-feature -- Duplication
-
-feature -- Miscellaneous
 
 feature -- Basic operations
 
@@ -107,15 +92,12 @@ feature -- Basic operations
 			end
 		end
 
-feature -- Obsolete
-
-
 feature {NONE} -- Implementation
 
 	adapters_table : DS_HASH_TABLE [PO_ADAPTER[PO_PERSISTENT], STRING]
-	
+
 invariant
 
 	adapters_table_not_void: adapters_table /= Void
-	
+
 end

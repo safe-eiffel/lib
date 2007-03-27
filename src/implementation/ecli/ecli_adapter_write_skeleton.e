@@ -40,9 +40,11 @@ feature -- Basic operations
 					end
 				else
 					status.set_datastore_error (write_query.native_code, write_query.diagnostic_message)
+					error_handler.report_datastore_error (generator, "write", write_query.native_code, write_query.diagnostic_message)
 				end
 			else
 				status.set_framework_error (status.Error_non_conformant_pid)
+				error_handler.report_non_conformant_pid (generator, "write", persistent_class_name, object.persistent_class_name)
 			end
 		end
 

@@ -16,7 +16,7 @@ inherit
 
 	PO_STATUS_USE
 	PO_STATUS_MANAGEMENT
-	
+
 feature {PO_PERSISTENT, PO_REFERENCE, PO_ADAPTER, PO_CACHE} -- Access
 
 	pid : PO_PID
@@ -39,7 +39,7 @@ feature -- Access
 		-- a whole class hierarchy (different classes, same persistent class name)
 		deferred
 		end
-		
+
 feature -- Status report
 
 	is_persistent : BOOLEAN is
@@ -47,7 +47,7 @@ feature -- Status report
 		do
 			Result := (pid /= Void)
 		end
-		
+
 	is_volatile : BOOLEAN is
 			-- does Current have no persistent image on datastore ?
 		do
@@ -55,13 +55,13 @@ feature -- Status report
 		ensure
 			definition: Result = not is_persistent
 		end
-		
+
 	is_deleted : BOOLEAN is
 			-- has Current's persistent image been deleted from datastore ?
 		do
 			Result := deleted_impl
 		end
-		
+
 	is_modified : BOOLEAN is
 			-- has Current been modified since last persistence operation ?
 		do
@@ -70,7 +70,7 @@ feature -- Status report
 
 	is_persistence_error : BOOLEAN is
 			-- has last persistence operation given an error ?
-		obsolete "use `status.is_error" 
+		obsolete "use `status.is_error"
 		do
 			Result := status.is_error
 		end
@@ -90,32 +90,32 @@ feature -- Status report
 					Result := adapter.exists (adapter.pid_for_object (Current))
 				end
 			end
-		end		
+		end
 
 	is_writable : BOOLEAN is
 			-- Is Current writable on datastore?
 		do
 			Result := adapter_for_me.can_write
 		end
-		
+
 	is_updatable : BOOLEAN is
 			-- Is Current updatable on datastore?
 		do
 			Result := adapter_for_me.can_update
 		end
-		
+
 	is_refreshable : BOOLEAN is
 			-- Is Current refreshable from datastore?
 		do
 			Result := adapter_for_me.can_refresh
 		end
-		
+
 	is_deletable : BOOLEAN is
 			-- Is Current deletable on datastore?
 		do
 			Result := adapter_for_me.can_delete
 		end
-		
+
 feature {PO_ADAPTER} -- Status setting
 
 	set_deleted is
@@ -153,7 +153,7 @@ feature  {PO_ADAPTER } -- Element change
 		end
 
 feature -- Conversion
-		
+
 feature -- Basic operations
 
 	write is
@@ -175,12 +175,12 @@ feature -- Basic operations
 		ensure
 			definition: not status.is_error implies (is_persistent and then exists and then not is_modified)
 		end
-		
+
 	update is
 			-- Update data store from current object state.
 		require
 			persistent: is_persistent
-			updatable: is_updatable			
+			updatable: is_updatable
 		local
 			adapter : PO_ADAPTER[like Current]
 		do
@@ -214,7 +214,7 @@ feature -- Basic operations
 			deleted: not status.is_error implies is_deleted and then not exists
 			volatile: not status.is_error implies is_volatile
 		end
-		
+
 	refresh is
 			-- Delete current object state from data store.
 		require
@@ -233,21 +233,23 @@ feature -- Basic operations
 		ensure
 			definition: not status.is_error implies not is_modified
 		end
-		
+
 feature {NONE} -- Implementation
 
 	adapter_for_me : PO_ADAPTER[like Current] is
 		local
-			persistent_name : STRING	
+			persistent_name : STRING
 		do
 			if pid = Void then
 				persistent_name := persistent_class_name
 			else
 				persistent_name := pid.persistent_class_name
 			end
-			persistence_manager.search_adapter (persistent_name)			
+			persistence_manager.search_adapter (persistent_name)
 			if persistence_manager.found then
 				Result ?= persistence_manager.last_adapter
+			else
+				persistence_manager.error_handler.report_could_not_find_adapter (generator, "adapter_for_me")
 			end
 		end
 
@@ -259,12 +261,12 @@ feature {NONE} -- Implementation
 	modified_impl : BOOLEAN
 
 	deleted_impl : BOOLEAN
-	
+
 invariant
 
 	persistent_has_a_pid: is_persistent implies pid /= Void
 	persistent_class_name_not_void: persistent_class_name /= Void and not persistent_class_name.is_empty
 	volatile_and_persistent_state_are_exclusive: is_volatile xor is_persistent
 	deleted_implies_volatile: is_deleted implies is_volatile
-	
+
 end
