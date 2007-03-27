@@ -17,9 +17,11 @@ inherit
 			render_forth, pre_render, is_renderable, post_render
 		end
 
+	FO_ALIGNABLE
+
 	KL_IMPORTED_ARRAY_ROUTINES
 
-create
+create {FO_TABLE}
 
 	make, make_widths
 
@@ -31,6 +33,7 @@ feature {NONE} -- Initialization
 			initialize_items (n)
 			initialize_widths (n, desired_total_width)
 			width := desired_total_width
+			create align.make_left
 		ensure
 			width_set: width = desired_total_width
 			capacity_set: capacity = n
@@ -47,6 +50,7 @@ feature {NONE} -- Initialization
 			initialize_items (n)
 			block_widths := desired_widths
 			width := sum_of_widths
+			create align.make_left
 		ensure
 			capacity_set: capacity = n
 		end
@@ -69,6 +73,12 @@ feature -- Access
 
 	height : FO_MEASUREMENT
 		-- Height of pre-rendered Row.
+
+	fixed_height : FO_MEASUREMENT
+		-- Desired fixed height
+
+	available_region : FO_RECTANGLE
+		-- Available region for current row
 
 	last_regions : ARRAY[FO_RECTANGLE]
 		-- Regions of last pre-render.
@@ -134,6 +144,16 @@ feature -- Cursor movement
 
 feature -- Element change
 
+	set_fixed_height (a_height : FO_MEASUREMENT) is
+		require
+			a_height_not_void: a_height /= Void
+			a_height_positive: a_height.sign = 1
+		do
+			fixed_height := a_height
+		ensure
+			fixed_height_set: fixed_height = a_height
+		end
+
 	put (a_renderable : FO_RENDERABLE; index : INTEGER) is
 			-- Put `a_renderable' at `index'-th position.
 		require
@@ -163,6 +183,11 @@ feature {FO_DOCUMENT, FO_BORDERABLE, FO_TABLE} -- Basic operations
 			left, right : FO_MEASUREMENT
 			current_region : FO_RECTANGLE
 		do
+			if fixed_height /= Void then
+				create available_region.set (region.left, region.top - fixed_height, region.right, region.top)
+			else
+				available_region := region
+			end
 			create last_regions.make (1, capacity)
 			--| foreach block
 			--| calculate region
@@ -175,9 +200,9 @@ feature {FO_DOCUMENT, FO_BORDERABLE, FO_TABLE} -- Basic operations
 				i > capacity
 			loop
 				create current_region.set (left,
-					region.bottom,
+					available_region.bottom,
 					right,
-					region.top)
+					available_region.top)
 				last_regions.put (current_region, i)
 				items.item (i).pre_render (current_region)
 				if height = Void then
@@ -195,21 +220,23 @@ feature {FO_DOCUMENT, FO_BORDERABLE, FO_TABLE} -- Basic operations
 		local
 			i : INTEGER
 			current_item : FO_RENDERABLE
+			all_rendered, one_inside : BOOLEAN
 		do
 			is_prerendered := False
-			is_render_off := True
-			is_render_inside := False
+			set_render_before
 			last_rendered_region := Void
 			compute_regions (region)
 			from
 				i := items.lower
-				is_render_off := True
+				all_rendered := True
+				one_inside := False
 			until i > items.upper
 			loop
+				set_render_inside
 				current_item := items.item (i)
 				current_item.render_start (document, render_regions.item (i))
-				is_render_off := is_render_off and items.item (i).is_render_off
-				is_render_inside := is_render_inside or items.item (i).is_render_inside
+				all_rendered := all_rendered and items.item (i).is_render_after
+				one_inside := one_inside or items.item (i).is_render_inside
 				if last_rendered_region = Void then
 					last_rendered_region := items.item (i).last_rendered_region
 				elseif items.item (i).last_rendered_region /= Void then
@@ -218,32 +245,39 @@ feature {FO_DOCUMENT, FO_BORDERABLE, FO_TABLE} -- Basic operations
 				i := i + 1
 			end
 			last_region := region
+			if fixed_height /= Void then
+				last_rendered_region.set_bottom (last_rendered_region.top - fixed_height)
+			end
+			update_render_state (all_rendered or else fixed_height /= Void, one_inside)
 		end
 
 	render_forth (document : FO_DOCUMENT; region : FO_RECTANGLE) is
 		local
 			i : INTEGER
+			one_inside, all_after : BOOLEAN
 		do
 			compute_regions (region)
 			from
 				last_rendered_region := Void
 				i := items.lower
-				is_render_off := True
+				all_after := True
+				one_inside := False
 			until i > items.upper
 			loop
-				if not items.item (i).is_render_off then
+				if not items.item (i).is_render_after then
 					items.item (i).render_forth (document, render_regions.item (i))
-					is_render_off := is_render_off and items.item (i).is_render_off
-					is_render_inside := is_render_inside and items.item (i).is_render_inside
+					all_after := all_after and items.item (i).is_render_after
+					one_inside := one_inside or items.item (i).is_render_inside
 					if last_rendered_region = Void then
 						last_rendered_region := items.item (i).last_rendered_region
-					elseif items.item (i).is_prerendered then
+					elseif not items.item (i).is_render_before then
 						last_rendered_region := last_rendered_region.merged (items.item (i).last_rendered_region)
 					end
 				end
 				i := i + 1
 			end
 			last_region := region
+			update_render_state (all_after, one_inside)
 		end
 
 	post_render (document : FO_DOCUMENT; region : FO_RECTANGLE) is
@@ -320,26 +354,48 @@ feature {NONE} -- Implementation
 			current_region : FO_RECTANGLE
 			left, right : FO_MEASUREMENT
 			total_width : FO_MEASUREMENT
+			unit_width : FO_MEASUREMENT
+			center_left : FO_MEASUREMENT
 		do
 			from
+				if fixed_height /= Void then
+					create available_region.set (region.left, region.top - fixed_height, region.right, region.top)
+				else
+					available_region := region
+				end
 				create render_regions.make (1, capacity)
 				create total_width.points (0)
+				unit_width := sum_of_widths
+				center_left := region.left + (region.width - unit_width) / create {FO_MEASUREMENT}.points (2)
 				i := block_widths.lower
 			until
 				i > block_widths.upper
 			loop
-				ratio := width / block_widths.item (i)
-				current_width := region.width / ratio
-				left := region.left + total_width
-				if i = block_widths.upper then
-					right := region.right
+				if align.is_justify then
+					-- render justify
+					left := region.left + total_width
+					ratio := width / block_widths.item (i)
+					current_width := region.width / ratio
+					if i = block_widths.upper then
+						right := region.right
+					else
+						right := left + current_width
+					end
 				else
+					if align.is_left then
+						left := region.left + total_width
+					elseif align.is_right then
+						left := region.right - unit_width + total_width
+					elseif align.is_center then
+						left := center_left + total_width
+					end
+					current_width := block_widths.item (i)
 					right := left + current_width
 				end
 				create current_region.set (left,
-					region.bottom,
+					available_region.bottom,
 					right,
-					region.top)
+					available_region.top)
 				total_width := total_width + current_width
 				render_regions.put (current_region, i)
 				i := i + 1
@@ -355,6 +411,6 @@ invariant
 	items_not_void: items /= Void
 	block_widths_not_void: block_widths /= Void
 	block_widths_have_no_void: not ANY_ARRAY_.has (block_widths, Void)
-
+	align_not_void: align /= Void
 end
 

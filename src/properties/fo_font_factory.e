@@ -56,6 +56,7 @@ feature {NONE} -- Initialization
 feature -- Access
 
 	last_font : FO_FONT
+			-- Last font found.
 
 	default_font : FO_FONT is
 			-- Default font.
@@ -69,9 +70,6 @@ feature -- Access
 			default_font_not_void: Result /= Void
 		end
 
-
-feature -- Measurement
-
 feature -- Status report
 
 	is_default (a_font : FO_FONT) : BOOLEAN is
@@ -81,6 +79,9 @@ feature -- Status report
 		do
 			Result := default_font.is_equal (a_font)
 		end
+
+	found : BOOLEAN
+			-- Has last `find_font' or `find_font_weight_style_encoding' operation succeeded?
 
 	valid_family (family : STRING) : BOOLEAN is
 			-- is `family' a valid font family ?
@@ -114,11 +115,6 @@ feature -- Status report
 			definition: Result implies style /= Void
 		end
 
-
-feature -- Status setting
-
-feature -- Cursor movement
-
 feature -- Element change
 
 	set_default_font (new_font: FO_FONT) is
@@ -131,64 +127,41 @@ feature -- Element change
 			default_font_set: default_font = new_font
 		end
 
-	find_font (name, weight, style : STRING; size : FO_MEASUREMENT) is
-			-- Find font with `name', `weight', `style', and shared_defaults.font_encoding
-		do
-			find_font_weight_style_encoding (name, weight, style, shared_defaults.font_encoding, size)
-		end
-
-	find_font_weight_style_encoding (name, weight, style, encoding : STRING; size : FO_MEASUREMENT) is
-			-- Find font with `name', `weight', `style', `encoding'
-		require
-			name_not_void: name /= Void
-			weight_not_void: weight /= Void
-			style_not_void: style /= Void
-			encoding_not_void: encoding /= Void
-			size_not_void: size /= Void
-		do
-			last_font := Void
-			font_table.search (font_key (name, weight, style))
-			if font_table.found then
-				if supported_encodings.has (encoding) then
-					dummy_document.find_font (font_table.found_item, encoding)
-					if dummy_document.last_font /= Void then
-						create last_font.make (name, weight, style, dummy_document.last_font, size)
-					end
-				end
-			end
-			if last_font = Void then
-				find_font_weight_style_encoding (default_font.name, default_font.weight, default_font.style, default_font.encoding,size)
-			end
-		ensure
-			last_font_not_void: last_font /= Void
-			last_font_size: last_font.size.is_equal (size)
---			found_name: last_font /= Void implies last_font.family.is_equal (name)
---			found_weight: last_font /= Void implies last_font.weight.is_equal (weight)
---			found_style: last_font /= Void implies last_font.style.is_equal (style)
---			found_encoding: last_font /= Void implies last_font.encoding.is_equal (encoding)
-		end
-
-feature -- Removal
-
-feature -- Resizing
-
-feature -- Transformation
-
-feature -- Conversion
-
-feature -- Duplication
-
-feature -- Miscellaneous
-
-feature -- Basic operations
-
 feature -- Constants
 
-	weigth_normal, style_normal : STRING is once Result := "" end
-	weigth_bold : STRING is once Result := "bold" end
-	style_italic : STRING is once Result := "italic" end
+	weigth_normal : STRING is
+			-- Normal weight.
+		once
+			create Result.make(0)
+		ensure
+			weight_normal_not_void: weigth_normal /= Void
+			weight_normal_empty: weigth_normal.is_empty
+		end
+
+	style_normal : STRING is
+		once
+			Result := weigth_normal
+		ensure
+			style_normal_not_void: style_normal /= Void
+			style_normal_is_empty: style_normal.is_empty
+		end
+
+	weigth_bold : STRING is
+		once
+			Result := "bold"
+		ensure
+			weight_bold_not_void: weigth_bold /= Void
+		end
+
+	style_italic : STRING is
+		once
+			Result := "italic"
+		ensure
+			style_italic_not_void: style_italic /= Void
+		end
 
 	supported_encodings : DS_LINKED_LIST[STRING] is
+			-- List of supported encodings.
 		local
 			tester : KL_EQUALITY_TESTER[STRING]
 		once
@@ -199,9 +172,60 @@ feature -- Constants
 			Result.put_last (dummy_document.encoding_pdf)
 			Result.put_last (dummy_document.encoding_standard)
 			Result.put_last (dummy_document.encoding_winansi)
+		ensure
+			supported_encodings_not_void: Result /= Void
+			not_void_encoding: not Result.has (Void)
 		end
 
-feature -- Inapplicable
+feature -- Basic operations
+
+	find_font (family, weight, style : STRING; size : FO_MEASUREMENT) is
+			-- Find font with `family', `weight', `style', and shared_defaults.font_encoding.
+		require
+			family_not_void: family /= Void
+			weight_not_void: weight /= Void
+			style_not_void: style /= Void
+			size_not_void: size /= Void
+		do
+			find_font_weight_style_encoding (family, weight, style, shared_defaults.font_encoding, size)
+		ensure
+			last_font_not_void: last_font /= Void
+			last_font_size: last_font.size.is_equal (size)
+			default_font_when_not_found: not found implies is_default (last_font)
+			valid_attributes: found implies (valid_family (family) and valid_style (style) and valid_weight (weight))
+			default_font_encoding: last_font.encoding.is_equal (shared_defaults.font_encoding)
+		end
+
+	find_font_weight_style_encoding (family, weight, style, encoding : STRING; size : FO_MEASUREMENT) is
+			-- Find font with `name', `weight', `style', `encoding'.
+		require
+			family_not_void: family /= Void
+			weight_not_void: weight /= Void
+			style_not_void: style /= Void
+			encoding_not_void: encoding /= Void
+			size_not_void: size /= Void
+		do
+			last_font := Void
+			found := False
+			font_table.search (font_key (family, weight, style))
+			if font_table.found then
+				if supported_encodings.has (encoding) then
+					dummy_document.find_font (font_table.found_item, encoding)
+					if dummy_document.last_font /= Void then
+						create last_font.make (family, weight, style, dummy_document.last_font, size)
+						found := True
+					end
+				end
+			end
+			if last_font = Void then
+				find_font_weight_style_encoding (default_font.name, default_font.weight, default_font.style, default_font.encoding,size)
+			end
+		ensure
+			last_font_not_void: last_font /= Void
+			last_font_size: last_font.size.is_equal (size)
+			default_font_when_not_found: not found implies is_default (last_font)
+			valid_attributes: found implies (valid_family (family) and valid_style (style) and valid_weight (weight))
+		end
 
 feature {NONE} -- Implementation
 

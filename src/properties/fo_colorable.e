@@ -1,7 +1,7 @@
 indexing
 
-	description: 
-	
+	description:
+
 		"Objects that can be colored"
 
 	library: "FO - Formatting Objects in Eiffel. Project SAFE."
@@ -13,12 +13,12 @@ class
 	FO_COLORABLE
 
 inherit
-	
+
 	ANY
 		redefine
 			is_equal
 		end
-		
+
 feature -- Access
 
 	foreground_color: FO_COLOR
@@ -54,12 +54,14 @@ feature -- Comparison
 			Result := same_colorable (other)
 		end
 
-	same_colorable (other : like Current) : BOOLEAN is		
+feature {FO_RENDERABLE} -- Comparison
+
+	same_colorable (other : like Current) : BOOLEAN is
 		do
 			Result := background_color.is_equal (other.background_color) and
 			 foreground_color.is_equal (other.foreground_color)
 		end
-		
+
 invariant
 
 	background_color_not_void: background_color /= Void

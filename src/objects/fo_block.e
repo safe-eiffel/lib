@@ -26,6 +26,11 @@ inherit
 			render_forth, is_renderable
 		end
 
+	FO_RENDER_STATE
+		undefine
+			is_equal, out
+		end
+
 	FO_COLORABLE
 		undefine
 			is_equal, out
@@ -59,6 +64,9 @@ feature {NONE} -- Initialization
 			make (shared_defaults.block_margins)
 			create inline.make ("")
 			append (inline)
+		ensure
+			default_margins: margins.is_equal (shared_defaults.block_margins)
+			empty_inline: inlines.count = 1 and then inlines.first.text.is_empty
 		end
 
 	make (new_margins : FO_MARGINS) is
@@ -128,12 +136,6 @@ feature {NONE} -- Access
 
 	lines : DS_LIST [FO_LINE]
 			-- Pre rendered lines.
-
-	render_state : INTEGER
-
-	render_state_before : INTEGER is 0
-	render_state_inside : INTEGER is 1
-	render_state_after : INTEGER is 2
 
 feature -- Constants
 
@@ -418,15 +420,15 @@ feature {FO_DOCUMENT, FO_RENDERABLE} -- Basic operations
 			loop
 				create line_region.set (available_region.left, available_region.bottom,
 					available_region.right,	available_region.top)
-					render_cursor.item.render_start (document, line_region)
-					if render_cursor.item.last_rendered_region /= Void then
-						last_rendered_region := last_rendered_region.merged (render_cursor.item.last_rendered_region)
-						available_region := available_region.shrinked_top (text_leading.max (render_cursor.item.last_rendered_region.height))
-						last_descender := render_cursor.item.bounding_box.bottom
-					else
-						create last_descender.points (0)
-					end
-					render_cursor.forth
+				render_cursor.item.render_start (document, line_region)
+				if render_cursor.item.last_rendered_region /= Void then
+					last_rendered_region := last_rendered_region.merged (render_cursor.item.last_rendered_region)
+					available_region := available_region.shrinked_top (text_leading.max (render_cursor.item.last_rendered_region.height))
+					last_descender := render_cursor.item.bounding_box.bottom
+				else
+					create last_descender.points (0)
+				end
+				render_cursor.forth
 			end
 			if document.current_page.is_text_mode then
 				document.current_page.end_text
@@ -471,7 +473,7 @@ feature {FO_DOCUMENT, FO_RENDERABLE} -- Basic operations
 				render_forth (document, region)
 			else
 				last_rendered_region := Void
-				set_render_inside
+				set_render_before
 				last_region := region
 			end
 		end
@@ -542,14 +544,10 @@ feature {FO_DOCUMENT} -- Implementation
 
 feature {NONE} -- Implementation
 
-	set_render_before is do render_state := render_state_before ; is_render_off := True; is_render_inside := False end
-	set_render_inside is do render_state := render_state_inside ; is_render_off := False; is_render_inside := True end
-	set_render_after is do render_state := render_state_after; is_render_off := True; is_render_inside := False end
-
 	word_cursor : FO_INLINES_WORD_CURSOR
 
 	compute_lines (region : FO_RECTANGLE) is
-			-- Compute lines for `line_width'.
+			-- Compute lines for `region'.
 		local
 			line_width : FO_MEASUREMENT
 			current_inline : FO_INLINE

@@ -1,7 +1,7 @@
 indexing
 
-	description: 
-	
+	description:
+
 		"Vertical sequence of objects that should be rendered on a single page."
 
 	library: "FO - Formatting Objects in Eiffel. Project SAFE."
@@ -16,17 +16,17 @@ inherit
 		redefine
 			pre_render
 		end
-	
-create	
+
+create
 	make
-	
+
 feature {NONE} -- Initialization
 
 	make is
 		do
 			create {DS_LINKED_LIST[FO_RENDERABLE]}unbreakables.make
 		end
-		
+
 feature -- Access
 
 	unbreakables : DS_LIST[FO_RENDERABLE]
@@ -36,7 +36,7 @@ feature -- Measurement
 
 	height : FO_MEASUREMENT
 			-- Height after pre-rendering.
-	
+
 feature -- Comparison
 
 feature -- Status report
@@ -48,28 +48,31 @@ feature -- Status report
 				Result := unbreakables.first.is_page_break_before
 			end
 		end
-		
-	is_keep_with_next: BOOLEAN is 
-		do  
+
+	is_keep_with_next: BOOLEAN is
+		do
 		ensure then
 			definition: not Result
 		end
-	
+
 feature {FO_DOCUMENT, FO_RENDERABLE} -- Basic operations
 
 	render_start (document: FO_DOCUMENT; region: FO_RECTANGLE) is
 		local
 			c : DS_LIST_CURSOR[FO_RENDERABLE]
 			new_region : FO_RECTANGLE
+			all_after : BOOLEAN
 		do
 			from
 				c := unbreakables.new_cursor
 				c.start
 				new_region := region
-				is_render_off := True
+				all_after := true
+				set_render_before
 			until
 				c.off
 			loop
+				set_render_inside
 				c.item.render_start (document, new_region)
 				new_region := new_region.shrinked_top (c.item.last_rendered_region.height)
 				if last_rendered_region = Void then
@@ -79,14 +82,16 @@ feature {FO_DOCUMENT, FO_RENDERABLE} -- Basic operations
 				end
 				height := height + c.item.height
 				c.item.post_render (document, c.item.last_rendered_region)
-				is_render_off := is_render_off and c.item.is_render_off
+				all_after := all_after and c.item.is_render_after
 				c.forth
 			end
 			last_region := region
-			is_render_inside := not is_render_off
+			if is_render_inside and all_after then
+				set_render_after
+			end
 		end
 	
-	pre_render (region: FO_RECTANGLE) is	
+	pre_render (region: FO_RECTANGLE) is
 		local
 			c : DS_LIST_CURSOR[FO_RENDERABLE]
 		do
@@ -105,7 +110,7 @@ feature {FO_DOCUMENT, FO_RENDERABLE} -- Basic operations
 				c.forth
 			end
 		end
-		
+
 end
 
 

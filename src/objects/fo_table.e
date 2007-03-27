@@ -13,6 +13,16 @@ class FO_TABLE
 
 inherit
 
+	FO_SHARED_DEFAULTS
+		undefine
+			is_equal
+		end
+
+	FO_MARGINABLE
+		undefine
+			is_equal
+		end
+
 	FO_RENDERABLE
 		redefine
 			render_forth, pre_render, is_renderable
@@ -40,6 +50,7 @@ feature {NONE} -- Initialization
 			widths := desired_widths
 			create rows.make
 			create align.make_left
+			set_margins (shared_defaults.table_margins)
 		ensure
 			column_count_set: column_count = desired_columns
 			widths_set: widths = desired_widths
@@ -84,6 +95,8 @@ feature -- Measurement
 		ensure
 			width_not_void: Result /= Void
 		end
+
+	available_region : FO_RECTANGLE
 
 feature -- Status report
 
@@ -174,48 +187,59 @@ feature -- Basic operations
 	render_start (document: FO_DOCUMENT; region: FO_RECTANGLE) is
 		local
 			done : BOOLEAN
-			available_region : FO_RECTANGLE
+			post_render_region : FO_RECTANGLE
+			must_render_rows : BOOLEAN
 		do
-			is_render_off := False
-			is_render_inside := True
-			rendering_state := state_rendering_none
-			available_region := region
+			set_render_before
+			set_rendering_none
+			compute_available_region (region)
 			create last_rendered_region.set (
 				region.left, region.top, region.right, region.top)
 			render_cursor := Void
 			if not (is_prerendered and then last_region.is_equal (region)) then
-				pre_render (region)
+				pre_render (available_region)
 			end
+			must_render_rows := True
 			if header_row /= Void then
 				-- Start rendering header_row
-				rendering_state := state_rendering_header
+				set_render_inside
+				set_rendering_header
 				header_row.render_start (document, available_region)
-				header_row.post_render (document, header_row.last_rendered_region)
-				last_rendered_region := last_rendered_region.merged (header_row.last_rendered_region)
-				available_region := available_region.shrinked_top (header_row.last_rendered_region.height)
-				if header_row.is_render_off then
-					--| render rows until one of them is 'off'
-					from
-						rendering_state := state_rendering_rows
-						render_cursor := rows.new_cursor
-						render_cursor.start
-					until
-						render_cursor.off or else done
-					loop
-						render_cursor.item.render_start (document, available_region)
-						render_cursor.item.post_render (document, render_cursor.item.last_rendered_region)
+				if header_row.is_render_after then
+					create post_render_region.set (available_region.left, header_row.last_rendered_region.bottom, available_region.right, header_row.last_rendered_region.top)
+					header_row.post_render (document, post_render_region)
+					last_rendered_region := last_rendered_region.merged (header_row.last_rendered_region)
+					available_region := available_region.shrinked_top (header_row.last_rendered_region.height)
+				else
+					must_render_rows := False
+				end
+			end
+			if must_render_rows then
+				--| render rows until one of them cannot be rendered.
+				from
+					set_rendering_rows
+					render_cursor := rows.new_cursor
+					render_cursor.start
+				until
+					render_cursor.off or else done
+				loop
+					render_cursor.item.render_start (document, available_region)
+					if render_cursor.item.last_rendered_region /= Void then
+						create post_render_region.set (available_region.left, render_cursor.item.last_rendered_region.bottom, available_region.right, render_cursor.item.last_rendered_region.top)
+						render_cursor.item.post_render (document, post_render_region)
 						last_rendered_region := last_rendered_region.merged (render_cursor.item.last_rendered_region)
 						available_region := available_region.shrinked_top (render_cursor.item.last_rendered_region.height)
-						if not render_cursor.item.is_render_off then
-							done := True
-						else
-							render_cursor.forth
-						end
+					else
+						do_nothing
 					end
-					if render_cursor.off then
-						is_render_off := True
-						is_render_inside := False
+					if not render_cursor.item.is_render_after then
+						done := True
+					else
+						render_cursor.forth
 					end
+				end
+				if render_cursor.off then
+					set_render_after
 				end
 			end
 		end
@@ -223,10 +247,10 @@ feature -- Basic operations
 	render_forth (document: FO_DOCUMENT; region: FO_RECTANGLE) is
 		local
 			done : BOOLEAN
-			available_region : FO_RECTANGLE
+			post_render_region : FO_RECTANGLE
 		do
 			last_region := region
-			available_region := region
+			compute_available_region (region)
 			create last_rendered_region.set (
 				region.left, region.top, region.right, region.top)
 
@@ -234,23 +258,23 @@ feature -- Basic operations
 				if rendering_state = state_rendering_header then
 					header_row.render_forth (document, available_region)
 				else
-					rendering_state := state_rendering_header
+					set_rendering_header
 					header_row.render_start (document, available_region)
 				end
-				header_row.post_render (document, header_row.last_rendered_region)
+				create post_render_region.set (available_region.left, header_row.last_rendered_region.bottom, available_region.right, header_row.last_rendered_region.top)
+				header_row.post_render (document, post_render_region)
 				last_rendered_region := last_rendered_region.merged (header_row.last_rendered_region)
 				available_region := available_region.shrinked_top (header_row.last_rendered_region.height)
 				if header_row.is_render_off then
-					rendering_state := state_rendering_rows
+					set_rendering_rows
 				end
 			end
 			if rendering_state = state_rendering_rows then
-				if render_cursor = Void or else render_cursor.off then
-					render_cursor := rows.new_cursor
-					render_cursor.start
-				end
 				from
-
+					if render_cursor = Void or else render_cursor.off then
+						render_cursor := rows.new_cursor
+						render_cursor.start
+					end
 				until
 					render_cursor.off or else done
 				loop
@@ -259,18 +283,18 @@ feature -- Basic operations
 					else
 						render_cursor.item.render_start (document, available_region)
 					end
+					create post_render_region.set (available_region.left, render_cursor.item.last_rendered_region.bottom, available_region.right, render_cursor.item.last_rendered_region.top)
 					render_cursor.item.post_render (document, render_cursor.item.last_rendered_region)
 					last_rendered_region := last_rendered_region.merged (render_cursor.item.last_rendered_region)
 					available_region := available_region.shrinked_top (render_cursor.item.last_rendered_region.height)
-					if not render_cursor.item.is_render_off then
+					if not render_cursor.item.is_render_after then
 						done := True
 					else
 						render_cursor.forth
 					end
 				end
 				if render_cursor.off then
-					is_render_off := True
-					is_render_inside := False
+					set_render_after
 				end
 			end
 		end
@@ -282,6 +306,12 @@ feature -- Constants
 	state_rendering_rows : INTEGER is 2
 
 	rendering_state : INTEGER
+
+feature -- Status setting
+
+	set_rendering_none is do rendering_state := state_rendering_none end
+	set_rendering_header is do rendering_state := state_rendering_header end
+	set_rendering_rows is do rendering_state := state_rendering_rows end
 
 feature {NONE} -- Implementation
 
@@ -303,10 +333,40 @@ feature {NONE} -- Implementation
 			-- Create a new row.
 		do
 			create last_row.make_widths (column_count, widths)
+			last_row.set_align (align)
 		ensure
 			last_row_not_void: last_row /= Void
 		end
 
+--	create_available_region (region : FO_RECTANGLE) is
+--		do
+--			create available_region.set (region.left + margins.left, region.bottom + margins.bottom, region.right - margins.right, region.top - margins.top)
+--		ensure
+--			available_region_not_void: available_region /= Void
+--		end
+
+	compute_available_region (a_region : FO_RECTANGLE) is
+			-- Compute available region based on `a_region'.
+		local
+			l_left, l_right, l_top, l_bottom : FO_MEASUREMENT
+		do
+			l_left := a_region.left + margins.left
+			l_right := a_region.right - margins.right
+			inspect render_state
+			when render_state_before then
+					l_top := a_region.top - margins.top
+					l_bottom := a_region.bottom
+			when render_state_inside then
+					l_top := a_region.top
+					l_bottom := a_region.bottom
+			else
+				l_top := a_region.top
+				l_bottom := a_region.bottom - margins.bottom
+			end
+			create available_region.set (l_left, l_bottom, l_right, l_top)
+		ensure
+			available_region_not_void: available_region /= Void
+		end
 
 invariant
 

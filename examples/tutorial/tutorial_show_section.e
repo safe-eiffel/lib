@@ -14,8 +14,7 @@ class TUTORIAL_SHOW_SECTION
 
 inherit
 
-	FO_SHARED_FONT_FACTORY
-	FO_MEASUREMENT_ROUTINES
+	TUTORIAL_TEST
 
 create
 	execute
@@ -40,6 +39,7 @@ feature {NONE} -- Initialization
 
 			create block.make_default
 			block.margins := (create {FO_MARGINS}.set(cm(0.2),cm(1),cm(0.2),cm(1)))
+			block.append_string ("Section1 : Paper A4; margins (1cm, 1cm, 1cm, 1cm); columns (3cm, 5cm, 6cm, 2cm) separated by (1cm, 1cm, 1cm)")
 			from
 				i := 1
 			until
@@ -60,6 +60,7 @@ feature {NONE} -- Initialization
 			create header.make (create {FO_MARGINS}.make, points (0))
 			header.center_justify
 			header.append (create {FO_INLINE}.make ("This is a header page "))
+			header.last_inline.append_string ("Section2 : Paper A4 - rotated - landscape; margins (1cm, 1cm, 1cm, 1cm)")
 			header.append (create {FO_CURRENT_PAGE_NUMBER}.make)
 			header.append (create {FO_INLINE}.make (" of "))
 			header.append (create {FO_PAGE_COUNT}.make)
@@ -73,8 +74,6 @@ feature {NONE} -- Initialization
 
 feature -- Access
 
-	document : FO_DOCUMENT
-
 	header : FO_HEADER_FOOTER
 
 	section_1 : FO_SECTION
@@ -82,41 +81,6 @@ feature -- Access
 	section_2 : FO_SECTION
 
 	section_3 : FO_SECTION
-
-feature -- Measurement
-
-feature -- Comparison
-
-feature -- Status report
-
-feature -- Status setting
-
-feature -- Cursor movement
-
-feature -- Element change
-
-feature -- Removal
-
-feature -- Resizing
-
-feature -- Transformation
-
-feature -- Conversion
-
-feature -- Duplication
-
-feature -- Miscellaneous
-
-feature -- Basic operations
-
-feature -- Obsolete
-
-feature -- Inapplicable
-
-feature -- Constants
-
-feature {NONE} -- Implementation
-
 
 end
 

@@ -1,7 +1,7 @@
 indexing
 
-	description: 
-	
+	description:
+
 		"Borders around a rectangular area."
 
 	library: "FO - Formatting Objects in Eiffel. Project SAFE."
@@ -17,11 +17,11 @@ inherit
 		redefine
 			is_equal
 		end
-		
+
 create
 
 	make, make_none
-	
+
 feature {NONE} -- Initialization
 
 	make (a_style : INTEGER; a_width : FO_MEASUREMENT; a_color : FO_COLOR) is
@@ -41,19 +41,28 @@ feature {NONE} -- Initialization
 			color_set: color = a_color
 		end
 
-	make_none is		
+	make_none is
+			-- Make no border.
 		do
+			do_nothing
+		ensure
+			is_none: is_none
 		end
-		
+
 feature -- Access
 
 	style : INTEGER
-	
-	width : FO_MEASUREMENT
-	
-	color : FO_COLOR
+		-- Style.
 
-	style_rule : DS_PAIR[ARRAY[INTEGER],INTEGER] is	
+	width : FO_MEASUREMENT
+		-- Line width.
+
+	color : FO_COLOR
+		-- Color.
+
+feature {FO_BORDERABLE} -- Access
+
+	style_rule : DS_PAIR[ARRAY[INTEGER],INTEGER] is
 			-- Style rule: dash array, phase
 		do
 			inspect style
@@ -63,34 +72,21 @@ feature -- Access
 				create Result.make (<<1, 3>>,0)
 			when style_dot_dash then
 				create Result.make (<<1, 3, 3, 3>>,0)
-			else	
+			else
 				create Result.make (<<>>,0)
 			end
 		ensure
 			style_rule_not_void: Result /= Void
 			dash_array_not_void: Result.first /= Void
 		end
-		
-feature -- Measurement
 
 feature -- Status report
 
 	is_none : BOOLEAN is
+			-- Is border inefficient?
 		do
 			Result := style = style_none
 		end
-		
-feature -- Status setting
-
-feature -- Cursor movement
-
-feature -- Element change
-
-feature -- Removal
-
-feature -- Resizing
-
-feature -- Transformation
 
 feature -- Constants
 
@@ -109,13 +105,13 @@ feature -- Comparison
 				Result := True
 			elseif is_none and other.is_none then
 				Result := True
-			elseif not is_none and not other.is_none then			
+			elseif not is_none and not other.is_none then
 				Result := style = other.style
 				Result := Result and (color.is_equal (other.color))
 				Result := Result and (width.is_equal (other.width))
 			end
 		end
-		
+
 feature -- Duplication
 
 feature -- Miscellaneous
@@ -134,5 +130,5 @@ invariant
 	color_not_void: not is_none implies color /= Void
 	width_not_void: not is_none implies width /= Void
 	width_positive: not is_none implies width.sign = 1
-	
+
 end

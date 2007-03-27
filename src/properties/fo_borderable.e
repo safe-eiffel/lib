@@ -8,7 +8,7 @@ class
 
 	FO_BORDERABLE
 
-feature -- Initialization
+feature {NONE} -- Initialization
 
 	make_borders_none is
 		do
@@ -16,9 +16,16 @@ feature -- Initialization
 			create border_bottom.make_none
 			create border_left.make_none
 			create border_right.make_none
+			create border_margins.make
+		ensure
+			uniform_borders: is_borders_uniform
+			border_is_none: border_top.is_none
 		end
 
 feature -- Access
+
+	border_margins : FO_MARGINS
+			-- Distance between the start of an area and the start of the borders.
 
 	border_top : FO_BORDER
 			-- Top border.
@@ -44,8 +51,18 @@ feature -- Status report
 
 feature -- Element change
 
+	set_border_margins (some_margins : FO_MARGINS) is
+			-- Set `border_margins' to `some_margins'.
+		require
+			some_margins_not_void: some_margins /= Void
+		do
+			border_margins := some_margins
+		ensure
+			border_margins_set: border_margins = some_margins
+		end
+
 	set_uniform_borders (a_border : like border_top) is
-			-- Set all borders to `a_border'
+			-- Set all borders to `a_border'.
 		require
 			a_border_not_void: a_border /= Void
 		do
@@ -114,7 +131,7 @@ feature -- Comparison
 					  border_bottom.is_equal (other.border_bottom)
 		end
 
-feature -- Basic operations
+feature {FO_DOCUMENT} -- Basic operations
 
 	post_render (document: FO_DOCUMENT; region: FO_RECTANGLE) is
 		do
@@ -147,15 +164,21 @@ feature {NONE} -- Implementation
 			create Result.make_none
 		end
 
-	render_borders (document : FO_DOCUMENT; region : FO_RECTANGLE) is
-			-- Render borders in `document' into `region'.
+	render_borders (document : FO_DOCUMENT; current_region : FO_RECTANGLE) is
+			-- Render borders in `document' into `current_region'.
 		local
 			page : PDF_PAGE
+			region : FO_RECTANGLE
 		do
-			if region /= Void and then region.height.sign = 1 then
+			if current_region /= Void and then current_region.height.sign = 1 then
 				page := document.current_page
 				if page.is_text_mode then
 					page.end_text
+				end
+				if border_margins /= Void then
+					region := border_margins.content_region (current_region)
+				else
+					region := current_region
 				end
 				page.gsave
 				if is_borders_uniform and not border_left.is_none then
@@ -165,7 +188,6 @@ feature {NONE} -- Implementation
 					page.rectangle (region.left.as_points, region.bottom.as_points, region.width.as_points, region.height.as_points)
 					page.stroke
 				else
-
 					--| draw borders.
 					if border_left /= Void and then not border_left.is_none then
 						set_line_properties (page, border_left)

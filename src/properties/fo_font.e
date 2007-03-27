@@ -53,7 +53,7 @@ feature -- Access
 		end
 
 	encoding : STRING
-			-- Encoding.
+			-- Encoding name.
 
 	style: STRING
 			-- Style name.
@@ -88,6 +88,7 @@ feature -- Access
 		end
 
 	bounding_box : FO_RECTANGLE is
+			-- Bounding box.
 		local
 			r : PDF_RECTANGLE
 			ratio : FO_MEASUREMENT
@@ -178,12 +179,6 @@ feature -- Measurement
 			create Result.points (internal_font.character_width (c,size.as_points,  character_spacing.as_points, word_spacing.as_points, stretch.as_points))
 		end
 
-feature -- Status report
-
-feature -- Status setting
-
-feature -- Cursor movement
-
 feature -- Element change
 
 	set_size (a_size: FO_MEASUREMENT) is
@@ -195,24 +190,6 @@ feature -- Element change
 		ensure
 			size_assigned: size = a_size
 		end
-
-feature -- Removal
-
-feature -- Resizing
-
-feature -- Transformation
-
-feature -- Constants
-
-feature -- Duplication
-
-feature -- Miscellaneous
-
-feature -- Basic operations
-
-feature -- Obsolete
-
-feature -- Inapplicable
 
 feature {NONE} -- Implementation
 

@@ -1,7 +1,7 @@
 indexing
 
-	description: 
-	
+	description:
+
 		"Objects that need to use a font."
 
 	library: "FO - Formatting Objects in Eiffel. Project SAFE."
@@ -11,7 +11,7 @@ indexing
 
 class
 	FO_FONTABLE
-	
+
 inherit
 	ANY
 		redefine
@@ -21,7 +21,7 @@ inherit
 feature -- Access
 
 	font : FO_FONT
-	
+
 feature -- Measurement
 
 	character_spacing: FO_MEASUREMENT
@@ -32,7 +32,28 @@ feature -- Measurement
 
 	stretch: FO_MEASUREMENT
 			-- Streching factor. 100 = no stretch; 50 = narrow; 150 = wide.
-	
+
+feature -- Status report
+
+	is_not_stretched : BOOLEAN
+			-- Is this font not stretched.
+		do
+			Result := stretch.is_equal (no_stretch)
+		ensure
+			definition: stretch.is_equal (no_stretch)
+		end
+
+feature -- Constants
+
+	no_stretch : FO_MEASUREMENT is
+			-- Stretching factor so that the font has its original size.
+		once
+			create Result.points (100)
+		ensure
+			no_strectch_not_void: no_stretch /= Void
+			no_stretch_100_points: no_stretch.as_points.truncated_to_integer = 100
+		end
+
 feature -- Element change
 
 	set_font (new_font: FO_FONT) is
@@ -81,12 +102,12 @@ feature -- Comparison
 			Result := same_fontable (other)
 		end
 
-	same_fontable (other : like Current) : BOOLEAN is		
+	same_fontable (other : like Current) : BOOLEAN is
 		do
 			Result := font.is_equal (other.font)
 		end
-		
+
 invariant
 	font_not_void: font /= Void
-	
+
 end

@@ -136,7 +136,7 @@ feature {NONE} -- Implementation
 			-- Hyphenation exceptions.
 
 	hword : STRING
-			-- Word to be hyphenated, w_indexth begin and end marks '.'
+			-- Word to be hyphenated, word_indexth begin and end marks '.'
 
 	add_hyphenation (string : STRING) is
 		local
@@ -177,30 +177,30 @@ feature {NONE} -- Implementation
 
 	setup_hyphenated_word is
 		local
-			h_index, w_index : INTEGER
+			hyphen_index, word_index : INTEGER
 			end_index : INTEGER
 		do
 			create hyphenated_word.make (hword.count + 2)
 			--| copy minimum substring
 			hyphenated_word.append_string (word.substring (1, minimum_begin))
 			from
-				w_index := minimum_begin + 1
-				h_index := w_index + 1
+				word_index := minimum_begin + 1
+				hyphen_index := word_index + 1
 				end_index := hword.count - minimum_end + 1
 			until
-				h_index = hword.count
+				hyphen_index = end_index -- hword.count
 			loop
-				if (hyphenation_position_vector.item (h_index).code - ('0').code) \\ 2 > 0 then
+				if (hyphenation_position_vector.item (hyphen_index).code - ('0').code) \\ 2 > 0 then
 					hyphenated_word.append_character (hyphen)
 				end
-				hyphenated_word.append_character (word.item (w_index))
-				h_index := h_index + 1
-				w_index := w_index + 1
+				hyphenated_word.append_character (word.item (word_index))
+				hyphen_index := hyphen_index + 1
+				word_index := word_index + 1
 			end
-			if (hyphenation_position_vector.item (h_index).code - ('0').code) \\ 2 > 0 then
+			if (hyphenation_position_vector.item (hyphen_index).code - ('0').code) \\ 2 > 0 then
 				hyphenated_word.append_character (hyphen)
 			end
-			hyphenated_word.append_string (word.substring (end_index, word.count))
+			hyphenated_word.append_string (word.substring (word_index, word.count))
 		end
 
 	setup_hyphenation_points is

@@ -38,12 +38,12 @@ inherit
 		undefine
 			is_equal
 		end
-		
+
 	KL_SHARED_FILE_SYSTEM
 		undefine
 			is_equal
 		end
-		
+
 create
 
 	make_from_png
@@ -129,23 +129,19 @@ feature -- Element change
 			height := a_height
 			width := a_width
 		end
-		
+
 feature {FO_DOCUMENT, FO_RENDERABLE} -- Basic operations
 
 	render_start (document: FO_DOCUMENT; region: FO_RECTANGLE) is
 		do
 			pre_render (region)
-			is_render_off := True
-			is_render_inside := False
+			set_render_before
 			if fits_in (region) then
-				is_render_inside := True
+				set_render_inside
 				render_forth (document, region)
-				is_render_inside := False
 			else
 				is_prerendered := False
 				last_rendered_region := Void
-				is_render_off := False
-				is_render_inside := True
 			end
 		end
 
@@ -182,8 +178,7 @@ feature {FO_DOCUMENT, FO_RENDERABLE} -- Basic operations
 				region.top - height - margins.top - margins.bottom,
 				region.right,
 				region.top)
-			is_render_off := True
-			is_render_inside := False
+			set_render_after
 			last_region := region
 		end
 

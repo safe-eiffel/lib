@@ -154,7 +154,7 @@ feature -- Basic operations
 			wtext : STRING
 			c : CHARACTER
 		do
-			--| find longest prefix
+			--| find longest prefix whose length <= width
 			from
 				create wwidth.points (0)
 				wcount := 1

@@ -251,8 +251,7 @@ feature {FO_DOCUMENT, FO_RENDERABLE} -- Basic operations
 			page.set_word_spacing (word_spacing.as_points)
 
 			page.put_string (text)
-			is_render_off := True
-			is_render_inside := False
+			set_render_after
 		end
 
 invariant

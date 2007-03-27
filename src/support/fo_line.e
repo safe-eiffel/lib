@@ -29,7 +29,7 @@ inherit
 		undefine
 			out, is_equal
 		end
-		
+
 create {FO_BLOCK}
 	make, make_justified
 
@@ -340,8 +340,7 @@ feature {FO_DOCUMENT, FO_RENDERABLE} -- Basic operations
 					region.right,
 					region.top)
 			--| establish postcondition
-			is_render_off := True
-			is_render_inside := False
+			set_render_after
 		end
 
 feature {FO_LINE, FO_DOCUMENT} -- Access

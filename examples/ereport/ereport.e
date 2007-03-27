@@ -260,6 +260,7 @@ feature -- Basic operations
 			border : FO_BORDER
 			red : FO_COLOR
 			border_constants : FO_BORDER
+			table : FO_TABLE
 		do
 			create a_writer.make ("c:\ereport.pdf")
 			create a210.centimeters (21)
@@ -302,7 +303,12 @@ feature -- Basic operations
 			a_document.append_block (block)
 			block.margins.set_top (centimeters (0.5))
 			a_document.append_block (block)
-			create row.make_widths (2, << points (300), points (100)>>)
+
+			create table.make (2, << points (300), points (100)>>)
+			table.append_new_row
+			row := table.last_row
+			row.set_align (create {FO_ALIGNMENT}.make_justify)
+
 			block.margins.set_top (centimeters (0.2))
 			block.margins.set_bottom (centimeters (0.2))
 			block.margins.set_right (centimeters (0.2))
@@ -318,7 +324,7 @@ feature -- Basic operations
 				font_factory.last_font)
 			block2.append (inline)
 			row.put (block2, 2)
-			a_document.append_row (row)
+			a_document.append_table(table)
 			a_document.append_block (block)
 			a_document.append_block (block2)
 			block.margins.set_top (centimeters (2))
@@ -353,8 +359,12 @@ feature -- Basic operations
 			i : FO_INLINE
 
 			margins : FO_MARGINS
+			table : FO_TABLE
 		do
-			create row.make_widths (2, << cm (5), cm (7)>>)
+			create table.make (2, << cm (5), cm (7)>>)
+			table.append_new_row
+			row := table.last_row
+			row.set_align (create {FO_ALIGNMENT}.make_justify)
 
 			create margins.set (mm(2), mm(2), mm(2), mm(2)) --| no margins.
 
@@ -378,7 +388,8 @@ other people.
 			row.put (image, 1)
 			row.put (b, 2)
 
-			a_document.append_row (new_nvc_row (a_document))
+			row.put (new_nvc_row (a_document), 1)
+			a_document.append_table (table)
 		end
 
 	test_row_multiple (a_document : FO_DOCUMENT) is
@@ -387,9 +398,14 @@ other people.
 			b : FO_BLOCK
 			i : FO_INLINE
 
+			table : FO_TABLE
 			margins : FO_MARGINS
 		do
-			create row.make_widths (2, << cm (5), cm (7)>>)
+			
+			create table.make (2, << cm (5), cm (7)>>)
+			table.append_new_row
+			row := table.last_row
+			row.set_align (create {FO_ALIGNMENT}.make_justify)
 
 			create margins.set (mm(0), mm(0), mm(0), mm(0)) --| no margins.
 
@@ -411,19 +427,22 @@ other people.
 			row.put (b, 2)
 			row.put (new_nvc_row (a_document), 1)
 
-			a_document.append_row (row)
+			a_document.append_table (table)
 		end
 
-	new_nvc_row (a_document : FO_DOCUMENT) : FO_ROW is
+	new_nvc_row (a_document : FO_DOCUMENT) : FO_TABLE is
 		local
 			row : FO_ROW
 			b : FO_BLOCK
 			image : FO_IMAGE
 			i : FO_INLINE
-
+			a_table : FO_TABLE
 			margins : FO_MARGINS
 		do
-			create row.make_widths (2, << cm (5), cm (7)>>)
+			create a_table.make (2, << cm (5), cm (7)>>)
+			a_table.append_new_row
+			row := a_table.last_row
+			row.set_align (create {FO_ALIGNMENT}.make_justify)
 
 			create margins.set (mm(0), mm(0), mm(0), mm(0)) --| no margins.
 
@@ -446,7 +465,7 @@ other people.
 
 			row.put (image, 1)
 			row.put (b, 2)
-			Result := row
+			Result := a_table
 		end
 
 	nvc_image_file : STRING is "C:\User\eiffel\safe\safe\lib\ecli\examples\books\data\nvc.png"

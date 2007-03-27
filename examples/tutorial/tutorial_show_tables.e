@@ -13,10 +13,9 @@ indexing
 class TUTORIAL_SHOW_TABLES
 
 inherit
-	
-	FO_SHARED_FONT_FACTORY
-	FO_MEASUREMENT_ROUTINES
-	
+
+	TUTORIAL_TEST
+
 create
 	execute
 
@@ -33,89 +32,233 @@ feature {NONE} -- Initialization
 
 			--| 2
 			document.open
-			
+
+			append_section ("Left aligned", "[
+Tables can be left aligned.  The whole content is aligned to the left of the render region.
+Cell widths are considered as absolutes.
+]")
+			put_simple_table (create {FO_ALIGNMENT}.make_left)
+
+			append_section ("Right aligned", "[
+Tables can be right aligned.  The whole content is aligned to the right of the render region.
+Cell widths are considered as absolutes.
+]")
+			put_simple_table (create {FO_ALIGNMENT}.make_right)
+
+			append_section ("Justified", "[
+Tables can be justified.  The whole content is adjusted to the total width of the render region.
+Cell widths are considered as relatives, i.e. they represent proportions. Let T be a 3 columns table with widths (3, 3, 2).  The total proportion is 3 + 3 + 2 = 8.  The actual widths will be (3/8, 3/8, 2/8) of the render region.
+]")
+			put_simple_table (create {FO_ALIGNMENT}.make_justify)
+
+			append_section ("Centered", "[
+Tables can be centered.  The center of the table content is at the center of the render region.
+Cell widths are considered as absolutes.
+]")
+			put_simple_table (create {FO_ALIGNMENT}.make_center)
+
+			document.append_page_break
+
 			create_sample_table (100)
-			a_table := table
+			a_table := last_table
 			create_sample_table (12)
-			a_table.last_row.put (table, 1)
+			a_table.last_row.put (last_table, 1)
 			--| *
 			document.append_table (a_table)
 
 			--| 6
 			document.close
 		end
-		
-feature {NONE} -- Implementation
 
-	document : FO_DOCUMENT
-	
-	table : FO_TABLE
-	
+feature -- Access
+
+	last_table : FO_TABLE
+
+	current_color : FO_COLOR
+
+feature -- Basic operations
+
+	put_simple_table (alignment : FO_ALIGNMENT) is
+		local
+			border : FO_BORDER
+			row, column : INTEGER
+			cell_margins : FO_MARGINS
+			table_margins : FO_MARGINS
+			block : FO_BLOCK
+		do
+			create last_table.make (3, << cm(5), cm (5), cm (2) >>)
+			
+			last_table.set_align (alignment)
+			
+			create table_margins.set (mm (5), mm (10), mm (5), mm (5))
+			last_table.set_margins (table_margins)
+			
+			last_table.create_header_row
+			last_table.enable_header_row_on_new_page
+			
+			create border.make ({FO_BORDER}.style_solid, points (1), create {FO_COLOR}.make_rgb (100, 100, 100))
+			create cell_margins.set (mm (4), mm(1), mm (2), mm (3))
+
+			create block.make_default
+			block.append_string ("Header Column 1")
+			block.set_uniform_borders (border)
+			block.set_margins (cell_margins)
+
+			last_table.header_row.put (block, 1)
+
+			create block.make_default
+			block.append_string ("Header Column 2")
+			block.set_uniform_borders (border)
+			block.set_margins (cell_margins)
+
+			last_table.header_row.put (block, 2)
+
+			create block.make_default
+			block.append_string ("Header Column 3")
+			block.set_uniform_borders (border)
+			block.set_margins (cell_margins)
+
+			last_table.header_row.put (block, 3)
+
+			from
+				row := 1
+			until
+				row > 3
+			loop
+				last_table.append_new_row
+				from
+					column := 1
+				until
+					column > 3
+				loop
+					create block.make_default
+					block.append_string (row.out + "." + column.out)
+					block.set_uniform_borders (border)
+					block.set_margins (cell_margins)
+
+					last_table.last_row.put (block, column)
+
+					column := column + 1
+				end
+				row := row + 1
+			end
+			document.append_table (last_table)
+		end
+		
+	append_section (title, text : STRING) is
+			-- Append section with `title' and `text'.
+		local
+			section_title, section_text : FO_BLOCK
+			title_font, text_font : FO_FONT
+			inline : FO_INLINE
+		do
+			create section_title.make (title_margins)
+			create section_text.make (text_margins)
+			font_factory.find_font (title_family, font_factory.weigth_bold,font_factory.style_normal, pt (12))
+			title_font := font_factory.last_font
+			font_factory.find_font (text_family, font_factory.weigth_normal, font_factory.style_normal, pt (14))
+			text_font := font_factory.last_font
+
+			create inline.make_with_font (title, title_font)
+			section_title.append (inline)
+			section_title.enable_keep_with_next
+
+
+			create inline.make_with_font (text, text_font)
+			section_text.append (inline)
+			section_text.enable_keep_with_next
+			
+			document.append_block (section_title)
+			document.append_block (section_text)
+		end
+
 	create_sample_table ( i : INTEGER) is
 		local
 			border : FO_BORDER
+			alignment : FO_ALIGNMENT
+			block : FO_BLOCK
 			j : INTEGER
 		do
-			create table.make (3, <<cm (12), cm (3), cm (3)>>)
-			create border.make ({FO_BORDER}.style_solid, points (1), create {FO_COLOR}.make_rgb (255, 0, 0))
-			
-			table.create_header_row
-			table.enable_header_row_on_new_page
-			
+			create last_table.make (3, <<cm (12), cm (3), cm (3)>>)
+			if current_color = Void then
+				create current_color.make_rgb (255, 0, 0)
+				create alignment.make_left
+			else
+				create current_color.make_rgb (127, 127, 127)
+				create alignment.make_justify
+			end
+			last_table.set_align (alignment)
+			create border.make ({FO_BORDER}.style_solid, points (1), current_color)
+
+			last_table.create_header_row
+			last_table.enable_header_row_on_new_page
+
 			create block.make_default
 			block.append_string ("Name")
 			block.set_uniform_borders (border)
-			
-			table.header_row.put (block, 1)
-						
+
+			last_table.header_row.put (block, 1)
+
 			create block.make_default
 			block.append_string ("Phone")
 			block.set_uniform_borders (border)
-			
-			table.header_row.put (block, 2)
-			
+
+			last_table.header_row.put (block, 2)
+
 			create block.make_default
 			block.append_string ("e-mail")
 			block.set_uniform_borders (border)
-			
-			table.header_row.put (block, 3)
-			
+
+			last_table.header_row.put (block, 3)
+
 			from
 				j := 1
-				
+
 			until
 				j > i
 			loop
-				append_row (table, j)
+				append_row (last_table, j)
 				j := j + 1
 			end
 		end
-	
+
 	append_row (a_table : FO_TABLE; i : INTEGER) is
 		local
 			a_block : FO_BLOCK
 		do
 			a_table.append_new_row
-			
+
 			create a_block.make_default
 			a_block.append_string ("This is a very long name I suppose it still is ok " + i.out)
-			
+
 			a_table.last_row.put (a_block, 1)
-			
+
 			create a_block.make_default
 			a_block.append_string (i.out+"-23456")
-			
+
 			a_table.last_row.put (a_block, 2)
-			
+
 			create a_block.make_default
 			a_block.append_string ("e"+i.out+"@mail.com")
-			
-			table.last_row.put (a_block, 3)
+
+			a_table.last_row.put (a_block, 3)
+		end
+
+feature {NONE} -- Implementation
+
+	title_family : STRING is "Helvetica"
+
+	title_margins : FO_MARGINS is
+		once
+			create Result.set (cm (0), cm (0.25), cm (0), cm (0.75))
+		end
+
+	text_family : STRING is "Times"
+
+	text_margins : FO_MARGINS is
+		once
+			create Result.set (cm (0), cm (0), cm (0), cm (0.25))
 		end
 		
-	writer : FO_DOCUMENT_WRITER	
-	
-	block : FO_BLOCK
-	
 end
 

@@ -127,7 +127,7 @@ feature -- Measurement
 
 	column_count : INTEGER
 			-- Current column count on current page.
-		
+
 feature -- Element change
 
 	set_section (new_section: FO_SECTION) is
@@ -317,7 +317,7 @@ feature -- Basic operations
 			end
 			setup_available_region
 		end
-		
+
 	append_block (block : FO_BLOCK) is
 			-- Append `block' of text.
 		require
@@ -334,13 +334,13 @@ feature -- Basic operations
 			render_renderable (image)
 		end
 
-	append_row (row : FO_ROW) is
-			-- Append `row'.
-		require
-			is_open: is_open
-		do
-			render_renderable (row)
-		end
+--	append_row (row : FO_ROW) is
+--			-- Append `row'.
+--		require
+--			is_open: is_open
+--		do
+--			render_renderable (row)
+--		end
 
 	append_table (table : FO_TABLE) is
 			-- Append `table'.
@@ -438,6 +438,7 @@ feature {NONE} -- Implementation
 			is_open: is_open
 		local
 			unbreakable : FO_UNBREAKABLE
+			render_count : INTEGER
 		do
 			if renderable.is_keep_with_next then
 				if last_unbreakable = Void then
@@ -461,6 +462,7 @@ feature {NONE} -- Implementation
 						append_break
 					end
 					from
+						render_count := 1
 						renderable.render_start(Current, available_render_region)
 						if renderable.last_rendered_region /= Void then
 							renderable.post_render (Current, renderable.last_rendered_region)
@@ -474,6 +476,7 @@ feature {NONE} -- Implementation
 						if renderable.last_rendered_region /= Void then
 							renderable.post_render (Current, renderable.last_rendered_region)
 						end
+						render_count := render_count + 1
 					end
 					if renderable.last_rendered_region /= Void then
 						available_render_region := available_render_region.shrinked_top (renderable.last_rendered_region.height)
@@ -553,8 +556,8 @@ feature {NONE} -- Implementation
 			page : FO_PAGE
 		do
 			page_rectangle := current_section.page_rectangle
-			margins := current_section.margins 
-			
+			margins := current_section.margins
+
 			create page.make (pdf_document.last_page, current_section)
 			pages.put_last (page)
 			pages_cursor.finish
@@ -579,9 +582,9 @@ feature {NONE} -- Implementation
 
 	setup_available_region is
 		do
-			available_render_region := current_section.region (column_count)			
+			available_render_region := current_section.region (column_count)
 		end
-		
+
 feature {FO_SPECIAL_INLINE} -- Implementation
 
 	current_page_number : INTEGER
