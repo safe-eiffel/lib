@@ -1,3 +1,8 @@
+* Version 1.3
+	2007-04-13:
+	Named destinations
+	Actions: Link - Goto and URI
+
 * Version 1.2
 
 	Reworked gen_type1 utility. (2006-01-*)

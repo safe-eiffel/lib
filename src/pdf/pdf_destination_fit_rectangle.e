@@ -1,6 +1,6 @@
 indexing
-	description: 
-	
+	description:
+
 	"Destinations to page designated by page, with its contents magnified just enough %
  % to fit the rectangle specified by the coordinates left, bottom, right, and top %
  % entirely within the window both horizontally and vertically. If the required %
@@ -8,7 +8,7 @@ indexing
  % the two, centering the rectangle within the window in the other dimension."
 
 	author: "Paul G. Crismer"
-	
+
 	date: "$Date$"
 	revision: "$Revision$"
 
@@ -16,7 +16,7 @@ class
 	PDF_DESTINATION_FIT_RECTANGLE
 
 inherit
-	PDF_DESTINATION
+	PDF_EXPLICIT_DESTINATION
 
 creation
 	make
@@ -34,13 +34,13 @@ feature {NONE} -- Initialization
 			page_set: page /= Void
 			rectangle_set: rectangle /= Void
 		end
-		
+
 feature -- Access
 
 	rectangle : PDF_RECTANGLE
-	
+
 	type : PDF_NAME is do Result := names.fitr end
-	
+
 feature -- Measurement
 
 feature -- Status report
@@ -49,7 +49,7 @@ feature -- Status report
 		do
 			Result := area.contains (rectangle)
 		end
-		
+
 feature -- Status setting
 
 feature -- Cursor movement
@@ -85,9 +85,9 @@ feature {NONE} -- Implementation
 			medium.put_string (Array_element_separator)
 			medium.put_double (rectangle.urx)
 			medium.put_string (Array_element_separator)
-			medium.put_double (rectangle.ury)			
+			medium.put_double (rectangle.ury)
 		end
-		
+
 invariant
 	invariant_clause: True -- Your invariant here
 

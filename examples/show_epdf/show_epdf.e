@@ -7,11 +7,11 @@ indexing
 
 class
 	SHOW_EPDF
-	
-inherit 
+
+inherit
 	KL_SHARED_FILE_SYSTEM
 	DT_SHARED_SYSTEM_CLOCK
-	
+
 creation
 	make
 
@@ -29,7 +29,7 @@ feature -- Initialization
 			setup_document
 			create_outline_root
 			draw_title_page
-			-- 
+			--
 			test_fonts
 			test_text_operations
 			test_graphics
@@ -46,15 +46,15 @@ feature -- Initialization
 			print (file.name)
 			print ("' has been generated%N")
 		end
-		
+
 feature -- Basic operations
 
 	test_graphics is
-			-- 
+			--
 		local
 			lines : TEST_LINES
 			line_attributes : TEST_LINE_ATTRIBUTES
-			paint : TEST_PAINT			
+			paint : TEST_PAINT
 		do
 			document.add_page
 			document.create_outline_item ("Graphics", document.last_page, 0, top)
@@ -73,9 +73,9 @@ feature -- Basic operations
 			document.create_outline_item ("Path painting", document.last_page, 0, top)
 			current_section.put_last (document.last_outline_item)
 			create paint
-			paint.do_test (document)			
+			paint.do_test (document)
 		end
-		
+
 	test_text_bonuses is
 		local
 			text : TEST_TEXT
@@ -84,9 +84,9 @@ feature -- Basic operations
 			document.create_outline_item ("Text bonuses", document.last_page, 0, top)
 			root_outline.put_last (document.last_outline_item)
 			create text
-			text.do_test (document)			
+			text.do_test (document)
 		end
-		
+
 	setup_document is
 		local
 			layout : PDF_LAYOUT_CONSTANTS
@@ -109,7 +109,7 @@ feature -- Basic operations
 			document.viewer_preferences.fit_window
 			document.viewer_preferences.display_document_title
 		end
-	
+
 	create_outline_root is
 		do
 			document.create_outlines
@@ -120,15 +120,15 @@ feature -- Basic operations
 			root_outline.set_open
 			document.create_outline_item ("Front page", document.last_page, 0, top)
 			root_outline.put_last (document.last_outline_item)
-			document.last_outline_item.set_open			
+			document.last_outline_item.set_open
 		end
-		
+
 	draw_title_page is
 		local
-			title : TEST_TITLE			
+			title : TEST_TITLE
 		do
 			create title
-			title.do_test (document)			
+			title.do_test (document)
 		end
 
 	test_fonts is
@@ -139,9 +139,9 @@ feature -- Basic operations
 			document.create_outline_item ("Fonts", document.last_page, 0, top)
 			root_outline.put_last (document.last_outline_item)
 			create fonts
-			fonts.do_test (document)			
+			fonts.do_test (document)
 		end
-	
+
 	test_text_operations is
 		local
 			text_attributes : TEST_TEXT_ATTRIBUTES
@@ -155,16 +155,16 @@ feature -- Basic operations
 			document.create_outline_item ("Text attributes", document.last_page, 0, top)
 			current_section.put_last (document.last_outline_item)
 			create text_attributes
-			text_attributes.do_test (document)			
+			text_attributes.do_test (document)
 			document.add_page
 			document.create_outline_item ("Text clipping", document.last_page, 0, top)
 			current_section.put_last (document.last_outline_item)
 			create text_clip
-			text_clip.do_test (document)		
+			text_clip.do_test (document)
 		end
-		
+
 	test_coordinate_system is
-			-- 
+			--
 		local
 			matrix : TEST_MATRIX
 		do
@@ -172,16 +172,16 @@ feature -- Basic operations
 			document.create_outline_item ("Coordinate system", document.last_page, 0, top)
 			root_outline.put_last (document.last_outline_item)
 			create matrix
-			matrix.do_test (document)			
+			matrix.do_test (document)
 		end
 
 	test_images is
-			-- 
+			--
 		local
 			images_outline : PDF_OUTLINE_ITEM
 			test : TEST_IMAGES
 			page : PDF_PAGE
-		do			
+		do
 			document.add_page
 			page := document.last_page
 			document.find_font ("Helvetica", document.Encoding_winansi)
@@ -194,14 +194,14 @@ feature -- Basic operations
 			--
 			create test
 			test.do_test (document, images_outline)
-		end		
-		
+		end
+
 feature -- Access
 
 	document : PDF_DOCUMENT
-			
+
 	root_outline : PDF_OUTLINE_ITEM
-	
+
 	current_section : PDF_OUTLINE_ITEM
 
 	top : DOUBLE

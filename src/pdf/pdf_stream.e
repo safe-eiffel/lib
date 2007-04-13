@@ -5,11 +5,11 @@ indexing
 	licence: "Release under the Eiffel Forum licence.  See file 'forum.txt'."
 
 class
-	
+
 	PDF_STREAM
 
 inherit
-	
+
 	PDF_OBJECT
 		rename
 			make as make_object
@@ -18,15 +18,15 @@ inherit
 		end
 
 	EPDF_IMPORTED_MATH
-	
+
 creation {PDF_DOCUMENT}
-	
+
 	make
 
 feature -- Initialization
 
 	make (a_number : INTEGER; a_page : PDF_PAGE) is
-			-- 
+			--
 		do
 			make_object (a_number)
 			create content.make (0)
@@ -42,11 +42,11 @@ feature -- Access
 
 	page : PDF_PAGE
 			-- page where the stream occurs
-		
+
 feature -- Status report
 
 	text_mode : BOOLEAN
-	
+
 feature -- Status setting
 
 	set_text_render_mode (a_mode : INTEGER) is
@@ -69,11 +69,11 @@ feature -- Element change
 			-- put string `s'
 		do
 			content_append_literal_string (s)
-			content.append_string (" Tj%N") 
+			content.append_string (" Tj%N")
 		end
 
 	put_new_line is
-			-- go to next line 
+			-- go to next line
 		do
 			content.append_string (" T*%N")
 		end
@@ -96,31 +96,31 @@ feature -- Element change
 		do
 			content_append_numop (s, "Tc")
 		end
-		
+
 	set_word_spacing (w : DOUBLE) is
-			-- 
+			--
 		do
 			content_append_numop (w, "Tw")
 		end
-		
+
 	set_horizontal_scaling (s : DOUBLE) is
-			-- 
+			--
 		require
 			not_zero: s > 0
 		do
 			content_append_numop (s, "Tz")
 		end
-	
+
 	set_text_rise (r : DOUBLE) is
-			-- 
+			--
 		do
 			content_append_numop (r, "Ts")
 		end
-	
+
 feature {PDF_PAGE} --
 
 	set_font (a_font : PDF_FONT; size : DOUBLE) is
-			-- 
+			--
 		do
 			content_append_name (page.font_alias (a_font)) --page.font_alias
 			content_append_space
@@ -135,18 +135,18 @@ feature {PDF_PAGE} --
 			content_append_space
 			content.append_string (" Do%N")
 		end
-		
+
 feature -- Removal
 
 feature -- Resizing
 
 feature -- Transformation
 
-	
+
 feature -- Conversion
 
 	to_pdf : STRING is
-			-- 
+			--
 		local
 			length : PDF_NAME
 		do
@@ -157,7 +157,7 @@ feature -- Conversion
 			create length.make ("Length")
 			Result.append_string (length.to_pdf)
 			Result.append_character (' ')
-			
+
 			Result.append_string (content.count.out)
 			Result.append_string (end_dictionary)
 			-- stream
@@ -172,23 +172,21 @@ feature -- Conversion
 		end
 
 	put_pdf (medium : PDF_OUTPUT_MEDIUM) is
-			-- 
+			--
 		local
 			content_length : INTEGER
 			zlib_format : ZLIB_FORMAT
 			encoded_stream : STRING
-			names : PDF_NAME_CONSTANTS
 			-- ascii_85_format : ASCII_85_FORMAT
 			filter : PDF_ARRAY_SERIALIZABLE[PDF_NAME]
 		do
-			create names
 			if not unencoded then
 				create zlib_format
 				encoded_stream := zlib_format.encode (content)
 			else
 				encoded_stream := content
 			end
-			content_length := encoded_stream.count 			
+			content_length := encoded_stream.count
 			medium.put_string (object_header)
 			-- dictionary
 			medium.put_string (begin_dictionary)
@@ -202,7 +200,7 @@ feature -- Conversion
 			-- stream
 			medium.put_string ("stream%N")
 			-- content
-			
+
 			if unencoded then
 				medium.put_string (content)
 			else
@@ -212,9 +210,9 @@ feature -- Conversion
 			-- endstream
 			medium.put_string ("endstream%N")
 			-- endobj
-			medium.put_string (object_footer)			
+			medium.put_string (object_footer)
 		end
-		
+
 feature -- Basic operations
 
 	begin_text is
@@ -222,7 +220,7 @@ feature -- Basic operations
 			content.append_string ("BT%N")
 			text_mode := True
 		end
-		
+
 	end_text is
 		do
 			content.append_string ("ET%N")
@@ -230,31 +228,31 @@ feature -- Basic operations
 		end
 
 	gsave is
-			-- 
+			--
 		do
 			content.append_string ("q%N")
 		end
-		
+
 	grestore is
-			-- 
+			--
 		do
 			content.append_string ("Q%N")
 		end
-		
+
 	translate (a_tx, a_ty : DOUBLE) is
-			-- 
+			--
 		do
 			concatenate_to_ctm (1, 0, 0, 1, a_tx, a_ty)
 		end
 
 	scale (sx, sy : DOUBLE) is
-			-- 
+			--
 		do
 			concatenate_to_ctm (sx, 0, 0, sy, 0, 0)
 		end
-		
+
 	rotate (theta : DOUBLE) is
-			-- 
+			--
 		local
 			c, s : DOUBLE
 		do
@@ -262,22 +260,22 @@ feature -- Basic operations
 			s := math.sine (theta)
 			concatenate_to_ctm (c, s, -s, c, 0, 0)
 		end
-	
+
 	skew (alpha, beta : DOUBLE) is
-			-- 
+			--
 		local
 		do
 			concatenate_to_ctm (1, math.tangent (alpha), math.tangent (beta), 1, 0, 0)
 		end
 
 	stroke is
-			-- 
+			--
 		do
 			content.append_string ("S%N")
 		end
-	
+
 	fill (path_fill_heuristics : INTEGER) is
-			-- 
+			--
 		do
 			content.append_string (" f")
 			if path_fill_heuristics > 0 then
@@ -285,9 +283,9 @@ feature -- Basic operations
 			end
 			content.append_character('%N')
 		end
-		
+
 	fill_then_stroke  (path_fill_heuristics : INTEGER) is
-			-- 
+			--
 		do
 			content.append_string (" B")
 			if path_fill_heuristics > 0 then
@@ -297,7 +295,7 @@ feature -- Basic operations
 		end
 
 	clip  (path_fill_heuristics : INTEGER) is
-			-- 
+			--
 		do
 			content.append_string (" W")
 			if path_fill_heuristics > 0 then
@@ -305,13 +303,13 @@ feature -- Basic operations
 			end
 			content.append_character('%N')
 		end
-		
+
 	end_path is
 			--
 		do
 			content.append_string (" n%N")
 		end
-		
+
 	rectangle (x, y, w, h : DOUBLE) is
 			--
 		do
@@ -325,15 +323,15 @@ feature -- Basic operations
 			content_append_space
 			content.append_string ("re%N")
 		end
-		
+
 	set_text_origin (a_tx, a_ty : DOUBLE) is
-			-- 
+			--
 		do
 			set_text_matrix (1, 0, 0, 1, a_tx, a_ty)
 		end
 
 	set_text_matrix (a, b, c, d, e, f : DOUBLE) is
-			-- 
+			--
 		do
 			content_append_transformation_matrix (a, b, c, d, e, f)
 			content.append_string (" Tm%N")
@@ -352,7 +350,7 @@ feature -- Basic operations
 			content_append_space
 			content.append_string (" G%N")
 		end
-		
+
 	set_rgb_color (r, g, b : DOUBLE) is
 		do
 			content_append_double (r)
@@ -363,7 +361,7 @@ feature -- Basic operations
 			content_append_space
 			content.append_string (" rg%N")
 		end
-		
+
 	set_rgb_color_stroke (r, g, b : DOUBLE) is
 		do
 			content_append_double (r)
@@ -379,24 +377,24 @@ feature -- Basic operations
 		do
 			content_append_numop (w, "w")
 		end
-		
+
 	set_line_cap (c : INTEGER) is
 		do
-			content_append_intop (c, "J")			
+			content_append_intop (c, "J")
 		end
-		
+
 	set_line_join (j : INTEGER) is
 		do
 			content_append_intop (j, "j")
 		end
-		
+
 	set_miter_limit (m : DOUBLE) is
 		do
 			content_append_numop (m, "M")
 		end
 
 	set_line_dash (pattern : ARRAY[INTEGER]; phase : INTEGER) is
-			-- 
+			--
 		require
 			pattern /= Void
 			phase >= 0
@@ -415,9 +413,9 @@ feature -- Basic operations
 			end
 			content.append_character (']')
 			content_append_space
-			content_append_intop (phase, "d")			
+			content_append_intop (phase, "d")
 		end
-		
+
 	set_line_solid is
 			-- unset line_dash
 		do
@@ -431,23 +429,23 @@ feature -- Basic operations
 			content_append_space
 			content_append_numop (y, "m")
 		end
-		
+
 	lineto (x, y : DOUBLE) is
 			-- draws a line in the current subpath from current position
 			-- to (x,y).  (x,y) becomes the new current position
 		do
 			content_append_double (x)
 			content_append_space
-			content_append_numop (y, "l")			
+			content_append_numop (y, "l")
 		end
-		
+
 	close_path is
 			-- close current subpath by drawing a straight line from current
 			-- path position to subpath origin
 		do
 			content.append_string (" h%N")
 		end
-		
+
 	bezier_1 (cx1, cy1, cx2, cy2, px, py : DOUBLE) is
 			-- append_string a bezier curve to current subpath, with current position
 			-- as starting point, (px, py) as end point, and control points
@@ -466,9 +464,9 @@ feature -- Basic operations
 			content_append_space
 			content_append_double (py)
 			content_append_space
-			content.append_string ("c%N")			
+			content.append_string ("c%N")
 		end
-		
+
 	bezier_2 (cx2, cy2, px, py : DOUBLE) is
 			-- append_string a bezier curve to current subpath, with current position
 			-- as starting point, (px, py) as end point, and control point
@@ -482,9 +480,9 @@ feature -- Basic operations
 			content_append_space
 			content_append_double (py)
 			content_append_space
-			content.append_string ("v%N")			
+			content.append_string ("v%N")
 		end
-		
+
 	bezier_3 (cx1, cy1, px, py : DOUBLE) is
 			-- append_string a bezier curve to current subpath, with current position
 			-- as starting point, (px, py) as end point, and control point
@@ -498,7 +496,7 @@ feature -- Basic operations
 			content_append_space
 			content_append_double (py)
 			content_append_space
-			content.append_string ("y%N")			
+			content.append_string ("y%N")
 		end
 
 feature {NONE} -- Implementation
@@ -507,7 +505,7 @@ feature {NONE} -- Implementation
 	content : STRING
 
 	content_append_literal_string (s : STRING) is
-			-- 
+			--
 		local
 			index : INTEGER
 		do
@@ -531,11 +529,11 @@ feature {NONE} -- Implementation
 		end
 
 	content_append_space is
-			-- 
+			--
 		do
 			content.append_character (' ')
 		end
-		
+
 	content_append_double (d : DOUBLE) is
 			-- format 'iiiiii' or 'iiiii.ffff'
 		local
@@ -561,9 +559,9 @@ feature {NONE} -- Implementation
 				content.append_string (fraction.out)
 			end
 		end
-		
+
 	content_append_name (s : STRING) is
-			-- 
+			--
 		do
 			content.append_character ('/')
 			content.append_string (s)
@@ -573,11 +571,11 @@ feature {NONE} -- Implementation
 			--
 		do
 			content_append_transformation_matrix (a, b, c, d, e, f)
-			content.append_string (" cm%N")			
+			content.append_string (" cm%N")
 		end
 
 	content_append_transformation_matrix (a, b, c, d, e, f : DOUBLE) is
-			-- 
+			--
 		do
 			content_append_double (a)
 			content_append_space
@@ -592,7 +590,7 @@ feature {NONE} -- Implementation
 			content_append_double (f)
 			content_append_space
 		end
-	
+
 	content_append_numop (n : DOUBLE; op : STRING) is
 			-- "num op%N"
 		do
@@ -610,9 +608,9 @@ feature {NONE} -- Implementation
 			content.append_string (op)
 			content.append_character ('%N')
 		end
-		
+
 	unencoded : BOOLEAN
-	
+
 invariant
 	invariant_clause: -- Your invariant here
 

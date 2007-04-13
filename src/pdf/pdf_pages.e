@@ -12,25 +12,25 @@ inherit
 	PDF_OBJECT
 
 	PDF_PAGE_TREE_NODE
-	
+
 creation
-	
+
 	make
 
 feature -- Initialization
 
 feature -- Access
-	
+
 	kids : DS_LIST [PDF_PAGE_TREE_NODE] is
 			-- kids -- must be PDF_PAGES or PDF_PAGE
 		do
 			if kids_impl = Void then
-				!DS_LINKED_LIST[PDF_PAGE_TREE_NODE]!kids_impl.make
+				create {DS_LINKED_LIST[PDF_PAGE_TREE_NODE]}kids_impl.make
 			end
 			Result := kids_impl
 		end
-		
-	
+
+
 feature -- Measurement
 
 	count : INTEGER is
@@ -53,7 +53,7 @@ feature -- Measurement
 feature -- Status Report
 
 	is_page : BOOLEAN is False
-	
+
 feature -- Element change
 
 --	add_pages (a_pages : PDF_PAGES) is
@@ -81,7 +81,7 @@ feature -- Element change
 feature -- Conversion
 
 	to_pdf : STRING is
-			-- 
+			--
 		local
 			stype, skids, scount : PDF_NAME
 			sparent : PDF_NAME
@@ -103,7 +103,7 @@ feature -- Conversion
 			-- Kids (array of object references)
 			Result.append_string (skids.to_pdf)
 			Result.append_string (" [%N")
-			from 
+			from
 				kids_cursor := kids.new_cursor
 				kids_cursor.start
 			until
@@ -164,7 +164,7 @@ feature {PDF_DOCUMENT} -- Basic operations
 				nodes_list_cursor.forth
 			end
 		end
-		
+
 	give_a_parent (document : PDF_DOCUMENT; nodes : DS_LIST[PDF_PAGE_TREE_NODE]) is
 			-- Give a parent to 'nodes'; parent can be found in 'last_parent'
 		require
@@ -174,8 +174,8 @@ feature {PDF_DOCUMENT} -- Basic operations
 			node_count : INTEGER
 			nodes_list_cursor : DS_LIST_CURSOR [PDF_PAGE_TREE_NODE]
 		do
-			from 
-				nodes_list_cursor := nodes.new_cursor 
+			from
+				nodes_list_cursor := nodes.new_cursor
 				nodes_list_cursor.start
 				node_count := 0
 				!DS_LINKED_LIST[PDF_PAGE_TREE_NODE]!last_parent_list.make
@@ -188,24 +188,24 @@ feature {PDF_DOCUMENT} -- Basic operations
 					-- create a parent
 					document.create_pages
 					-- add it to the DS_LIST
-					last_parent_list.put_last (document.last_pages)					
+					last_parent_list.put_last (document.last_pages)
 				end
 				-- add kids up-to the kids_count
 				document.last_pages.add_kid (nodes_list_cursor.item)
 				node_count := node_count + 1
 				nodes_list_cursor.forth
-			end		
+			end
 		ensure
-			result_in_last_parent_list: last_parent_list /= Void 
+			result_in_last_parent_list: last_parent_list /= Void
 				-- and each parent p in last_parent_list
 				-- has at most 'kids_count' kids from nodes
 				-- foreach n in nodes : n.parent /= Void : each node in nodes has a parent
 		end
-		
+
 	last_parent_list : DS_LIST[PDF_PAGE_TREE_NODE]
-	
+
 	kids_count : INTEGER is 10
-	
+
 invariant
 	kids_exist: kids /= Void
 

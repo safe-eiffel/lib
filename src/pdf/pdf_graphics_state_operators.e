@@ -5,7 +5,7 @@ indexing
 	author: "Paul G. Crismer"
 	licence: "Release under the Eiffel Forum licence.  See file 'forum.txt'."
 
-deferred class 
+deferred class
 
 	PDF_GRAPHICS_STATE_OPERATORS
 
@@ -14,7 +14,7 @@ inherit
 
 feature -- Status Report
 
-	
+
 feature -- Element change
 
 	set_line_width (w : DOUBLE) is
@@ -25,7 +25,7 @@ feature -- Element change
 		ensure
 			line_width = w
 		end
-		
+
 	set_line_cap (c : INTEGER) is
 			-- set `line_cap' to `c'
 		require
@@ -34,14 +34,14 @@ feature -- Element change
 		ensure
 			line_cap = c
 		end
-		
+
 	set_line_join (j : INTEGER) is
 			-- set `line_join' to `j'
 		deferred
 		ensure
 			line_join = j
 		end
-		
+
 	set_miter_limit (m : DOUBLE) is
 			-- set `miter_limit' to `m'
 		deferred
@@ -64,21 +64,21 @@ feature -- Element change
 			line_dash_array = Void
 			line_dash_phase = 0
 		end
-		
+
 	set_non_zero_winding_rule is
 			-- set `path_fill_heuristics' to `Non_zero_winding_rule'
 		do
 			path_fill_heuristics := Non_zero_winding_rule
 		ensure
-			path_fill_heuristics = Non_zero_winding_rule		
+			path_fill_heuristics = Non_zero_winding_rule
 		end
-		
+
 	set_even_odd_rule is
 			-- set `path_fill_heuristics' to `Even_odd_rule'
 		do
 			path_fill_heuristics := Even_odd_rule
 		ensure
-			path_fill_heuristics = Even_odd_rule		
+			path_fill_heuristics = Even_odd_rule
 		end
 
 feature -- Basic operations
@@ -95,8 +95,8 @@ feature -- Basic operations
 	grestore is
 			-- pop graphics state
 		require
-			is_page_definition_mode
-			save_level > 0
+			is_page_definition_mode: is_page_definition_mode
+			save_level_stricly_positive: save_level > 0
 		deferred
 		ensure
 			save_level = old save_level - 1
@@ -118,25 +118,25 @@ feature -- Basic operations
 			white: a_gray <= 1.0
 		deferred
 		ensure
-			
+
 		end
-		
+
 	set_rgb_color (r, g, b : DOUBLE) is
 			-- set color to ('r','g','b') for non-stroking operations
 		require
 			r_level: 0.0 <= r and r <= 1.0
 			g_level: 0.0 <= g and g <= 1.0
-			b_level: 0.0 <= b and b <= 1.0			
+			b_level: 0.0 <= b and b <= 1.0
 		deferred
 		ensure
 		end
-		
+
 	set_rgb_color_stroke (r, g, b : DOUBLE) is
 			-- set color to ('r','g','b') for stroking operations
 		require
 			r_level: 0.0 <= r and r <= 1.0
 			g_level: 0.0 <= g and g <= 1.0
-			b_level: 0.0 <= b and b <= 1.0			
+			b_level: 0.0 <= b and b <= 1.0
 		deferred
 		ensure
 		end
@@ -151,7 +151,7 @@ feature -- Status setting
 		ensure
 			text: is_text_mode
 		end
-		
+
 	end_text is
 			-- end text mode
 		require
@@ -169,17 +169,17 @@ feature -- Coordinate space transformation
 		end
 
 	scale (sx, sy : DOUBLE) is
-			-- scale coordinate system : x axis by `sx', y axis by `sy' 
+			-- scale coordinate system : x axis by `sx', y axis by `sy'
 		deferred
 		end
-		
+
 	rotate (theta : DOUBLE) is
-			-- rotate coordinate system by `theta' radians 
+			-- rotate coordinate system by `theta' radians
 		deferred
 		end
-	
+
 	skew (alpha, beta : DOUBLE) is
-			-- skew coordinate system by angle (radians) `alpha' from x axis and `beta' from y axis 
+			-- skew coordinate system by angle (radians) `alpha' from x axis and `beta' from y axis
 		deferred
 		end
 
@@ -191,7 +191,7 @@ feature -- Path painting operators
 			image_exists: image /= Void
 		deferred
 		end
-		
+
 	stroke is
 			-- stroke current path
 		require
@@ -200,7 +200,7 @@ feature -- Path painting operators
 		ensure
 			is_page_definition_mode
 		end
-	
+
 	fill is
 			-- fill current path
 		require
@@ -209,7 +209,7 @@ feature -- Path painting operators
 		ensure
 			is_page_definition_mode
 		end
-		
+
 	fill_then_stroke is
 			-- fill first, then stroke current path
 		require
@@ -218,7 +218,7 @@ feature -- Path painting operators
 		ensure
 			is_page_definition_mode
 		end
-		
+
 	end_path is
 			-- path painting no-operation
 		require
@@ -227,7 +227,7 @@ feature -- Path painting operators
 		ensure
 			is_page_definition_mode
 		end
-		
+
 feature -- Clipping operators
 
 	clip is
@@ -237,7 +237,7 @@ feature -- Clipping operators
 			is_path_mode
 		deferred
 		end
-		
+
 feature -- Path construction operators
 
 	rectangle (x, y, w, h : DOUBLE) is
@@ -263,7 +263,7 @@ feature -- Path construction operators
 			path_origin_y = y
 			is_path_mode
 		end
-		
+
 	lineto (x, y : DOUBLE) is
 			-- draws a line in the current subpath from current position
 			-- to (x,y).  (x,y) becomes the new current position
@@ -274,7 +274,7 @@ feature -- Path construction operators
 			current_x = x
 			current_y = y
 		end
-		
+
 	close_path is
 			-- close current subpath by drawing a straight line from current
 			-- path position to subpath origin
@@ -285,7 +285,7 @@ feature -- Path construction operators
 			current_x = path_origin_x
 			current_y = path_origin_y
 		end
-		
+
 	bezier_1 (cx1, cy1, cx2, cy2, px, py : DOUBLE) is
 			-- append_string a cubic bezier curve to current subpath, with current position
 			-- as starting point, (px, py) as end point, and control points
@@ -301,7 +301,7 @@ feature -- Path construction operators
 			current_x = px
 			current_y = py
 		end
-		
+
 	bezier_2 (cx2, cy2, px, py : DOUBLE) is
 			-- append_string a bezier curve to current subpath, with current position
 			-- as starting point, (px, py) as end point, and control point
@@ -313,7 +313,7 @@ feature -- Path construction operators
 			current_x = px
 			current_y = py
 		end
-		
+
 	bezier_3 (cx1, cy1, px, py : DOUBLE) is
 			-- append_string a bezier curve to current subpath, with current position
 			-- as starting point, (px, py) as end point, and control point
@@ -344,7 +344,7 @@ feature -- Path construction operators
 			unchanged_y: current_y = y
 			path_mode: is_path_mode
 		end
-		
+
 	circle_2 (x, y, r : DOUBLE) is
 			-- circle drawn clockwise
 		require
@@ -356,18 +356,18 @@ feature -- Path construction operators
 		    bezier_1 (x - r*Bezier_arc_magic, y - r, x - r, y - r*Bezier_arc_magic, x - r, y)
 		    bezier_1 (x - r, y + r*Bezier_arc_magic, x - r*Bezier_arc_magic, y + r, x, y + r)
 		    bezier_1 (x + r*Bezier_arc_magic, y + r, x + r, y + r*Bezier_arc_magic, x + r, y)
-			close_path		
+			close_path
 		ensure
 			updated_x: current_x = x + r
 			unchanged_y: current_y = y
 			path_mode: is_path_mode
 		end
-		
+
 	ellipse (x, y, width, height: DOUBLE) is
 			-- draw an ellipse within a rectangle whose lower left corner is at (`x',`y')
 			-- and whose size is `width', `height' logical units
 		require
-		
+
 		local
 			bezier_ellipse_magic : DOUBLE
 			offset_x, offset_y : DOUBLE
@@ -389,11 +389,11 @@ feature -- Path construction operators
 			changed_y: equal_numbers ( current_y, y + height / 2)
 			path_mode: is_path_mode
 		end
-		
+
 	pie (x, y, r, alpha, beta : DOUBLE) is
 			-- draw piece of pie with origin (`x',`y'), radius `r' and
-			-- going from `alpha' to `beta' radians 
-			-- clockwise: alpha > beta; counterclockwise: beta > alpha 
+			-- going from `alpha' to `beta' radians
+			-- clockwise: alpha > beta; counterclockwise: beta > alpha
 		require
 			positive_radius: r > 0
 			alpha_bounds :   alpha.abs <= (2 * math.Pi)
@@ -408,7 +408,7 @@ feature -- Path construction operators
 			new_current_y: equal_numbers (current_y, (y + r * math.sine (alpha)))
 			path_mode: is_path_mode
 		end
-		
+
 	arc (x, y, r, alpha, beta : DOUBLE) is
 			-- clockwise if alpha > beta
 			-- counterclockwise if beta > alpha
@@ -448,13 +448,13 @@ feature -- Path construction operators
 		end
 
 feature -- Math constants
-		
+
 	math : EPDF_MATH is
 			-- portable math constants and operations
 		once
 			create Result
 		end
-		
+
 feature {NONE} -- Implementation
 
 	arc_1_quadrant (x, y, r, alpha, beta : DOUBLE) is
@@ -474,19 +474,19 @@ feature {NONE} -- Implementation
 			bezier_1(
 				x + r * (cos_alpha - bacpr * sin_alpha),
 			 	y + r * (sin_alpha + bacpr * cos_alpha),
-				x + r * (cos_beta + bacpr * sin_beta),	
+				x + r * (cos_beta + bacpr * sin_beta),
 				y + r * (sin_beta - bacpr * cos_beta),
-				x + r * cos_beta,				
+				x + r * cos_beta,
 				y + r * sin_beta)
 		end
-		
+
 	Bezier_arc_magic : DOUBLE is 0.552284749
 		-- Bezier_arc_magic = Bezier_arc_control_point_ratio (0, math.Pi/2)
-	
+
 	Bezier_arc_control_point_ratio (alpha, beta : DOUBLE) : DOUBLE is
-			-- 
+			--
 		do
 			Result := 4/3 * (1 - math.cosine((beta - alpha)/2)) / math.sine((beta - alpha)/2)
 		end
-		
+
 end -- class PDF_GRAPHICS_STATE_OPERATORS

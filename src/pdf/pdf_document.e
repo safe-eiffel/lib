@@ -3,7 +3,7 @@ indexing
 	description: "PDF Document objects.  They are a factory for every composing object."
 	author: "Paul G. Crismer"
 	licence: "Release under the Eiffel Forum licence.  See file 'forum.txt'."
-	
+
 class
 	PDF_DOCUMENT
 
@@ -16,10 +16,10 @@ inherit
 		end
 
 	PDF_OBJECT
-		rename 
+		rename
 			make as make_objet
-		export 
-			{NONE} all 
+		export
+			{NONE} all
 		undefine
 			put_pdf
 		end
@@ -27,7 +27,7 @@ inherit
 	PDF_LAYOUT_CONSTANTS
 
 	PDF_PAGE_MODE_CONSTANTS
-	
+
 	PDF_ENCODING_CONSTANTS
 
 	KL_SHARED_FILE_SYSTEM
@@ -37,9 +37,9 @@ inherit
 		end
 creation
 	make
-	
+
 feature {NONE} -- Initialization
-	
+
 	make is
 			-- creates a document
 		do
@@ -75,13 +75,13 @@ feature -- Access
 
 	page_mode : PDF_NAME
 			-- The page mode to be used when the document is opened
-			
+
 	default_mediabox : PDF_RECTANGLE
 			-- Media box for pages without specific media box
 
 	last_page : PDF_PAGE
 			-- Last created page; set by `add_page'
-	
+
 	last_font : PDF_FONT
 			-- Last found font; set by `find_font'
 
@@ -90,10 +90,10 @@ feature -- Access
 
 	last_image : PDF_IMAGE
 			-- Last image created by `create_image' or `create_png_image'
-	
+
 	last_outline_item : PDF_OUTLINE_ITEM
 			-- Last outline item created
-	
+
 	outlines : PDF_OUTLINES is
 			-- Outlines entry; root of outline items
 		do
@@ -108,7 +108,7 @@ feature -- Access
 
 	viewer_preferences : PDF_VIEWER_PREFERENCES
 			-- UI preferences for PDF Viewer
-	
+
 feature -- Status report
 
 	valid_encoding (encoding_name : STRING) : BOOLEAN is
@@ -120,16 +120,33 @@ feature -- Status report
 				encoding_name.is_equal (Encoding_pdf)
 			end
 		end
-		
+
 feature {NONE} -- Measurement
 
 	count : INTEGER is
-			-- number of PDF objects 
+			-- number of PDF objects
 		do
 			Result := xref.count
 		end
-		
+
 feature -- Element change
+
+	add_named_destination (a_name : STRING; a_destination : PDF_DESTINATION) is
+		require
+			a_name_not_void: a_name /= Void
+			a_destination_not_void: a_destination /= Void
+		local
+			names_dictionary : PDF_DICTIONARY_OBJECT
+		do
+			if destinations_catalog = Void then
+				create destinations_catalog.make (Current, 100)
+				create_dictionary_object
+				names_dictionary := last_dictionary_object
+				names_dictionary.add_entry (names.dests.value, destinations_catalog)
+				catalog.set_names (names_dictionary)
+			end
+			destinations_catalog.force (a_destination, a_name)
+		end
 
 	add_page is
 			-- create a new page and add it to Current
@@ -142,7 +159,7 @@ feature -- Element change
 			new: last_page /= old last_page
 			stream: last_page.current_stream = last_stream
 		end
-	
+
 	set_default_mediabox (a_media_box : PDF_RECTANGLE) is
 			-- set `default_mediabox'
 		require
@@ -152,7 +169,7 @@ feature -- Element change
 		ensure
 			default_mediabox = a_media_box
 		end
-	
+
 	set_page_layout (name : STRING) is
 			-- set the page layout for viewing or printing
 		require
@@ -192,9 +209,9 @@ feature -- Element change
 			create last_image.make (xref.count, image_width, image_height, sample_colors, color_precision)
 			xref.add_entry (last_image)
 		ensure
-			image_created: last_image /= Void	
+			image_created: last_image /= Void
 		end
-	
+
 	create_png_image (file_name : STRING) is
 			-- create png image from file `file_name'
 		require
@@ -212,7 +229,7 @@ feature -- Element change
 		ensure
 			image_created: last_image /= Void and then last_image /= old last_image
 		end
-		
+
 	create_outlines is
 			-- create `outlines'
 		require
@@ -241,7 +258,7 @@ feature -- Element change
 		end
 
 	create_outline_item_with_destination (title : STRING; destination : PDF_DESTINATION) is
-			-- create outline item with `item_title', referencing `destination' 
+			-- create outline item with `item_title', referencing `destination'
 		require
 			title_exists: title /= Void
 			destination_exists: destination /= Void
@@ -251,7 +268,7 @@ feature -- Element change
 		ensure
 			last_outline_item_created: last_outline_item /= Void and then last_outline_item /= old last_outline_item
 		end
-		
+
 	create_information is
 			-- create `information'
 		obsolete "information need not be created anymore"
@@ -270,7 +287,7 @@ feature -- Element change
 		ensure
 			viewer_preferences_exist: viewer_preferences /= Void
 		end
-		
+
 feature -- Constants
 
 	Mediabox_letter : PDF_RECTANGLE is
@@ -278,7 +295,7 @@ feature -- Constants
 		once
 			create Result.make_letter
 		end
-		
+
 	Mediabox_a4 : PDF_RECTANGLE is
 			-- a4 format
 		once
@@ -346,7 +363,7 @@ feature -- Basic operations
 				end
 			end
 		ensure
-			same_name_if_found: last_font /= Void implies font_name.is_equal (last_font.basefont.value) 
+			same_name_if_found: last_font /= Void implies font_name.is_equal (last_font.basefont.value)
 			same_encoding_if_found: last_font /= Void implies encoding_name.is_equal (last_font.encoding.name.value)
 		end
 
@@ -378,9 +395,9 @@ feature -- Basic operations
 		ensure
 			last_encoding: last_encoding /= Void implies encoding_name.is_equal (last_encoding.name.value)
 		end
-	
+
 feature {PDF_PAGE} -- Factory
-	
+
 	create_stream is
 			-- create Stream object before any text or graphics operation
 			-- and add it to a page
@@ -394,7 +411,7 @@ feature {PDF_PAGE} -- Factory
 	last_stream : PDF_STREAM
 
 feature {PDF_PAGES} -- Factory results
-	
+
 	last_pages : PDF_PAGES
 
 	create_pages is
@@ -406,13 +423,13 @@ feature {PDF_PAGES} -- Factory results
 			created: last_pages /= Void
 			new: last_pages /= old last_pages
 		end
-	
+
 feature {NONE} -- Factory results (private)
 
 	last_catalog : PDF_CATALOG
-				
+
 	last_dictionary_object : PDF_DICTIONARY_OBJECT
-	
+
 	create_page is
 			-- create a new page
 		do
@@ -427,10 +444,15 @@ feature {NONE} -- Factory results (private)
 			added_to_list: page_list.has (last_page)
 		end
 
+feature {PDF_OBJECT} -- Access
+
+		xref : PDF_XREF
+			-- PDF Cross reference
+
 feature {NONE} -- Implementation
 
 	create_dictionary_object is
-			-- 
+			--
 		do
 			create last_dictionary_object.make (xref.count)
 			xref.add_entry (last_dictionary_object)
@@ -448,11 +470,11 @@ feature {NONE} -- Implementation
 	create_winansi_encoding is
 			-- create a Windows/ANSI encoding
 		do
-			create	{PDF_WINANSI_ENCODING}last_encoding		
+			create	{PDF_WINANSI_ENCODING}last_encoding
 		ensure
 			last_encoding_created: last_encoding /= Void
 		end
-		
+
 	create_mac_encoding is
 			-- create a MAC encoding
 		do
@@ -460,7 +482,7 @@ feature {NONE} -- Implementation
 		ensure
 			last_encoding_created: last_encoding /= Void
 		end
-		
+
 	create_adobe_standard_encoding is
 			-- create an Adobe standard encoding
 		do
@@ -468,7 +490,7 @@ feature {NONE} -- Implementation
 		ensure
 			last_encoding_created: last_encoding /= Void
 		end
-		
+
 	create_pdf_encoding is
 			-- create a PDF encoding
 		do
@@ -477,9 +499,9 @@ feature {NONE} -- Implementation
 			last_encoding_created: last_encoding /= Void
 		end
 
-	
+
 	create_font (font_name : STRING; encoding : PDF_CHARACTER_ENCODING) is
-			-- create a font of name `font_name' font with `encoding' 
+			-- create a font of name `font_name' font with `encoding'
 		require
 			font_name_exists: font_name /= Void
 		do
@@ -522,9 +544,6 @@ feature {NONE} -- Implementation
 			font_created_has_same_name: last_font /= Void implies last_font.basefont.value.is_equal (font_name)
 		end
 
-	xref : PDF_XREF
-			-- PDF Cross reference
-	
 	pdf_header : STRING is "%%PDF-1.4%N%%‚„œ”%N"
 
 	put_pdf_body (medium : PDF_OUTPUT_MEDIUM) is
@@ -545,14 +564,14 @@ feature {NONE} -- Implementation
 
 
 	put_pdf_trailer (startxref : INTEGER; medium : PDF_OUTPUT_MEDIUM) is
-			-- put pdf trailer 
+			-- put pdf trailer
 		require
 			startxref_lower_medium_count: startxref < medium.count
 		local
 			size_name : PDF_NAME
 			root_name : PDF_NAME
 			info_name : PDF_NAME
-		do 
+		do
 			medium.put_string ("trailer%N")
 			create size_name.make ("Size")
 			create root_name.make ("Root")
@@ -570,11 +589,14 @@ feature {NONE} -- Implementation
 			medium.put_new_line
 			medium.put_string ("%%%%EOF%N")
 		end
-		
+
+
+	destinations_catalog : PDF_NAME_TREE
+
 	fonts_table : DS_HASH_TABLE[PDF_FONT, STRING]
 
 	encodings_table : DS_HASH_TABLE[PDF_CHARACTER_ENCODING, STRING]
-	
+
 	new_font_key (font_name, encoding_name : STRING) : STRING is
 		do
 			create Result.make (font_name.count+encoding_name.count+1)
@@ -603,5 +625,5 @@ feature {NONE} -- Implementation
 invariant
 	information_always_present: information /= Void
 	default_mediabox_exists: default_mediabox /= Void
-	
+
 end -- class PDF_DOCUMENT

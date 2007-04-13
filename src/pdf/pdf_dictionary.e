@@ -3,7 +3,7 @@ indexing
 	description: "Dictionary.  Array of (key,value) pairs."
 	author: "Paul G. Crismer"
 	licence: "Release under the Eiffel Forum licence.  See file 'forum.txt'."
-	
+
 class
 	PDF_DICTIONARY
 
@@ -16,13 +16,13 @@ creation
 feature -- Initialization
 
 	make is
-			-- 
+			--
 		do
 			create impl_keys.make (1, 0)
 			create impl_values.make (1, 0)
 			count := 0
 		end
-		
+
 feature -- Access
 
 	key (index : INTEGER) : STRING is
@@ -32,7 +32,7 @@ feature -- Access
 		do
 			Result := impl_keys.item (index)
 		end
-		
+
 	value (index : INTEGER) : PDF_SERIALIZABLE is
 			-- value at `index-th' item
 		require
@@ -50,7 +50,7 @@ feature -- Access
 			if count > 0 then
 				from
 				until
-					Result > count or else value (Result).number = object.number 
+					Result > count or else value (Result).number = object.number
 				loop
 					Result := Result + 1
 				end
@@ -63,12 +63,33 @@ feature -- Access
 			result_zero: Result = 0 implies not has_value (object)
 		end
 
-		
+	index_of_key (a_key : like key) : INTEGER is
+			-- index of `a_key', if present; zero if absent.
+		require
+			a_key_not_void: a_key /= Void
+		local
+			index : INTEGER
+		do
+			from
+				index := 1
+			until
+				index > count or else impl_keys.item (index).is_equal (a_key)
+			loop
+				index := index + 1
+			end
+			if Result = count then
+				Result := 0
+			end
+		ensure
+			Result_not_zero: Result > 0 implies  key (Result).is_equal (a_key)
+			result_zero: Result = 0 implies not has_key (a_key)
+		end
+
 feature -- Measurement
 
 	count : INTEGER
 			-- count of dictionary entries
-			
+
 feature -- Status report
 
 	has_key (a_key : STRING) : BOOLEAN is
@@ -78,14 +99,7 @@ feature -- Status report
 		local
 			index : INTEGER
 		do
-			from 
-				index := 1
-			until
-				index > count or else impl_keys.item (index).is_equal (a_key)
-			loop				
-				index := index + 1
-			end
-			Result := index <= count
+			Result := index_of_key (a_key) > 0
 		end
 
 	has_value (a_value : like value) : BOOLEAN is
@@ -98,7 +112,7 @@ feature -- Status report
 			index := index_of_value (a_value)
 			Result := (index >= 1 and then index <= count)
 		end
-		
+
 feature -- Element change
 
 	add_entry (a_key : STRING; a_value : PDF_SERIALIZABLE) is
@@ -117,6 +131,21 @@ feature -- Element change
 			value (count) = a_value
 		end
 
+	replace_entry (a_key : STRING; a_value : PDF_SERIALIZABLE) is
+			-- replace entry at `a_key' by `a_value'.
+		require
+			a_key_not_void: a_key /= Void
+			has_a_key: has_key (a_key)
+			a_value_not_void: a_value /= Void
+		local
+			index : INTEGER
+		do
+			index := index_of_key (a_key)
+			impl_values.put (a_value, index)
+		ensure
+			entry_replaced: value (index_of_key(a_key)) = a_value
+		end
+
 feature -- Conversion
 
 	to_pdf : STRING is
@@ -126,7 +155,7 @@ feature -- Conversion
 		do
 			create Result.make (0)
 			Result.append_string ("<< ")
-			from 
+			from
 				index := 1
 			until
 				index > count
@@ -142,16 +171,16 @@ feature -- Conversion
 --				end
 				index := index + 1
 			end
-			Result.append_string (">> ") 
+			Result.append_string (">> ")
 		end
-		
+
 feature {NONE} -- Implementation
 
 	impl_keys : ARRAY[STRING]
 	impl_values : ARRAY[PDF_SERIALIZABLE]
-	
+
 	number : INTEGER is do  end
-	
+
 invariant
 	invariant_clause: True -- Your invariant here
 

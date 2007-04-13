@@ -15,12 +15,12 @@ inherit
 		redefine
 			put_pdf
 		end
-		
+
 	PDF_OUTLINE_NODE
 		rename
 			make as make_node
 		end
-		
+
 creation
 	{PDF_DOCUMENT} make, make_with_destination
 
@@ -41,10 +41,10 @@ feature {NONE} -- Initialization
 		ensure
 			title_set: title /= Void
 			destination_set: destination /= Void
-			page_referenced: destination.page = referenced_page
+			page_referenced: explicit_destination.page = referenced_page
 		end
 
-	make_with_destination (object_number : INTEGER; item_title : STRING; referenced_destination : PDF_DESTINATION) is		
+	make_with_destination (object_number : INTEGER; item_title : STRING; referenced_destination : PDF_DESTINATION) is
 		require
 			object_number_not_negative: object_number >= 0
 			item_title_exists: item_title /= Void
@@ -59,17 +59,24 @@ feature {NONE} -- Initialization
 			object_number_set: number = object_number
 			destination_set: destination = referenced_destination
 		end
-		
+
 feature -- Access
 
 	node_anchor : PDF_OUTLINE_ITEM
 
 	destination : PDF_DESTINATION
 			-- destination referenced by outline item
-			
+
+	explicit_destination : PDF_EXPLICIT_DESTINATION is
+		do
+			Result ?= destination
+		ensure
+			definition: Result /= Void implies Result = destination
+		end
+
 	title : STRING
 			-- title appearing in the outline tree
-			
+
 feature -- Measurement
 
 feature -- Status report
@@ -138,7 +145,7 @@ feature -- Conversion
 			medium.put_string (End_dictionary)
 			medium.put_string (Object_footer)
 		end
-		
+
 feature -- Duplication
 
 feature -- Miscellaneous

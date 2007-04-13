@@ -6,7 +6,7 @@ indexing
 	note: "This XREF is limited to one subsection"
 	author: "Paul G. Crismer"
 	licence: "Release under the Eiffel Forum licence.  See file 'forum.txt'."
-	
+
 class
 
 	PDF_XREF
@@ -21,7 +21,7 @@ inherit
 creation
 
 	make
-	
+
 feature -- Initialization
 
 	make is
@@ -33,9 +33,9 @@ feature -- Initialization
 			xref_section.force (an_entry, entry_count)
 			entry_count := entry_count + 1
 		end
-			
+
 feature -- Access
-	
+
 	entry_offset (entry_number : INTEGER) : INTEGER is
 			-- offset of `entry_number' entry
 		require
@@ -43,16 +43,17 @@ feature -- Access
 		do
 			Result := xref_section.item (entry_number).offset
 		end
-		
+
 	object (entry_number : INTEGER) : PDF_OBJECT is
-			-- 
+			--
 		require
 			good_entry_number: entry_number >= 0 and entry_number < count
 		do
 			Result := xref_section.item (entry_number).object
 		end
-		
-		
+
+	last_object : PDF_OBJECT
+
 feature -- Status report
 
 	is_free_entry (entry_number : INTEGER) : BOOLEAN is
@@ -73,10 +74,10 @@ feature -- Measurement
 			Result := entry_count
 		end
 
-feature {PDF_DOCUMENT} -- Element change
+feature {PDF_DOCUMENT, PDF_OBJECT} -- Element change
 
 	add_entry (an_object : PDF_OBJECT) is
-			-- 
+			--
 		require
 			object_exists: an_object /= Void
 			number_sequence: an_object.number = count
@@ -86,12 +87,12 @@ feature {PDF_DOCUMENT} -- Element change
 			create an_entry.make (an_object)
 			xref_section.force (an_entry, count)
 			entry_count := entry_count + 1
+			last_object := an_object
 		ensure
-			count = old count + 1
+			one_more_entry: count = old count + 1
+			last_object_updated: last_object = an_object
 		end
-		
-	
-	
+
 	add_free_entry is
 			-- add a new object to the cross reference section
 		local
@@ -116,7 +117,7 @@ feature {PDF_DOCUMENT} -- Element change
 		ensure
 			entry_offset: entry_offset (entry_number) = an_offset
 		end
-	
+
 feature -- Conversion
 
 	to_pdf : STRING is
@@ -145,9 +146,9 @@ feature -- Conversion
 			-- End of cross reference
 			Result.append_string ("%N")
 		end
-	
+
 	put_pdf (medium : PDF_OUTPUT_MEDIUM) is
-			-- 
+			--
 		local
 			index : INTEGER
 		do
@@ -172,14 +173,14 @@ feature -- Conversion
 			-- End of cross reference
 			medium.put_new_line
 		end
-		
+
 feature {NONE} -- Implementation
 
 	xref_section : ARRAY[PDF_XREF_ENTRY]
-	
+
 	entry_count : INTEGER
-	
+
 	number : INTEGER is do end
-	
+
 end -- class PDF_XREF
-		
+

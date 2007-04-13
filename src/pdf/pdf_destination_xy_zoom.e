@@ -1,6 +1,6 @@
 indexing
-	description: 
-	
+	description:
+
 	"Destinations designated by page, with the coordinates (left, top) positioned %
 % at the top-left corner of the window and the contents of the page magnified %
 % by the factor zoom. A null value for any of the parameters left, top, or %
@@ -15,11 +15,11 @@ class
 	PDF_DESTINATION_XY_ZOOM
 
 inherit
-	PDF_DESTINATION
-		
+	PDF_EXPLICIT_DESTINATION
+
 creation
 	make
-	
+
 feature {NONE} -- Initialization
 
 	make (destination : PDF_PAGE; left, top, zoom_factor : DOUBLE) is
@@ -41,19 +41,19 @@ feature -- Access
 
 	x : DOUBLE
 			-- x coordinate of top,left corner of window
-			
+
 	y : DOUBLE
 			-- y coordinate of top,left corner of window
 
 	zoom : DOUBLE
 			-- magnification of window content
-			
+
 	type : PDF_NAME is
-			-- 
+			--
 		do
 			Result := names.xyz
 		end
-		
+
 feature -- Measurement
 
 feature -- Status report
@@ -62,7 +62,7 @@ feature -- Status report
 		do
 			Result := area.has_point (x.truncated_to_integer, y.truncated_to_integer)
 		end
-		
+
 feature -- Status setting
 
 feature -- Cursor movement
