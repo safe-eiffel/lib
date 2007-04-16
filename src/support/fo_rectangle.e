@@ -1,7 +1,7 @@
 indexing
 
-	description: 
-	
+	description:
+
 		"Measurement rectangles"
 
 	library: "FO - Formatting Objects in Eiffel. Project SAFE."
@@ -20,10 +20,10 @@ inherit
 			valid_right,
 			valid_top
 		end
-		
+
 creation
 	make, set, copy
-	
+
 feature -- Measurement
 
 	width : FO_MEASUREMENT is
@@ -32,14 +32,14 @@ feature -- Measurement
 		ensure
 			width_not_negative: Result /= Void and then Result.sign >= 0
 		end
-		
+
 	height : FO_MEASUREMENT is
 		do
 			Result := top - bottom
 		ensure
 			height_not_negative: Result /= Void and then Result.sign >= 0
 		end
-		
+
 feature -- Status report
 
 	is_empty : BOOLEAN is
@@ -49,7 +49,7 @@ feature -- Status report
 		ensure
 			definition: Result = (width.sign = 0 and height.sign = 0)
 		end
-		
+
 	valid_right (new_right: FO_MEASUREMENT) : BOOLEAN is
 			-- is new_right a valid right ?
 		do
@@ -82,7 +82,7 @@ feature -- Status report
 			greater_bottom: Result implies (new_top >= bottom)
 		end
 
---	valid_rectangle (new_left: FO_MEASUREMENT; new_bottom: FO_MEASUREMENT; new_right: FO_MEASUREMENT; new_top: FO_MEASUREMENT) : BOOLEAN is 
+--	valid_rectangle (new_left: FO_MEASUREMENT; new_bottom: FO_MEASUREMENT; new_right: FO_MEASUREMENT; new_top: FO_MEASUREMENT) : BOOLEAN is
 --		do
 --			if new_left /= Void and then new_bottom /= Void and then new_right /= Void and then new_top /= Void then
 --				Result := (new_right - new_left).as_points > 0
@@ -93,7 +93,7 @@ feature -- Status report
 --			width_positive: Result implies (new_right - new_left).as_points > 0
 --			height_positive: Result implies (new_top - new_bottom).as_points > 0
 --		end
-		
+
 feature -- Status setting
 
 feature -- Cursor movement
@@ -111,11 +111,11 @@ feature -- Conversion
 
 	as_pdf : PDF_RECTANGLE is
 		local
-		
+
 		do
-			create Result.set(left.as_points, 
-							bottom.as_points, 
-							right.as_points, 
+			create Result.set(left.as_points,
+							bottom.as_points,
+							right.as_points,
 							top.as_points)
 		end
 
@@ -136,7 +136,7 @@ feature -- Basic operations
 		ensure
 			merged_not_void: Result /= Void
 		end
-		
+
 	shrinked_top (h : FO_MEASUREMENT) : FO_RECTANGLE is
 		do
 			create Result.set (left, bottom, right, top - h)
@@ -158,7 +158,7 @@ feature -- Basic operations
 			same_right: Result.right.is_equal (right)
 			bottom_shrinked: Result.bottom.is_equal (bottom - h)
 		end
-		
+
 feature -- Obsolete
 
 feature -- Inapplicable
@@ -169,5 +169,5 @@ invariant
 
 	not_negative_width: width /= Void and width.sign >= 0
 	not_negative_height: height /= Void and height.sign >= 0
-	
+
 end

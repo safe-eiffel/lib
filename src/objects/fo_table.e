@@ -242,6 +242,7 @@ feature -- Basic operations
 					set_render_after
 				end
 			end
+			last_region := region
 		end
 
 	render_forth (document: FO_DOCUMENT; region: FO_RECTANGLE) is

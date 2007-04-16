@@ -109,6 +109,7 @@ feature {FO_DOCUMENT, FO_RENDERABLE} -- Basic operations
 				end
 				c.forth
 			end
+			precursor(region)
 		end
 
 end

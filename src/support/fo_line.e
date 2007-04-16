@@ -53,7 +53,6 @@ feature {NONE} -- Initialization
 		end
 
 	make_justified (new_maximum_width : FO_MEASUREMENT;
-				--	renderable : FO_RENDERABLE;
 					new_text_leading : FO_MEASUREMENT;
 					marginable : FO_MARGINABLE; a_justification : INTEGER) is
 		require

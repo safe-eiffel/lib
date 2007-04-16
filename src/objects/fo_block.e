@@ -471,12 +471,12 @@ feature {FO_DOCUMENT, FO_RENDERABLE} -- Basic operations
 			else
 				set_render_inside
 			end
-			if is_render_inside then
+--			if is_render_inside then
 				if last_descender /= Void then
 					available_region := available_region.shrinked_top (- last_descender)
 					last_rendered_region := last_rendered_region.shrinked_bottom (- last_descender)
 				end
-			end
+--			end
 			debug ("fo_show_block_margins")
 				show_margins (document, use_top_margins, use_bottom_margins)
 			end

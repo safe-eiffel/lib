@@ -103,7 +103,7 @@ feature -- Basic operations
 			document_not_void: document /= Void
 			document_is_open: document.is_open
 			region_not_void: region /= Void
-			region_width_positive: region.width.sign = 1
+			region_width_positive: region.width.sign >= 0
 		do
 		end
 
