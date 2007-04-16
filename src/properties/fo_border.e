@@ -112,18 +112,6 @@ feature -- Comparison
 			end
 		end
 
-feature -- Duplication
-
-feature -- Miscellaneous
-
-feature -- Basic operations
-
-feature -- Obsolete
-
-feature -- Inapplicable
-
-feature {NONE} -- Implementation
-
 invariant
 
 	style_valid: style >= style_none and style <= style_double

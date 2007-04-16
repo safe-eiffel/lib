@@ -16,10 +16,24 @@ inherit
 
 	FO_TEXTABLE
 		redefine
-			out
+			out, post_render
+		select
+			post_render
 		end
 
 	FO_SHARED_FONT_FACTORY
+		undefine
+			is_equal, out
+		end
+
+	FO_LINKABLE
+		undefine
+			is_equal, out
+		end
+
+	FO_TARGETABLE
+		rename
+			post_render as post_render_targetable
 		undefine
 			is_equal, out
 		end
@@ -95,6 +109,8 @@ feature -- Access
 			i_end_not_greater_text_count: i_end <= text.count
 		do
 			create Result.make_inherit (text.substring (i_begin, i_end), Current)
+			Result.set_destination (destination)
+			Result.set_target (target)
 		ensure
 			substring_not_void: Result /= Void
 			same_rendering: True
@@ -252,6 +268,28 @@ feature {FO_DOCUMENT, FO_RENDERABLE} -- Basic operations
 
 			page.put_string (text)
 			set_render_after
+		end
+
+	post_render (document: FO_DOCUMENT; region: FO_RECTANGLE) is
+		local
+			pdf_annotation : PDF_ANNOTATION_LINK
+			uri : UT_URI
+			fix : DOUBLE
+			rect : PDF_RECTANGLE
+		do
+			post_render_targetable (document, region)
+			fix := 1.5
+			if destination /= Void then
+				create uri.make (destination.name)
+				create rect.set (region.left.as_points - fix, region.bottom.as_points - fix, region.right.as_points + fix, region.top.as_points + fix)
+				if not (uri.has_valid_scheme or uri.has_authority) then
+					create pdf_annotation.make_destination (document.pdf_document, rect, create {PDF_NAMED_DESTINATION}.make (destination.name))
+				else
+					create pdf_annotation.make_uri (document.pdf_document, rect, uri)
+				end
+				pdf_annotation.set_border_dashed (<<2,4>>)
+				document.current_page.put_annotation (pdf_annotation)
+			end
 		end
 
 invariant

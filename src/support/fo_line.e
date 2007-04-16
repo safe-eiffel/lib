@@ -332,6 +332,7 @@ feature {FO_DOCUMENT, FO_RENDERABLE} -- Basic operations
 				cursor.off
 			loop
 				cursor.item.render_start (document, last_region)
+				cursor.item.post_render (document, cursor.item.last_rendered_region)
 				cursor.forth
 			end
 			create last_rendered_region.set (

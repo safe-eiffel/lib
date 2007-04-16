@@ -17,7 +17,7 @@ inherit
 			pre_render
 		end
 
-create
+create {FO_DOCUMENT}
 	make
 
 feature {NONE} -- Initialization
@@ -90,7 +90,7 @@ feature {FO_DOCUMENT, FO_RENDERABLE} -- Basic operations
 				set_render_after
 			end
 		end
-	
+
 	pre_render (region: FO_RECTANGLE) is
 		local
 			c : DS_LIST_CURSOR[FO_RENDERABLE]

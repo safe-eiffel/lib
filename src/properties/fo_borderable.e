@@ -159,11 +159,6 @@ feature {NONE} -- Implementation
 			end
 		end
 
-	border_none : FO_BORDER is
-		once
-			create Result.make_none
-		end
-
 	render_borders (document : FO_DOCUMENT; current_region : FO_RECTANGLE) is
 			-- Render borders in `document' into `current_region'.
 		local
@@ -186,37 +181,82 @@ feature {NONE} -- Implementation
 					set_line_properties (page, border_left)
 					page.move (0, 0)
 					page.rectangle (region.left.as_points, region.bottom.as_points, region.width.as_points, region.height.as_points)
+					if border_left.style = {FO_BORDER}.style_double then
+						page.rectangle (region.left.as_points + border_left.width.as_points + double_border_offset,
+							region.bottom.as_points + border_bottom.width.as_points + double_border_offset,
+							region.width.as_points - (border_right.width.as_points + double_border_offset) * 2,
+							region.height.as_points - (border_top.width.as_points + double_border_offset) * 2)
+					end
 					page.stroke
 				else
 					--| draw borders.
 					if border_left /= Void and then not border_left.is_none then
-						set_line_properties (page, border_left)
-						page.move (region.left.as_points, region.bottom.as_points)
-						page.lineto (region.left.as_points, region.top.as_points)
-						page.stroke
+						draw_vertical_border (page, border_left, [region.left, region.bottom, region.left, region.top], border_bottom, border_top, +1)
 					end
 					if border_bottom /= Void and then not border_bottom.is_none then
-						set_line_properties (page, border_bottom)
-						page.move (region.left.as_points, region.bottom.as_points)
-						page.lineto (region.right.as_points, region.bottom.as_points)
-						page.stroke
+						draw_horizontal_border (page, border_bottom, [region.left, region.bottom, region.right, region.bottom], border_left, border_right, +1)
 					end
 					if border_right /= Void and then not border_right.is_none then
-						set_line_properties (page, border_right)
-						page.move (region.right.as_points, region.bottom.as_points)
-						page.lineto (region.right.as_points, region.top.as_points)
-						page.stroke
+						draw_vertical_border (page, border_right, [region.right, region.bottom, region.right, region.top], border_bottom, border_top, -1)
 					end
 					if border_top /= Void and then not border_top.is_none then
-						set_line_properties (page, border_top)
-						page.move (region.left.as_points, region.top.as_points)
-						page.lineto (region.right.as_points, region.top.as_points)
-						page.stroke
+						draw_horizontal_border (page, border_top, [region.left, region.top, region.right, region.top], border_left, border_right, -1)
 					end
 				end
 				page.grestore
 			end
 		end
+
+	draw_horizontal_border (page : PDF_PAGE; border : FO_BORDER; coordinates : TUPLE[x1, y1, x2, y2 : FO_MEASUREMENT]; left_border, right_border : FO_BORDER; offset_sign : INTEGER) is
+		local
+			left_offset, right_offset : INTEGER
+		do
+			set_line_properties (page, border)
+			page.move (coordinates.x1.as_points, coordinates.y1.as_points)
+			page.lineto (coordinates.x2.as_points, coordinates.y2.as_points)
+			page.stroke
+			if border.style = {FO_BORDER}.style_double then
+				left_offset := offset_for_adjacent_border (left_border)
+				right_offset := offset_for_adjacent_border (right_border)
+				page.move (coordinates.x1.as_points + left_offset, coordinates.y1.as_points + ((double_border_offset + border.width.as_points) * offset_sign))
+				page.lineto (coordinates.x2.as_points - right_offset, coordinates.y2.as_points + ((double_border_offset + border.width.as_points) * offset_sign))
+				page.stroke
+			end
+		end
+
+	draw_vertical_border (page : PDF_PAGE; border : FO_BORDER; coordinates : TUPLE[x1, y1, x2, y2 : FO_MEASUREMENT]; bottom_border, top_border : FO_BORDER; offset_sign : INTEGER) is
+		local
+			bottom_offset, top_offset : INTEGER
+			offset : DOUBLE
+		do
+			set_line_properties (page, border)
+			page.move (coordinates.x1.as_points, coordinates.y1.as_points)
+			page.lineto (coordinates.x2.as_points, coordinates.y2.as_points)
+			page.stroke
+			if border.style = {FO_BORDER}.style_double then
+				offset := double_border_offset + border.width.as_points
+				bottom_offset := offset_for_adjacent_border (bottom_border)
+				top_offset := offset_for_adjacent_border (top_border)
+				page.move (coordinates.x1.as_points + (offset * offset_sign), coordinates.y1.as_points + bottom_offset)
+				page.lineto ( coordinates.x2.as_points + (offset * offset_sign), coordinates.y2.as_points - top_offset)
+				page.stroke
+			end
+		end
+
+	offset_for_adjacent_border (border : FO_BORDER) : INTEGER is
+		do
+			if border /= Void and then not border.is_none and then border.style = {FO_BORDER}.style_double then
+				Result := double_border_offset + border.width.as_points.truncated_to_integer
+			end
+		end
+
+-- Adjacent borders:
+-- left : top, bottom
+-- right : top, bottom
+-- top : left, right
+-- bottom : left, right
+
+	double_border_offset : INTEGER is 2
 
 invariant
 

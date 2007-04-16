@@ -25,6 +25,8 @@ feature {NONE} -- Initialization
 			-- Initialize `Current'.
 		local
 			a_table : FO_TABLE
+			title : FO_BLOCK
+			back_link : FO_BLOCK
 		do
 			--| 1
 			create writer.make ("tutorial_tables.pdf")
@@ -32,6 +34,13 @@ feature {NONE} -- Initialization
 
 			--| 2
 			document.open
+
+
+			create title.make_center (create {FO_MARGINS}.set (mm (10), mm (10), mm (10), mm (10)))
+			title.append (create {FO_INLINE}.make ("Table Show"))
+			title.set_target (create {FO_TARGET}.make ("Titel"))
+
+			document.append_block (title)
 
 			append_section ("Left aligned", "[
 Tables can be left aligned.  The whole content is aligned to the left of the render region.
@@ -66,6 +75,10 @@ Cell widths are considered as absolutes.
 			--| *
 			document.append_table (a_table)
 
+			create back_link.make_default
+			back_link.append_string ("This is a back link gjq")
+			back_link.last_inline.set_destination (create {FO_DESTINATION}.make ("Titel"))
+			document.append_block (back_link)
 			--| 6
 			document.close
 		end
@@ -145,33 +158,6 @@ feature -- Basic operations
 			document.append_table (last_table)
 		end
 		
-	append_section (title, text : STRING) is
-			-- Append section with `title' and `text'.
-		local
-			section_title, section_text : FO_BLOCK
-			title_font, text_font : FO_FONT
-			inline : FO_INLINE
-		do
-			create section_title.make (title_margins)
-			create section_text.make (text_margins)
-			font_factory.find_font (title_family, font_factory.weigth_bold,font_factory.style_normal, pt (12))
-			title_font := font_factory.last_font
-			font_factory.find_font (text_family, font_factory.weigth_normal, font_factory.style_normal, pt (14))
-			text_font := font_factory.last_font
-
-			create inline.make_with_font (title, title_font)
-			section_title.append (inline)
-			section_title.enable_keep_with_next
-
-
-			create inline.make_with_font (text, text_font)
-			section_text.append (inline)
-			section_text.enable_keep_with_next
-			
-			document.append_block (section_title)
-			document.append_block (section_text)
-		end
-
 	create_sample_table ( i : INTEGER) is
 		local
 			border : FO_BORDER
@@ -242,22 +228,6 @@ feature -- Basic operations
 			a_block.append_string ("e"+i.out+"@mail.com")
 
 			a_table.last_row.put (a_block, 3)
-		end
-
-feature {NONE} -- Implementation
-
-	title_family : STRING is "Helvetica"
-
-	title_margins : FO_MARGINS is
-		once
-			create Result.set (cm (0), cm (0.25), cm (0), cm (0.75))
-		end
-
-	text_family : STRING is "Times"
-
-	text_margins : FO_MARGINS is
-		once
-			create Result.set (cm (0), cm (0), cm (0), cm (0.25))
 		end
 		
 end

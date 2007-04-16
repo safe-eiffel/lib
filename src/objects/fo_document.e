@@ -40,6 +40,8 @@ feature {NONE} -- Initialization
 			margins := shared_defaults.document_margins
 			create background_color.make_rgb (255,255,255)
 			create foreground_color.make_rgb (0,0,0)
+			create targets.make (100)
+			create destinations.make (100)
 		ensure
 			writer_set: writer = new_writer
 			page_rectangle_set: page_rectangle = new_page_rectangle
@@ -59,7 +61,6 @@ feature {NONE} -- Initialization
 		end
 
 feature -- Access
-
 
 	page_rectangle : FO_RECTANGLE
 			-- Current Page rectangle.
@@ -584,6 +585,24 @@ feature {NONE} -- Implementation
 		do
 			available_render_region := current_section.region (column_count)
 		end
+
+feature {FO_TARGETABLE} -- Framework
+
+	has_target (a_target : FO_TARGET) : BOOLEAN is
+			do
+				Result := targets.has (a_target.name)
+			end
+
+	add_target (a_target : FO_TARGET) is
+		require
+			a_target_not_void: a_target /= Void
+			not_has_a_target: not has_target (a_target)
+		do
+			targets.put (a_target, a_target.name)
+		end
+
+	targets : DS_HASH_TABLE [FO_TARGET, STRING]
+	destinations : DS_HASH_TABLE [FO_TARGET, STRING]
 
 feature {FO_SPECIAL_INLINE} -- Implementation
 

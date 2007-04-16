@@ -38,4 +38,47 @@ feature  -- Basic operations
 			document_not_void: document /= Void
 		end
 
+feature {NONE} -- Implementation
+
+	append_section (title, text : STRING) is
+			-- Append section with `title' and `text'.
+		local
+			section_title, section_text : FO_BLOCK
+			title_font, text_font : FO_FONT
+			inline : FO_INLINE
+		do
+			create section_title.make (title_margins)
+			create section_text.make (text_margins)
+			font_factory.find_font (title_family, font_factory.weigth_bold,font_factory.style_normal, pt (12))
+			title_font := font_factory.last_font
+			font_factory.find_font (text_family, font_factory.weigth_normal, font_factory.style_normal, pt (14))
+			text_font := font_factory.last_font
+
+			create inline.make_with_font (title, title_font)
+			section_title.append (inline)
+			section_title.enable_keep_with_next
+
+
+			create inline.make_with_font (text, text_font)
+			section_text.append (inline)
+			section_text.enable_keep_with_next
+
+			document.append_block (section_title)
+			document.append_block (section_text)
+		end
+
+	title_family : STRING is "Helvetica"
+
+	title_margins : FO_MARGINS is
+		once
+			create Result.set (cm (0), cm (0.25), cm (0), cm (0.75))
+		end
+
+	text_family : STRING is "Times"
+
+	text_margins : FO_MARGINS is
+		once
+			create Result.set (cm (0), cm (0), cm (0), cm (0.25))
+		end
+
 end

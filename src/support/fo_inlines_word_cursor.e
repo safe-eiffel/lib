@@ -39,12 +39,12 @@ feature -- Access
 			Result := word_height
 		end
 
-	item_begin : DS_PAIR[FO_INLINE, INTEGER] is
+	item_begin : FO_CHARACTER_REFERENCE is
 		do
 			Result := word_begin
 		end
 
-	item_end : DS_PAIR[FO_INLINE, INTEGER] is
+	item_end : FO_CHARACTER_REFERENCE is
 		do
 			Result := word_end
 		end
@@ -54,7 +54,7 @@ feature -- Access
 			Result := word_inlines
 		end
 
-	item_character (n : INTEGER) : DS_PAIR[FO_INLINE,INTEGER] is
+	item_character (n : INTEGER) : FO_CHARACTER_REFERENCE is
 			-- Coordinates of n-th character of current word.
 		require
 			n_positive: n > 0
@@ -72,7 +72,7 @@ feature -- Access
 			loop
 				from
 					if count = 0 then
-						i := word_begin.second
+						i := word_begin.position
 					else
 						i := 1
 					end
@@ -150,7 +150,7 @@ feature -- Basic operations
 			wcount : INTEGER
 			wwidth, cwidth : FO_MEASUREMENT
 			done : BOOLEAN
-			cpair, cpairlast : DS_PAIR[FO_INLINE,INTEGER]
+			cpair, cpairlast : FO_CHARACTER_REFERENCE
 			wtext : STRING
 			c : CHARACTER
 		do
@@ -158,15 +158,15 @@ feature -- Basic operations
 			from
 				create wwidth.points (0)
 				wcount := 1
-				create wbegin.make (word_begin.first, word_begin.second)
+				create wbegin.make (word_begin.inline, word_begin.position)
 				create wtext.make (item_text.count)
 				done := False
 			until
 				done or else wcount > item_text.count
 			loop
 				cpair := item_character (wcount)
-				c := cpair.first.item (cpair.second)
-				cwidth := cpair.first.character_width (c)
+				c := cpair.inline.item (cpair.position)
+				cwidth := cpair.inline.character_width (c)
 				if wwidth + cwidth > width then
 					done := True
 				else
@@ -191,7 +191,7 @@ feature -- Basic operations
 			wcount_positive: wcount > 0
 			wcount_less_text_count: wcount <= item_text.count
 		local
-			cpairlast : DS_PAIR[FO_INLINE,INTEGER]
+			cpairlast : FO_CHARACTER_REFERENCE
 			wwidth : FO_MEASUREMENT
 		do
 			--| keep w_count characters
@@ -205,13 +205,13 @@ feature -- Basic operations
 			from
 				item_inlines.start
 			until
-				item_inlines.off or else item_inlines.item_for_iteration = word_end.first
+				item_inlines.off or else item_inlines.item_for_iteration = word_end.inline
 			loop
 				item_inlines.forth
 			end
 			create {DS_LINKED_LIST[FO_INLINE]}remaining_subword.make
-			if word_end.first = remaining_subword_begin.first then
-				remaining_subword.put_last (word_end.first)
+			if word_end.inline = remaining_subword_begin.inline then
+				remaining_subword.put_last (word_end.inline)
 			end
 			--| save then remove inlines for remaining_subword							
 			from
@@ -243,19 +243,22 @@ feature -- Basic operations
 		local
 			item_inlines_cursor : DS_LIST_CURSOR[FO_INLINE]
 		do
-			if item_begin.first = item_end.first then
-				line.add_inline (item_begin.first.substring (item_begin.second, item_end.second.min (item_end.first.count)))
+			if item_begin.inline = item_end.inline then
+				-- One inline from begin to end
+				line.add_inline (item_begin.inline.substring (item_begin.position, item_end.position.min (item_end.inline.count)))
 			else
+				-- More than one inline from begin to end
+				-- . Iterate over item inlines
 				from
 					item_inlines_cursor := item_inlines.new_cursor
 					item_inlines_cursor.start
 				until
 					item_inlines_cursor.off
 				loop
-					if item_inlines_cursor.item = item_begin.first then
-						line.add_inline (item_begin.first.substring (item_begin.second, item_begin.first.count))
-					elseif item_inlines_cursor.item = item_end.first then
-						line.add_inline (item_end.first.substring (1, item_end.second))
+					if item_inlines_cursor.item = item_begin.inline then
+						line.add_inline (item_begin.inline.substring (item_begin.position, item_begin.inline.count))
+					elseif item_inlines_cursor.item = item_end.inline then
+						line.add_inline (item_end.inline.substring (1, item_end.position))
 					else
 						line.add_inline (item_inlines_cursor.item)
 					end
@@ -346,7 +349,7 @@ feature {NONE} -- Implementation
 				word_height := remaining_subword_height
 			else
 				create {DS_LINKED_LIST[FO_INLINE]}word_inlines.make
-				create word_end.make (word_begin.first, word_begin.second)
+				create word_end.make (word_begin.inline, word_begin.position)
 				create word_text.make (100)
 				create word_width.points (0)
 				create word_height.points (0)
@@ -360,9 +363,9 @@ feature {NONE} -- Implementation
 					from
 						--| sweep through characters in same inline
 					until
-						word_end.second > internal_cursor.item.count or else word_done
+						word_end.position > internal_cursor.item.count or else word_done
 					loop
-						c := internal_cursor.item.item (word_end.second)
+						c := internal_cursor.item.item (word_end.position)
 						handle_state (c)
 					end
 					forth_internal_cursor
@@ -451,13 +454,13 @@ feature {NONE} -- Implementation
 		do
 			word_text.append_character (last_char)
 			must_consume_last_char := False
-			word_width := word_width + word_end.first.character_width (last_char)
-			word_height := word_height.max (word_end.first.height)
-			if word_end.second > 1 then
-				create next_word_begin.make (word_end.first, word_end.second)
-				word_end.put_second (word_end.second - 1)
+			word_width := word_width + word_end.inline.character_width (last_char)
+			word_height := word_height.max (word_end.inline.height)
+			if word_end.position > 1 then
+				create next_word_begin.make (word_end.inline, word_end.position)
+				word_end.back
 			else
-				create next_word_begin.make (word_end.first, 1)
+				create next_word_begin.make (word_end.inline, 1)
 				word_end := last_word_end
 			end
 			word_done := True
@@ -475,7 +478,7 @@ feature {NONE} -- Implementation
 	forth_word_end is
 		do
 			if not internal_cursor.off then
-				word_end.put_second (word_end.second + 1)
+				word_end.forth
 			end
 		end
 
@@ -487,12 +490,11 @@ feature {NONE} -- Implementation
 				--| Advance to next inline
 				internal_cursor.forth
 				if not internal_cursor.off then
-					create last_word_end.make (word_end.first, word_end.second - 1)
-					word_end.put_first (internal_cursor.item)
-					word_end.put_second (1)
+					create last_word_end.make (word_end.inline, word_end.position - 1)
+					word_end.make (internal_cursor.item, 1)
 				else
 					--| adjust end
-					word_end.put_second (word_end.second - 1)
+					word_end.back
 				end
 			end
 		end
@@ -504,12 +506,12 @@ feature {NONE} -- Implementation
 	word_length : INTEGER
 	word_text : STRING
 
-	word_begin : DS_PAIR[FO_INLINE, INTEGER]
-	word_end : DS_PAIR[FO_INLINE, INTEGER]
+	word_begin : FO_CHARACTER_REFERENCE
+	word_end : FO_CHARACTER_REFERENCE
 
 	word_height : FO_MEASUREMENT
 
-	next_word_begin : DS_PAIR [FO_INLINE, INTEGER]
+	next_word_begin : FO_CHARACTER_REFERENCE
 
 	last_char : CHARACTER
 	last_char_inline : FO_INLINE
@@ -528,7 +530,7 @@ feature {NONE} -- Implementation
 
 	must_consume_last_char : BOOLEAN
 
-	last_word_end : DS_PAIR[FO_INLINE,INTEGER]
+	last_word_end : FO_CHARACTER_REFERENCE
 
 	word_width : FO_MEASUREMENT
 
@@ -563,7 +565,7 @@ feature {NONE} -- Implementation
 			prefix_end_valid: prefix_end > 0 and prefix_end <= item_text.count
 		local
 			index : INTEGER
-			pair : DS_PAIR[FO_INLINE, INTEGER]
+			character : FO_CHARACTER_REFERENCE
 			p_width, e_width : FO_MEASUREMENT
 		do
 			create p_width.points (0)
@@ -572,12 +574,12 @@ feature {NONE} -- Implementation
 			until
 				index > prefix_end
 			loop
-				pair := item_character (index)
-				p_width := p_width + pair.first.character_width (pair.first.item (pair.second))
+				character := item_character (index)
+				p_width := p_width + character.inline.character_width (character.inline.item (character.position))
 				index := index + 1
 			end
-			if pair /= Void and then extra /= '%U' then
-				e_width := pair.first.character_width (extra)
+			if character /= Void and then extra /= '%U' then
+				e_width := character.inline.character_width (extra)
 			else
 				create e_width.points (0)
 			end

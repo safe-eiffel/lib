@@ -19,11 +19,12 @@ inherit
 		end
 
 	FO_RENDERABLE
-		undefine
-			post_render
 		redefine
 			pre_render, is_equal, out,
-			render_forth, is_renderable
+			render_forth, is_renderable,
+			post_render
+		select
+			post_render
 		end
 
 	FO_RENDER_STATE
@@ -37,6 +38,15 @@ inherit
 		end
 
 	FO_BORDERABLE
+		rename
+			post_render as post_render_borderable
+		undefine
+			is_equal, out
+		end
+
+	FO_TARGETABLE
+		rename
+			post_render as post_render_targetable
 		undefine
 			is_equal, out
 		end
@@ -136,6 +146,11 @@ feature {NONE} -- Access
 
 	lines : DS_LIST [FO_LINE]
 			-- Pre rendered lines.
+
+feature {FO_INTERNAL} -- Status report
+
+	is_debugging: BOOLEAN
+			-- Is debugging code executed?
 
 feature -- Constants
 
@@ -274,6 +289,16 @@ feature -- Status setting
 			justification := justify_left
 		ensure
 			is_left_justified: is_left_justified
+		end
+
+feature {FO_INTERNAL} -- Element change
+
+	set_is_debugging (an_is_debugging: like is_debugging) is
+			-- Set `is_debugging' to `an_is_debugging'.
+		do
+			is_debugging := an_is_debugging
+		ensure
+			is_debugging_assigned: is_debugging = an_is_debugging
 		end
 
 feature -- Element change
@@ -455,6 +480,9 @@ feature {FO_DOCUMENT, FO_RENDERABLE} -- Basic operations
 			debug ("fo_show_block_margins")
 				show_margins (document, use_top_margins, use_bottom_margins)
 			end
+			if is_debugging then
+				show_margins (document, use_top_margins, use_bottom_margins)
+			end
 			last_region := region
 			is_prerendered := False
 		end
@@ -476,6 +504,12 @@ feature {FO_DOCUMENT, FO_RENDERABLE} -- Basic operations
 				set_render_before
 				last_region := region
 			end
+		end
+
+	post_render (document: FO_DOCUMENT; region: FO_RECTANGLE) is
+		do
+			post_render_targetable (document, region)
+			post_render_borderable (document, region)
 		end
 
 
@@ -580,6 +614,9 @@ feature {NONE} -- Implementation
 						create s.make (1)
 						create current_inline.make_inherit (s, inlines.first)
 						debug ("fo_show_paragraph_marks")
+							show_paragraph_mark (current_inline)
+						end
+						if is_debugging then
 							show_paragraph_mark (current_inline)
 						end
 						line.add_inline (current_inline)
