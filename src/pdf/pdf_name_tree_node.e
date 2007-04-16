@@ -1,6 +1,6 @@
 indexing
-	description: "Objects that ..."
-	author: ""
+	description: "PDF Name tree nodes."
+	author: "Paul G. Crismer"
 	date: "$Date$"
 	revision: "$Revision$"
 
@@ -29,30 +29,6 @@ feature -- Measurement
 	count : INTEGER is deferred end
 
 	capacity : INTEGER is 10
-
-feature -- Status report
-
-feature -- Status setting
-
-feature -- Cursor movement
-
-feature -- Element change
-
-feature -- Removal
-
-feature -- Resizing
-
-feature -- Transformation
-
-feature -- Conversion
-
-feature -- Duplication
-
-feature -- Miscellaneous
-
-feature -- Basic operations
-
-feature -- Obsolete
 
 feature -- Conversion
 
@@ -107,8 +83,5 @@ feature {NONE} -- Implementation
 		ensure
 			definition: s.count > 2 implies Result = (s.item (1) = '[' and then s.item (s.count) = ']')
 		end
-
-invariant
-	invariant_clause: True -- Your invariant here
 
 end

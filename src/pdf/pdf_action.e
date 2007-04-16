@@ -1,6 +1,6 @@
 indexing
-	description: "Objects that ..."
-	author: ""
+	description: "PDF Actions."
+	author: "Paul G. Crismer"
 	date: "$Date$"
 	revision: "$Revision$"
 
@@ -26,6 +26,9 @@ feature {NONE} -- Initialization
 		end
 
 	make_goto_destination (a_destination : PDF_DESTINATION) is
+			-- Action Goto `a_destination'.
+		require
+			a_destination_not_void: a_destination /= Void
 		do
 			make
 			add_entry (names.s.value, names.goto)
@@ -33,45 +36,14 @@ feature {NONE} -- Initialization
 		end
 
 	make_uri (a_uri : UT_URI) is
+			-- Actuion URI `a_uri'
+		require
+			a_uri_not_void: a_uri /= Void
 		do
 			make
 			add_entry (names.s.value, names.uri)
 			add_entry (names.uri.value, create {PDF_STRING}.make (a_uri.full_uri))
 		end
 
-feature -- Access
-
-feature -- Measurement
-
-feature -- Status report
-
-feature -- Status setting
-
-feature -- Cursor movement
-
-feature -- Element change
-
-feature -- Removal
-
-feature -- Resizing
-
-feature -- Transformation
-
-feature -- Conversion
-
-feature -- Duplication
-
-feature -- Miscellaneous
-
-feature -- Basic operations
-
-feature -- Obsolete
-
-feature -- Inapplicable
-
-feature {NONE} -- Implementation
-
-invariant
-	invariant_clause: True -- Your invariant here
 
 end

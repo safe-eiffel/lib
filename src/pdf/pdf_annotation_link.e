@@ -1,6 +1,6 @@
 indexing
-	description: "Objects that ..."
-	author: ""
+	description: "PDF Link annotations."
+	author: "Paul G. Crismer"
 	date: "$Date$"
 	revision: "$Revision$"
 
@@ -19,6 +19,7 @@ create
 feature {NONE} -- Initialization
 
 	make_destination (a_document : PDF_DOCUMENT; a_rectangle: PDF_RECTANGLE; a_destination : PDF_DESTINATION) is
+			-- Link to 
 		local
 			action : PDF_ACTION
 		do
@@ -36,7 +37,6 @@ feature {NONE} -- Initialization
 			a_document.xref.add_entry (Current)
 			rect := a_rectangle
 			setup_dictionary
-			-- dictionary.add_entry (names.dest.value, destination)
 			dictionary.add_entry (names.a.value, an_action)
 		ensure
 			registered: a_document.xref.last_object = Current

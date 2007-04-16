@@ -1,6 +1,6 @@
 indexing
-	description: "Objects that ..."
-	author: ""
+	description: "PDF Annotations."
+	author: "Paul G. Crismer"
 	date: "$Date$"
 	revision: "$Revision$"
 
@@ -16,36 +16,44 @@ inherit
 feature -- Access
 
 	type : PDF_NAME is
+			-- Object type.
 		once
 			Result := names.annot
 		end
 
 	subtype : PDF_NAME is
+			-- Object subtype.
 		deferred
 		end
 
 	rect : PDF_RECTANGLE
+			-- Rectangle that is subject to current annotation.
 
 	border_dash : ARRAY[INTEGER]
-
+			-- Border dash information.
+			
 feature -- Measurement
 
-	 border_width : INTEGER
+	 border_width : DOUBLE
+	 		-- Border width
 
 feature -- Status report
 
 	is_border_beveled : BOOLEAN is
+			-- Is the annotation border beveled?
 		do
 			Result := border_style = border_style_solid
 		end
 
 
 	is_border_dashed : BOOLEAN is
+			-- Is the annotation border beveled?
 		do
 			Result := border_style = border_style_dashed
 		end
 
 	is_border_inset : BOOLEAN is
+			-- Is the annotation border inset?
 		do
 			Result := border_style = border_style_inset
 		end
@@ -56,11 +64,13 @@ feature -- Status report
 		end
 
 	is_border_solid : BOOLEAN is
+			-- Is the annotation border solid?
 		do
 			Result := border_style = border_style_solid
 		end
 
 	is_border_underline : BOOLEAN is
+			-- Is the annotation a single line at the bottom of the annotation rectangle?
 		do
 			Result := border_style = border_style_underline
 		end
@@ -141,22 +151,12 @@ feature -- Element change
 			border_width_zero: border_width = 0
 		end
 
-feature -- Removal
-
-feature -- Resizing
-
-feature -- Transformation
-
 feature -- Conversion
 
 	to_pdf : STRING is
 		do
 			Result := to_pdf_using_put_pdf
 		end
-
-feature -- Duplication
-
-feature -- Miscellaneous
 
 feature -- Basic operations
 
@@ -178,10 +178,6 @@ feature -- Basic operations
 		do
 		end
 
-feature -- Obsolete
-
-feature -- Inapplicable
-
 feature {NONE} -- Implementation
 
 	dictionary : PDF_DICTIONARY
@@ -198,7 +194,7 @@ feature {NONE} -- Implementation
 		do
 			create Result.make
 			Result.add_entry (names.type.value, names.border)
-			Result.add_entry (names.w.value, create {PDF_NUMBER}.from_integer (border_width))
+			Result.add_entry (names.w.value, create {PDF_NUMBER}.from_double (border_width))
 			if not is_border_none then
 				Result.add_entry (names.s.value, border_style_name)
 				if is_border_dashed then
@@ -236,16 +232,6 @@ feature {NONE} -- Implementation
 		ensure
 			result_not_void: Result /= Void
 		end
-
---S name (Optional) The border style:
---S (Solid) A solid rectangle surrounding the annotation.
---D (Dashed) A dashed rectangle surrounding the annotation. The dash pattern
---is specified by the D entry (see below).
---B (Beveled) A simulated embossed rectangle that appears to be raised above the
---surface of the page.
---I (Inset) A simulated engraved rectangle that appears to be recessed below the
---surface of the page.
---U (Underline) A single line along the bottom of the annotation rectangle.
 
 invariant
 

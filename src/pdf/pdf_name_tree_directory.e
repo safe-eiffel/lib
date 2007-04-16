@@ -1,6 +1,6 @@
 indexing
-	description: "Objects that ..."
-	author: ""
+	description: "PDF Name tree directories."
+	author: "Paul G. Crismer"
 	date: "$Date$"
 	revision: "$Revision$"
 
