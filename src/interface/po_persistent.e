@@ -17,9 +17,9 @@ inherit
 	PO_STATUS_USE
 	PO_STATUS_MANAGEMENT
 
-feature {PO_PERSISTENT, PO_REFERENCE, PO_ADAPTER, PO_CACHE} -- Access
+feature {PO_PERSISTENT, PO_REFERENCE, PO_ADAPTER, PO_CACHE, PO_ERROR} -- Access
 
-	pid : PO_PID
+	frozen pid : PO_PID
 		-- Persistence identifier, if any.
 
 feature -- Access
@@ -94,26 +94,38 @@ feature -- Status report
 
 	is_writable : BOOLEAN is
 			-- Is Current writable on datastore?
+		local
+			adapter : like adapter_for_me
 		do
-			Result := adapter_for_me.can_write
+			adapter := adapter_for_me
+			Result := adapter /= Void and then adapter.can_write
 		end
 
 	is_updatable : BOOLEAN is
 			-- Is Current updatable on datastore?
+		local
+			adapter :  like adapter_for_me
 		do
-			Result := adapter_for_me.can_update
+			adapter := adapter_for_me
+			Result := adapter /= Void and then adapter.can_update
 		end
 
 	is_refreshable : BOOLEAN is
 			-- Is Current refreshable from datastore?
+		local
+			adapter :  like adapter_for_me
 		do
-			Result := adapter_for_me.can_refresh
+			adapter := adapter_for_me
+			Result := adapter /= Void and then adapter.can_refresh
 		end
 
 	is_deletable : BOOLEAN is
 			-- Is Current deletable on datastore?
+		local
+			adapter :  like adapter_for_me
 		do
-			Result := adapter_for_me.can_delete
+			adapter := adapter_for_me
+			Result := adapter /= Void and then adapter.can_delete
 		end
 
 feature {PO_ADAPTER} -- Status setting
@@ -159,9 +171,9 @@ feature -- Basic operations
 	write is
 			-- Write current object state to data store.
 		require
+			has_adapter: persistence_manager.has_adapter (persistent_class_name)
 			volatile: is_volatile
 			writable: is_writable
-			has_adapter: persistence_manager.has_adapter (persistent_class_name)
 		local
 			adapter : PO_ADAPTER[like Current]
 		do
@@ -179,6 +191,7 @@ feature -- Basic operations
 	update is
 			-- Update data store from current object state.
 		require
+			has_adapter: persistence_manager.has_adapter (persistent_class_name)
 			persistent: is_persistent
 			updatable: is_updatable
 		local
@@ -198,6 +211,7 @@ feature -- Basic operations
 	delete is
 			-- Delete current object state from data store.
 		require
+			has_adapter: persistence_manager.has_adapter (persistent_class_name)
 			persistent: is_persistent
 			deletable: is_deletable
 		local
@@ -218,6 +232,7 @@ feature -- Basic operations
 	refresh is
 			-- Delete current object state from data store.
 		require
+			has_adapter: persistence_manager.has_adapter (persistent_class_name)
 			persistent: is_persistent
 			refreshable: is_refreshable
 		local
@@ -249,8 +264,10 @@ feature {NONE} -- Implementation
 			if persistence_manager.found then
 				Result ?= persistence_manager.last_adapter
 			else
-				persistence_manager.error_handler.report_could_not_find_adapter (generator, "adapter_for_me")
+				persistence_manager.error_handler.report_could_not_find_adapter (persistent_name, generator, "adapter_for_me")
 			end
+		ensure
+			result_not_void_if_adapter_registered: Result /= Void implies persistence_manager.has_adapter (persistent_class_name)
 		end
 
 	set_modified (value : BOOLEAN) is

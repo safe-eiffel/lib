@@ -21,7 +21,7 @@ inherit
 		redefine
 			last_pid
 		end
-		
+
 	ECLI_ADAPTER_WRITE_SKELETON[COPY]
 		redefine
 			last_pid
@@ -37,15 +37,20 @@ inherit
 			last_pid
 		end
 
-	ECLI_ADAPTER_SINK_SKELETON[COPY]
-		undefine
-			on_adapter_connected, on_adapter_disconnect,
-			can_delete, can_read, can_write, can_update,
-			delete, read, write, update
+	ECLI_ADAPTER_REFRESH_SKELETON[COPY]
 		redefine
 			last_pid
 		end
-		
+
+	ECLI_ADAPTER_SINK_SKELETON[COPY]
+		undefine
+			on_adapter_connected, on_adapter_disconnect,
+			can_delete, can_read, can_write, can_update, can_refresh,
+			delete, read, write, update, refresh
+		redefine
+			last_pid
+		end
+
 	COPY_ADAPTER_ACCESS_ROUTINES
 		rename
 			copy_borrowed as read_borrowed
@@ -54,7 +59,7 @@ inherit
 creation
 
 	make
-	
+
 feature {NONE} -- Access
 
 	last_pid : COPY_PID
@@ -83,25 +88,24 @@ feature -- Basic operations
 	read_from_isbn (isbn : STRING) is
 			-- Read copies identified by `isbn'.
 		do
-			
-		end
-		
-feature {NONE} -- Factory
 
-		
+		end
+
+feature {NONE} -- Framework - Factory
+
 	create_pid_from_object (an_object : like object_anchor) is
-			-- 
+			--
 		do
 			create last_pid.make (an_object.book.isbn, an_object.number)
 		end
-		
+
 	extend_cursor_from_copy_id (id : COPY_ID) is
 		do
 			create last_pid.make (id.isbn.as_string, id.serial_number.as_integer)
 			last_cursor.add_last_pid (Current)
 		end
 
-feature {PO_DATASTORE} -- Basic operations
+feature {PO_DATASTORE} -- Framework - Basic operations
 
 	on_adapter_connected is
 		do
@@ -120,8 +124,43 @@ feature {PO_DATASTORE} -- Basic operations
 			update_query.close
 			delete_query.close
 		end
-		
-feature {NONE} -- Implementation
+
+feature {NONE} -- Framework - Implementation
+
+	read_cursor : COPY_READ
+
+	exists_cursor : COPY_EXIST
+
+	delete_query : COPY_DELETE
+
+	write_query : COPY_WRITE
+
+	refresh_cursor : like read_cursor is
+		do
+			Result := read_cursor
+		end
+
+
+	update_query : COPY_UPDATE
+
+	copy_id_from_pid (a_pid : like last_pid) : COPY_ID is
+			--
+		do
+			create Result.make
+			Result.isbn.set_item (a_pid.isbn)
+			Result.serial_number.set_item (a_pid.serial)
+		end
+
+	exists_value : INTEGER is do Result := exists_cursor.item.exists_count.as_integer end
+
+	exists_test (a_cursor : like exists_cursor) : BOOLEAN is
+		do
+			a_cursor.start
+			if a_cursor.is_ok then
+				Result := a_cursor.item.exists_count.as_integer > 0
+				a_cursor.go_after
+			end
+		end
 
 	init_parameters_for_read (a_pid: like last_pid) is
 		local
@@ -146,7 +185,7 @@ feature {NONE} -- Implementation
 			parameters.loc_store.set_item (object.store)
 			update_query.set_parameters_object (parameters)
 		end
-		
+
 	init_parameters_for_write (object: like last_object; a_pid: like last_pid) is
 		local
 			parameters : COPY_WRITE_PARAMETERS
@@ -162,7 +201,7 @@ feature {NONE} -- Implementation
 			parameters.loc_store.set_item (object.store)
 			write_query.set_parameters_object (parameters)
 		end
-		
+
 	init_parameters_for_exists (a_pid: like last_pid) is
 		do
 			exists_cursor.set_parameters_object (copy_id_from_pid (a_pid))
@@ -172,7 +211,7 @@ feature {NONE} -- Implementation
 		do
 			delete_query.set_parameters_object (copy_id_from_pid (a_pid))
 		end
-		
+
 	create_object_from_read_cursor (a_cursor : like read_cursor; a_pid : like last_pid) is
 		local
 			book_adapter : BOOK_ADAPTER
@@ -191,7 +230,17 @@ feature {NONE} -- Implementation
 			create book_reference.set_pid_from_adapter (book_adapter)
 			create last_object.make_lazy (book_reference, a_cursor.item.serial_number.as_integer)
 		end
-		
+	fill_from_refresh_cursor (object : like last_object) is
+		do
+
+		end
+
+	init_parameters_for_refresh (a_pid : like last_pid) is
+		do
+
+		end
+
+
 	fill_object_from_read_cursor  (a_cursor : like read_cursor; object : like last_object) is
 		local
 			ba : BORROWER_ADAPTER
@@ -223,34 +272,5 @@ feature {NONE} -- Implementation
 				end
 			end
 		end
-	
-	read_cursor : COPY_READ
 
-	exists_cursor : COPY_EXIST
-	
-	delete_query : COPY_DELETE
-
-	write_query : COPY_WRITE
-	
-	exists_value : INTEGER is do Result := exists_cursor.item.exists_count.as_integer end
-
-	exists_test (a_cursor : like exists_cursor) : BOOLEAN is
-		do
-			a_cursor.start
-			if a_cursor.is_ok then
-				Result := a_cursor.item.exists_count.as_integer > 0
-				a_cursor.go_after
-			end
-		end
-		
-	update_query : COPY_UPDATE
-	
-	copy_id_from_pid (a_pid : like last_pid) : COPY_ID is
-			-- 
-		do
-			create Result.make
-			Result.isbn.set_item (a_pid.isbn)
-			Result.serial_number.set_item (a_pid.serial)
-		end
-		
 end

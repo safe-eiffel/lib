@@ -44,7 +44,7 @@ feature -- Basic operations
 					object.set_deleted
 				else
 					status.set_datastore_error (delete_query.native_code, delete_query.diagnostic_message)
-					error_handler.report_datastore_error (generator, "delete", delete_query.native_code, delete_query.diagnostic_message)
+					error_handler.report_query_error (generator, "delete", delete_query)
 				end
 			else
 				status.set_framework_error (status.error_non_conformant_pid)
@@ -52,7 +52,13 @@ feature -- Basic operations
 			end
 		end
 
-feature {PO_ADAPTER} -- Basic operations
+feature {NONE} -- Framework - Access
+
+	delete_query : ECLI_QUERY is
+		deferred
+		end
+
+feature {PO_ADAPTER} -- Framework - Basic operations
 
 	init_parameters_for_delete (a_pid : like last_pid) is
 			-- Initialize parameters of `delete_query' with information from `a_pid'.
@@ -61,12 +67,6 @@ feature {PO_ADAPTER} -- Basic operations
 		deferred
 		ensure
 			bound_parameters: delete_query.bound_parameters
-		end
-
-feature {PO_ADAPTER} -- Implementation
-
-	delete_query : ECLI_QUERY is
-		deferred
 		end
 
 end

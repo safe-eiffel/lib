@@ -41,7 +41,7 @@ feature -- Basic operations
 						end
 					else
 						status.set_framework_error (status.Error_could_not_refresh_object)
-						error_handler.report_could_not_refresh_object (object)
+						error_handler.report_could_not_refresh_object (generator, object)
 					end
 				else
 					status.set_datastore_error (refresh_cursor.native_code, refresh_cursor.diagnostic_message)

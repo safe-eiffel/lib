@@ -25,7 +25,10 @@ feature -- Access
 		deferred
 		end
 
-	error_handler : PO_ERROR_HANDLER
+	error_handler : PO_ERROR_HANDLER is
+		deferred
+		end
+
 
 feature -- Measurement
 
@@ -63,6 +66,15 @@ feature {PO_LAUNCHER} -- Status setting
 		ensure
 			registered: has_adapter (an_adapter.persistent_class_name)
 			inserted: adapters.has (an_adapter) and then count = old count + 1
+		end
+
+	set_error_handler (an_error_handler : PO_ERROR_HANDLER) is
+			-- Set `error_handler' to `an_error_handler'.
+		require
+			an_error_handler_not_void: an_error_handler /= Void
+		deferred
+		ensure
+			error_handler_set: error_handler /= Void
 		end
 
 feature -- Basic operations

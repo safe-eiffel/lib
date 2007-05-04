@@ -15,6 +15,8 @@ inherit
 	PO_ADAPTER[G]
 		undefine
 			on_adapter_connected, on_adapter_disconnect
+		redefine
+			error_handler
 		end
 
 	PO_SHARED_MANAGER
@@ -34,6 +36,7 @@ feature {NONE} -- Initialization
 			set_datastore (a_datastore)
 			create {PO_HASHED_CACHE[G]}cache.make (10)
 			create last_cursor.make
+			create_error_handler
 		ensure
 			datastore_set: a_datastore /= Void
 		end
@@ -47,18 +50,27 @@ feature {NONE} -- Initialization
 			set_datastore (a_datastore)
 			cache := a_cache
 			create last_cursor.make
+			create_error_handler
 		ensure
 			datastore_set: datastore = a_datastore
 			cache_set: cache = a_cache
 		end
 
-feature {PO_ADAPTER} -- Access
+feature -- Access
 
-	last_object: G
-		-- Last created object
+	error_handler : PO_ECLI_ERROR_HANDLER is
+		deferred
+		end
+
+feature {PO_ADAPTER, PO_CURSOR, PO_REFERENCE, PO_PERSISTENT, PO_REFERENCE_ACCESS} -- Framework - Access
 
 	last_pid: PO_PID
 		-- Last created pid
+
+feature {PO_ADAPTER} -- Framework - Access
+
+	last_object: G
+		-- Last created object
 
 feature -- Access
 
@@ -75,8 +87,6 @@ feature -- Status report
 
 	is_enabled_cache_on_read : BOOLEAN
 			-- Are read objects inserted in cache ?
-
-feature -- Status setting
 
 feature -- Measurement
 
@@ -141,7 +151,14 @@ feature -- Basic operations
 			is_enabled_cache_on_write := False
 		end
 
-feature {PO_ADAPTER} -- Basic operations
+feature {NONE} -- Framework - Basic operations
+
+	create_error_handler is
+			-- Create `error_handler'.
+		deferred
+		ensure
+			error_handler_not_void: error_handler /= Void
+		end
 
 	init_parameters_for_exists (a_pid : like last_pid) is
 			-- Initialize parameters of `Sql_exists' with information from `a_pid'.
@@ -150,26 +167,32 @@ feature {PO_ADAPTER} -- Basic operations
 		deferred
 		end
 
-feature {PO_ADAPTER} -- Implementation
+feature {NONE} -- Implementation
 
-	query_error_message: STRING
+	query_error_message: STRING is
 			-- Error message associated with last error
+		obsolete
+			"[2007-04-17]"
+		do
+		end
 
 	set_query_error_message (a_string : STRING) is
 			-- Set `query_error_message' to `a_string'.
+		obsolete
+			"[2007-04-17] Use `error_handler'.report_datastore_error"
 		require
 			a_string_not_void: a_string /= Void
 		do
-			query_error_message := a_string
-		ensure
-			query_error_message_set: query_error_message = a_string
+			error_handler.report_datastore_error (generator, "", 0, a_string)
 		end
 
-feature {PO_ADAPTER} -- Implementation
+feature {NONE} -- Framework - Access
 
 	exists_cursor : ECLI_CURSOR is
 		deferred
 		end
+
+feature {NONE} -- Framework - Status report
 
 	exists_test (a_cursor : like exists_cursor) : BOOLEAN is
 		require

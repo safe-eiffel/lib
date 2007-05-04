@@ -25,6 +25,7 @@ feature {NONE} -- Initialization
 
 		do
 			create adapters_table.make (10)
+			create error_handler.make_null
 		end
 
 feature -- Access
@@ -44,6 +45,8 @@ feature -- Access
 				cursor.forth
 			end
 		end
+
+	error_handler : PO_ERROR_HANDLER
 
 feature -- Measurement
 
@@ -77,6 +80,11 @@ feature {PO_LAUNCHER} -- Element change
 	add_adapter (an_adapter: PO_ADAPTER [PO_PERSISTENT]) is
 		do
 			adapters_table.force (an_adapter, an_adapter.persistent_class_name)
+		end
+
+	set_error_handler (an_error_handler : PO_ERROR_HANDLER) is
+		do
+			error_handler := an_error_handler
 		end
 
 feature -- Basic operations

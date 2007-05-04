@@ -2,9 +2,13 @@ indexing
 
 	description:
 
-		"Adapters using ECLI that implement no access"
+		"[
+			Adapters using ECLI that implement 
+			- all framework accesses as no-operation
+			- error_handler and create_error_handler
+		]"
 
-	copyright: "Copyright (c) 2004, Paul G. Crismer and others"
+	copyright: "Copyright (c) 2004-today, Paul G. Crismer and others"
 	license: "Eiffel Forum License v2 (see forum.txt)"
 	date: "$Date$"
 
@@ -13,6 +17,10 @@ deferred class ECLI_ADAPTER_SINK_SKELETON[G->PO_PERSISTENT]
 inherit
 
 	ECLI_ADAPTER_COMMON_SKELETON[G]
+
+feature {NONE} -- Framework - Access
+
+	error_handler : PO_ECLI_ERROR_HANDLER
 
 feature -- Status report
 
@@ -49,15 +57,21 @@ feature -- Basic operations
 			do_nothing
 		end
 
+feature {PO_DATASTORE} -- Framework - Basic operations
+
 	on_adapter_connected is
 		do
 			do_nothing
 		end
-		
+
 	on_adapter_disconnect is
 		do
 			do_nothing
 		end
-		
-		
+
+	create_error_handler is
+		do
+			create error_handler.make_standard
+		end
+
 end

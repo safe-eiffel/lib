@@ -1,8 +1,8 @@
 indexing
 
-	
+
 		description: "read book by isbn"
-	
+
 	status: "Cursor/Query automatically generated for 'BOOK_READ_BY_ISBN'. DO NOT EDIT!"
 	generated: "2005/08/11 12:39:01.375"
 

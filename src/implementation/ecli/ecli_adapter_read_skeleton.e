@@ -51,7 +51,13 @@ feature -- Basic operations
 			end
 		end
 
-feature {NONE} -- Basic operations
+feature {NONE} -- Framework - Access
+
+	read_cursor : ECLI_CURSOR is
+		deferred
+		end
+
+feature {NONE} -- Framework - Basic operations
 
 	init_parameters_for_read (a_pid : like last_pid) is
 			-- Initialize parameters of `read_cursor' with information from `a_pid'.
@@ -62,11 +68,10 @@ feature {NONE} -- Basic operations
 			bound_parameters: read_cursor.bound_parameters
 		end
 
-feature {NONE} -- Factory
+feature {NONE} -- Framework - Factory
 
 	create_object_from_read_cursor  (a_cursor : like read_cursor; a_pid : like last_pid) is
 			-- Create object and just ensure invariant.
-
 		require
 			last_object_void: last_object = Void
 			a_cursor_not_void: a_cursor /= Void
@@ -82,12 +87,6 @@ feature {NONE} -- Factory
 		require
 			a_cursor_not_void: a_cursor /= Void
 			object_not_void: object /= Void
-		deferred
-		end
-
-feature {NONE} -- Implementation
-
-	read_cursor : ECLI_CURSOR is
 		deferred
 		end
 

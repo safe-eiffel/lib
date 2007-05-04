@@ -21,7 +21,7 @@ inherit
 		redefine
 			last_pid
 		end
-		
+
 	ECLI_ADAPTER_WRITE_SKELETON[BOOK]
 		redefine
 			last_pid
@@ -31,12 +31,12 @@ inherit
 		redefine
 			last_pid
 		end
-	
+
 	ECLI_ADAPTER_UPDATE_SKELETON[BOOK]
 		redefine
 			last_pid
 		end
-	
+
 	ECLI_ADAPTER_SINK_SKELETON[BOOK]
 		undefine
 			on_adapter_connected, on_adapter_disconnect,
@@ -54,7 +54,7 @@ inherit
 creation
 
 	make
-	
+
 feature {PO_ADAPTER}-- Access
 
 	last_pid : BOOK_PID
@@ -62,18 +62,18 @@ feature {PO_ADAPTER}-- Access
 feature {NONE}-- Basic operations
 
 	create_pid_from_object (b : like object_anchor) is
-			-- 
+			--
 		do
 			create last_pid.make_from_isbn (b.isbn)
 		end
-		
+
 feature {PO_ADAPTER} -- Factory
 
 	create_pid_for_isbn (an_isbn : STRING) is
 		do
 			create last_pid.make_from_isbn (an_isbn)
 		end
-		
+
 feature -- Basic operations
 
 	read_by_isbn (isbn : STRING) is
@@ -82,7 +82,7 @@ feature -- Basic operations
 			create last_pid.make_from_isbn (isbn)
 			read (last_pid)
 		end
-		
+
 	read_by_title (title : STRING) is
 			-- Read by `title'.
 		require else
@@ -97,23 +97,23 @@ feature -- Basic operations
 			last_object := Void -- ensure invariant
 
 		end
-		
+
 	read_by_author (author_name : STRING) is
 		do
 		end
-		
+
 feature -- Obsolete
 
 feature {NONE} -- Inapplicable
 
 	session : ECLI_SESSION is do Result := datastore.session end
-	
+
 feature {NONE} -- Implementation
 
 	read_cursor : BOOK_READ_BY_ISBN
-	
+
 	update_query : BOOK_UPDATE
-	
+
 	delete_query : BOOK_DELETE
 
 	on_adapter_connected is
@@ -123,7 +123,7 @@ feature {NONE} -- Implementation
 			create update_query.make (session)
 			create delete_query.make (session)
 		end
-		
+
 	on_adapter_disconnect is
 		do
 			read_cursor.close
@@ -133,13 +133,13 @@ feature {NONE} -- Implementation
 		end
 
 	init_parameters_for_read (a_pid : like last_pid) is
-			-- 
+			--
 		do
 			read_cursor.set_parameters_object (book_id_parameter (a_pid))
 		end
-		
+
 	init_parameters_for_delete  (a_pid : like last_pid) is
-			-- 
+			--
 		do
 			delete_query.set_parameters_object (book_id_parameter (a_pid))
 		end
@@ -161,34 +161,34 @@ feature {NONE} -- Implementation
 			create_pid_from_object (last_object)
 			last_object.set_pid (last_pid)
 		end
-		
+
 	fill_object_from_read_cursor (a_cursor : like read_cursor; object : like last_object) is
-			-- 
+			--
 		do
 			do_nothing
 		end
 
 	init_parameters_for_write (object : like last_object; a_pid : like last_pid) is
-		do			
+		do
 			write_query.set_parameters_object (modify_parameters(object, a_pid))
 		end
 
 	init_parameters_for_update (object : like last_object; a_pid : like last_pid) is
-			-- 
+			--
 		do
 			update_query.set_parameters_object (modify_parameters (object, a_pid))
-		end		
-	
+		end
+
 	write_query : BOOK_WRITE
-	
+
 	modify_parameters (object : like last_object; a_pid : like last_pid) : BOOK_MODIFY_PARAMETERS is
 		do
 			create Result.make
 			Result.isbn.set_item (a_pid.isbn)
 			Result.author.set_item (object.author)
-			Result.title.set_item (object.title)			
+			Result.title.set_item (object.title)
 		end
-	
+
 	book_id_parameter (a_pid : like last_pid) : BOOK_ID is
 		do
 			create Result.make

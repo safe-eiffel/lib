@@ -80,16 +80,18 @@ feature -- Access
 			created_for_volatile: object.is_volatile implies Result = last_pid
 		end
 
-	error_handler : PO_ERROR_HANDLER
-
-feature {PO_ADAPTER, PO_CURSOR, PO_REFERENCE, PO_PERSISTENT, PO_REFERENCE_ACCESS} -- Access
+	error_handler : PO_ERROR_HANDLER is
+		deferred
+		end
+		
+feature {PO_ADAPTER, PO_CURSOR, PO_REFERENCE, PO_PERSISTENT, PO_REFERENCE_ACCESS} -- Framework - Access
 
 	last_pid : PO_PID is
 			-- Last PID created by factory features.
 		deferred
 		end
 
-feature {PO_ADAPTER} -- Access
+feature {PO_ADAPTER} -- Framework - Access
 
 	last_object : G is
 			-- Last object created by factory features.
@@ -314,7 +316,7 @@ feature -- Basic operations
 			cache_count_is_0 : cache_count = 0
 		end
 
-feature {PO_DATASTORE} -- Basic Operations
+feature {PO_DATASTORE} -- Framework - Basic Operations
 
 	on_adapter_connected is
 			-- Callback after adapter has been connected.
@@ -350,7 +352,7 @@ feature -- Contract support
 			result_not_void: Result /= Void
 		end
 
-feature -- Factory
+feature {PO_REFERENCE} -- Framework - Factory
 
 	create_pid_from_object (an_object : like object_anchor) is
 			-- Create a pid from a volatile object.
@@ -370,5 +372,5 @@ invariant
 	valid_last_pid: last_pid /= Void implies is_pid_valid (last_pid)
 	last_cursor_not_void: last_cursor /= Void
 	error_handler_not_void: error_handler /= Void
-	
+
 end

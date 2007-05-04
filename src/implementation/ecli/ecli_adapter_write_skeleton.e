@@ -48,7 +48,13 @@ feature -- Basic operations
 			end
 		end
 
-feature {PO_ADAPTER} -- Basic operations
+feature {NONE} -- Framework - Access
+
+	write_query : ECLI_QUERY is
+		deferred
+		end
+
+feature {NONE} -- Framework - Basic operations
 
 	init_parameters_for_write (object : like last_object; a_pid : like last_pid) is
 			-- Initialize parameters of `write_query' with information from `object' and `a_pid'.
@@ -58,12 +64,6 @@ feature {PO_ADAPTER} -- Basic operations
 		deferred
 		ensure
 			bound_parameters: write_query.bound_parameters
-		end
-
-feature {PO_ADAPTER} -- Implementation
-
-	write_query : ECLI_QUERY is
-		deferred
 		end
 
 end

@@ -8,20 +8,20 @@ indexing
 	license: "Eiffel Forum License v2 (see forum.txt)"
 	date: "$Date$"
 
-deferred class ECLI_ADAPTER_READ_EXISTS_SKELETON [G -> PO_PERSISTENT] 
+deferred class ECLI_ADAPTER_READ_EXISTS_SKELETON [G -> PO_PERSISTENT]
 
 inherit
 
 	ECLI_ADAPTER_READ_SKELETON [G]
 
 
-feature {NONE} -- Implementation
+feature {NONE} -- Framework - Implementation
 
 	exists_cursor : ECLI_CURSOR is
 		do
 			Result := read_cursor
 		end
-		
+
 	init_parameters_for_exists (a_pid : like last_pid) is
 		do
 			init_parameters_for_read (a_pid)
@@ -35,7 +35,7 @@ feature {NONE} -- Implementation
 				if Result then
 					a_cursor.go_after
 				end
-			end	
+			end
 		end
 		
 end

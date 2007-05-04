@@ -12,9 +12,9 @@ class BOOKS_DATASTORE_ACCESS
 
 inherit
 
-	PO_SHARED_MANAGER 
+	PO_SHARED_MANAGER
 	PO_LAUNCHER
-	
+
 feature {BOOKS_DATASTORE_ACCESS} -- Access
 
 	book_adapter : BOOK_ADAPTER
@@ -24,7 +24,7 @@ feature {BOOKS_DATASTORE_ACCESS} -- Access
 feature -- Status report
 
 	is_persistence_framework_initialized : BOOLEAN
-	
+
 feature -- Basic operations
 
 	initialize_persistence_framework is
@@ -51,7 +51,7 @@ feature -- Basic operations
 					create {BOOK_ADAPTER_ECLI}book_adapter.make (store)
 					book_adapter.enable_cache_on_write
 					book_adapter.enable_cache_on_read
-					pom.add_adapter (book_adapter)
+--					pom.add_adapter (book_adapter)
 					create {BORROWER_ADAPTER_ECLI}borrower_adapter.make (store)
 					pom.add_adapter (borrower_adapter)
 					create {COPY_ADAPTER_ECLI}copy_adapter.make (store)
@@ -59,10 +59,10 @@ feature -- Basic operations
 					is_persistence_framework_initialized := True
 				else
 					print ("Error connecting to database%N")
-				end			
+				end
 			end
 		end
-		
+
 feature -- Obsolete
 
 feature -- Inapplicable
@@ -85,9 +85,9 @@ feature {NONE} -- Implementation
 				cursor.forth
 			end
 		end
-		
+
 	table_exists : BOOLEAN
-	
+
 	create_table is
 		local
 			ddl : ECLI_STATEMENT
@@ -125,10 +125,10 @@ feature {NONE} -- Implementation
 				print ("could not create table COPY : " + ddl.diagnostic_message + "%N")
 			end
 		end
-		
-	
-	
-		
+
+
+
+
 	pom : PO_MANAGER is do Result := persistence_manager end
 
 	store : ECLI_DATASTORE
