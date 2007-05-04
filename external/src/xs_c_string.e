@@ -83,6 +83,7 @@ feature {NONE} -- Initialization
 		ensure
 			handle_set: handle = p
 			capacity_set: capacity = a_capacity
+			internal_count_set: internal_count = -1
 		end
 
 feature -- Initialization
@@ -197,7 +198,7 @@ feature -- Status report
 	is_empty : BOOLEAN is
 			-- Is this an empty C string ?
 		do
-			Result := item (1) = '%U'
+			Result := count = 0
 		end
 
 	equal_string (s : STRING) : BOOLEAN is
@@ -231,6 +232,7 @@ feature -- Element change
 	wipe_out is
 		do
 			put ('%U', 1)
+			internal_count := 0
 		ensure
 			is_empty: is_empty
 		end
@@ -241,8 +243,12 @@ feature -- Element change
 			valid_index: index >= 1 and index <= capacity
 		do
 			c_memory_put_uint8 (c_memory_pointer_plus (handle, index - 1), c.code)
+			if internal_count >= 0 and internal_count < index then
+				internal_count := index
+			end
 		ensure
 			item_set: item (index) = c
+			count_set: internal_count >= 0 implies count >= index
 		end
 
 feature -- Conversion
@@ -300,8 +306,11 @@ feature -- Element change
 				index := index + 1
 			end
 			c_memory_put_uint8 (c_memory_pointer_plus (handle, s.count), 0)
+			internal_count := s.count
 		ensure
 			equal_strings: equal_string (s)
+			internal_count_set: internal_count = s.count
+			count_set: count = s.count
 		end
 
 	from_substring (s : STRING; i_start, i_end : INTEGER) is
@@ -326,8 +335,10 @@ feature -- Element change
 				offset := offset + 1
 			end
 			c_memory_put_uint8 (c_memory_pointer_plus (handle, offset), 0)
+			internal_count := i_end - i_start + 1
 		ensure
 			equal_strings: equal_string (s)
+			internal_count_set: internal_count = i_end - i_start + 1
 		end
 
 	dispose is
@@ -354,8 +365,14 @@ feature -- Basic operations
 
 	copy_to (s : STRING) is
 			-- copy 'Current' to `s'
+		local
+			length : INTEGER
 		do
-			string_copy_from_pointer (s, handle)
+			s.wipe_out
+			length := count
+			if length > 0 then
+				copy_substring_to (1, length, s)
+			end
 		ensure
 			s_equal_as_string: as_string.is_equal (s)
 		end
