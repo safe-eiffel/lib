@@ -441,7 +441,7 @@ feature {FO_DOCUMENT, FO_RENDERABLE} -- Basic operations
 					render_cursor := lines.new_cursor
 					render_cursor.start
 			until
-				render_cursor.off -- or else done
+				render_cursor.off
 			loop
 				create line_region.set (available_region.left, available_region.bottom,
 					available_region.right,	available_region.top)
@@ -507,9 +507,22 @@ feature {FO_DOCUMENT, FO_RENDERABLE} -- Basic operations
 		end
 
 	post_render (document: FO_DOCUMENT; region: FO_RECTANGLE) is
+		local
+			background_region : FO_RECTANGLE
 		do
 			post_render_targetable (document, region)
 			post_render_borderable (document, region)
+			--| background color?
+			if background_color /= Void then
+				if background_color.red < 255 or background_color.green < 255 or background_color.blue < 255 then
+					background_region := border_margins.content_region (region)
+					document.color_stream.gsave
+					document.color_stream.set_rgb_color (background_color.red /255, background_color.green/255, background_color.blue /255)
+					document.color_stream.rectangle (background_region.left.as_points, background_region.bottom.as_points, background_region.width.as_points, background_region.height.as_points)
+					document.color_stream.fill (document.current_page.path_fill_heuristics)
+					document.color_stream.grestore
+				end
+			end
 		end
 
 

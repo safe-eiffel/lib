@@ -431,6 +431,8 @@ feature {FO_RENDERABLE, FO_BORDERABLE} -- Access
 			Result := pages_cursor.item.page
 		end
 
+	color_stream : PDF_STREAM
+
 feature {NONE} -- Implementation
 
 	render_renderable (renderable : FO_RENDERABLE) is
@@ -454,35 +456,44 @@ feature {NONE} -- Implementation
 					unbreakable.pre_render (available_render_region)
 					if unbreakable.height > available_render_region.height then
 						-- append_page_break
-						append_break
+						if not unbreakable.unbreakables.first.is_page_break_before then
+							append_break
+						end
 					end
-					render_renderable (unbreakable)
+					render_single (unbreakable)
 				else
-					if renderable.is_page_break_before then
-						-- append_page_break
-						append_break
-					end
-					from
-						render_count := 1
-						renderable.render_start(Current, available_render_region)
-						if renderable.last_rendered_region /= Void then
-							renderable.post_render (Current, renderable.last_rendered_region)
-						end
-					until
-						renderable.is_render_off
-					loop
-						-- append_page_break
-						append_break
-						renderable.render_forth (Current, available_render_region)
-						if renderable.last_rendered_region /= Void then
-							renderable.post_render (Current, renderable.last_rendered_region)
-						end
-						render_count := render_count + 1
-					end
-					if renderable.last_rendered_region /= Void then
-						available_render_region := available_render_region.shrinked_top (renderable.last_rendered_region.height)
-					end
+					render_single (renderable)
 				end
+			end
+		end
+
+	render_single (renderable : FO_RENDERABLE) is
+		local
+			render_count : INTEGER
+		do
+			if renderable.is_page_break_before then
+				-- append_page_break
+				append_break
+			end
+			from
+				render_count := 1
+				renderable.render_start(Current, available_render_region)
+				if renderable.last_rendered_region /= Void then
+					renderable.post_render (Current, renderable.last_rendered_region)
+				end
+			until
+				renderable.is_render_after
+			loop
+				-- append_page_break
+				append_break
+				renderable.render_forth (Current, available_render_region)
+				if renderable.last_rendered_region /= Void then
+					renderable.post_render (Current, renderable.last_rendered_region)
+				end
+				render_count := render_count + 1
+			end
+			if renderable.last_rendered_region /= Void then
+				available_render_region := available_render_region.shrinked_top (renderable.last_rendered_region.height)
 			end
 		end
 
@@ -564,17 +575,19 @@ feature {NONE} -- Implementation
 			pages_cursor.finish
 
 			current_page.set_mediabox (current_section.page_rectangle.as_pdf)
+			color_stream := current_page.current_stream
+			current_page.add_stream (pdf_document)
 			if background_color /= Void then
 				if current_page.is_text_mode then
 					current_page.end_text
 				end
-				current_page.gsave
-				current_page.set_rgb_color (background_color.red / 255,
+				color_stream.gsave
+				color_stream.set_rgb_color (background_color.red / 255,
 					background_color.green / 255,
 					background_color.blue / 255)
-				current_page.rectangle (0, 0, current_page.mediabox.urx, current_page.mediabox.ury)
-				current_page.fill
-				current_page.grestore
+				color_stream.rectangle (0, 0, current_page.mediabox.urx, current_page.mediabox.ury)
+				color_stream.fill (current_page.path_fill_heuristics)
+				color_stream.grestore
 			end
 		ensure
 			page_rectangle_set: page_rectangle = current_section.page_rectangle
