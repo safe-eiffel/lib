@@ -140,6 +140,44 @@ feature -- Miscellaneous
 
 feature -- Basic operations
 
+	hyphenate (h : FO_HYPHENATION; width : FO_MEASUREMENT) is
+			-- Hyphenate current word so that current item is less than `width'
+			-- If hyphenation is not possible, current item is cut so that it is less than width
+		require
+			h_not_void: h /= Void
+			width_not_void: width /= Void
+			width_positive: width > width.zero
+		local
+			last_end : INTEGER
+			hy_width, last_width : FO_MEASUREMENT
+			points_cursor : DS_LIST_CURSOR[INTEGER]
+			done : BOOLEAN
+		do
+			h.hyphenate (item_text)
+			from
+				points_cursor := h.hyphenation_points.new_cursor
+				points_cursor.start
+				last_end := 0
+				create last_width.make_zero
+			until
+				points_cursor.off or else done
+			loop
+				hy_width := prefix_width_hyphenated (points_cursor.item, h.hyphen)
+				if hy_width < width then
+					last_end := points_cursor.item
+					done := True
+				end
+			end
+			if not done then
+				keep_head_not_greater (width)
+			else
+				last_hyphen := h.hyphen
+				keep_head (last_end)
+				word_inlines.last.append_character (h.hyphen)
+				word_width := word_width + word_inlines.last.character_width (h.hyphen)
+			end
+		end
+
 	keep_head_not_greater (width : FO_MEASUREMENT) is
 			-- Keep head of word not larger than `width'.
 			-- The next `forth' operation shall make the remaining of the word.
@@ -232,11 +270,11 @@ feature -- Basic operations
 			word_text_head: word_text.is_equal ((old word_text).substring (1, wcount))
 		end
 
-	keep_head_hyphenated (prefix_end : INTEGER; hyphen : CHARACTER) is
-		do
-			keep_head (prefix_end)
-			last_hyphen := hyphen
-		end
+--	keep_head_hyphenated (prefix_end : INTEGER; hyphen : CHARACTER) is
+--		do
+--			keep_head (prefix_end)
+--			last_hyphen := hyphen
+--		end
 
 	append_item (line : FO_LINE) is
 			-- append item to `line'.

@@ -18,6 +18,11 @@ inherit
 			is_equal
 		end
 
+	FO_BORDER_STYLE
+		undefine
+			is_equal
+		end
+		
 create
 
 	make, make_none
@@ -51,34 +56,11 @@ feature {NONE} -- Initialization
 
 feature -- Access
 
-	style : INTEGER
-		-- Style.
-
 	width : FO_MEASUREMENT
 		-- Line width.
 
 	color : FO_COLOR
 		-- Color.
-
-feature {FO_BORDERABLE} -- Access
-
-	style_rule : DS_PAIR[ARRAY[INTEGER],INTEGER] is
-			-- Style rule: dash array, phase
-		do
-			inspect style
-			when style_dashed then
-				create Result.make (<<3,3>>, 0)
-			when style_dotted then
-				create Result.make (<<1, 3>>,0)
-			when style_dot_dash then
-				create Result.make (<<1, 3, 3, 3>>,0)
-			else
-				create Result.make (<<>>,0)
-			end
-		ensure
-			style_rule_not_void: Result /= Void
-			dash_array_not_void: Result.first /= Void
-		end
 
 feature -- Status report
 
@@ -87,15 +69,6 @@ feature -- Status report
 		do
 			Result := style = style_none
 		end
-
-feature -- Constants
-
-	style_none : INTEGER is 0
-	style_solid : INTEGER is 1
-	style_dashed : INTEGER is 2
-	style_dotted : INTEGER is 3
-	style_dot_dash : INTEGER is 4
-	style_double : INTEGER is 5
 
 feature -- Comparison
 

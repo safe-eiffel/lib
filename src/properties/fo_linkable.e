@@ -1,5 +1,5 @@
 indexing
-	description: "Objects that can be link target or origin"
+	description: "Objects that can link to some target destination."
 	author: ""
 	date: "$Date$"
 	revision: "$Revision$"

@@ -1,6 +1,6 @@
 indexing
-	description: "Objects that ..."
-	author: ""
+	description: "Targets that may be hyperlinked."
+	author: "Paul G. Crismer"
 	date: "$Date$"
 	revision: "$Revision$"
 

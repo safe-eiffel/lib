@@ -1,5 +1,5 @@
 indexing
-	description: "Objects that ..."
+	description: "Objects that may be linked as a target."
 	author: ""
 	date: "$Date$"
 	revision: "$Revision$"

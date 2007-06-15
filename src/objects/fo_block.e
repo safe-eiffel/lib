@@ -125,6 +125,9 @@ feature {NONE} -- Initialization
 
 feature -- Access
 
+	hyphenation: FO_HYPHENATION
+			-- Hyphenation
+
 	justification : INTEGER
 			-- Justification mode.
 
@@ -303,6 +306,14 @@ feature {FO_INTERNAL} -- Element change
 
 feature -- Element change
 
+	set_hyphenation (a_hyphenation: like hyphenation) is
+			-- Set `hyphenation' to `a_hyphenation'.
+		do
+			hyphenation := a_hyphenation
+		ensure
+			hyphenation_assigned: hyphenation = a_hyphenation
+		end
+
 	set_text_leading (new_leading: FO_MEASUREMENT) is
 			-- Set `text_leading' to `new_leading'.
 		require
@@ -433,50 +444,58 @@ feature {FO_DOCUMENT, FO_RENDERABLE} -- Basic operations
 			if not is_prerendered or else not last_region.is_equal (region) then
 				pre_render (region)
 			end
-			-- Render one line at a time
-			if not document.current_page.is_text_mode then
-				document.current_page.begin_text
-			end
-			from
+			if lines.count > 0 then
+				-- Render one line at a time
+				if not document.current_page.is_text_mode then
+					document.current_page.begin_text
+				end
+				from
 					render_cursor := lines.new_cursor
 					render_cursor.start
-			until
-				render_cursor.off
-			loop
-				create line_region.set (available_region.left, available_region.bottom,
-					available_region.right,	available_region.top)
-				render_cursor.item.render_start (document, line_region)
-				if render_cursor.item.last_rendered_region /= Void then
-					last_rendered_region := last_rendered_region.merged (render_cursor.item.last_rendered_region)
-					available_region := available_region.shrinked_top (text_leading.max (render_cursor.item.last_rendered_region.height))
-					last_descender := render_cursor.item.bounding_box.bottom
-				else
-					create last_descender.points (0)
+				until
+					render_cursor.off
+				loop
+					create line_region.set (available_region.left, available_region.bottom,
+						available_region.right,	available_region.top)
+					render_cursor.item.render_start (document, line_region)
+					if render_cursor.item.last_rendered_region /= Void then
+						last_rendered_region := last_rendered_region.merged (render_cursor.item.last_rendered_region)
+						available_region := available_region.shrinked_top (text_leading.max (render_cursor.item.last_rendered_region.height))
+						last_descender := render_cursor.item.bounding_box.bottom
+					else
+						create last_descender.points (0)
+					end
+					render_cursor.forth
 				end
-				render_cursor.forth
-			end
-			if document.current_page.is_text_mode then
-				document.current_page.end_text
-			end
---			if render_cursor.off and last_rendered_region.height + margins.bottom <= region.height then
-			if word_cursor.off and last_rendered_region.height + margins.bottom <= region.height then
-				if render_cursor.off then
-					set_render_after
+				if document.current_page.is_text_mode then
+					document.current_page.end_text
+				end
+	--			if render_cursor.off and last_rendered_region.height + margins.bottom <= region.height then
+				if word_cursor.off and last_rendered_region.height + margins.bottom <= region.height then
+					if render_cursor.off then
+						set_render_after
+					else
+						set_render_inside
+					end
+					render_cursor := Void
+					last_rendered_region := last_rendered_region.shrinked_bottom (margins.bottom)
+					use_bottom_margins := True
 				else
 					set_render_inside
 				end
-				render_cursor := Void
-				last_rendered_region := last_rendered_region.shrinked_bottom (margins.bottom)
-				use_bottom_margins := True
+	--			if is_render_inside then
+					if last_descender /= Void then
+						available_region := available_region.shrinked_top (- last_descender)
+						last_rendered_region := last_rendered_region.shrinked_bottom (- last_descender)
+					end
+	--			end
 			else
-				set_render_inside
-			end
---			if is_render_inside then
-				if last_descender /= Void then
-					available_region := available_region.shrinked_top (- last_descender)
-					last_rendered_region := last_rendered_region.shrinked_bottom (- last_descender)
+				if word_cursor.off then
+					set_render_after
+				else
+					do_nothing
 				end
---			end
+			end
 			debug ("fo_show_block_margins")
 				show_margins (document, use_top_margins, use_bottom_margins)
 			end
@@ -643,16 +662,22 @@ feature {NONE} -- Implementation
 					current_width := current_width + word_cursor.item_width
 					word_cursor.forth
 				end
-				if word_cursor.item_width > line_width then
--- Cut...
+				if current_width + word_cursor.item_width > line_width then
 -- Here hyphenation takes place.
-					word_cursor.keep_head_not_greater (line_width)
-					if word_cursor.item_text.count > 0 and current_width + word_cursor.item_width <= line_width then
-						word_cursor.append_item (line)
-						current_width := current_width + word_cursor.item_width
-						word_cursor.forth
-					else
-						--| FIXME !!!
+					if hyphenation /= Void then
+						word_cursor.hyphenate (hyphenation, line_width - current_width)
+					end
+-- Cut...
+					if word_cursor.item_width > line_width then
+						-- The word *must* be cut
+						word_cursor.keep_head_not_greater (line_width)
+						if word_cursor.item_text.count > 0 and current_width + word_cursor.item_width <= line_width then
+							word_cursor.append_item (line)
+							current_width := current_width + word_cursor.item_width
+							word_cursor.forth
+						else
+							--| FIXME !!!
+						end
 					end
 				end
 				lines.put_last (line)

@@ -17,6 +17,8 @@ feature -- Access
 	document : FO_DOCUMENT
 	writer : FO_DOCUMENT_WRITER
 
+	section_title, section_text : FO_BLOCK
+
 feature -- Constants
 
 	color_red : FO_COLOR is once create Result.make_rgb (255,0,0) end
@@ -43,7 +45,6 @@ feature {NONE} -- Implementation
 	append_section (title, text : STRING) is
 			-- Append section with `title' and `text'.
 		local
-			section_title, section_text : FO_BLOCK
 			title_font, text_font : FO_FONT
 			inline : FO_INLINE
 		do

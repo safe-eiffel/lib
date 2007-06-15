@@ -291,7 +291,9 @@ feature {FO_DOCUMENT, FO_RENDERABLE} -- Basic operations
 				else
 					create pdf_annotation.make_uri (document.pdf_document, rect, uri)
 				end
-				pdf_annotation.set_border_dashed (<<2,4>>)
+				if destination.style /= destination.style_none then
+					pdf_annotation.set_border_dashed (destination.style_rule.first)
+				end
 				document.current_page.put_annotation (pdf_annotation)
 			end
 		end
