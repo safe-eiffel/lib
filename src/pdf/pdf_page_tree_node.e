@@ -9,12 +9,8 @@ deferred class
 
 inherit
 	PDF_OBJECT
-		rename
-		export
 		undefine
 			make, is_equal, copy
-		redefine
-		select
 		end
 
 feature {PDF_OBJECT} -- Access
@@ -41,18 +37,18 @@ feature {PDF_DOCUMENT} -- Element change
 		do
 			kids.wipe_out
 		end
-		
+
 feature -- Status report
 
 	is_page : BOOLEAN is
 			-- is this a page (leaf)
 		deferred
 		end
-		
+
 feature {PDF_DOCUMENT, PDF_PAGE_TREE_NODE} -- Element change
 
 	set_parent (a_parent : PDF_PAGES) is
-			-- 
+			--
 		require
 			exists: a_parent /= Void
 			acyclic: a_parent.to_tree_node /= Current
@@ -83,9 +79,9 @@ feature {PDF_DOCUMENT, PDF_PAGE_TREE_NODE} -- Element change
 feature  {PDF_OBJECT} -- Conversion
 
 	to_tree_node : PDF_PAGE_TREE_NODE is
-			-- 
+			--
 		do
 			Result := Current
 		end
-		
+
 end -- class PDF_PAGE_TREE_NODE

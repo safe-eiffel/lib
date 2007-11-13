@@ -96,8 +96,6 @@ feature -- Status report
 			-- Does Current have `a_key' as key ?
 		require
 			a_key /= Void
-		local
-			index : INTEGER
 		do
 			Result := index_of_key (a_key) > 0
 		end
