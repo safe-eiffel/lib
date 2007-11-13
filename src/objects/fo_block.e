@@ -483,12 +483,10 @@ feature {FO_DOCUMENT, FO_RENDERABLE} -- Basic operations
 				else
 					set_render_inside
 				end
-	--			if is_render_inside then
-					if last_descender /= Void then
-						available_region := available_region.shrinked_top (- last_descender)
-						last_rendered_region := last_rendered_region.shrinked_bottom (- last_descender)
-					end
-	--			end
+				if last_descender /= Void and last_descender > margins.bottom then
+					available_region := available_region.shrinked_top (- (last_descender - margins.bottom))
+					last_rendered_region := last_rendered_region.shrinked_bottom (- (last_descender - margins.bottom))
+				end
 			else
 				if word_cursor.off then
 					set_render_after
@@ -574,6 +572,7 @@ feature -- Inapplicable
 			document.current_page.gsave
 			document.current_page.set_gray_stroke (0.5)
 			document.current_page.set_line_dash (<< 1,  3>>, 0)
+			document.current_page.set_line_width (0.5)
 			document.current_page.move (0,0)
 			gh := last_rendered_region.height.as_points
 			if use_bottom_margins then

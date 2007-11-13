@@ -217,6 +217,7 @@ feature -- Basic operations
 			if must_render_rows then
 				--| render rows until one of them cannot be rendered.
 				from
+					set_render_inside
 					set_rendering_rows
 					render_cursor := rows.new_cursor
 					render_cursor.start

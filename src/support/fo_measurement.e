@@ -180,6 +180,15 @@ feature -- Miscellaneous
 
 feature -- Basic operations
 
+	abs : like Current is
+		do
+			if sign < 0 then
+				Result := -Current
+			else
+				Result := Current
+			end
+		end
+
 	prefix "-" : like Current is
 			-- Current negated.
 		do
@@ -197,7 +206,7 @@ feature -- Basic operations
 		do
 			Create Result.points (as_points / other.as_points)
 		end
-		
+
 	infix "*" (other : like Current) : like Current is
 			-- Current multiplied by `other'.
 		do

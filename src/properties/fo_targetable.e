@@ -1,9 +1,8 @@
 indexing
-	description: "Objects that may be linked as a target."
-	author: ""
-	date: "$Date$"
-	revision: "$Revision$"
+	description:
 
+		"Objects that may be linked as a target."
+		
 deferred class
 	FO_TARGETABLE
 

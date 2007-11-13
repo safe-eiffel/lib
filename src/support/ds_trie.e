@@ -1,6 +1,8 @@
 indexing
 
-	description: "Trie (aka. reTRIEval) data structures."
+	description:
+
+		"Trie (aka. reTRIEval) data structures."
 
 	library: "FO - Formatting Objects in Eiffel. Project SAFE."
 	copyright: "Copyright (c) 2006 - , Paul G. Crismer and others"

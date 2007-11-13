@@ -1,14 +1,27 @@
 indexing
-	description: "Link destinations."
-	author: "Paul G. Crismer"
+	description:
+
+		"Link destinations."
+
+	library: "FO - Formatting Objects in Eiffel. Project SAFE."
+	copyright: "Copyright (c) 2006 - , Paul G. Crismer and others"
+	license: "Eiffel Forum License v2 (see forum.txt)"
 	date: "$Date$"
-	revision: "$Revision$"
 
 class
 	FO_DESTINATION
 
 inherit
 	FO_BORDER_STYLE
+		rename
+			set_style_none as set_border_none,
+			set_style_dotted as set_border_dotted,
+			set_style_dashed as set_border_dashed,
+			set_style_dot_dashed as set_border_dot_dashed,
+			set_style_solid as set_border_solid
+		export
+			{NONE} set_style_double
+		end
 
 create
 	make, make_uri
@@ -39,28 +52,6 @@ feature -- Access
 	name : STRING
 			-- Name to be referenced.
 
-feature -- Element change
-
-	set_border_none is
-		do
-			style := style_none
-		end
-
-	set_border_dashed is
-		do
-			style := style_dashed
-		end
-
-	set_border_dot_dashed is
-		do
-			style := style_dot_dash
-		end
-
-	set_border_dotted is
-		do
-			style := style_dotted
-		end
-		
 invariant
 
 	name_not_void: name /= Void

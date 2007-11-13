@@ -2,7 +2,7 @@ indexing
 
 	description:
 
-		"Factories of fonts"
+		"Factories of fonts."
 
 	library: "FO - Formatting Objects in Eiffel. Project SAFE."
 	copyright: "Copyright (c) 2006 - , Paul G. Crismer and others"

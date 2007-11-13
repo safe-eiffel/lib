@@ -282,7 +282,7 @@ feature {FO_DOCUMENT, FO_RENDERABLE} -- Basic operations
 			rect : PDF_RECTANGLE
 		do
 			post_render_targetable (document, region)
-			fix := 1.5
+			fix := 0 -- 1.5
 			if destination /= Void then
 				create uri.make (destination.name)
 				create rect.set (region.left.as_points - fix, region.bottom.as_points - fix, region.right.as_points + fix, region.top.as_points + fix)

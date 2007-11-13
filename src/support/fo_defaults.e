@@ -1,5 +1,12 @@
 indexing
-	description: "Objects that give default values."
+	description:
+
+		"Objects that give default values."
+
+	library: "FO - Formatting Objects in Eiffel. Project SAFE."
+	copyright: "Copyright (c) 2006 - , Paul G. Crismer and others"
+	license: "Eiffel Forum License v2 (see forum.txt)"
+	date: "$Date$"
 
 class FO_DEFAULTS
 

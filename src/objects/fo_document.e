@@ -301,7 +301,6 @@ feature -- Basic operations
 			pdf_document.add_page
 			setup_page
 			column_count := 1
---			available_render_region := margins.content_region (page_rectangle)
 			setup_available_region
 		ensure
 			column_count_1: column_count = 1
@@ -312,11 +311,13 @@ feature -- Basic operations
 		do
 			if column_count = current_section.column_count then
 				append_page_break
-				column_count := 1
 			else
 				column_count := column_count + 1
 			end
 			setup_available_region
+		ensure
+			column_count_adapted: (page_count = old page_count) implies (column_count = old column_count + 1)
+			page_count_adapted: (page_count = old page_count + 1) implies (column_count = 1)
 		end
 
 	append_block (block : FO_BLOCK) is
@@ -441,7 +442,6 @@ feature {NONE} -- Implementation
 			is_open: is_open
 		local
 			unbreakable : FO_UNBREAKABLE
-			render_count : INTEGER
 		do
 			if renderable.is_keep_with_next then
 				if last_unbreakable = Void then
@@ -623,5 +623,14 @@ feature {FO_SPECIAL_INLINE} -- Implementation
 
 invariant
 	writer_exists: writer /= Void
+
+	page_rectangle_not_void: page_rectangle /= Void
+	pages_not_void: pages /= Void
+	pages_cursor_not_void: pages_cursor /= Void
+	margins_not_void: margins /= Void
+	background_color_not_void: background_color /= Void
+	foreground_color_not_void: foreground_color /= Void
+	targets_not_void: targets /= Void
+	destinations_not_void: destinations /= Void
 
 end

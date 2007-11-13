@@ -528,7 +528,9 @@ feature {NONE} -- Implementation
 				--| Advance to next inline
 				internal_cursor.forth
 				if not internal_cursor.off then
-					create last_word_end.make (word_end.inline, word_end.position - 1)
+					if word_end.position - 1 > 0 then
+						create last_word_end.make (word_end.inline, word_end.position - 1)
+					end
 					word_end.make (internal_cursor.item, 1)
 				else
 					--| adjust end

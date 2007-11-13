@@ -118,6 +118,56 @@ feature -- Measurement
 			end
 		end
 
+	ascender : FO_MEASUREMENT is
+			-- Smallest box enclosing the whole line.
+		local
+			c : DS_LIST_CURSOR[FO_INLINE]
+		do
+			if inlines.count > 0 then
+				--| find the greatest bounding box of all fonts.
+				from
+					c := inlines.new_cursor
+					c.start
+				until
+					c.off
+				loop
+					if Result = Void then
+						Result := c.item.font.ascender
+					else
+						Result := Result.max (c.item.font.ascender)
+					end
+					c.forth
+				end
+			else
+				create Result.points (0)
+			end
+		end
+
+	descender : FO_MEASUREMENT is
+			-- Smallest box enclosing the whole line.
+		local
+			c : DS_LIST_CURSOR[FO_INLINE]
+		do
+			if inlines.count > 0 then
+				--| find the greatest bounding box of all fonts.
+				from
+					c := inlines.new_cursor
+					c.start
+				until
+					c.off
+				loop
+					if Result = Void then
+						Result := c.item.font.descender
+					else
+						Result := Result.min (c.item.font.descender)
+					end
+					c.forth
+				end
+			else
+				create Result.points (0)
+			end
+		end
+
 	height : FO_MEASUREMENT
 
 	maximum_width : FO_MEASUREMENT
@@ -350,8 +400,13 @@ feature {FO_LINE, FO_DOCUMENT} -- Access
 	set_text_origin_justified (page : PDF_PAGE; region : FO_RECTANGLE) is
 		local
 			x, y : FO_MEASUREMENT
+			asc, bh, adh, diff : FO_MEASUREMENT
 		do
-			y := region.top - bounding_box.top
+			bh := bounding_box.height
+			asc := ascender
+			adh := asc-descender
+			diff := bh - adh
+			y := region.top - asc - (diff / points (4))
 
 			inspect justification
 			when Justify_right then

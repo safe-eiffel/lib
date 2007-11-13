@@ -129,14 +129,14 @@ feature -- Access
 			Result := internal_font.x_height
 		end
 
-	ascender : INTEGER is
+	ascender : FO_MEASUREMENT is
 		do
-			Result := internal_font.ascender
+			create Result.points (internal_font.ascender / em_size * size.as_points)
 		end
 
-	descender : INTEGER is
+	descender : FO_MEASUREMENT is
 		do
-			Result := internal_font.descender
+			create Result.points (internal_font.descender / em_size * size.as_points)
 		end
 
 	std_hw : INTEGER is

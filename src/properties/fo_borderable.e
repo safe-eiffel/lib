@@ -1,8 +1,12 @@
 indexing
-	description: "Objects that have borders."
-	author: "Paul G. Crismer"
+	description:
+
+		"Objects that have borders."
+
+	library: "FO - Formatting Objects in Eiffel. Project SAFE."
+	copyright: "Copyright (c) 2006 - , Paul G. Crismer and others"
+	license: "Eiffel Forum License v2 (see forum.txt)"
 	date: "$Date$"
-	revision: "$Revision$"
 
 class
 

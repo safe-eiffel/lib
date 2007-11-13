@@ -1,28 +1,26 @@
 indexing
-	description: "Cells of a trie."
+	description:
 
-	usage: ""
-	quality: ""
-	refactoring: ""
+		"Cells of a trie."
 
-	status: "see notice at end of class";
-	date: "$Date$";
-	revision: "$Revision$";
-	author: ""
+	library: "FO - Formatting Objects in Eiffel. Project SAFE."
+	copyright: "Copyright (c) 2006 - , Paul G. Crismer and others"
+	license: "Eiffel Forum License v2 (see forum.txt)"
+	date: "$Date$"
 
 class DS_TRIE_CELL [G]
 
 inherit
-	
+
 	ANY
 		redefine
 			out
 		end
-		
-create 
+
+create
 
 	make, make_root
-	
+
 feature {NONE} -- Initialization
 
 	make (a_key : CHARACTER) is
@@ -32,34 +30,34 @@ feature {NONE} -- Initialization
 			create subkeys.make (5)
 		end
 
-	make_root is		
+	make_root is
 			-- Make as root cell.
 		do
 			is_root := True
 			create subkeys.make (5)
 		end
-		
+
 feature -- Access
 
 	key : CHARACTER
 			-- Key character of Current.
-			
+
 	item : G
 			-- Associated item.
-			
+
 	found_item : like Current
 			-- Item found after last search or search_key operation.
 feature -- Status report
 
 	found : BOOLEAN
 			-- Has last `search' or `search_key' operation succeeded?
-			
+
 	is_root : BOOLEAN
 			-- Is current a root cell?
-			
+
 	is_set : BOOLEAN
 			-- Is current cell associated with an item?
-			
+
 feature -- Element change
 
 	set_item (an_item : G) is
@@ -70,7 +68,7 @@ feature -- Element change
 		ensure
 			item_set: item = an_item
 		end
-	
+
 	clear is
 			-- Clear `item'.
 		do
@@ -80,7 +78,7 @@ feature -- Element change
 			item_void: item = Void
 			not_is_set: not is_set
 		end
-		
+
 feature -- Basic operations
 
 --	search (string : STRING; index_start : INTEGER) is
@@ -130,8 +128,8 @@ feature -- Basic operations
 				end
 			end
 		end
-		
-	insert (an_item : G; string : STRING; index_start : INTEGER) is		
+
+	insert (an_item : G; string : STRING; index_start : INTEGER) is
 			-- insert for suffix of `string' starting at `index_start'.
 		require
 			string_not_void: string /= Void
@@ -158,13 +156,13 @@ feature -- Basic operations
 
 feature -- Conversion
 
-	out : STRING is		
+	out : STRING is
 		do
 			if is_root then
 				Result := out_level (1)
 			end
 		end
-		
+
 feature {DS_TRIE_CELL, DS_TRIE} -- Implementation
 
 	out_level (n : INTEGER) : STRING is
@@ -172,15 +170,15 @@ feature {DS_TRIE_CELL, DS_TRIE} -- Implementation
 			from
 				create Result.make (10)
 				create indent_string.make_filled (' ',n)
-				Result.append_string (indent_string) 
-				Result.append_string ("key   : ") 
-				Result.append_character (key) 
+				Result.append_string (indent_string)
+				Result.append_string ("key   : ")
+				Result.append_character (key)
 				Result.append_character ('%N')
-				Result.append_string (indent_string) 
+				Result.append_string (indent_string)
 				if not is_root then
-					Result.append_string ("item  : ") 
+					Result.append_string ("item  : ")
 					if item /= Void then
-						Result.append_string (item.out) 
+						Result.append_string (item.out)
 					else
 						Result.append_string ("Void")
 					end
@@ -197,11 +195,11 @@ feature {DS_TRIE_CELL, DS_TRIE} -- Implementation
 				subkeys.forth
 			end
 		end
-	
+
 feature {NONE} -- Implementation
 
 	indent_string : STRING
-	
+
 	subkeys : DS_HASH_TABLE[DS_TRIE_CELL[G], CHARACTER]
-	
+
 end

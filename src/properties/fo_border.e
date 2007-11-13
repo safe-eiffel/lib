@@ -22,7 +22,7 @@ inherit
 		undefine
 			is_equal
 		end
-		
+
 create
 
 	make, make_none
@@ -32,7 +32,7 @@ feature {NONE} -- Initialization
 	make (a_style : INTEGER; a_width : FO_MEASUREMENT; a_color : FO_COLOR) is
 			-- make with `a_style', `a_width' and `a_color'.
 		require
-			valid_style: a_style >= style_solid and a_style <= style_double
+			valid_style: valid_style (a_style)
 			a_width_not_void: a_width /= Void
 			a_width_positive: a_width.sign = 1
 			a_color_not_void: a_color /= Void

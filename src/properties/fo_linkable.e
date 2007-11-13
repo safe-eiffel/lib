@@ -1,8 +1,12 @@
 indexing
-	description: "Objects that can link to some target destination."
-	author: ""
+	description:
+
+		"Objects that can link to some target destination."
+
+	library: "FO - Formatting Objects in Eiffel. Project SAFE."
+	copyright: "Copyright (c) 2006 - , Paul G. Crismer and others"
+	license: "Eiffel Forum License v2 (see forum.txt)"
 	date: "$Date$"
-	revision: "$Revision$"
 
 deferred class
 	FO_LINKABLE
