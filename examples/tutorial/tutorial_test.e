@@ -1,8 +1,10 @@
 indexing
-	description: "Objects that ..."
-	author: ""
+	description: "FO tutorial tests."
+
+	library: "FO - Formatting Objects in Eiffel. Project SAFE."
+	copyright: "Copyright (c) 2006 - , Paul G. Crismer and others"
+	license: "Eiffel Forum License v2 (see forum.txt)"
 	date: "$Date$"
-	revision: "$Revision$"
 
 class
 	TUTORIAL_TEST

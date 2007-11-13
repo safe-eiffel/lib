@@ -25,23 +25,16 @@ feature -- Initialization
 	make is
 			-- Creation procedure.
 		do
-			test_hyphen
+--			test_hyphen
 			test_chapter_1
 			test_tables
 			test_show_section
-			test_labels
-		end
-
-	test_labels is
-		local
-			test : TUTORIAL_TEST_LABELS
-		do
-			create test.execute
+--			test_labels
 		end
 
 	test_chapter_1 is
 		do
-			test_hello_world
+--			test_hello_world
 			test_block
 		end
 

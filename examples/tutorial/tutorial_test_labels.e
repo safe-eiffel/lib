@@ -33,24 +33,25 @@ Paul-Georges Crismer
 Avenue Albert Ier, 20
 
 4053 EMBOURG
+          BELGIQUE
 ]"
 			text2 := "[
-Virginie Sioen
-181 rue Konkel
+MICHEL LAFOND
+20, Allée HENRIETTE
 
-1150 Woluwé St Pierre
-
+69005 LYON
+          FRANCE
 ]"
 
 			table.set_align (create {FO_ALIGNMENT}.make_center)
-			fill_table_line (3, table, text1, text2)
+			fill_table_line (2, table, text1, text2)
 			document.append_table (table)
 			document.close
 		end
 
 	fill_table_line (index : INTEGER; table : FO_TABLE; text1, text2 : STRING) is
 		local
-			block0, block1, block2 : FO_BLOCK
+			block1, block2 : FO_BLOCK
 			count : INTEGER
 		do
 			from
@@ -68,7 +69,7 @@ Virginie Sioen
 			block1.append_string (text1)
 			block1.set_margins (cell_margins)
 --			block1.set_uniform_borders (cell_border)
-			
+
 			create block2.make_default
 			block2.append_string (text2)
 			block2.set_margins (cell_margins)

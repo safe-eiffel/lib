@@ -38,7 +38,20 @@ feature -- Basic operations
 			test_marginable
 			test_borderable
 			test_colorable
+			test_leading
 		end
+
+	test_leading is
+		local
+			block : FO_BLOCK
+		do
+			append_section ("Text Leading", "Text leading is the distance between two lines of text.")
+			create block.make_default
+			block.set_text_leading (pt (18))
+			block.append_string ("This is a block with a 18 pt text leading.  The quick brown fox jumps over the lazy fox.  The quick brown fox jumps over the lazy fox. We should see if it is possible to define the text leading with a block.  This should be a block expanding on at least two lines.")
+			document.append_block (block)
+		end
+
 
 	test_inlines is
 		local
@@ -52,7 +65,7 @@ feature -- Basic operations
 			create inline.make_with_font (" This text is in Helvetica Italic, 12 points. ", font)
 			section_text.append (inline)
 			--| colorable
-			create inline.make_with_font (" this text is in the same font but 'red' with a 'yellow' background. ", font)
+			create inline.make_with_font (" this text is in the same font but 'red' with a 'yellow' background. I set a very long long long long phrase so that I can see if the backgrounds overlap", font)
 			inline.set_background_color (create {FO_COLOR}.make_rgb (250, 250, 163))
 			inline.set_foreground_color (create {FO_COLOR}.make_rgb (255, 0, 0))
 			section_text.append (inline)
@@ -62,7 +75,7 @@ feature -- Basic operations
 			inline.destination.set_border_dot_dashed
 			section_text.append (inline)
 			-- Note: après rendering, poser une destination ou un target ne sert à rien => précondition ou autre protocole.
-			document.append_block (create {FO_BLOCK}.make_default)
+	--		document.append_block (create {FO_BLOCK}.make_default)
 		end
 
 	test_marginable is
