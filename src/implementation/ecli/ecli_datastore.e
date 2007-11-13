@@ -13,13 +13,13 @@ class ECLI_DATASTORE
 inherit
 
 	PO_DATASTORE
-		
+
 creation
 
 	make
-	
+
 feature {NONE} -- Initialisation
-	
+
 	make (a_session : ECLI_SESSION) is
 			-- Initialise with `a_session'.
 		require
@@ -32,21 +32,21 @@ feature {NONE} -- Initialisation
 			session_set: session_impl = a_session
 			adapters_not_void: adapters /= Void and then adapters.is_empty
 		end
-	
+
 feature -- Access
-	
+
 	session: ECLI_SESSION is
 			-- Session Ecli.
 		do
 			Result := session_impl
 		end
-		
+
 	adapters : DS_LIST [PO_ADAPTER[PO_PERSISTENT]] is
-			-- 
+			--
 		do
 			Result := adapters_impl
 		end
-		
+
 feature -- Status report
 
 	is_connected : BOOLEAN is
@@ -54,7 +54,7 @@ feature -- Status report
 		do
 			Result := session.is_connected
 		end
-		
+
 	is_error : BOOLEAN is
 			-- is there an error caused by the latest operation?
 		do
@@ -66,48 +66,26 @@ feature -- Status report
 		do
 			Result := True
 		end
-	
+
 	can_begin_transaction : BOOLEAN is
 			-- can this datastore begin a new transaction ?
 		do
 			Result := is_connected and session.is_transaction_capable
 		end
-		
+
 feature -- Status setting
 
 	connect is
 			-- Connect to datastore.
-		local
-			adapters_cursor : DS_LIST_CURSOR [PO_ADAPTER[PO_PERSISTENT]]
 		do
 			session.connect
-			if is_connected then
-				adapters_cursor := adapters.new_cursor
-				from
-					adapters_cursor.start
-				until
-					adapters_cursor.off
-				loop
-					adapters_cursor.item.on_adapter_connected
-					adapters_cursor.forth
-				end				
-			end
+			on_connected
 		end
 
 	disconnect is
 			-- Disconnect from datastore.
-		local
-			adapters_cursor : DS_LIST_CURSOR [PO_ADAPTER[PO_PERSISTENT]]
 		do
-			adapters_cursor := adapters.new_cursor
-			from
-				adapters_cursor.start
-			until
-				adapters_cursor.off
-			loop
-				adapters_cursor.item.on_adapter_disconnect
-				adapters_cursor.forth
-			end
+			on_disconnect
 			session.disconnect
 		end
 
@@ -119,29 +97,65 @@ feature -- Basic operations
 			session.begin_transaction
 			transaction_level := transaction_level + 1
 		end
-	
+
 	commit_transaction is
 			-- Commits the current transaction.
 		do
 			session.commit
-			transaction_level := transaction_level - 1			
+			transaction_level := transaction_level - 1
 		end
-	
+
 	rollback_transaction is
 			-- Rollbacks the current transaction.
 		do
 			session.rollback
 			transaction_level := transaction_level - 1
 		end
-		
+
 feature {NONE} -- Implementation
 
 	session_impl : ECLI_SESSION
 
 	adapters_impl : DS_LINKED_LIST[PO_ADAPTER[PO_PERSISTENT]]
-	
+
+	on_connected is
+		local
+			adapters_cursor : DS_LIST_CURSOR [PO_ADAPTER[PO_PERSISTENT]]
+		do
+			if is_connected then
+				adapters_cursor := adapters.new_cursor
+				from
+					adapters_cursor.start
+				until
+					adapters_cursor.off
+				loop
+					adapters_cursor.item.on_adapter_connected
+					adapters_cursor.forth
+				end
+			end
+		end
+
+	on_disconnect is
+		local
+			adapters_cursor : DS_LIST_CURSOR [PO_ADAPTER[PO_PERSISTENT]]
+		do
+			if not is_connected then
+				adapters_cursor := adapters.new_cursor
+				from
+					adapters_cursor.start
+				until
+					adapters_cursor.off
+				loop
+					adapters_cursor.item.on_adapter_disconnect
+					adapters_cursor.item.clear_cache
+					adapters_cursor.forth
+				end
+			end
+		end
+
+
 invariant
 
 	session_not_void: session /= Void
-	
+
 end

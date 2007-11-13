@@ -13,10 +13,6 @@ class
 
 inherit
 	UT_ERROR_HANDLER
-		export
-			{NONE} all;
-			{ANY} is_equal, copy
-		end
 
 create
 	make_standard, make_null

@@ -7,9 +7,9 @@ indexing
 	%	If `cache_on_read' is true, the adapter caches all read objects until `clear_cache' is called.%
 	%	When `is_enabled_cache_on_write' is True then written object%
 	%	also are inserted in the cache."
-	
+
 	authors: "Eric Fafchamps, Paul G. Crismer"
-	
+
 	usage: "%N%
 	%	* Inherit from it.%N%
 	%	* Implement deferred features. %N%
@@ -27,14 +27,18 @@ deferred class ECLI_GENERAL_ADAPTER[G->PO_PERSISTENT]
 inherit
 
 	ECLI_ADAPTER_READ_COLLECTION_SKELETON[G]
-		
+
 	ECLI_ADAPTER_REFRESH_SKELETON[G]
-		
-	ECLI_ADAPTER_WRITE_SKELETON[G] 
-		
+
+	ECLI_ADAPTER_WRITE_SKELETON[G]
+
 	ECLI_ADAPTER_UPDATE_SKELETON[G]
-		
+
 	ECLI_ADAPTER_DELETE_SKELETON[G]
+
+feature -- Access
+
+	error_handler : PO_ECLI_ERROR_HANDLER
 
 feature {PO_ADAPTER} -- Basic operations
 
@@ -75,29 +79,34 @@ feature {PO_ADAPTER} -- Basic operations
 		end
 
 	create_pid_from_object (object : like last_object) is
-			-- 
+			--
 		do
 			--|TODO redefine in descendant classes
 		end
-		
+
 feature {NONE} -- Implementation
 
-	write_query : ECLI_QUERY 
+	write_query : ECLI_QUERY
 
-	update_query : ECLI_QUERY 
+	update_query : ECLI_QUERY
 
-	delete_query : ECLI_QUERY 
-	
-	read_cursor : ECLI_CURSOR 
+	delete_query : ECLI_QUERY
 
-	refresh_cursor : ECLI_CURSOR 
-	
-	read_pid_cursor : ECLI_CURSOR 
-	
-	exists_cursor : ECLI_CURSOR 
-	
+	read_cursor : ECLI_CURSOR
+
+	refresh_cursor : ECLI_CURSOR
+
+	read_pid_cursor : ECLI_CURSOR
+
+	exists_cursor : ECLI_CURSOR
+
 	exists_value : INTEGER is
 		deferred
+		end
+
+	create_error_handler is
+		do
+			create error_handler.make_null
 		end
 
 end
