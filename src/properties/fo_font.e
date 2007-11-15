@@ -16,7 +16,7 @@ inherit
 	FO_SHARED_FONT_FACTORY
 	FO_MEASUREMENT_ROUTINES
 
-creation
+create
 	{FO_FONT_FACTORY} make
 
 feature {NONE} -- Initialization

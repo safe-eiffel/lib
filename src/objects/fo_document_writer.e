@@ -11,7 +11,7 @@ indexing
 class
 	FO_DOCUMENT_WRITER
 
-creation
+create
 	make
 
 feature {NONE} -- Initialization

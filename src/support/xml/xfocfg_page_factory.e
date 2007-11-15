@@ -16,7 +16,7 @@ inherit
 			process_element, process_attribute, process_character_data
 		end
 
-creation
+create
 
 	make
 

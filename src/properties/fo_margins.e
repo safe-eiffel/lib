@@ -15,7 +15,7 @@ class
 inherit
 	FO_TUPLE_4
 	
-creation
+create
 	make, set
 
 feature -- Measurement

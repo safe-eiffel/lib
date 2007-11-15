@@ -20,7 +20,7 @@ inherit
 
 	FO_SHARED_DEFAULTS
 
-creation
+create
 	make
 
 feature {NONE} -- Initialization

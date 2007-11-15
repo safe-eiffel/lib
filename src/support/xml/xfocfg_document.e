@@ -6,7 +6,7 @@ indexing
 
 class XFOCFG_DOCUMENT
 
-creation
+create
 
 	make
 

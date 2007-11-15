@@ -61,7 +61,7 @@ inherit
 			is_equal, out
 		end
 
-creation
+create
 	make, make_right, make_center, make_default
 
 feature {NONE} -- Initialization

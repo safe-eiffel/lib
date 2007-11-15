@@ -21,7 +21,7 @@ inherit
 			valid_top
 		end
 
-creation
+create
 	make, set, copy
 
 feature -- Measurement

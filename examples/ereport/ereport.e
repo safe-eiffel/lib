@@ -22,7 +22,7 @@ inherit
 	FO_MEASUREMENT_ROUTINES
 	FO_SHARED_FONT_FACTORY
 
-creation
+create
 	make
 
 feature -- Initialization
