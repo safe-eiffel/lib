@@ -14,7 +14,7 @@ inherit
 
 	PO_MANAGER
 
-creation
+create
 
 	make
 

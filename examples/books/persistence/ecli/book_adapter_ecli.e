@@ -51,7 +51,7 @@ inherit
 			book_read_by_title as read_by_title
 		end
 
-creation
+create
 
 	make
 

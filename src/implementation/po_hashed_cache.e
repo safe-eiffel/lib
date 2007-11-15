@@ -10,7 +10,7 @@ class
 inherit
 	PO_CACHE [G]
 		
-creation
+create
 	make
 	
 feature -- Initialization

@@ -16,7 +16,7 @@ inherit
 	
 	BORROWER_PERSISTENT_CLASS_NAME
 	
-creation
+create
 
 	make
 	

@@ -19,7 +19,7 @@ inherit
 			is_equal
 		end
 
-creation
+create
 
 	--{BOOK_ADAPTER} 
 	make_from_isbn

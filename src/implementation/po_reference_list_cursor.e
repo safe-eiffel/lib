@@ -14,7 +14,7 @@ inherit
 
 	PO_CURSOR [G]
 	
-creation
+create
 
 	make
 	

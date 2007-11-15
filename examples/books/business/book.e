@@ -16,7 +16,7 @@ inherit
 	
 	BOOK_PERSISTENT_CLASS_NAME
 	
-creation
+create
 
 	make
 	

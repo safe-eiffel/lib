@@ -14,7 +14,7 @@ inherit
 
 	PO_SHARED_MANAGER
 	
-creation
+create
 
 	set_pid_from_adapter, set_item, make_void
 	

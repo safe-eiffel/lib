@@ -16,11 +16,11 @@ inherit
 	
 	COPY_PERSISTENT_CLASS_NAME
 
-creation
+create
 
 	make
 
-creation
+create
 
 	{COPY_ADAPTER} make_lazy
 	

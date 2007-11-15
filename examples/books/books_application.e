@@ -10,7 +10,7 @@ inherit
 
 	BOOKS_DATASTORE_ACCESS
 
-creation
+create
 
 	make
 

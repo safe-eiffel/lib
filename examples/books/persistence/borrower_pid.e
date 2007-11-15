@@ -19,7 +19,7 @@ inherit
 			is_equal
 		end
 		
-creation
+create
 
 	{BORROWER_ADAPTER} make
 	

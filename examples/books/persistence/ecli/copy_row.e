@@ -6,7 +6,7 @@ indexing
 
 class COPY_ROW
 
-creation
+create
 
 	make
 

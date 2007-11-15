@@ -14,7 +14,7 @@ inherit
 
 	PO_DATASTORE
 
-creation
+create
 
 	make
 
