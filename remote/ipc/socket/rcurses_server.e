@@ -12,7 +12,7 @@ class
 inherit 
    YAES_HELPER
    
-creation {ANY} 
+create {ANY} 
    make
 
 feature {ANY} 

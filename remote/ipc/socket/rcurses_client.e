@@ -9,7 +9,7 @@ indexing
 class
 	RCURSES_CLIENT
 	
-creation
+create
 	make
 	
 feature {NONE} -- Initialize

@@ -20,7 +20,7 @@ inherit
 		end
 
 
-creation
+create
 	make, make_standard_panel
 
 feature {NONE}  -- creation

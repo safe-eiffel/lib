@@ -26,7 +26,7 @@ inherit
 		redefine dispose
 		end
 	
-creation
+create
 	initialize, initialize_323, initialize_44, initialize_444,
 	initialize_444i, initialize_55
 

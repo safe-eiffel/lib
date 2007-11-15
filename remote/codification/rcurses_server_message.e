@@ -12,7 +12,7 @@ class
 inherit
 	RCURSES_MESSAGE
 	
-creation
+create
 	make, make_from_string
 
 feature  -- Initialization

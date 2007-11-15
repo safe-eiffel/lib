@@ -13,7 +13,7 @@ inherit
 		redefine post_creation_command
 		end
 
-creation
+create
 	make, make_standard_panel
 
 feature

@@ -15,7 +15,7 @@ indexing
 class
 	WIN_MUTEX
 
-creation
+create
 	make
 	
 feature {NONE} -- Initialization

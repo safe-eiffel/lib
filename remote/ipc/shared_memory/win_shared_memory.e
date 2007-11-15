@@ -15,7 +15,7 @@ class
 inherit
 	CURSES_EXTERNAL_TOOLS
 	
-creation
+create
 	make
 	
 feature {NONE} -- Initialization

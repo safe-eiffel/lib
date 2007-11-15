@@ -21,7 +21,7 @@ inherit
 		redefine refresh, memory_refresh, height, width, origin_y, origin_x
 		end
 
-creation
+create
 	make_pad, make_subpad
 
 feature

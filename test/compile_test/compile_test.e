@@ -9,7 +9,7 @@ class
 inherit
 	CURSES_APPLICATION
 
-creation
+create
 	make
 
 feature
@@ -264,6 +264,10 @@ end -- class COMPILE_TEST
 -- Released under the Eiffel Forum free license
 -------------------------------------------------------
 -- $Log$
+-- Revision 1.2  2007/11/15 10:01:55  pgcrism
+-- ECMA 367 - create instead of creation
+-- renamed entities whith reserved name (attribute, note)
+--
 -- Revision 1.1  2000/10/01 19:16:54  efa
 -- Modifications/extensions for SmallEiffel portability
 --

@@ -46,7 +46,7 @@ inherit
 		export {NONE} all
 		end
 
-creation
+create
 	make , make_from_pointer, make_subwindow_absolute, make_subwindow_relative
 
 feature {NONE} -- construction

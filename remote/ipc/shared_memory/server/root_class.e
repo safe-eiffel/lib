@@ -50,7 +50,7 @@ inherit
 			default_rescue
 		end
 		   
-creation
+create
    make
 
 feature {ANY} 

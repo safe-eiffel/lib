@@ -21,7 +21,7 @@ inherit
 
 	CURSES_ERROR_HANDLING
 
-creation
+create
 
 	make_323, make_44, make_444, make_444i, make_55
 

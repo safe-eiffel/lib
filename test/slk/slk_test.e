@@ -10,7 +10,7 @@ inherit
 	CURSES_APPLICATION
 
 
-creation
+create
 	make
 
 feature
@@ -299,6 +299,10 @@ end -- class BASIC_TEST
 -- Released under the Eiffel Forum free license
 -------------------------------------------------------
 -- $Log$
+-- Revision 1.4  2007/11/15 10:01:55  pgcrism
+-- ECMA 367 - create instead of creation
+-- renamed entities whith reserved name (attribute, note)
+--
 -- Revision 1.3  2003/01/26 13:35:14  pgcrism
 -- .xace files added; old sebuild.bat, ace and .se file have been deleted
 --

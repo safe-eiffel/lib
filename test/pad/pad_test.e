@@ -9,7 +9,7 @@ class
 inherit
 	CURSES_APPLICATION
 
-creation
+create
 	make
 
 feature
@@ -100,8 +100,12 @@ end -- class PAD_TEST
 -- Released under the Eiffel Forum free license
 -------------------------------------------------------
 -- $Log$
--- Revision 1.1  2000/01/07 11:33:35  pgcrism
--- Initial revision
+-- Revision 1.2  2007/11/15 10:01:55  pgcrism
+-- ECMA 367 - create instead of creation
+-- renamed entities whith reserved name (attribute, note)
+--
+-- Revision 1.1.1.1  2000/01/07 11:33:35  pgcrism
+-- Initial checkin
 --
 --
 	

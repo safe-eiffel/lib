@@ -10,7 +10,7 @@ class
 	CLIENT_TEST
 
    
-creation {ANY} 
+create {ANY} 
    make
 
 feature {ANY} 

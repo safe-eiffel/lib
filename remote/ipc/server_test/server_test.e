@@ -10,7 +10,7 @@ class
 	SERVER_TEST
 
    
-creation {ANY} 
+create {ANY} 
    make
 
 feature {ANY} 

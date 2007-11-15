@@ -13,7 +13,7 @@ inherit
 			{NONE} all
 		end
 
-creation
+create
 	make_from_window
 
 feature -- Commands
