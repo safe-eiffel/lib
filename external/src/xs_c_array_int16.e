@@ -14,7 +14,7 @@ class
 inherit
 	XS_C_ARRAY [INTEGER]
 
-creation
+create
 	make
 
 feature -- Access

@@ -44,7 +44,7 @@ inherit
 			is_equal
 		end
 	
-creation
+create
 	make, make_from_integer, make_from_hexadecimal_string, make_from_binary_string
 					
 feature -- Access

@@ -19,7 +19,7 @@ inherit
 		select
 		end
 
-creation
+create
 	make, make_from_array
 	
 feature -- Status report

@@ -14,7 +14,7 @@ class
 inherit
 	XS_C_MEMORY
 
-creation
+create
 	make
 
 feature -- Initialization

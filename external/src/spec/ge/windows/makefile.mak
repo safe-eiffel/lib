@@ -1,6 +1,6 @@
 CC = cl
 ISE_PLATFORM=windows
-CFLAGS = -c -Ox -W2 -I$(GOBO)\misc\gec\runtime\c -I.
+CFLAGS = -c -Ox -W2 -I$(GOBO)\tool\gec\runtime\c -I.
 OBJ = xs_c_msc.obj
 
 all:: xs_c_var clean xs_c_msc.lib

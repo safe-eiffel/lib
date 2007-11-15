@@ -32,7 +32,7 @@ inherit
 			is_equal
 		end
 
-creation
+create
 	make, make_from_string, make_shared_from_pointer, make_from_pointer, set_empty
 
 feature {NONE} -- Initialization

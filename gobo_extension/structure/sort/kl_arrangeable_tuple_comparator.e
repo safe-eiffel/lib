@@ -16,7 +16,7 @@ inherit
 			index, index_count
 		end
 
-creation
+create
 
 	make 
 		

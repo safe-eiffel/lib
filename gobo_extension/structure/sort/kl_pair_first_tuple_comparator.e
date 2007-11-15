@@ -17,7 +17,7 @@ inherit
 			less_than, first_comparator
 		end
 
-creation
+create
 	
 	make
 

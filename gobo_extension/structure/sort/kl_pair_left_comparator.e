@@ -14,7 +14,7 @@ class
 inherit
 	KL_COMPARATOR [DS_PAIR[G,K]]
 	
-creation
+create
 	make
 	
 feature {NONE} -- Initialization
