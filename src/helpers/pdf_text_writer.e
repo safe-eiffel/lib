@@ -21,7 +21,7 @@ inherit
 -- The following Creation_clause can be removed if you need no other
 -- procedure than `default_create':
 
-creation
+create
 	make
 
 feature -- Initialization

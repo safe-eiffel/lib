@@ -17,7 +17,7 @@ inherit
 		select
 		end
 
-creation
+create
 	make_graphviz, make_rgb
 
 feature -- Initialization

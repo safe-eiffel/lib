@@ -11,7 +11,7 @@ indexing
 class
 	PDF_OUTPUT_MEDIUM
 
-creation
+create
 	make, make_string
 	
 feature {NONE} -- Initialization

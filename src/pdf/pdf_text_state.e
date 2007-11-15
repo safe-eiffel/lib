@@ -18,7 +18,7 @@ inherit
 			copy
 		end
 		
-creation
+create
 	make_text_state
 	
 feature {NONE} -- Initialization

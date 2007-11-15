@@ -19,7 +19,7 @@ inherit
 			copy,is_equal
 		end
 	
-creation
+create
 	
 	make
 

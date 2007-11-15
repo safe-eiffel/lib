@@ -11,7 +11,7 @@ indexing
 class
 	OCTAL_FORMAT
 	
-creation
+create
 	make
 
 feature -- Initialization

@@ -15,7 +15,7 @@ inherit
 			put_pdf
 		end
 
-creation
+create
 
 	make, make_free
 	

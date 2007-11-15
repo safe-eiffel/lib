@@ -16,7 +16,7 @@ class
 inherit
 	PDF_EXPLICIT_DESTINATION
 
-creation
+create
 	make
 
 feature {NONE} -- Initialization

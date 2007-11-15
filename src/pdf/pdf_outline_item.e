@@ -21,7 +21,7 @@ inherit
 			make as make_node
 		end
 
-creation
+create
 	{PDF_DOCUMENT} make, make_with_destination
 
 feature {NONE} -- Initialization

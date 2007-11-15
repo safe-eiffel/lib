@@ -21,7 +21,7 @@ inherit
 			type
 		end
 		
-creation 
+create 
 	make
 	
 feature -- Access

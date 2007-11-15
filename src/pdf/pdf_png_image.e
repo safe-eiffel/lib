@@ -15,7 +15,7 @@ inherit
 		
 	KL_SHARED_FILE_SYSTEM
 	
-creation
+create
 	{PDF_DOCUMENT} make
 	
 feature {NONE} -- Initialization

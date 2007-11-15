@@ -19,7 +19,7 @@ inherit
 			to_pdf_item
 		end
 		
-creation
+create
 		make, make_a4, make_letter, set
 
 feature -- Initialization

@@ -17,7 +17,7 @@ inherit
 		select
 		end
 
-creation
+create
 	make_2_points, make_polar
 
 feature -- Initialization

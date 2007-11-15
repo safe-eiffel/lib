@@ -17,7 +17,7 @@ inherit
 	KL_IMPORTED_INTEGER_ROUTINES
 	KL_IMPORTED_STRING_ROUTINES
 
-creation
+create
 	{PDF_DOCUMENT} make
 
 feature {NONE} -- Initialization

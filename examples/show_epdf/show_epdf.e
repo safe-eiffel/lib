@@ -12,7 +12,7 @@ inherit
 	KL_SHARED_FILE_SYSTEM
 	DT_SHARED_SYSTEM_CLOCK
 
-creation
+create
 	make
 
 feature -- Initialization

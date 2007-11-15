@@ -13,7 +13,7 @@ inherit
 
 	PDF_PAGE_TREE_NODE
 
-creation
+create
 
 	make
 

@@ -35,7 +35,7 @@ inherit
 			{NONE} all;
 			{ANY} file_system
 		end
-creation
+create
 	make
 
 feature {NONE} -- Initialization

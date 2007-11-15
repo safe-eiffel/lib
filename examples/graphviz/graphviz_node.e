@@ -11,7 +11,7 @@ class
 inherit
 	GRAPHVIZ_FIGURE
 	
-creation
+create
 	make
 
 feature -- Initialization

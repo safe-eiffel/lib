@@ -22,7 +22,7 @@ inherit
 			to_pdf
 		end
 
-creation
+create
 	make
 
 feature -- Initialization

@@ -18,7 +18,7 @@ inherit
 			names as pdf_names
 		end
 
-creation
+create
 	make
 
 feature {NONE} -- Initialization

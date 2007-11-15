@@ -29,7 +29,7 @@ inherit
 
 	PDF_GRAPHICS_STATE_OPERATORS
 
-creation
+create
 	{PDF_DOCUMENT} make
 
 feature {NONE} -- Initialization

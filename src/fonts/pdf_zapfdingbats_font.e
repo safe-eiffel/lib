@@ -10,7 +10,7 @@ class
 inherit
 	PDF_ADOBE14_FONT
 
-creation
+create
 	make
 
 feature -- Access

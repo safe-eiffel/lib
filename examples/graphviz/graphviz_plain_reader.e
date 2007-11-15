@@ -7,7 +7,7 @@ indexing
 class
 	GRAPHVIZ_PLAIN_READER
 
-creation
+create
 	make
 
 feature -- Initialization

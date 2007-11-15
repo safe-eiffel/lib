@@ -17,7 +17,7 @@ inherit
 		select
 		end
 
-creation
+create
 	make
 
 feature -- Initialization

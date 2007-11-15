@@ -16,7 +16,7 @@ inherit
 			copy
 		end
 		
-creation
+create
 
 	set_null, set_identity, set
 	

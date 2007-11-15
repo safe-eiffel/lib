@@ -9,7 +9,7 @@ inherit
 
 	XS_IMPORTED_UINT32_ROUTINES
 	
-creation
+create
 	make
 
 feature -- Initialization

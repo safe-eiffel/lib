@@ -21,7 +21,7 @@ inherit
 		end
 	
 
-creation
+create
 	make, make_from_array
 	
 feature {NONE} -- Initialization

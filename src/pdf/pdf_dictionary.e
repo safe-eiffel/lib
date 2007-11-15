@@ -10,7 +10,7 @@ class
 inherit
 	PDF_SERIALIZABLE
 
-creation
+create
 	make
 
 feature -- Initialization

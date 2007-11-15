@@ -5,7 +5,7 @@ indexing
 class
 	SYMB_ZAPF
 
-creation
+create
 	make
 
 feature -- Initialization

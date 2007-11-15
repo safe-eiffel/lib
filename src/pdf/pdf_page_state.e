@@ -25,7 +25,7 @@ inherit
 		select
 			copy
 		end
-creation
+create
 	make
 
 feature -- Access

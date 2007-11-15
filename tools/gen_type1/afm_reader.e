@@ -7,7 +7,7 @@ indexing
 class
 	AFM_READER
 
-creation
+create
 	make
 	
 feature -- Initialization

@@ -19,7 +19,7 @@ inherit
 
 	EPDF_IMPORTED_MATH
 
-creation {PDF_DOCUMENT}
+create {PDF_DOCUMENT}
 
 	make
 
