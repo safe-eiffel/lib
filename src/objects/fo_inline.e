@@ -182,7 +182,7 @@ feature -- Element change
 		require
 			new_text_exists: new_text /= Void
 		do
-			text := clone (new_text)
+			text := new_text.twin
 		ensure
 			text_assigned: text.is_equal (new_text)
 		end

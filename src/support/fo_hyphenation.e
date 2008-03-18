@@ -36,7 +36,7 @@ feature {NONE} -- Initialization
 			loop
 				tex_hyphen_file.read_pattern
 				if not tex_hyphen_file.end_of_input then
-					dictionary.put (clone (tex_hyphen_file.last_hyph), clone (tex_hyphen_file.last_pattern))
+					dictionary.put (tex_hyphen_file.last_hyph.twin, tex_hyphen_file.last_pattern.twin)
 				end
 			end
 			from
@@ -46,7 +46,7 @@ feature {NONE} -- Initialization
 			until
 				tex_hyphen_file.end_of_hyphenation
 			loop
-				add_hyphenation (clone (tex_hyphen_file.last_string))
+				add_hyphenation (tex_hyphen_file.last_string.twin)
 				tex_hyphen_file.read_hyphenation
 			end
 		ensure

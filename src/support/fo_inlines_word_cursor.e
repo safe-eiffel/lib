@@ -353,7 +353,7 @@ feature {NONE} -- Implementation
 			not word_off
 		do
 			if next_word_begin /= Void then
-				word_begin := clone (next_word_begin)
+				word_begin := next_word_begin.twin
 			else
 				--| FIXME
 			end
