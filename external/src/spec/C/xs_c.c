@@ -37,7 +37,7 @@ void c_memory_put_int16 (EIF_POINTER pointer, EIF_INTEGER v) { *((short*)pointer
 void c_memory_put_uint8 (EIF_POINTER pointer, EIF_INTEGER v) { *((unsigned char*)pointer) = (unsigned char) v; };
 void c_memory_put_uint16 (EIF_POINTER pointer, EIF_INTEGER v) { *((unsigned short*)pointer) = (unsigned short) v; };
 void c_memory_put_int32 (EIF_POINTER pointer, EIF_INTEGER v) { *((int*)pointer) = (int) v; };
-void c_memory_put_int64 (EIF_POINTER pointer, EIF_INTEGER v) { *((EIF_INTEGER_64*)pointer) = (EIF_INTEGER_64) v; };
+void c_memory_put_int64 (EIF_POINTER pointer, EIF_INTEGER_64 v) { *((EIF_INTEGER_64*)pointer) = (EIF_INTEGER_64) v; };
 void c_memory_put_real (EIF_POINTER pointer, EIF_REAL v) { *((float*)pointer) = (float) v; };
 void c_memory_put_double (EIF_POINTER pointer, EIF_DOUBLE v) { *((double*)pointer) = (double) v; };
 void c_memory_put_pointer (EIF_POINTER pointer, EIF_POINTER v) { *((void**)pointer) = (void *) v; };
