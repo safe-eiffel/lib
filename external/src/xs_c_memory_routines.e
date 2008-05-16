@@ -71,6 +71,15 @@ feature {NONE} -- Implementation
 			int32_set: c_memory_get_int32 (pointer) = v
 		end
 
+	c_memory_put_int64 (pointer : POINTER; v : INTEGER_64) is
+		require
+			valid_pointer: pointer /= default_pointer
+		external "C"
+		alias "c_memory_put_int64"
+		ensure
+			int64_set: c_memory_get_int64 (pointer) = v
+		end
+
 	c_memory_put_real (pointer : POINTER; v : REAL)  is
 		require
 			valid_pointer: pointer /= default_pointer
@@ -146,6 +155,13 @@ feature {NONE} -- Implementation
 			valid_pointer: pointer /= default_pointer
 		external "C"
 		alias "c_memory_get_int32"
+		end
+
+	c_memory_get_int64 (pointer : POINTER) : INTEGER_64 is
+		require
+			valid_pointer: pointer /= default_pointer
+		external "C"
+		alias "c_memory_get_int64"
 		end
 
 	c_memory_get_real (pointer : POINTER) : REAL is

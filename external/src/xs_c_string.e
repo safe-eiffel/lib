@@ -257,9 +257,16 @@ feature -- Conversion
 			-- Current converted to a STRING
 		require
 			valid: is_valid
+		local
+			l_count : INTEGER
 		do
-			if count >= 0 then
+			l_count := count
+			if l_count >= 0 then
+				if l_count > 0 then
 				Result := substring (1, count)
+			else
+					create Result.make_empty
+				end
 			else
 				Result := pointer_to_string (handle)
 			end
@@ -337,7 +344,7 @@ feature -- Element change
 			c_memory_put_uint8 (c_memory_pointer_plus (handle, offset), 0)
 			internal_count := i_end - i_start + 1
 		ensure
-			equal_strings: equal_string (s)
+			equal_strings: equal_string (s.substring(i_start, i_end))
 			internal_count_set: internal_count = i_end - i_start + 1
 		end
 
