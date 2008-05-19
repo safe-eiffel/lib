@@ -1,9 +1,9 @@
 indexing
 	description: "C allocated 32 bits unsigned integer."
 	author: "Paul G. Crismer"
-	
+
 	library: "XS_C : eXternal Support C"
-	
+
 	date: "$Date$"
 	revision: "$Revision$"
 	licensing: "See notice at end of class"
@@ -18,23 +18,23 @@ inherit
 		end
 
 	XS_UINT32_ROUTINES
-		export 
+		export
 			{NONE} all
 		undefine
 			is_equal
 		end
-		
+
 	COMPARABLE
 		redefine
 			is_equal
 		end
-	
+
 	KL_IMPORTED_CHARACTER_ROUTINES
 		undefine
 			is_equal
 		end
 
-	KL_IMPORTED_INTEGER_ROUTINES	
+	KL_IMPORTED_INTEGER_ROUTINES
 		undefine
 			is_equal
 		end
@@ -43,10 +43,10 @@ inherit
 		undefine
 			is_equal
 		end
-	
+
 create
 	make, make_from_integer, make_from_hexadecimal_string, make_from_binary_string
-					
+
 feature -- Access
 
 	make_from_integer (value : INTEGER) is
@@ -68,7 +68,7 @@ feature -- Access
 			make
 			put (STRING_.hexadecimal_to_integer (s))
 		end
-		
+
 	make_from_binary_string (s: STRING) is
 			-- Create from `s'.
 		require
@@ -92,13 +92,27 @@ feature -- Access
 				bit_index := bit_index + 1
 			end
 		end
-		
+
 feature -- Measurement
-	
+
 	bit_count : INTEGER is 32
 	hexadecimal_count : INTEGER is 8
-		
+
 feature -- Element change
+
+	put_natural_32 (v : NATURAL_32) is
+		do
+			c_memory_put_uint32 (handle, v)
+		ensure
+			as_natural_32_set: as_natural_32 = v
+		end
+
+feature -- Conversion
+
+	as_natural_32 : NATURAL_32 is
+		do
+			Result := c_memory_get_uint32 (handle)
+		end
 
 feature -- Comparison
 
@@ -115,7 +129,7 @@ feature -- Comparison
 		do
 			Result := (lt (item, other.item) /= 0)
 		end
-		
+
 feature -- Basic operations
 
 	infix "*" (other : like Current) : like Current is
@@ -130,28 +144,28 @@ feature -- Basic operations
 			create Result.make
 			Result.put (add (item, other.item))
 		end
-		
+
 	infix "-" (other : like Current) : like Current is
 			-- Current - other.
 		do
 			create Result.make
 			Result.put (subtract(item, other.item))
 		end
-		
+
 	infix "//" (other : like Current) : like Current is
 			-- Current // other.
 		do
 			create Result.make
 			Result.put (divide (item, other.item))
 		end
-	
+
 	infix "\\" (other :like Current) : like Current is
 			-- Current \\ other.
 		do
 			create Result.make
 			Result.put (remainder (item, other.item))
 		end
-		
+
 	infix "|<<" (n : INTEGER) : like Current is
 		require
 			n_within_limits: n >= 0 and n <= bit_count
@@ -167,25 +181,25 @@ feature -- Basic operations
 			create Result.make
 			Result.put (right_shift (item, n))
 		end
-		
+
 	infix "and" (other : like Current) : like Current is
 		do
 			create Result.make
 			Result.put (u_and (item, other.item))
 		end
-		
+
 	infix "or" (other : like Current) : like Current is
 		do
 			create Result.make
 			Result.put (u_or (item, other.item))
 		end
-		
+
 	infix "xor" (other : like Current) : like Current is
 		do
 			create Result.make
 			Result.put (u_xor (item, other.item))
 		end
-			
+
 	prefix "not" : like Current is
 		do
 			create Result.make
@@ -257,7 +271,7 @@ feature -- Conversion
 			to_hexadecimal_string_not_void: Result /= Void
 			to_hexadecimal_string_hexadecimal: STRING_.is_hexadecimal (Result)
 		end
-	
+
 feature -- Element change
 
 	put_byte ( v, index : INTEGER) is
@@ -266,7 +280,7 @@ feature -- Element change
 			valid_v: v >= 0 and v < 256
 			valid_index: index >= 1 and index <= 4
 		do
-			c_memory_put_int8 (c_memory_pointer_plus (handle,index - 1),  v) 
+			c_memory_put_int8 (c_memory_pointer_plus (handle,index - 1),  v)
 		ensure
 			byte_set: byte (index) = v
 		end
@@ -280,7 +294,7 @@ feature -- Element change
 		ensure
 			result_unsigned: Result >= 0 and Result <= 255
 		end
-		
+
 end -- class XS_C_UINT32
 --
 -- Copyright: 2003; Paul G. Crismer; <pgcrism@users.sourceforge.net>
