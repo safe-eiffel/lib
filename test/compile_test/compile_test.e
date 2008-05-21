@@ -52,8 +52,8 @@ feature -- tests
 		local
 			pad: CURSES_PAD
 		do
-			!!pad.make_pad(i,i)
-			!!pad.make_subpad (pad,i,i,i,i)
+			create pad.make_pad(i,i)
+			create pad.make_subpad (pad,i,i,i,i)
 			pad.refresh
 			pad.memory_refresh
 			pad.set_view (i,i,i,i,i,i)
@@ -73,8 +73,8 @@ feature -- tests
 		local
 			panel: CURSES_PANEL
 		do
-			!!panel.make (i,i,i,i)
-			!!panel.make_standard_panel
+			create panel.make (i,i,i,i)
+			create panel.make_standard_panel
 			b := panel.panel_exists
 			panel.close
 			panel.hide
@@ -95,10 +95,10 @@ feature -- tests
 		local
 			slk: CURSES_SOFT_LABEL_KEYS
 		do
-			!!slk.make_323
-			!!slk.make_44
-			!!slk.make_444i
-			!!slk.make_55
+			create slk.make_323
+			create slk.make_44
+			create slk.make_444i
+			create slk.make_55
 			i := slk.count
 			s := slk.item (i)
 			i := slk.current_attributes
@@ -150,10 +150,10 @@ feature -- tests
 		local
 			w: CURSES_WINDOW
 		do
-			!!w.make_from_pointer (p)
-			!!w.make (i,i,i,i)
-			!!w.make_subwindow_absolute (w,i,i,i,i)
-			!!w.make_subwindow_relative (w,i,i,i,i)
+			create w.make_from_pointer (p)
+			create w.make (i,i,i,i)
+			create w.make_subwindow_absolute (w,i,i,i,i)
+			create w.make_subwindow_relative (w,i,i,i,i)
 			w.on_create
 			w.on_close
 			w.close
@@ -264,6 +264,9 @@ end -- class COMPILE_TEST
 -- Released under the Eiffel Forum free license
 -------------------------------------------------------
 -- $Log$
+-- Revision 1.3  2008/05/21 12:38:56  pgcrism
+-- ECMA367: keyword change - create instead of !!
+--
 -- Revision 1.2  2007/11/15 10:01:55  pgcrism
 -- ECMA 367 - create instead of creation
 -- renamed entities whith reserved name (attribute, note)

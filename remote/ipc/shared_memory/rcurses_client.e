@@ -20,17 +20,17 @@ feature {NONE} -- Initialize
 			shell_command: UT_SHELL_COMMAND		
 		do
 
---			!!shell_command.make ("rcurses")
+--			create shell_command.make ("rcurses")
 --			shell_command.execute 						
 
-	  		!!server_turn.make ("ECURSES_SERVER_TURN")
+	  		create server_turn.make ("ECURSES_SERVER_TURN")
 			server_turn.create_only (1,  1)
 			server_turn.wait
 			
-			!!client_turn.make ("ECURSES_CLIENT_TURN")
+			create client_turn.make ("ECURSES_CLIENT_TURN")
 		  	client_turn.create_only (1, 1)
 
-			!!shared_memory.make ("ECURSES_SHARED_MEMORY")
+			create shared_memory.make ("ECURSES_SHARED_MEMORY")
 			shared_memory.create_map
 
 		end
@@ -48,12 +48,12 @@ feature -- Basic operations
 			server_message: RCURSES_SERVER_MESSAGE
 		do
 			client_turn.wait
-			!!client_message.make (a_feature_identifier, arguments)
+			create client_message.make (a_feature_identifier, arguments)
 			shared_memory.put (client_message.to_string)
 			server_turn.release (1)
 			
 			client_turn.wait
-			!!server_message.make_from_string (shared_memory.item)
+			create server_message.make_from_string (shared_memory.item)
 			last_results := server_message.results			
 			client_turn.release (1)			
 		end

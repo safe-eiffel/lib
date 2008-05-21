@@ -13,7 +13,7 @@ feature -- shared item
 
 	curses : CURSES_SYSTEM is
 		once
-			!!Result
+			create Result
 		end
 			
 end -- class SHARED_CURSES_SYSTEM

@@ -46,7 +46,7 @@ feature {NONE} -- implementation
 		else
 		    foot_h := footer_height
 		end
-		!!client.make_subwindow_relative(
+		create client.make_subwindow_relative(
 			Current, height - head_h - foot_h,width - 2,
 			head_h, 1)
 	    end

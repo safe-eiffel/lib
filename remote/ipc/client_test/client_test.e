@@ -26,15 +26,15 @@ feature {ANY}
 	  	from
 	  		i := 0
 	  	
-	  		!!server_turn.make ("ECURSES_SERVER_TURN")
+	  		create server_turn.make ("ECURSES_SERVER_TURN")
 			server_turn.create_only (1,  1)
 			
 			server_turn.wait
 			
-			!!client_turn.make ("ECURSES_CLIENT_TURN")
+			create client_turn.make ("ECURSES_CLIENT_TURN")
 		  	client_turn.create_only (1, 1)
 
-			!!shared_memory.make ("ECURSES_SHARED_MEMORY")
+			create shared_memory.make ("ECURSES_SHARED_MEMORY")
 			shared_memory.create_map
 			
 		until

@@ -87,20 +87,20 @@ feature {NONE} -- Implementation
 			inspect 
 				a_command	
 			when 'a' then
-				!GETCH_TEST!test.make_from_window (standard_window)					
+				create {GETCH_TEST} test.make_from_window (standard_window)					
 			when 'b' then
-				!ATTR_TEST!test.make_from_window(standard_window)
+				create {ATTR_TEST} test.make_from_window(standard_window)
 			when 'c' then
 				if curses.has_colors then
-					!COLOR_TEST!test.make_from_window(standard_window)
+					create {COLOR_TEST} test.make_from_window(standard_window)
 				else
 					cannot (standard_window, "does not support color.")
 					valid := False
 				end
 			when 'f' then
-				!ACS_TEST!test.make_from_window(standard_window)
+				create {ACS_TEST} test.make_from_window(standard_window)
 			when 'g' then
-				!ACS_AND_SCROLL_TEST!test.make_from_window(standard_window)
+				create {ACS_AND_SCROLL_TEST} test.make_from_window(standard_window)
 			when 'q', '?' then
 				finish := True
 			else

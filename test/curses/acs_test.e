@@ -123,7 +123,7 @@ feature -- {NONE}
 			temp_string: STRING
 			ut_integer_formatter: UT_INTEGER_FORMATTER
 		do
-			!!ut_integer_formatter
+			create ut_integer_formatter
 			last := first + 31
 			window.clear
 			window.enable_attribute (Attribute_bold)

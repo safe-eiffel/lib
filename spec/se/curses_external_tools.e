@@ -48,7 +48,7 @@ feature -- Basic operations
 		require
 			good_pointer: p /= default_pointer
 		do
-			!!Result.from_external_copy (p)
+			create Result.from_external_copy (p)
 		end
 
 	pointer (ptr : POINTER) : POINTER is

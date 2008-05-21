@@ -97,7 +97,7 @@ feature {NONE} -- Implementation
 	table: DS_HASH_TABLE [STRING,INTEGER] is
 			-- Table of names indexed by feature identifiers.
 		once
-			!!Result.make (300)
+			create Result.make (300)
 			Result.force ("endwin", Id_endwin)
 
 			Result.force ("initscr", Id_initscr)

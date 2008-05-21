@@ -170,9 +170,9 @@ feature {NONE} -- Initialization
 	make is
 			-- Initialize adapter
 		do
-			!!pointers_table.make (1000)
-			!!last_results.make
-			!!dictionnary
+			create pointers_table.make (1000)
+			create last_results.make
+			create dictionnary
 		end
 
 
@@ -182,13 +182,13 @@ feature -- Access
 	last_server_message: RCURSES_SERVER_MESSAGE is
 			-- Last message of server results.
 		do
-			!!Result.make (last_results)
+			create Result.make (last_results)
 		end
 
 	pointers_table_dump: STRING is
 			-- Dump of pointers_table.
 		do
-			!!Result.make (200)
+			create Result.make (200)
 			Result.append_string ("(Key, Item) = ")
 			from
 				pointers_table.start

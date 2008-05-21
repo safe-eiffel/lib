@@ -58,7 +58,7 @@ feature {NONE} -- construction
 	do
 		wptr := w
 		parent_window := Void
-		!!subwindows.make
+		create subwindows.make
 		post_creation_command
 	ensure
 	    exists: exists
@@ -73,7 +73,7 @@ feature {NONE} -- construction
 	    height_in_screen: curses.maximum_height >= a_height + y
 	do
 	    parent_window := Void
-	    !!subwindows.make
+	    create subwindows.make
 	    wptr := newwin(a_height, a_width, y, x)
 	    post_creation_command          
 	ensure
@@ -97,7 +97,7 @@ feature {NONE} -- construction
 	do
 	    parent_window := parent
 	    wptr := subwin(parent.wptr, a_height, a_width, y, x)
-	    !!subwindows.make
+	    create subwindows.make
 	    parent.attach_subwindow (Current)
 	    parent.touch(y - parent.origin_y, a_height)
 	    post_creation_command
@@ -122,7 +122,7 @@ feature {NONE} -- construction
 	do
 	    parent_window := parent
 	    wptr := derwin(parent.wptr, a_height, a_width, y, x)
-	    !!subwindows.make
+	    create subwindows.make
 	    parent.attach_subwindow (Current)
 	    parent.touch(y, a_height)
 	    post_creation_command
@@ -842,9 +842,9 @@ feature -- window input
 		tools: CURSES_EXTERNAL_TOOLS
 	do
 		if last_string = Void then
-			!!last_string.make (0)
+			create last_string.make (0)
 		end
-		!!line.make(256)
+		create line.make(256)
 		lptr := tools.string_to_pointer (line)
 		handle_curses_call (wgetnstr (wptr, lptr, 255), "wgetnstr")
 		last_string := tools.pointer_to_string (lptr)

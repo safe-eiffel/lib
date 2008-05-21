@@ -26,7 +26,7 @@ feature {ANY}
 			terminate: BOOLEAN
 		do
 	  		from
-				!!client_turn.make ("ECURSES_CLIENT_TURN")
+				create client_turn.make ("ECURSES_CLIENT_TURN")
 			until
 				client_turn.is_open
 			loop
@@ -35,7 +35,7 @@ feature {ANY}
 
 
 	  		from
-				!!server_turn.make ("ECURSES_SERVER_TURN")
+				create server_turn.make ("ECURSES_SERVER_TURN")
 			until
 				server_turn.is_open
 			loop
@@ -43,7 +43,7 @@ feature {ANY}
 			end
 
 
-			!!shared_memory.make ("ECURSES_SHARED_MEMORY")
+			create shared_memory.make ("ECURSES_SHARED_MEMORY")
 			shared_memory.open_map
 
 			from

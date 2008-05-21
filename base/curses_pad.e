@@ -33,7 +33,7 @@ feature
 		wptr := newpad (p_height, p_width)
 		height := p_height
 		width := p_width
-		!!subwindows.make
+		create subwindows.make
 		post_creation_command		
 	    ensure
 		height = p_height
@@ -50,7 +50,7 @@ feature
 		wptr := subpad (p_parent.wptr, p_height, p_width, begin_y, begin_x)
 		height := p_height
 		width := p_width
-		!!subwindows.make
+		create subwindows.make
 		parent_window := p_parent;
 		parent_window.attach_subwindow (Current)
 		parent_window.touch (begin_y, p_height)

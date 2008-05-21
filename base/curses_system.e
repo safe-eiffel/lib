@@ -263,7 +263,7 @@ feature -- Status setting
 		ptr : POINTER
 		tools: CURSES_EXTERNAL_TOOLS
 	    do
-		!!Result.make (2)
+		create Result.make (2)
 		ptr := unctrl (c)
 		if ptr /= default_pointer then
 			Result := tools.pointer_to_string (ptr)
@@ -278,7 +278,7 @@ feature -- Status setting
 		ptr : POINTER
 		tools: CURSES_EXTERNAL_TOOLS
 	    do
-		!!Result.make (5)
+		create Result.make (5)
 		ptr := keyname (key_code)
 		if ptr /= default_pointer then
 			Result := tools.pointer_to_string (ptr)
