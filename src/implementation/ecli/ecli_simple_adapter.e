@@ -85,7 +85,7 @@ feature -- Status report
 	error_meaning : STRING is
 			-- Human readable meaning for current `error_code'.
 		do
-			!!Result.make(0)
+			create Result.make(0)
 			Result.append (status.message)
 			if error_code = Po_error_query_failed then
 				Result.append ("%N")
@@ -182,7 +182,7 @@ feature -- Basic operations
 				end
 			end
 			if not is_enabled_cache_on_read or else not cache.found then
-				!!row_cursor.open (datastore.session, Sql_read)
+				create row_cursor.open (datastore.session, Sql_read)
 				init_parameters_for_read (a_pid)
 				row_cursor.bind_parameters
 				row_cursor.start
@@ -218,7 +218,7 @@ feature -- Basic operations
 			last_pid ?= object.pid
 			last_object := object
 			if last_pid /= Void then
-				!!row_cursor.open (datastore.session, Sql_refresh)
+				create row_cursor.open (datastore.session, Sql_refresh)
 				init_parameters_for_refresh (last_pid)
 				row_cursor.bind_parameters
 				row_cursor.start
@@ -246,7 +246,7 @@ feature -- Basic operations
 			last_pid ?= object.pid
 			last_object := object
 			if last_pid /= Void then
-				!!change.make (datastore.session)
+				create change.make (datastore.session)
 				change.set_sql (Sql_delete)
 				init_parameters_for_delete (last_pid)
 				change.bind_parameters
@@ -275,7 +275,7 @@ feature -- Basic operations
 			end
 			last_object := object
 			if last_pid /= Void then
-				!!change.make (datastore.session)
+				create change.make (datastore.session)
 				change.set_sql (Sql_update)
 				init_parameters_for_update (object, last_pid)
 				change.bind_parameters
@@ -302,7 +302,7 @@ feature -- Basic operations
 			create_pid_from_object (object)
 			last_object := object
 			if last_pid /= Void then
-				!!change.make (datastore.session)
+				create change.make (datastore.session)
 				change.set_sql (Sql_write)
 				init_parameters_for_write (object, last_pid)
 				change.bind_parameters
@@ -463,7 +463,7 @@ feature  {NONE} -- Implementation facilities for descendants
 			if row_cursor.is_ok then				
 				from
 					status.reset
-					!!last_cursor.make
+					create last_cursor.make
 				until
 					row_cursor.off
 				loop
@@ -500,7 +500,7 @@ feature  {NONE} -- Implementation facilities for descendants
 			if row_cursor.is_ok then				
 				from
 					status.reset
-					!!last_cursor.make
+					create last_cursor.make
 				until
 					row_cursor.off
 				loop

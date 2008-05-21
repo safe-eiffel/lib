@@ -186,7 +186,7 @@ feature -- Implementation
 		local
 			b : BOOK
 		do
-			!! b.make (book_isbn, book_title, book_author)
+			create  b.make (book_isbn, book_title, book_author)
 			try_write (b)
 			last_book := b
 		end
