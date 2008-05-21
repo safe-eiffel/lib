@@ -506,33 +506,33 @@ feature {NONE} -- Implementation
 			font_name_exists: font_name /= Void
 		do
 			if font_name.is_equal ("Courier") then
-				!PDF_COURIER_FONT!last_font.make (xref.count, encoding)
+				create {PDF_COURIER_FONT} last_font.make (xref.count, encoding)
 			elseif font_name.is_equal ("Helvetica") then
-				!PDF_HELVETICA_FONT!last_font.make (xref.count, encoding)
+				create {PDF_HELVETICA_FONT} last_font.make (xref.count, encoding)
 			elseif font_name.is_equal ("Times-Roman") then
-				!PDF_TIMES_ROMAN_FONT!last_font.make (xref.count, encoding)
+				create {PDF_TIMES_ROMAN_FONT} last_font.make (xref.count, encoding)
 			elseif font_name.is_equal ("Symbol") then
-				!PDF_SYMBOL_FONT!last_font.make (xref.count, encoding)
+				create {PDF_SYMBOL_FONT} last_font.make (xref.count, encoding)
 			elseif font_name.is_equal ("Courier-Bold") then
-				!PDF_COURIER_BOLD_FONT!last_font.make (xref.count, encoding)
+				create {PDF_COURIER_BOLD_FONT} last_font.make (xref.count, encoding)
 			elseif font_name.is_equal ("Helvetica-Bold") then
-				!PDF_HELVETICA_BOLD_FONT!last_font.make (xref.count, encoding)
+				create {PDF_HELVETICA_BOLD_FONT} last_font.make (xref.count, encoding)
 			elseif font_name.is_equal ("Times-Bold") then
-				!PDF_TIMES_BOLD_FONT!last_font.make (xref.count, encoding)
+				create {PDF_TIMES_BOLD_FONT} last_font.make (xref.count, encoding)
 			elseif font_name.is_equal ("ZapfDingbats") then
-				!PDF_ZAPFDINGBATS_FONT!last_font.make (xref.count, encoding)
+				create {PDF_ZAPFDINGBATS_FONT} last_font.make (xref.count, encoding)
 			elseif font_name.is_equal ("Courier-Oblique") then
-				!PDF_COURIER_OBLIQUE_FONT!last_font.make (xref.count, encoding)
+				create {PDF_COURIER_OBLIQUE_FONT} last_font.make (xref.count, encoding)
 			elseif font_name.is_equal ("Helvetica-Oblique") then
-				!PDF_HELVETICA_OBLIQUE_FONT!last_font.make (xref.count, encoding)
+				create {PDF_HELVETICA_OBLIQUE_FONT} last_font.make (xref.count, encoding)
 			elseif font_name.is_equal ("Times-Italic") then
-				!PDF_TIMES_ITALIC_FONT!last_font.make (xref.count, encoding)
+				create {PDF_TIMES_ITALIC_FONT} last_font.make (xref.count, encoding)
 			elseif font_name.is_equal ("Courier-BoldOblique") then
-				!PDF_COURIER_BOLDOBLIQUE_FONT!last_font.make (xref.count, encoding)
+				create {PDF_COURIER_BOLDOBLIQUE_FONT} last_font.make (xref.count, encoding)
 			elseif font_name.is_equal ("Helvetica-BoldOblique") then
-				!PDF_HELVETICA_BOLDOBLIQUE_FONT!last_font.make (xref.count, encoding)
+				create {PDF_HELVETICA_BOLDOBLIQUE_FONT} last_font.make (xref.count, encoding)
 			elseif font_name.is_equal ("Times-BoldItalic") then
-				!PDF_TIMES_BOLDITALIC_FONT!last_font.make (xref.count, encoding)
+				create {PDF_TIMES_BOLDITALIC_FONT} last_font.make (xref.count, encoding)
 			else
 				last_font := Void
 			end
