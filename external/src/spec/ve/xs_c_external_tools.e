@@ -21,7 +21,7 @@ feature -- Basic operations
 
 	pointer_to_string (p : POINTER) : STRING is
 		do
-			!! Result.make (0)
+			create Result.make (0)
 			Result.from_c (p)
 		end
 
