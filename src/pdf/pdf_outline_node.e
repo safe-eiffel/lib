@@ -12,46 +12,45 @@ inherit
 		undefine
 			put_pdf
 		end
-		
+
 feature -- Access
 
 	parent : PDF_OUTLINE_NODE
 			-- parent node
-	
+
 	node_anchor : PDF_OUTLINE_NODE is
 		deferred
 		end
-		
+
 feature -- Measurement
 
-	recursive_open_count : INTEGER is
-			-- count of open elements
+	open_count : INTEGER is
+		deferred
+		end
+
+	children_open_count : INTEGER is
 		local
 			cursor : like new_cursor
 		do
-			if list.is_empty and then is_open then
-				Result := 1
-			else
-				from
-					cursor := new_cursor
-					cursor.start
-				until
-					cursor.off
-				loop
-					Result := Result + cursor.item.recursive_open_count.abs
-					cursor.forth
+			from
+				cursor := new_cursor
+				cursor.start
+			until
+				cursor.off
+			loop
+				if cursor.item.is_open then
+					Result := Result + 1
 				end
-				if not is_open then
-					Result := -Result
-				end
+				Result := Result + cursor.item.children_open_count
+				cursor.forth
 			end
 		end
-		
+
 feature -- Status report
 
 	is_open : BOOLEAN
 			-- should this node be "open" when the parent is open ?
-		
+
 	has (node : like node_anchor) : BOOLEAN is
 			-- is `node' a child of Current ?
 		require
@@ -59,7 +58,7 @@ feature -- Status report
 		do
 			Result := list.has (node)
 		end
-		
+
 feature -- Status setting
 
 	set_open is
@@ -77,16 +76,16 @@ feature -- Status setting
 		ensure
 			closed: not is_open
 		end
-		
+
 feature -- Cursor movement
 
 	new_cursor : DS_BILINKED_LIST_CURSOR[like node_anchor] is
-			-- 
+			--
 		do
 			Result := list.new_cursor
 		end
-		
-	
+
+
 feature -- Element change
 
 	put_last (node : like node_anchor) is
@@ -114,7 +113,7 @@ feature -- Element change
 			inserted: has (node)
 			parented: node.parent = Current
 		end
-		
+
 	delete (node : like node_anchor) is
 			-- delete `node' child from Current
 		require
@@ -127,7 +126,7 @@ feature -- Element change
 			deleted: not has (node)
 			no_parent: node.parent = Void
 		end
-		
+
 feature {PDF_OUTLINE_NODE} -- Element change
 
 	set_parent (node : like parent) is
@@ -147,7 +146,7 @@ feature -- Transformation
 feature -- Conversion
 
 	to_pdf : STRING is
-			-- 
+			--
 		local
 			buffer : KL_STRING_OUTPUT_STREAM
 			medium : PDF_OUTPUT_MEDIUM
@@ -158,7 +157,7 @@ feature -- Conversion
 			put_pdf (medium)
 			Result := buffer.string
 		end
-		
+
 feature -- Duplication
 
 feature -- Miscellaneous
@@ -172,7 +171,7 @@ feature -- Inapplicable
 feature {NONE} -- Implementation
 
 	list : DS_BILINKED_LIST[like node_anchor]
-	
+
 invariant
 	list_exists: list /= Void
 

@@ -16,25 +16,30 @@ inherit
 		undefine
 			make
 		end
-	
+
 create
-	
+
 	make
 
 feature -- Initialization
 
 	make (a_number: INTEGER) is
-			-- 
+			--
 		do
 			Precursor (a_number)
 			create list.make
 		end
-		
+
 feature -- Access
 
 	node_anchor : PDF_OUTLINE_ITEM
-	
+
 feature -- Measurement
+
+	open_count : INTEGER is
+		do
+			Result := children_open_count
+		end
 
 feature -- Status report
 
@@ -54,6 +59,8 @@ feature -- Conversion
 
 	put_pdf (medium: PDF_OUTPUT_MEDIUM) is
 			-- put Current on `medium'
+		local
+			c : INTEGER
 		do
 			medium.put_string (object_header)
 			medium.put_string (Begin_dictionary)
@@ -64,9 +71,12 @@ feature -- Conversion
 				medium.put_string ("/Last ")
 				medium.put_string (list.last.indirect_reference)
 				medium.put_new_line
-				medium.put_string ("/Count ")
-				medium.put_string (recursive_open_count.abs.out)
-				medium.put_new_line
+				c := open_count
+				if c > 0 then
+					medium.put_string ("/Count ")
+					medium.put_string (c.out)
+					medium.put_new_line
+				end
 			end
 			medium.put_string (End_dictionary)
 			medium.put_string (Object_footer)
@@ -83,5 +93,5 @@ feature {NONE} -- Implementation
 
 invariant
 	parent_is_void: parent = Void
-	
+
 end -- class PDF_OUTLINES
