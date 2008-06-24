@@ -27,25 +27,25 @@ feature {NONE} -- Initialization
 			a_table : FO_TABLE
 			title : FO_BLOCK
 			back_link : FO_BLOCK
+			current_outline : FO_OUTLINE_NODE
 		do
 			--| 1
-			create writer.make ("tutorial_tables.pdf")
-			create document.make (writer)
+--			create writer.make ("tutorial_tables.pdf")
+--			create document.make (writer)
 
 			--| 2
-			document.open
+--			document.open
 
+--			document.append_block (title)
 
-			create title.make_center (create {FO_MARGINS}.set (mm (10), mm (10), mm (10), mm (10)))
-			title.append (create {FO_INLINE}.make ("Table Show"))
-			title.set_target (create {FO_TARGET}.make ("Titel"))
-
-			document.append_block (title)
+			append_chapter ("Tables")
 
 			append_section ("Left aligned", "[
 Tables can be left aligned.  The whole content is aligned to the left of the render region.
 Cell widths are considered as absolutes.
 ]")
+			create current_outline.make_child (chapter_outline, "Left aligned", create {FO_DESTINATION}.make (section_title.target.name))
+
 			put_simple_table (create {FO_ALIGNMENT}.make_left)
 
 			append_section ("Right aligned", "[
@@ -80,7 +80,7 @@ Cell widths are considered as absolutes.
 			back_link.last_inline.set_destination (create {FO_DESTINATION}.make ("Titel"))
 			document.append_block (back_link)
 			--| 6
-			document.close
+--			document.close
 		end
 
 feature -- Access

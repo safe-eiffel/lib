@@ -32,10 +32,9 @@ feature {NONE} -- Initialization
 			create margins.set (cm (1), cm (1), cm (1), cm (1))
 			create section_1.make ("section1", create {FO_PAGE_SIZE}.make_a4, margins)
 			section_1.set_columns (<<cm (3), cm (5), cm (6), cm (2) >>, << cm (1), cm(1), cm (1)>>)
-
-			create a_writer.make ("show_sections.pdf")
-			create document.make (a_writer)
 			document.set_section (section_1)
+
+			append_chapter ("Sections")
 
 			create block.make_default
 			block.margins := (create {FO_MARGINS}.set(cm(0.2),cm(1),cm(0.2),cm(1)))
@@ -52,7 +51,6 @@ feature {NONE} -- Initialization
 				i := i + 1
 			end
 
-			document.open
 			document.append_block (block)
 
 			create section_2.make ("section2", (create {FO_PAGE_SIZE}.make_a4).rotated, margins)
@@ -68,8 +66,6 @@ feature {NONE} -- Initialization
 			document.set_section (section_2)
 			document.append_page_break
 			document.append_block (block)
-			document.close
-
 		end
 
 feature -- Access

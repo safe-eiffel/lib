@@ -25,12 +25,21 @@ feature -- Initialization
 	make is
 			-- Creation procedure.
 		do
---			test_hyphen
+--			test_hyphen$
+			create test
+			test.create_document ("FO_Tutorial.pdf")
 			test_chapter_1
 			test_tables
 			test_show_section
+			test.document.close
 --			test_labels
 		end
+
+feature -- Access
+
+	test : TUTORIAL_TEST
+
+feature -- Basic operations
 
 	test_chapter_1 is
 		do
@@ -40,32 +49,31 @@ feature -- Initialization
 
 	test_hello_world is
 		local
-			test : TUTORIAL_HELLO_WORLD
+			chapter : TUTORIAL_HELLO_WORLD
 		do
-			create test.execute
+			create chapter.execute
 		end
 
 	test_block is
 		local
-			test : TUTORIAL_TEST_BLOCK
+			chapter : TUTORIAL_TEST_BLOCK
 		do
-			create test.execute
+			create chapter.execute
 		end
 
 	test_tables is
 		local
-			test : TUTORIAL_SHOW_TABLES
+			chapter : TUTORIAL_SHOW_TABLES
 		do
-			create test.execute
+			create chapter.execute
 		end
 
 	test_show_section is
 		local
-			test : TUTORIAL_SHOW_SECTION
+			chapter : TUTORIAL_SHOW_SECTION
 		do
-			create test.execute
+			create chapter.execute 
 		end
-
 
 	factory : FO_CONFIGURABLE_FACTORY
 

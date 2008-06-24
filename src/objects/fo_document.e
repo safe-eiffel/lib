@@ -41,7 +41,7 @@ feature {NONE} -- Initialization
 			create background_color.make_rgb (255,255,255)
 			create foreground_color.make_rgb (0,0,0)
 			create targets.make (100)
-			create destinations.make (100)
+--			create destinations.make (100)
 		ensure
 			writer_set: writer = new_writer
 			page_rectangle_set: page_rectangle = new_page_rectangle
@@ -90,8 +90,13 @@ feature -- Access
 	current_section : FO_SECTION
 			-- Current section.
 
+	next_section : FO_SECTION
+			-- Section that will be set after next page break
+
 	writer : FO_DOCUMENT_WRITER
 			-- Writer
+
+	outlines : FO_OUTLINES
 
 feature -- Metadata
 
@@ -131,15 +136,24 @@ feature -- Measurement
 
 feature -- Element change
 
+	set_outlines (some_outlines: FO_OUTLINES) is
+		require
+			some_outlinesnot_void: some_outlines /= Void
+		do
+			outlines := some_outlines
+		ensure
+			outlines_set: outlines = some_outlines
+		end
+
 	set_section (new_section: FO_SECTION) is
 			-- Set `current_section' to `new_section'.
 			-- `new_section' shall be active after `open' or after the next page break.
 		require
 			new_section_not_void: new_section /= Void
 		do
-			current_section := new_section
+			next_section := new_section
 		ensure
-			current_section_set: current_section = new_section
+			next_section_set: next_section = new_section
 		end
 
 	set_margins (new_margins : FO_MARGINS) is
@@ -409,6 +423,7 @@ feature -- Basic operations
 		do
 			show_page_margins
 			render_header_footer
+			put_outlines
 			writer.close
 			if not writer.is_open then
 				is_open := False
@@ -567,6 +582,10 @@ feature {NONE} -- Implementation
 		local
 			page : FO_PAGE
 		do
+			if next_section /= Void then
+				current_section := next_section
+				next_section := Void
+			end
 			page_rectangle := current_section.page_rectangle
 			margins := current_section.margins
 
@@ -592,6 +611,7 @@ feature {NONE} -- Implementation
 		ensure
 			page_rectangle_set: page_rectangle = current_section.page_rectangle
 			margins_set: margins = current_section.margins
+			current_section_old_next: current_section = old next_section
 		end
 
 	setup_available_region is
@@ -615,7 +635,35 @@ feature {FO_TARGETABLE} -- Framework
 		end
 
 	targets : DS_HASH_TABLE [FO_TARGET, STRING]
-	destinations : DS_HASH_TABLE [FO_TARGET, STRING]
+
+	put_outlines is
+		do
+			if outlines /= Void then
+				pdf_document.create_outlines
+				outlines.do_all (agent put_outline (?, Void))
+
+			end
+		end
+
+	put_outline (an_outline : FO_OUTLINE_NODE; pdf_parent : PDF_OUTLINE_ITEM) is
+		local
+			current_outline_item : PDF_OUTLINE_ITEM
+		do
+			pdf_document.create_outline_item_with_destination (an_outline.text, create {PDF_NAMED_DESTINATION}.make (an_outline.destination.name))
+			current_outline_item := pdf_document.last_outline_item
+			if an_outline.is_open then
+				current_outline_item.set_open
+			end
+			if pdf_parent /= Void then
+				pdf_parent.put_last (current_outline_item)
+			else
+				pdf_document.outlines.put_last (current_outline_item)
+			end
+			if an_outline.is_leaf then
+			else
+				an_outline.children.do_all (agent put_outline (?,current_outline_item))
+			end
+		end
 
 feature {FO_SPECIAL_INLINE} -- Implementation
 
@@ -631,6 +679,6 @@ invariant
 	background_color_not_void: background_color /= Void
 	foreground_color_not_void: foreground_color /= Void
 	targets_not_void: targets /= Void
-	destinations_not_void: destinations /= Void
+--	destinations_not_void: destinations /= Void
 
 end

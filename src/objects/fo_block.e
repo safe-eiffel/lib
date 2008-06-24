@@ -622,6 +622,7 @@ feature {NONE} -- Implementation
 		do
 			line_width := region.width
 			inner_line_width := line_width
+			-- | Iterate over words
 			from
 				if word_cursor = Void then
 					create word_cursor.make (inlines)
@@ -630,16 +631,19 @@ feature {NONE} -- Implementation
 				create {DS_LINKED_LIST[FO_LINE]}lines.make
 				create current_height.points (0)
 			until
+				--| until no more words or no more vertical space in region.
 				word_cursor.off
 				or else current_height + text_leading.max (word_cursor.item_height) > region.height
 			loop
 				create line.make_justified (line_width, text_leading, Current, justification)
 				create current_width.points (0)
 				from
+					--| iterate over words
 				until
 					word_cursor.off
 					or else current_height + text_leading.max (word_cursor.item_height) > region.height
 					or else current_width + word_cursor.item_width > line_width
+					--| until next word makes line too long
 				loop
 					if word_cursor.item_text.item (1) = c_new_line then
 						create s.make (1)
@@ -661,12 +665,19 @@ feature {NONE} -- Implementation
 					current_width := current_width + word_cursor.item_width
 					word_cursor.forth
 				end
+				--| if next word too long
 				if current_width + word_cursor.item_width > line_width then
--- Here hyphenation takes place.
+					-- Try hyphenation if available
 					if hyphenation /= Void then
 						word_cursor.hyphenate (hyphenation, line_width - current_width)
+						if word_cursor.last_hyphen /= '%U' then
+							word_cursor.append_item (line)
+							word_cursor.forth
+							current_width := current_width + word_cursor.item_width
+						end
+--						word_cursor.forth
 					end
--- Cut...
+					-- Cut if word too long when line_width too short
 					if word_cursor.item_width > line_width then
 						-- The word *must* be cut
 						word_cursor.keep_head_not_greater (line_width)
@@ -677,6 +688,7 @@ feature {NONE} -- Implementation
 						else
 							--| FIXME !!!
 						end
+					else
 					end
 				end
 				lines.put_last (line)

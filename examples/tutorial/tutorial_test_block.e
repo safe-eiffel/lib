@@ -21,14 +21,16 @@ feature -- Basic operations
 
 	execute is
 		do
-			create_document ("test_block.pdf")
-			document.open
+--			create_document ("test_block.pdf")
+--			document.open
+			append_chapter ("Blocks")
 			-- test simple block : one block + a very long text
 			test_simple_block
 			-- test inlines : one block + many types of inlines
 			test_inlines
 			test_very_long_block
-			document.close
+			test_hyphenation
+--			document.close
 		end
 
 
@@ -52,7 +54,40 @@ feature -- Basic operations
 			document.append_block (block)
 		end
 
+	test_hyphenation is
+		local
+			h : FO_HYPHENATION
+			file : FO_TEX_HYPHEN_FILE
+			env : KL_EXECUTION_ENVIRONMENT
+			block : FO_BLOCK
+		do
+			create env
+			create file.make (env.interpreted_string ("$SAFE/lib/fo/src/support/hyphen/frhyph.tex"))
+			create h.make ('-', 2, 2, file)
 
+			append_section ("Hypenation", "Text can be hyphenated like in the following paragraph.")
+			create block.make_default
+
+			block.set_margins (create {FO_MARGINS}.set (cm (1), cm (1), cm (1), cm (1)))
+			block.set_hyphenation (h)
+
+			block.append_string (hyphenation_text)
+
+			document.append_block (block)
+
+			create block.make_default
+
+			block.set_margins (create {FO_MARGINS}.set (cm (1), cm (1), cm (1), cm (1)))
+
+			block.append_string (hyphenation_text)
+
+			document.append_block (block)
+		end
+
+	hyphenation_text : STRING is "[
+D'autres projets sont prêts à embrasser cette technologie pour les promesses de réutilisation qu'elle laisse miroiter.  L'attrait pour ces promesses vient de l'expérience vécue de 10 ans, voire plus, d'un mode de développement qui a conduit à de nombreuses redondances et à une complexité qui conduit à l'impasse.  Les promesses de la réutilisation ne sont tenables que dans le cadre d'une politique affirmée de réutilisation.  Pour ce faire il est nécessaire de dégager des moyens en temps et en personnel pour adapter et entretenir la bibliothèque des éléments communs.  Il y a un nouveau type de projet : bibliothèque de composants.  Ce projet fournit des services aux autres projets sous forme de composants logiciels.  La source de la bibliothèque sont les projets eux-mêmes.
+Les bibliothécaires sélectionnent des composants qui ont fait leurs preuves dans un projet et les adaptent de manière telle qu'ils soient utilisables pour d'autres.
+]"
 	test_inlines is
 		local
 			inline : FO_INLINE

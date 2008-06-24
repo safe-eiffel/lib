@@ -7,9 +7,6 @@ indexing
 class
 	TUTORIAL_HELLO_WORLD
 
-inherit
-	TUTORIAL_TEST
-
 create
 	execute
 
@@ -40,4 +37,9 @@ feature {NONE} -- Initialization
 			document.close
 		end
 
+feature -- Access
+
+	document : FO_DOCUMENT
+	writer : FO_DOCUMENT_WRITER
+	
 end
