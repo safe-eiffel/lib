@@ -1,3 +1,7 @@
+EPOM V1.?
+	. Added LRU_CACHE so that it's possible not to care about flushing caches.
+	. Fixes for ECMA-367 compliance
+	
 EPOM V1.2
 	. Added PO_CACHE, which is deferred and allows for different implementations. 
 	. PO_HASHED_CACHE implements a cache with a hash-table.
