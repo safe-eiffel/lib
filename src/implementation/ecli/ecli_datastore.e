@@ -47,6 +47,18 @@ feature -- Access
 			Result := adapters_impl
 		end
 
+feature -- Element change
+
+	set_simple_login_strategy (login : ECLI_SIMPLE_LOGIN) is
+			-- Safe setting of login strategy
+		require
+			login_not_void: login /= Void
+		do
+			session.set_login_strategy (login)
+		ensure
+			login_strategy_set: session.login_strategy = login
+		end
+
 feature -- Status report
 
 	is_connected : BOOLEAN is
