@@ -16,10 +16,13 @@ create
 feature -- Initialization
 
 	make (new_capacity : INTEGER) is
+			-- Make with capacity `new_capacity'
 		do
 			create table.make (new_capacity)
 			table.set_equality_tester (create {KL_EQUALITY_TESTER[G]})
 			create pid_list.make
+		ensure
+			capacity_set: capacity = new_capacity
 		end
 		
 feature -- Access
@@ -62,10 +65,6 @@ feature -- Status report
 
 	found : BOOLEAN
 	
-feature -- Status setting
-
-feature -- Cursor movement
-
 feature -- Element change
 
 	put (object : G) is
@@ -79,6 +78,8 @@ feature -- Element change
 			table.force (Void, pid.as_string)	
 			pid_list.put_last (pid)
 		end
+
+feature -- Removal
 
 	remove (pid : PO_PID) is
 		local
@@ -95,25 +96,13 @@ feature -- Element change
 			removed_from_list: not pid_list.has (pid)
 		end
 		
-feature -- Removal
-
-feature -- Resizing
-
-feature -- Transformation
-
-feature -- Conversion
-
-feature -- Duplication
-
-feature -- Miscellaneous
-
-feature -- Basic operations
-
 	wipe_out is
 		do
 			table.wipe_out
 			pid_list.wipe_out
 		end
+
+feature -- Basic operations
 
 	search (a_pid : PO_PID) is
 		do
@@ -121,10 +110,6 @@ feature -- Basic operations
 			found := table.found
 		end
 		
-feature -- Obsolete
-
-feature -- Inapplicable
-
 feature {NONE} -- Implementation
 
 	pid_list : DS_LINKED_LIST[PO_PID]
