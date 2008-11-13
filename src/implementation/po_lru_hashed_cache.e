@@ -14,7 +14,8 @@ inherit
 			make,
 			put,
 			put_void,
-			remove
+			remove,
+			wipe_out
 		end
 
 create
@@ -23,7 +24,7 @@ create
 feature {NONE} -- Initialization
 
 	make (new_capacity: INTEGER_32) is
-			-- <precursor>
+			-- <Precursor>
 		do
 			Precursor (new_capacity)
 			create lru_entries.make (new_capacity)
@@ -47,6 +48,22 @@ feature -- Status report
 			Result := table.count = capacity
 		end
 
+feature -- Removal
+
+        wipe_out is
+		do
+			lru_entries.wipe_out
+			Precursor
+		end
+
+	remove (pid: PO_PID) is
+		do
+			debug ("PO_LRU")
+				print ("Removing " + pid.as_string + "%N")
+			end
+			lru_entries.remove (pid.as_string)
+			Precursor (pid)
+		end
 
 feature -- Element change
 
@@ -82,15 +99,6 @@ feature -- Element change
 			create entry.make (pid)
 			entry.record_access (time)
 			lru_entries.put (entry, pid.as_string)
-			Precursor (pid)
-		end
-
-	remove (pid: PO_PID) is
-		do
-			debug ("PO_LRU")
-				print ("Removing " + pid.as_string + "%N")
-			end
-			lru_entries.remove (pid.as_string)
 			Precursor (pid)
 		end
 
@@ -130,5 +138,6 @@ feature {NONE} -- Implementation
 
 invariant
 	lru_entries_not_void: lru_entries /= Void
+	count_consistency: lru_entries.count = count
 
 end
