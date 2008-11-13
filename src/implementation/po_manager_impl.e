@@ -97,6 +97,7 @@ feature -- Basic operations
 			else
 				last_adapter := Void
 				status.set_framework_error (status.Error_could_not_find_adapter)
+				error_handler.report_could_not_find_adapter (class_name, generator, "search_adapter")
 			end
 		end
 
