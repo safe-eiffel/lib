@@ -47,6 +47,9 @@ feature -- Access
 
 	found_item : like Current
 			-- Item found after last search or search_key operation.
+
+	no_item : G is do  end
+
 feature -- Status report
 
 	found : BOOLEAN
@@ -72,10 +75,10 @@ feature -- Element change
 	clear is
 			-- Clear `item'.
 		do
-			item := Void
+			item := no_item
 			is_set := False
 		ensure
-			item_void: item = Void
+			item_void: item = no_item
 			not_is_set: not is_set
 		end
 

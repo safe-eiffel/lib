@@ -48,6 +48,8 @@ feature -- Access
 	found_item : G
 			-- Found item of last `search'.
 
+	no_object : G is do  end
+
 feature -- Measurement
 
 	count: INTEGER
@@ -134,7 +136,7 @@ feature -- Basic operations
 			if found then
 				found_item := root.found_item.item
 			else
-				found_item := Void
+				found_item := no_object
 			end
 		end
 
@@ -175,6 +177,48 @@ feature -- Basic operations
 			end
 		ensure
 			found_item: (found_key and has (key)) implies found_item = item (key)
+		end
+
+feature -- Iteration
+
+	do_all (an_action: PROCEDURE [ANY, TUPLE [G]]) is
+			-- <Precursor>
+		do
+		end
+
+	do_if (an_action: PROCEDURE [ANY, TUPLE [G]]; a_test: FUNCTION [ANY, TUPLE [G], BOOLEAN]) is
+			-- <Precursor>
+		do
+		end
+
+	there_exists (a_test: FUNCTION [ANY, TUPLE [G], BOOLEAN]): BOOLEAN is
+			-- <Precursor>
+		do
+		end
+
+	for_all (a_test: FUNCTION [ANY, TUPLE [G], BOOLEAN]): BOOLEAN is
+			-- <Precursor>
+		do
+		end
+
+	do_all_with_key (an_action: PROCEDURE [ANY, TUPLE [G, STRING]]) is
+			-- <Precursor>
+		do
+		end
+
+	do_if_with_key (an_action: PROCEDURE [ANY, TUPLE [G, STRING]]; a_test: FUNCTION [ANY, TUPLE [G, STRING], BOOLEAN]) is
+			-- <Precursor>
+		do
+		end
+
+	there_exists_with_key (a_test: FUNCTION [ANY, TUPLE [G, STRING], BOOLEAN]): BOOLEAN is
+			-- <Precursor>
+		do
+		end
+
+	for_all_with_key (a_test: FUNCTION [ANY, TUPLE [G, STRING], BOOLEAN]): BOOLEAN is
+			-- <Precursor>
+		do
 		end
 
 feature {NONE} -- Implementation

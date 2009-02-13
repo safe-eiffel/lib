@@ -284,10 +284,17 @@ feature -- Basic operations
 			-- append item to `line'.
 		local
 			item_inlines_cursor : DS_LIST_CURSOR[FO_INLINE]
+			pos_begin, pos_end : INTEGER
 		do
 			if item_begin.inline = item_end.inline then
 				-- One inline from begin to end
-				line.add_inline (item_begin.inline.substring (item_begin.position, item_end.position.min (item_end.inline.count)))
+				pos_begin := item_begin.position
+				pos_end := item_end.position.min (item_end.inline.count)
+				if pos_begin <= pos_end then
+					line.add_inline (item_begin.inline.substring (pos_begin,pos_end))
+				else
+					do_nothing
+				end
 			else
 				-- More than one inline from begin to end
 				-- . Iterate over item inlines
@@ -350,6 +357,8 @@ feature {NONE} -- Implementation
 			else
 				word_off := True
 			end
+		ensure
+			consistent_position: not word_off implies (word_begin.inline = word_end.inline implies word_begin.position <= word_end.position)
 		end
 
 	word_forth is
@@ -363,6 +372,8 @@ feature {NONE} -- Implementation
 			end
 			get_word
 
+		ensure
+			consistent_position: not word_off implies (word_begin.inline = word_end.inline implies word_begin.position <= word_end.position)
 		end
 
 	word_off : BOOLEAN
