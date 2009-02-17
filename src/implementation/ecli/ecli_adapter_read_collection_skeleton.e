@@ -7,13 +7,13 @@ indexing
 deferred class
 	ECLI_ADAPTER_READ_COLLECTION_SKELETON[G->PO_PERSISTENT]
 
-obsolete "Please use query assistant generated access routines" 
+obsolete "Please use query assistant generated access routines"
 
 inherit
 	ECLI_ADAPTER_READ_SKELETON[G]
 
 feature {PO_ADAPTER} -- Access
-	
+
 	read_pid_cursor : ECLI_CURSOR is
 		deferred
 		end
@@ -29,14 +29,14 @@ feature {PO_ADAPTER} -- Basic operations
 		ensure
 			adapted_count:  not status.is_error implies last_pid /= Void
 		end
-		
+
 	create_last_cursor is
 			-- Create last_cursor on result-set.
 		do
 			create last_cursor.make
 		end
 
-		
+
 feature  {NONE} -- Implementation facilities for descendants
 
 	read_object_collection is
@@ -44,16 +44,16 @@ feature  {NONE} -- Implementation facilities for descendants
 		require
 			read_cursor_ready: read_cursor /= Void
 		do
-			last_object := Void
+			last_object := default_value
 			create_last_cursor
 			read_cursor.start
-			if read_cursor.is_ok then				
+			if read_cursor.is_ok then
 				from
 					status.reset
 				until
 					read_cursor.off
 				loop
-					last_object := Void
+					last_object := default_value
 					create_object_from_read_cursor (read_cursor, Void)
 					if last_object /= Void then
 						fill_object_from_read_cursor (read_cursor, last_object)
@@ -64,7 +64,7 @@ feature  {NONE} -- Implementation facilities for descendants
 			else
 				status.set_datastore_error (read_cursor.native_code, read_cursor.diagnostic_message)
 			end
-			last_object := Void
+			last_object := default_value
 		end
 
 	read_pid_collection is
@@ -73,10 +73,10 @@ feature  {NONE} -- Implementation facilities for descendants
 		require
 			read_pid_cursor_ready: read_pid_cursor /= Void
 		do
-			last_object := Void
+			last_object := default_value
 			create_last_cursor
 			read_pid_cursor.start
-			if read_pid_cursor.is_ok then				
+			if read_pid_cursor.is_ok then
 				from
 					status.reset
 				until
@@ -93,5 +93,5 @@ feature  {NONE} -- Implementation facilities for descendants
 				status.set_datastore_error (read_pid_cursor.native_code, read_pid_cursor.diagnostic_message)
 			end
 		end
-		
+
 end -- class ECLI_ADAPTER_READ_COLLECTION_SKELETON

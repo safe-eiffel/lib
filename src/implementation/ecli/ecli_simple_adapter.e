@@ -8,9 +8,9 @@
 	%	When `is_enabled_cache_on_write' is True then written object%
 	%	also are inserted in the cache.%
 	%"
-	
+
 	author: "Eric Fafchamps"
-	
+
 	usage: "%N%
 	%	* Inherit from it.%N%
 	%	* Implement deferred features. %N%
@@ -19,7 +19,7 @@
 	%	Implement any other access (query) on objects.%N%
 	%	Features `read_one' and `read_object_collection' can be used as facility routines for%N%
 	%	exact-match or multiple-match queries, respectively."
-		
+
 	date: "$Date$"
 	revision: "$Revision$"
 
@@ -30,21 +30,21 @@ obsolete "Use ECLI_GENERAL_ADAPTER descendants instead"
 inherit
 
 	PO_ADAPTER[G]
-			
+
 	PO_SHARED_MANAGER
 		export
 			{NONE} all
 		end
 
 	PO_CACHE_USE [G]
-	
+
 	PO_ADAPTER_ERROR_CODES
 		rename
-			po_error_code_within_bounds as error_code_within_bounds			
+			po_error_code_within_bounds as error_code_within_bounds
 		export
 			{NONE} all
 		end
-		
+
 feature {NONE} -- Initialization
 
 	make (a_datastore : ECLI_DATASTORE) is
@@ -62,13 +62,13 @@ feature {NONE} -- Initialization
 		end
 
 feature -- Access
-	
+
 	datastore: ECLI_DATASTORE
 		-- current datastore
 
 	last_cursor: PO_REFERENCE_LIST_CURSOR [G]
 		-- Cursor the handles a linked list of PO_REFERENCE, i.e implementing load-on-demand of objects
-		
+
 
 	last_pid: PO_PID
 		-- Last created pid
@@ -78,8 +78,13 @@ feature {PO_ADAPTER} -- Access
 	last_object: G
 		-- Last created object
 
+	default_object : G is
+			-- default (Void) object
+		do
+		end
+
 feature -- Status report
-		
+
 	error_code : INTEGER
 
 	error_meaning : STRING is
@@ -92,7 +97,7 @@ feature -- Status report
 				Result.append (query_error_message)
 			end
 		end
-		
+
 	is_enabled_cache_on_write : BOOLEAN
 			-- Are written objects inserted in cache ?
 
@@ -105,29 +110,29 @@ feature -- Status report
 	can_delete : BOOLEAN is do Result := True end
 	can_refresh : BOOLEAN is do Result := True end
 
-	
+
 feature -- Status setting
 
 	enable_cache_on_read is
 		do
 			is_enabled_cache_on_read := True
 		end
-		
+
 	disable_cache_on_read is
 		do
 			is_enabled_cache_on_read := False
 		end
-		
+
 	enable_cache_on_write is
-		do 
-			is_enabled_cache_on_write := True 
+		do
+			is_enabled_cache_on_write := True
 		end
 
 	disable_cache_on_write is
-		do 
-			is_enabled_cache_on_write := False 
+		do
+			is_enabled_cache_on_write := False
 		end
-		
+
 feature -- Measurement
 
 
@@ -143,7 +148,7 @@ feature {PO_LAUNCHER} -- Element change
 		do
 			datastore := a_datastore
 		end
-		
+
 feature -- Basic operations
 
 	exists (a_pid: like last_pid): BOOLEAN is
@@ -170,7 +175,7 @@ feature -- Basic operations
 	read (a_pid: like last_pid) is
 			-- Read an object identified by `a_pid'.  Uses `Sql_read'.
 		do
-			last_object := Void
+			last_object := default_object
 			create last_cursor.make
 			status.reset
 			if is_enabled_cache_on_read then
@@ -190,7 +195,7 @@ feature -- Basic operations
 					if not row_cursor.off then
 						create_object_from_row_cursor
 						if last_object /= Void then
-							fill_object_from_row_cursor				
+							fill_object_from_row_cursor
 							last_object.set_pid (a_pid)
 							if is_enabled_cache_on_read then
 								cache.put (last_object)
@@ -211,9 +216,9 @@ feature -- Basic operations
 
 	refresh (object: like last_object) is
 			-- Refresh `object'.  Uses `Sql_refresh'.
-		do 
-			last_object := Void
-			
+		do
+			last_object := default_object
+
 			status.reset
 			last_pid ?= object.pid
 			last_object := object
@@ -234,14 +239,14 @@ feature -- Basic operations
 				row_cursor.close
 			else
 				status.set_framework_error (status.error_non_conformant_pid)
-			end		
+			end
 		end
 
 	delete (object: like last_object) is
 			-- Delete `object' from datastore.  Uses `Sql_delete'.
-		do  
-			last_object := Void
-			
+		do
+			last_object := default_object
+
 			status.reset
 			last_pid ?= object.pid
 			last_object := object
@@ -264,9 +269,9 @@ feature -- Basic operations
 
 	update (object: like last_object) is
 			-- Update `object' on datastore. Uses `Sql_update'.
-		do  
-			last_object := Void
-			
+		do
+			last_object := default_object
+
 			status.reset
 			if object.is_volatile then
 				create_pid_from_object (object)
@@ -288,16 +293,16 @@ feature -- Basic operations
 				end
 				change.close
 			else
-				--| non_conformant_pid 
+				--| non_conformant_pid
 				status.set_framework_error (status.error_non_conformant_pid)
-			end		
+			end
 		end
 
 	write (object: like last_object) is
 			-- Write `object' on datastore. Uses `Sql_write'.
 		do
-			last_object := Void
-			
+			last_object := default_object
+
 			status.reset
 			create_pid_from_object (object)
 			last_object := object
@@ -318,7 +323,7 @@ feature -- Basic operations
 				change.close
 			else
 				status.set_framework_error (status.error_non_conformant_pid)
-			end		
+			end
 		end
 
 feature {PO_ADAPTER} -- Implementation
@@ -327,11 +332,11 @@ feature {PO_ADAPTER} -- Implementation
 			-- Error message associated with last error
 
 	set_query_error_message (a_string : STRING) is
-			-- 
+			--
 		require
 			a_string_not_void: a_string /= Void
 		do
-			query_error_message := a_string		
+			query_error_message := a_string
 		ensure
 			query_error_message_set: query_error_message = a_string
 		end
@@ -389,7 +394,7 @@ feature {PO_ADAPTER} -- Implementation
 		ensure
 			last_objet_is_persistent: last_object /= Void implies last_object.is_persistent
 		end
-		
+
 	add_pid_to_cursor is
 			-- Extend last_cursor with a PO_REFERENCE p, with p.pid initialized to `last_pid'.
 		local
@@ -399,7 +404,7 @@ feature {PO_ADAPTER} -- Implementation
 			ref.set_pid_from_adapter (Current)
 			last_cursor.add_reference (ref)
 		end
-		
+
 	add_object_to_cursor is
 			-- Extend last_cursor with a PO_REFERENCE p, with p.pid initialized to `last_pid'.
 		local
@@ -419,35 +424,35 @@ feature {PO_ADAPTER} -- Implementation
 
 	row_cursor : ECLI_ROW_CURSOR
 			-- Cursor on virtual rows.
-		
+
 	Sql_exists : STRING is
 			-- SQL query for 'exists'.
-		 deferred 
+		 deferred
 		 end
-		
+
 	Sql_read : STRING  is
 			-- SQL query for 'read'.
-		 deferred 
+		 deferred
 		 end
 
 	Sql_refresh : STRING  is
 			-- SQL query for 'refresh'.
-		 deferred 
+		 deferred
 		 end
 
 	Sql_update : STRING  is
 			-- SQL query for 'update'.
-		 deferred 
+		 deferred
 		 end
 
 	Sql_write : STRING is
 			-- SQL query for 'write'.
-		 deferred 
+		 deferred
 		 end
 
 	Sql_delete : STRING is
 			-- SQL query for 'delete'.
-		 deferred 
+		 deferred
 		 end
 
 feature  {NONE} -- Implementation facilities for descendants
@@ -457,17 +462,17 @@ feature  {NONE} -- Implementation facilities for descendants
 		require
 			row_cursor_ready: row_cursor /= Void
 		do
-			last_object := Void
-			
+			last_object := default_object
+
 			row_cursor.start
-			if row_cursor.is_ok then				
+			if row_cursor.is_ok then
 				from
 					status.reset
 					create last_cursor.make
 				until
 					row_cursor.off
 				loop
-					last_object := Void
+					last_object := default_object
 					create_object_from_row_cursor
 					if last_object /= Void then
 						fill_object_from_row_cursor
@@ -484,20 +489,20 @@ feature  {NONE} -- Implementation facilities for descendants
 					last_cursor.start
 					last_object := last_cursor.item
 				else
-					last_object := Void
+					last_object := default_object
 				end
 			end
 		end
 
-	read_pid_collection is 
+	read_pid_collection is
 			-- Read a collection of pid from current row_cursor
 		require
 			row_cursor_ready: row_cursor /= Void
 		do
-			last_object := Void
-			
+			last_object := default_object
+
 			row_cursor.start
-			if row_cursor.is_ok then				
+			if row_cursor.is_ok then
 				from
 					status.reset
 					create last_cursor.make
@@ -513,24 +518,23 @@ feature  {NONE} -- Implementation facilities for descendants
 				end
 			else
 				status.set_datastore_error (row_cursor.native_code, row_cursor.diagnostic_message)
-			end			
-			
-			last_object := Void
+			end
+			last_object := default_object
 		end
-		
+
 feature  {NONE} -- Implementation	
-	
-	set_error (a_code : INTEGER) is 
+
+	set_error (a_code : INTEGER) is
 			-- set `error_code' to `a_code'
-		do 
-			error_code := a_code 
+		do
+			error_code := a_code
 		end
-	
+
 	change : ECLI_STATEMENT
 			-- Ecli change object
-		
+
 invariant
 
 	datastore_not_void: datastore /= Void
-	
+
 end

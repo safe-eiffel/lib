@@ -13,13 +13,13 @@ class PO_REFERENCE [G -> PO_PERSISTENT]
 inherit
 
 	PO_SHARED_MANAGER
-	
+
 create
 
 	set_pid_from_adapter, set_item, make_void
-	
+
 feature -- Access			
-	
+
 	pid : PO_PID
 			-- identifier of persistent object
 
@@ -31,7 +31,7 @@ feature -- Access
 				if object = Void then
 					object := get_object
 				end
-				Result := object			
+				Result := object
 		ensure
 			exists: Result /= Void
 			same_pid_when_persistent: Result.is_persistent implies Result.pid.is_equal (pid)
@@ -46,7 +46,7 @@ feature -- Status report
 		ensure
 			definition: Result = not is_identified or else not has_item
 		end
-	
+
 	is_identified : BOOLEAN is
 			-- is this reference identified by a pid ?
 		do
@@ -65,7 +65,7 @@ feature -- Status report
 			end
 			Result := object /= Void
 		end
-		
+
 feature {PO_ADAPTER, PO_PERSISTENT, PO_REFERENCE_ACCESS} -- Element change
 
 	set_pid_from_adapter (an_adapter : PO_ADAPTER[G]) is
@@ -98,9 +98,9 @@ feature {PO_ADAPTER, PO_PERSISTENT, PO_REFERENCE_ACCESS} -- Element change
 			-- Reset reference.
 		do
 			pid := Void
-			set_object (Void)
+			set_object (default_value)
 		end
-		
+
 feature {NONE} -- Implementation
 
 	get_object : G is
@@ -120,13 +120,13 @@ feature {NONE} -- Implementation
 				if persistent_adapter.last_cursor.count > 0 then
 					Result := persistent_adapter.last_cursor.first
 				else
-					Result := Void
+					Result := default_value
 				end
 			end
 		end
 
 	object : G
-	
+
 	pid_for (an_object : G) : PO_PID is
 			-- Pid for  `an_object'.
 		local
@@ -152,5 +152,7 @@ feature {NONE} -- Implementation
 		ensure
 			object_set: object = an_object
 		end
-		
+
+	default_value : G is do  end
+	
 end

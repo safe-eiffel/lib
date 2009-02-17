@@ -113,7 +113,7 @@ feature -- Basic operations
 			-- Does an object identified by `a_pid' exist? Uses `Sql_exists'.
 		do
 			create last_cursor.make
-			last_object := Void
+			last_object := default_value
 
 			check
 				exists_cursor_not_void: exists_cursor /= Void
@@ -203,5 +203,7 @@ feature {NONE} -- Framework - Status report
 		ensure
 			a_cursor_after: a_cursor.after
 		end
+
+	default_value : G is do  end
 
 end

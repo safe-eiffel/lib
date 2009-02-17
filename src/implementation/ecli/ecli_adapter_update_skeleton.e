@@ -35,7 +35,7 @@ feature -- Basic operations
 				last_pid ?= object.pid
 			end
 
-			last_object := Void
+			last_object := default_value
 			if last_pid /= Void then
 				init_parameters_for_update (object, last_pid)
 				update_query.execute

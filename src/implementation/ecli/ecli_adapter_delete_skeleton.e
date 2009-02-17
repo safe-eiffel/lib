@@ -31,7 +31,7 @@ feature -- Basic operations
 			status.reset
 			last_pid ?= pid_for_object (object)
 
-			last_object := Void
+			last_object := default_value
 			if last_pid /= Void then
 				init_parameters_for_delete (last_pid)
 				delete_query.execute
