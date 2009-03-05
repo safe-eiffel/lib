@@ -263,8 +263,8 @@ feature -- Conversion
 			l_count := count
 			if l_count >= 0 then
 				if l_count > 0 then
-				Result := substring (1, count)
-			else
+					Result := substring (1, count)
+				else
 					create Result.make_empty
 				end
 			else
