@@ -127,6 +127,7 @@ feature -- Metadata
 feature -- Measurement
 
 	page_count : INTEGER is
+			-- Count of pages
 		do
 			Result := pages.count
 		end
@@ -165,6 +166,28 @@ feature -- Element change
 			margins := new_margins
 		ensure
 			margins_set: margins = new_margins
+		end
+
+	set_header (a_header : FO_HEADER_FOOTER) is
+			-- Set `header' to `a_header'.
+		require
+			a_header_not_void: a_header /= Void
+			is_open: is_open
+		do
+			current_section.set_header (a_header)
+		ensure
+			header_set: header = a_header
+		end
+
+	set_footer (a_footer : FO_HEADER_FOOTER) is
+			-- Set `footer' to `a_footer'.
+		require
+			a_footer_not_void: a_footer /= Void
+			is_open: is_open
+		do
+			current_section.set_footer (a_footer)
+		ensure
+			footer_set: footer = a_footer
 		end
 
 feature -- Metadata change
@@ -267,26 +290,6 @@ feature -- Status report
 feature -- Status setting
 
 feature -- Cursor movement
-
-feature -- Element change
-
-	set_header (a_header : FO_HEADER_FOOTER) is
-			-- Set `header' to `a_header'.
-		require
-			a_header_not_void: a_header /= Void
-			is_open: is_open
-		do
-			current_section.set_header (a_header)
-		end
-
-	set_footer (a_footer : FO_HEADER_FOOTER) is
-			-- Set `footer' to `a_footer'.
-		require
-			a_footer_not_void: a_footer /= Void
-			is_open: is_open
-		do
-			current_section.set_footer (a_footer)
-		end
 
 feature -- Removal
 
@@ -431,12 +434,6 @@ feature -- Basic operations
 		ensure
 			closed: not is_open
 		end
-
-feature {FO_RENDERABLE} -- Basic operations
-
-feature -- Obsolete
-
-feature -- Inapplicable
 
 feature {FO_RENDERABLE, FO_BORDERABLE} -- Access
 
