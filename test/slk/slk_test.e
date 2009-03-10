@@ -1,5 +1,5 @@
 indexing
-	description: "eCurses Hello World'"
+	description: "eCurses Soft Label Keys test application."
 	version: "$Revision$"
 	date:	"$Date$"
 	Author: "Paul G. Crismer"
@@ -299,6 +299,10 @@ end -- class BASIC_TEST
 -- Released under the Eiffel Forum free license
 -------------------------------------------------------
 -- $Log$
+-- Revision 1.5  2009/03/10 10:24:26  pgcrism
+-- Revisited documentation.
+-- Build automation.
+--
 -- Revision 1.4  2007/11/15 10:01:55  pgcrism
 -- ECMA 367 - create instead of creation
 -- renamed entities whith reserved name (attribute, note)

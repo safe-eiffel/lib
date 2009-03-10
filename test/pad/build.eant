@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+
+<project name="pad" default="help">
+
+	<description>
+		system: "ECurses test application for pads."
+
+		library: "ECURSES : Eiffel CURSES Library. Project SAFE."
+		copyright: "Copyright (C) 1999-2009 Paul G. Crismer, Eric Fafchamps
+		license: "Eiffel Forum License v2 (see forum.txt)"
+		date: "$Date$"
+
+	</description>
+
+	<inherit>
+		<parent location="${GOBO}/misc/eiffel.eant">
+			<redefine target="init_system"/>
+		</parent>
+	</inherit>
+
+
+<!-- Implementation -->
+
+	<target name="init_system">
+		<set name="system" value="pad"/>
+		<set name="system_dir" value="${ECURSES}/test/${system}"/>
+	</target>
+
+</project>

@@ -1,866 +1,748 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
 <HTML>
 <HEAD>
-	<META HTTP-EQUIV="CONTENT-TYPE" CONTENT="text/html; charset=utf-8">
+	<META HTTP-EQUIV="CONTENT-TYPE" CONTENT="text/html; charset=windows-1252">
 	<TITLE></TITLE>
-	<META NAME="GENERATOR" CONTENT="OpenOffice.org 1.1.0  (Linux)">
+	<META NAME="GENERATOR" CONTENT="OpenOffice.org 3.0  (Win32)">
 	<META NAME="AUTHOR" CONTENT="Fafchamps Eric">
 	<META NAME="CREATED" CONTENT="20031221;19055500">
-	<META NAME="CHANGED" CONTENT="19990226;22182500">
-	<STYLE>
+	<META NAME="CHANGEDBY" CONTENT="Paul-Georges Crismer">
+	<META NAME="CHANGED" CONTENT="20090310;11225400">
+	<META NAME="Info 1" CONTENT="">
+	<META NAME="Info 2" CONTENT="">
+	<META NAME="Info 3" CONTENT="">
+	<META NAME="Info 4" CONTENT="">
+	<META NAME="SDFOOTNOTE" CONTENT=";;;;P">
+	<META NAME="SDENDNOTE" CONTENT="ARABIC">
+	<STYLE TYPE="text/css">
 	<!--
-		@page { size: 8.27in 11.69in; margin-left: 1.25in; margin-right: 1.25in; margin-top: 1in; margin-bottom: 1in }
-		P { margin-bottom: 0.08in }
-		TD P { margin-bottom: 0.08in }
-		TH P { margin-bottom: 0.08in; font-style: italic }
+		@page { margin: 2cm }
+		P { margin-bottom: 0.21cm }
+		TD P { margin-bottom: 0.21cm }
+		TH P { margin-bottom: 0.21cm; font-style: italic }
+		H1 { margin-bottom: 0.21cm }
+		H1.western { font-family: "Arial", sans-serif; font-size: 16pt }
+		H1.cjk { font-family: "Arial Unicode MS"; font-size: 16pt }
+		H1.ctl { font-family: "Tahoma"; font-size: 16pt }
+		H2 { margin-bottom: 0.21cm }
+		H2.western { font-family: "Arial", sans-serif; font-size: 14pt; font-style: italic }
+		H2.cjk { font-size: 14pt; font-style: italic }
+		H2.ctl { font-size: 14pt; font-style: italic }
+		H3 { margin-bottom: 0.21cm }
+		H3.western { font-family: "Arial", sans-serif }
 	-->
 	</STYLE>
 </HEAD>
 <BODY LANG="fr-FR" DIR="LTR">
-<P LANG="en-GB" STYLE="margin-bottom: 0in"><FONT FACE="Helvetica, sans-serif">ECurses
-: an Eiffel binding to Curses</FONT></P>
-<P LANG="en-GB" STYLE="margin-bottom: 0in"><BR>
+<DIV TYPE=HEADER>
+	<P ALIGN=CENTER STYLE="margin-bottom: 0.5cm">Ecurses : an Eiffel
+	Binding to Curses</P>
+</DIV>
+<P ALIGN=CENTER STYLE="margin-top: 0.42cm; page-break-after: avoid"><FONT FACE="Arial, sans-serif"><FONT SIZE=4>ECurses
+: an Eiffel binding to Curses</FONT></FONT></P>
+<P LANG="en-GB" STYLE="margin-bottom: 0cm"><BR>
 </P>
-<P LANG="en-GB" ALIGN=CENTER STYLE="margin-bottom: 0in"><FONT FACE="Helvetica, sans-serif">Paul
+<P LANG="en-GB" ALIGN=CENTER STYLE="margin-bottom: 0cm"><FONT FACE="Helvetica, sans-serif">Paul
 G. Crismer, Eric Fafchamps </FONT>
 </P>
-<P LANG="en-GB" ALIGN=CENTER STYLE="margin-bottom: 0in"><FONT FACE="Helvetica, sans-serif">&lt;pgcrism@users.sourceforge.net&gt;,
+<P LANG="en-GB" ALIGN=CENTER STYLE="margin-bottom: 0cm"><FONT FACE="Helvetica, sans-serif">&lt;pgcrism@users.sourceforge.net&gt;,
 &lt;efa@users.sourceforge.net&gt;</FONT></P>
-<P LANG="en-GB" ALIGN=CENTER STYLE="margin-bottom: 0in"><BR>
+<P LANG="en-GB" ALIGN=CENTER STYLE="margin-bottom: 0cm"><BR>
 </P>
-<P LANG="en-GB" ALIGN=CENTER STYLE="margin-bottom: 0in"><FONT FACE="Helvetica, sans-serif">October
-1, 2000</FONT></P>
-<P LANG="en-GB" ALIGN=CENTER STYLE="margin-bottom: 0in"><FONT FACE="Helvetica, sans-serif"><B>Abstract</B></FONT></P>
-<P LANG="en-GB" STYLE="margin-bottom: 0in"><BR>
+<P LANG="en-GB" ALIGN=CENTER STYLE="margin-bottom: 0cm"><FONT FACE="Helvetica, sans-serif">March
+10, 2009</FONT></P>
+<P LANG="en-GB" ALIGN=CENTER STYLE="margin-bottom: 0cm"><BR>
 </P>
-<P LANG="en-GB" STYLE="margin-bottom: 0in; font-weight: medium"><FONT FACE="Helvetica, sans-serif"><FONT SIZE=3>ECurses
+<P LANG="en-GB" ALIGN=CENTER STYLE="margin-bottom: 0cm"><FONT FACE="Helvetica, sans-serif"><B>Abstract</B></FONT></P>
+<P LANG="en-GB" STYLE="margin-bottom: 0cm"><BR>
+</P>
+<P LANG="en-GB" STYLE="margin-bottom: 0cm; font-weight: normal"><FONT FACE="Helvetica, sans-serif"><FONT SIZE=3>ECurses
 is an Eiffel binding to Curses. It tries to be more than just a
 wrapping of the C library. It does not implement all the features of
 Curses, but provides enough functionality to allow development of
 nice console applications. </FONT></FONT>
 </P>
-<P LANG="en-GB" STYLE="margin-bottom: 0in; font-weight: medium"><FONT FACE="Helvetica, sans-serif"><FONT SIZE=3>ECurses
+<P LANG="en-GB" STYLE="margin-bottom: 0cm; font-weight: normal"><FONT FACE="Helvetica, sans-serif"><FONT SIZE=3>ECurses
 has been designed to be portable among different platforms, i.e. on
 Unix/Linux (Curses, NCurses) and Windows (PDCurses).</FONT></FONT></P>
-<P LANG="en-GB" STYLE="margin-bottom: 0in; font-weight: medium"><BR>
+<P LANG="en-GB" STYLE="margin-bottom: 0cm; font-weight: normal"><BR>
 </P>
-<P LANG="en-GB" STYLE="margin-bottom: 0in"><FONT FACE="Helvetica, sans-serif"><FONT SIZE=4><B>1
-Introduction</B></FONT></FONT></P>
-<P LANG="en-GB" STYLE="margin-bottom: 0in"><BR>
-</P>
-<P LANG="en-GB" STYLE="margin-bottom: 0in"><FONT FACE="Helvetica, sans-serif">ECurses
+<H1 CLASS="western">1 Introduction</H1>
+<H2 CLASS="western">Description</H2>
+<P LANG="en-GB" STYLE="margin-bottom: 0cm"><FONT FACE="Helvetica, sans-serif">ECurses
 is an Eiffel binding to Curses. It is intended to be sufficiently</FONT></P>
-<P LANG="en-GB" STYLE="margin-bottom: 0in"><FONT FACE="Helvetica, sans-serif">complete
+<P LANG="en-GB" STYLE="margin-bottom: 0cm"><FONT FACE="Helvetica, sans-serif">complete
 to enable people write terminal/console applications in Eiffel.</FONT></P>
-<P LANG="en-GB" STYLE="margin-bottom: 0in"><BR>
+<P LANG="en-GB" STYLE="margin-bottom: 0cm"><BR>
 </P>
-<P LANG="en-GB" STYLE="margin-bottom: 0in"><FONT FACE="Helvetica, sans-serif">The
+<P LANG="en-GB" STYLE="margin-bottom: 0cm"><FONT FACE="Helvetica, sans-serif">The
 following table gives an overview of what ECurses provides, compared
 to the Curses library.</FONT></P>
-<DIV ALIGN=RIGHT>
-	<TABLE WIDTH=576 BORDER=1 BORDERCOLOR="#000000" CELLPADDING=4 CELLSPACING=0>
-		<COL WIDTH=241>
-		<COL WIDTH=67>
-		<COL WIDTH=242>
-		<THEAD>
-			<TR VALIGN=TOP>
-				<TH WIDTH=241>
-					<P>Curses</P>
-				</TH>
-				<TH WIDTH=67>
-					<P>Ecurses</P>
-				</TH>
-				<TH WIDTH=242>
-					<P>Eiffel Class</P>
-				</TH>
-			</TR>
-		</THEAD>
-		<TBODY>
-			<TR VALIGN=TOP>
-				<TD WIDTH=241>
-					<P>Cursescore</P>
-					<P>* color</P>
-					<P>* character attributes</P>
-					<P>* subwindows</P>
-					<P>* scrolling</P>
-					<P>* mouse interfacing</P>
-					<P>* multiple terminal screen</P>
-					<P>* testing for terminal capabilities</P>
-				</TD>
-				<TD WIDTH=67>
-					<P>Partial</P>
-					<P>yes</P>
-					<P>yes</P>
-					<P>yes</P>
-					<P>yes</P>
-					<P>no</P>
-					<P>no</P>
-					<P>no</P>
-				</TD>
-				<TD WIDTH=242>
-					<P>CURSES_WINDOW</P>
-				</TD>
-			</TR>
-			<TR VALIGN=TOP>
-				<TD WIDTH=241>
-					<P>Pads</P>
-				</TD>
-				<TD WIDTH=67>
-					<P>Partial</P>
-				</TD>
-				<TD WIDTH=242>
-					<P>CURSES_PAD</P>
-				</TD>
-			</TR>
-			<TR VALIGN=TOP>
-				<TD WIDTH=241>
-					<P>Soft label keys</P>
-				</TD>
-				<TD WIDTH=67>
-					<P>yes</P>
-				</TD>
-				<TD WIDTH=242>
-					<P>CURSES_SOFT_LABEL_KEYS</P>
-				</TD>
-			</TR>
-			<TR VALIGN=TOP>
-				<TD WIDTH=241>
-					<P>Panels</P>
-				</TD>
-				<TD WIDTH=67>
-					<P>Yes</P>
-				</TD>
-				<TD WIDTH=242>
-					<P>CURSES_PANEL</P>
-				</TD>
-			</TR>
-			<TR VALIGN=TOP>
-				<TD WIDTH=241>
-					<P>Menu</P>
-				</TD>
-				<TD WIDTH=67>
-					<P>no</P>
-				</TD>
-				<TD WIDTH=242>
-					<P><BR>
-					</P>
-				</TD>
-			</TR>
-			<TR VALIGN=TOP>
-				<TD WIDTH=241>
-					<P>Forms</P>
-				</TD>
-				<TD WIDTH=67>
-					<P>no</P>
-				</TD>
-				<TD WIDTH=242>
-					<P><BR>
-					</P>
-				</TD>
-			</TR>
-		</TBODY>
-	</TABLE>
-</DIV>
-<P LANG="en-GB" STYLE="margin-bottom: 0in"><FONT FACE="Helvetica, sans-serif">ECurses
+<TABLE WIDTH=100% BORDER=1 BORDERCOLOR="#000000" CELLPADDING=4 CELLSPACING=0>
+	<COL WIDTH=111*>
+	<COL WIDTH=33*>
+	<COL WIDTH=111*>
+	<THEAD>
+		<TR VALIGN=TOP>
+			<TH WIDTH=43%>
+				<P>Curses</P>
+			</TH>
+			<TH WIDTH=13%>
+				<P>Ecurses</P>
+			</TH>
+			<TH WIDTH=44%>
+				<P>Eiffel Class</P>
+			</TH>
+		</TR>
+	</THEAD>
+	<TBODY>
+		<TR VALIGN=TOP>
+			<TD WIDTH=43%>
+				<P>Curses core</P>
+				<P>* color</P>
+				<P>* character attributes</P>
+				<P>* subwindows</P>
+				<P>* scrolling</P>
+				<P>* mouse interfacing</P>
+				<P>* multiple terminal screen</P>
+				<P>* testing for terminal capabilities</P>
+			</TD>
+			<TD WIDTH=13%>
+				<P>Partial</P>
+				<P>yes</P>
+				<P>yes</P>
+				<P>yes</P>
+				<P>yes</P>
+				<P>no</P>
+				<P>no</P>
+				<P>no</P>
+			</TD>
+			<TD WIDTH=44%>
+				<P>CURSES_WINDOW</P>
+			</TD>
+		</TR>
+		<TR VALIGN=TOP>
+			<TD WIDTH=43%>
+				<P>Pads</P>
+			</TD>
+			<TD WIDTH=13%>
+				<P>Partial</P>
+			</TD>
+			<TD WIDTH=44%>
+				<P>CURSES_PAD</P>
+			</TD>
+		</TR>
+		<TR VALIGN=TOP>
+			<TD WIDTH=43%>
+				<P>Soft label keys</P>
+			</TD>
+			<TD WIDTH=13%>
+				<P>yes</P>
+			</TD>
+			<TD WIDTH=44%>
+				<P>CURSES_SOFT_LABEL_KEYS</P>
+			</TD>
+		</TR>
+		<TR VALIGN=TOP>
+			<TD WIDTH=43%>
+				<P>Panels</P>
+			</TD>
+			<TD WIDTH=13%>
+				<P>Yes</P>
+			</TD>
+			<TD WIDTH=44%>
+				<P>CURSES_PANEL</P>
+			</TD>
+		</TR>
+		<TR VALIGN=TOP>
+			<TD WIDTH=43%>
+				<P>Menu</P>
+			</TD>
+			<TD WIDTH=13%>
+				<P>no</P>
+			</TD>
+			<TD WIDTH=44%>
+				<P><BR>
+				</P>
+			</TD>
+		</TR>
+		<TR VALIGN=TOP>
+			<TD WIDTH=43%>
+				<P>Forms</P>
+			</TD>
+			<TD WIDTH=13%>
+				<P>no</P>
+			</TD>
+			<TD WIDTH=44%>
+				<P><BR>
+				</P>
+			</TD>
+		</TR>
+	</TBODY>
+</TABLE>
+<P LANG="en-GB" STYLE="margin-bottom: 0cm"><FONT FACE="Helvetica, sans-serif">ECurses
 introduces some level of abstraction. Feature names try to be more
 explicit than their Curses counterpart. When possible pre-and
 post-conditions reflect the features specifications.</FONT></P>
-<P LANG="en-GB" STYLE="margin-bottom: 0in"><BR>
+<P LANG="en-GB" STYLE="margin-bottom: 0cm"><BR>
 </P>
-<P LANG="en-GB" STYLE="margin-bottom: 0in"><FONT FACE="Helvetica, sans-serif">ECurses
+<P LANG="en-GB" STYLE="margin-bottom: 0cm"><FONT FACE="Helvetica, sans-serif">ECurses
 has not been ``extensively'' tested. Though, it works sufficiently
 well to develop applications with color, scrolling, multiple panels,
 and basic forms.</FONT></P>
-<P LANG="en-GB" STYLE="margin-bottom: 0in"><BR>
+<P LANG="en-GB" STYLE="margin-bottom: 0cm"><BR>
 </P>
-<P LANG="en-GB" STYLE="margin-bottom: 0in"><FONT FACE="Helvetica, sans-serif">This
+<P LANG="en-GB" STYLE="margin-bottom: 0cm"><FONT FACE="Helvetica, sans-serif">This
 document is not a Curses manual. Please refer to appropriate man</FONT></P>
-<P LANG="en-GB" STYLE="margin-bottom: 0in"><FONT FACE="Helvetica, sans-serif">pages
+<P LANG="en-GB" STYLE="margin-bottom: 0cm"><FONT FACE="Helvetica, sans-serif">pages
 or to the excellent article ``Writing programs with NCURSES'' by Eric
 S. Raymond and Zeyd M. Ben-Halim.</FONT></P>
-<P LANG="en-GB" STYLE="margin-bottom: 0in"><BR>
+<P LANG="en-GB" STYLE="margin-bottom: 0cm"><BR>
 </P>
-<P LANG="en-GB" STYLE="margin-bottom: 0in"><FONT FACE="Helvetica, sans-serif"><FONT SIZE=4><B>2
-Installation</B></FONT></FONT></P>
-<P LANG="en-GB" STYLE="margin-bottom: 0in"><BR>
+<H2 CLASS="western">Software dependencies</H2>
+<P LANG="en-GB" STYLE="margin-bottom: 0cm"><FONT FACE="Helvetica, sans-serif">Current
+version of eCurses depends on the following packages:</FONT></P>
+<UL>
+	<LI><P LANG="en-GB" STYLE="margin-bottom: 0cm"><FONT FACE="Helvetica, sans-serif">Eiffel
+	compiler</FONT></P>
+	<UL>
+		<LI><P LANG="en-GB" STYLE="margin-bottom: 0cm"><FONT FACE="Helvetica, sans-serif">ISE
+		EiffelStudio 6.3</FONT></P>
+		<LI><P LANG="en-GB" STYLE="margin-bottom: 0cm"><FONT FACE="Helvetica, sans-serif">or
+		Gobo Eiffel Compiler 3.9</FONT></P>
+	</UL>
+	<LI><P LANG="en-GB" STYLE="margin-bottom: 0cm"><FONT FACE="Helvetica, sans-serif">Libraries</FONT></P>
+	<UL>
+		<LI><P LANG="en-GB" STYLE="margin-bottom: 0cm"><FONT FACE="Helvetica, sans-serif">Gobo
+		Eiffel 3.9</FONT></P>
+		<LI><P LANG="en-GB" STYLE="margin-bottom: 0cm"><FONT FACE="Helvetica, sans-serif">Curses
+		library:</FONT></P>
+		<UL>
+			<LI><P LANG="en-GB" STYLE="margin-bottom: 0cm"><FONT FACE="Helvetica, sans-serif">Linux:
+			nCurses</FONT></P>
+			<LI><P LANG="en-GB" STYLE="margin-bottom: 0cm"><FONT FACE="Helvetica, sans-serif">windows:
+			PDCurses</FONT></P>
+		</UL>
+	</UL>
+</UL>
+<P LANG="en-GB" STYLE="margin-bottom: 0cm"><BR>
 </P>
-<P LANG="en-GB" STYLE="margin-bottom: 0in"><FONT FACE="Helvetica, sans-serif"><B>2.1
-Unpack directory structure</B></FONT></P>
-<P LANG="en-GB" STYLE="margin-bottom: 0in"><BR>
+<H1 CLASS="western">2 Installation</H1>
+<H2 CLASS="western">2.1 Unpack directory structure</H2>
+<P LANG="en-GB" STYLE="margin-bottom: 0cm"><BR>
 </P>
-<P LANG="en-GB" STYLE="margin-bottom: 0in"><FONT FACE="Helvetica, sans-serif">Simply
+<P LANG="en-GB" STYLE="margin-bottom: 0cm"><FONT FACE="Helvetica, sans-serif">Simply
 extract the tarball. Directory structure is described below : </FONT>
 </P>
-<P LANG="en-GB" STYLE="margin-bottom: 0in"><BR>
+<P LANG="en-GB" STYLE="margin-bottom: 0cm"><BR>
 </P>
-<P LANG="en-GB" STYLE="margin-bottom: 0in"><FONT FACE="Helvetica, sans-serif"><B>base</B>
-base Curses abstractions.</FONT></P>
-<P LANG="en-GB" STYLE="margin-bottom: 0in"><BR>
+<P LANG="en-GB" STYLE="margin-bottom: 0cm"><FONT FACE="Helvetica, sans-serif"><B>base</B>
+	base Curses abstractions.</FONT></P>
+<P LANG="en-GB" STYLE="margin-bottom: 0cm"><BR>
 </P>
-<P STYLE="margin-bottom: 0in"><SPAN LANG="en-GB"><FONT FACE="Helvetica, sans-serif"><B>doc</B>
-documentation; this file in various formats.</FONT></SPAN></P>
-<P LANG="en-GB" STYLE="margin-bottom: 0in"><BR>
+<P STYLE="margin-bottom: 0cm"><FONT FACE="Helvetica, sans-serif"><SPAN LANG="en-GB"><B>doc</B></SPAN></FONT><FONT FACE="Helvetica, sans-serif"><SPAN LANG="en-GB">
+	documentation; this file in various formats.</SPAN></FONT></P>
+<P LANG="en-GB" STYLE="margin-bottom: 0cm"><BR>
 </P>
-<P LANG="en-GB" STYLE="margin-bottom: 0in"><FONT FACE="Helvetica, sans-serif"><B>spec</B>
-API and constants wrapping classes.</FONT></P>
-<P LANG="en-GB" STYLE="margin-bottom: 0in"><BR>
+<P LANG="en-GB" STYLE="margin-bottom: 0cm"><FONT FACE="Helvetica, sans-serif"><B>spec</B>
+	API and constants wrapping classes.</FONT></P>
+<P LANG="en-GB" STYLE="margin-bottom: 0cm"><BR>
 </P>
-<P LANG="en-GB" STYLE="margin-bottom: 0in">  <FONT FACE="Helvetica, sans-serif"><B>Clib</B>
-c source files.</FONT></P>
-<P LANG="en-GB" STYLE="margin-bottom: 0in"><BR>
+<P LANG="en-GB" STYLE="margin-left: 2.2cm; margin-bottom: 0cm"><FONT FACE="Helvetica, sans-serif"><B>Clib</B>
+	c source files.</FONT></P>
+<P LANG="en-GB" STYLE="margin-left: 2.2cm; margin-bottom: 0cm"><BR>
 </P>
-<P LANG="en-GB" STYLE="margin-bottom: 0in">  <FONT FACE="Helvetica, sans-serif"><B>ise</B>
-ISE specific files. </FONT>
+<P LANG="en-GB" STYLE="margin-left: 2.2cm; margin-bottom: 0cm"><FONT FACE="Helvetica, sans-serif"><B>ise</B>
+	ISE specific files. </FONT>
 </P>
-<P LANG="en-GB" STYLE="margin-bottom: 0in"><BR>
+<P LANG="en-GB" STYLE="margin-left: 4.41cm; margin-bottom: 0cm"><FONT FACE="Helvetica, sans-serif"><B>linux</B>
+	Linux specific files.</FONT></P>
+<P LANG="en-GB" STYLE="margin-left: 4.41cm; margin-bottom: 0cm"><FONT FACE="Helvetica, sans-serif"><B>windows</B>
+	Windows specific files.</FONT></P>
+<P LANG="en-GB" STYLE="margin-left: 4.41cm; margin-bottom: 0cm"><BR>
 </P>
-<P LANG="en-GB" STYLE="margin-bottom: 0in">    <FONT FACE="Helvetica, sans-serif"><B>linux</B>
-Linux specific files.</FONT></P>
-<P LANG="en-GB" STYLE="margin-bottom: 0in"><BR>
+<P LANG="en-GB" STYLE="margin-left: 2.2cm; margin-bottom: 0cm"><FONT FACE="Helvetica, sans-serif"><B>ge</B>
+	Gobo Eiffel specific files.</FONT></P>
+<P LANG="en-GB" STYLE="margin-left: 4.41cm; margin-bottom: 0cm"><FONT FACE="Helvetica, sans-serif"><B>linux</B>
+	Linux specific files.</FONT></P>
+<P LANG="en-GB" STYLE="margin-left: 4.41cm; margin-bottom: 0cm"><FONT FACE="Helvetica, sans-serif"><B>windows</B>
+	Windows specific files.</FONT></P>
+<P LANG="en-GB" STYLE="margin-left: 4.41cm; margin-bottom: 0cm"><BR>
 </P>
-<P LANG="en-GB" STYLE="margin-bottom: 0in">    <FONT FACE="Helvetica, sans-serif"><B>windows</B>
-Windows specific files.</FONT></P>
-<P LANG="en-GB" STYLE="margin-bottom: 0in"><BR>
+<P LANG="en-GB" STYLE="margin-left: 2.2cm; text-indent: -2.17cm; margin-bottom: 0cm">
+<FONT FACE="Helvetica, sans-serif"><B>Utility	</B>some classes found
+useful to develop ECurses applications like         an event manager
+and a frame panel.</FONT></P>
+<P LANG="en-GB" STYLE="margin-bottom: 0cm"><BR>
 </P>
-<P LANG="en-GB" STYLE="margin-bottom: 0in">  <FONT FACE="Helvetica, sans-serif"><B>se</B>
-SmallEiffel specific files.</FONT></P>
-<P LANG="en-GB" STYLE="margin-bottom: 0in"><BR>
+<P LANG="en-GB" STYLE="margin-bottom: 0cm"><FONT FACE="Helvetica, sans-serif"><B>test</B>
+	small test projects.</FONT></P>
+<P LANG="en-GB" STYLE="margin-bottom: 0cm"><BR>
 </P>
-<P LANG="en-GB" STYLE="margin-bottom: 0in">    <FONT FACE="Helvetica, sans-serif"><B>linux</B>
-Linux specific files.</FONT></P>
-<P LANG="en-GB" STYLE="margin-bottom: 0in"><BR>
+<P LANG="en-GB" STYLE="margin-left: 2.2cm; margin-bottom: 0cm"><FONT FACE="Helvetica, sans-serif"><B>hello</B>
+	hello world !</FONT></P>
+<P LANG="en-GB" STYLE="margin-left: 2.2cm; margin-bottom: 0cm"><BR>
 </P>
-<P LANG="en-GB" STYLE="margin-bottom: 0in">    <FONT FACE="Helvetica, sans-serif"><B>windows</B>
-Windows specific files.</FONT></P>
-<P LANG="en-GB" STYLE="margin-bottom: 0in"><BR>
+<P LANG="en-GB" STYLE="margin-left: 2.2cm; margin-bottom: 0cm"><FONT FACE="Helvetica, sans-serif"><B>pad</B>
+	exercise basic pad capabilities.</FONT></P>
+<P LANG="en-GB" STYLE="margin-left: 2.2cm; margin-bottom: 0cm"><BR>
 </P>
-<P LANG="en-GB" STYLE="margin-bottom: 0in"><FONT FACE="Helvetica, sans-serif"><B>utility</B>some
-classes found useful to develop ECurses applications like</FONT></P>
-<P LANG="en-GB" STYLE="margin-bottom: 0in">           <FONT FACE="Helvetica, sans-serif">an
-event manager and a frame panel.</FONT></P>
-<P LANG="en-GB" STYLE="margin-bottom: 0in"><BR>
+<P LANG="en-GB" STYLE="margin-left: 2.2cm; margin-bottom: 0cm"><FONT FACE="Helvetica, sans-serif"><B>slk</B>
+	exercise soft label keys.</FONT></P>
+<P LANG="en-GB" STYLE="margin-left: 2.2cm; margin-bottom: 0cm"><BR>
 </P>
-<P LANG="en-GB" STYLE="margin-bottom: 0in"><FONT FACE="Helvetica, sans-serif"><B>test</B>
-small test projects.</FONT></P>
-<P LANG="en-GB" STYLE="margin-bottom: 0in"><BR>
+<P LANG="en-GB" STYLE="margin-left: 2.2cm; margin-bottom: 0cm"><FONT FACE="Helvetica, sans-serif"><B>curses</B>
+	mimics the 'ncurses' standard test application.</FONT></P>
+<P LANG="en-GB" STYLE="margin-left: 2.2cm; margin-bottom: 0cm"><BR>
 </P>
-<P LANG="en-GB" STYLE="margin-bottom: 0in">  <FONT FACE="Helvetica, sans-serif"><B>hello</B>
-hello world !</FONT></P>
-<P LANG="en-GB" STYLE="margin-bottom: 0in"><BR>
+<P LANG="en-GB" STYLE="margin-left: 4.39cm; text-indent: -2.17cm; margin-bottom: 0cm">
+<FONT FACE="Helvetica, sans-serif"><B>compile_test</B> compatibility
+test - forces compilation of all features.</FONT></P>
+<H2 CLASS="western"><B>2.2 Get the appropriate libraries</B></H2>
+<P LANG="en-GB" STYLE="margin-bottom: 0cm"><BR>
 </P>
-<P LANG="en-GB" STYLE="margin-bottom: 0in">  <FONT FACE="Helvetica, sans-serif"><B>pad</B>
-exercise basic pad capabilities.</FONT></P>
-<P LANG="en-GB" STYLE="margin-bottom: 0in"><BR>
-</P>
-<P LANG="en-GB" STYLE="margin-bottom: 0in">  <FONT FACE="Helvetica, sans-serif"><B>slk</B>
-exercise soft label keys.</FONT></P>
-<P LANG="en-GB" STYLE="margin-bottom: 0in"><BR>
-</P>
-<P LANG="en-GB" STYLE="margin-bottom: 0in">  <FONT FACE="Helvetica, sans-serif"><SPAN STYLE="font-weight: medium">curses</SPAN>
-mimics the 'ncurses' standard test application.</FONT></P>
-<P LANG="en-GB" STYLE="margin-bottom: 0in"><BR>
-</P>
-<P LANG="en-GB" STYLE="margin-bottom: 0in">  <FONT FACE="Helvetica, sans-serif">compile_test
-compatibility test for SmallEiffel (forces compilation</FONT></P>
-<P LANG="en-GB" STYLE="margin-bottom: 0in">  <FONT FACE="Helvetica, sans-serif">of
-all features).</FONT></P>
-<P LANG="en-GB" STYLE="margin-bottom: 0in"><BR>
-</P>
-<P LANG="en-GB" STYLE="margin-bottom: 0in; page-break-before: always">
-<BR>
-</P>
-<P LANG="en-GB" STYLE="margin-bottom: 0in"><FONT FACE="Helvetica, sans-serif"><B>2.2
-Get the appropriate libraries</B></FONT></P>
-<P LANG="en-GB" STYLE="margin-bottom: 0in"><BR>
-</P>
-<P LANG="en-GB" STYLE="margin-bottom: 0in"><FONT FACE="Helvetica, sans-serif">Get
+<P LANG="en-GB" STYLE="margin-bottom: 0cm"><FONT FACE="Helvetica, sans-serif">Get
 and install the appropriate Curses library.</FONT></P>
-<P LANG="en-GB" STYLE="margin-bottom: 0in"><BR>
+<P LANG="en-GB" STYLE="margin-bottom: 0cm"><BR>
 </P>
-<P LANG="en-GB" STYLE="margin-bottom: 0in"><FONT FACE="Helvetica, sans-serif">NCURSES
-Version 4.2. http://www.gnu.org. Work on Unix/Linux platforms.</FONT></P>
-<P LANG="en-GB" STYLE="margin-bottom: 0in"><BR>
+<P LANG="en-GB" STYLE="margin-bottom: 0cm"><FONT FACE="Helvetica, sans-serif">NCURSES
+http://www.gnu.org. Work on Unix/Linux platforms.</FONT></P>
+<P LANG="en-GB" STYLE="margin-bottom: 0cm"><BR>
 </P>
-<P LANG="en-GB" STYLE="margin-bottom: 0in"><FONT FACE="Helvetica, sans-serif">PDCurses
-Version 2.4. http://www.lightlink.com/hessling. Works on Windows 9X
-and Windows NT. PDCurses also offer an X11 implementation for Unix,
-but it has not been tested with the ECurses library.</FONT></P>
-<P LANG="en-GB" STYLE="margin-bottom: 0in"><FONT FACE="Helvetica, sans-serif">!!WARNING
-: PDCurses has 2 bugs. You should download sources, patch them
-following directions given in the appendix, and recompile it.</FONT></P>
-<P LANG="en-GB" STYLE="margin-bottom: 0in"><BR>
+<P LANG="en-GB" STYLE="margin-bottom: 0cm"><FONT FACE="Helvetica, sans-serif">PDCurses
+http://pdcurses.sourceforge.net/. Works on Windows  platform.
+PDCurses also offer an X11 implementation for Unix, but it has not
+been tested with the ECurses library.</FONT></P>
+<P LANG="en-GB" STYLE="margin-bottom: 0cm"><BR>
 </P>
-<P LANG="en-GB" STYLE="margin-bottom: 0in"><FONT FACE="Helvetica, sans-serif">Get
+<P LANG="en-GB" STYLE="margin-bottom: 0cm"><FONT FACE="Helvetica, sans-serif">Get
 and install the GOBO library</FONT></P>
-<P LANG="en-GB" STYLE="margin-bottom: 0in"><BR>
+<P LANG="en-GB" STYLE="margin-bottom: 0cm"><BR>
 </P>
-<P LANG="en-GB" STYLE="margin-bottom: 0in"><FONT FACE="Helvetica, sans-serif">GOBO
-Version 1.5 http://www.gobosoft.com. Works on Unix/Linux/win32</FONT></P>
-<P LANG="en-GB" STYLE="margin-bottom: 0in"><FONT FACE="Helvetica, sans-serif">platforms
-for SmartEiffel/ISE/Halstenbach/Visual -Eiffel</FONT></P>
-<P LANG="en-GB" STYLE="margin-bottom: 0in"><BR>
+<P LANG="en-GB" STYLE="margin-bottom: 0cm"><FONT FACE="Helvetica, sans-serif">GOBO
+http://www.gobosoft.com. Works on Unix/Linux/win32</FONT></P>
+<P LANG="en-GB" STYLE="margin-bottom: 0cm"><FONT FACE="Helvetica, sans-serif">platforms
+for ISE Eiffel and Gobo Eiffel.</FONT></P>
+<H2 CLASS="western"><B>2.3 Set some environment variable</B></H2>
+<P LANG="en-GB" STYLE="margin-bottom: 0cm"><BR>
 </P>
-<P LANG="en-GB" STYLE="margin-bottom: 0in"><FONT FACE="Helvetica, sans-serif"><B>2.3
-Set some environment variable</B></FONT></P>
-<P LANG="en-GB" STYLE="margin-bottom: 0in"><BR>
-</P>
-<P LANG="en-GB" STYLE="margin-bottom: 0in"><FONT FACE="Helvetica, sans-serif">GOBO
+<P LANG="en-GB" STYLE="margin-bottom: 0cm"><FONT FACE="Helvetica, sans-serif">GOBO
 Set to the root-directory of the gobo installation (e.g:
 ~/libs/eiffel/gobo)</FONT></P>
-<P LANG="en-GB" STYLE="margin-bottom: 0in"><BR>
+<P LANG="en-GB" STYLE="margin-bottom: 0cm"><BR>
 </P>
-<P LANG="en-GB" STYLE="margin-bottom: 0in"><FONT FACE="Helvetica, sans-serif">ECURSES
+<P LANG="en-GB" STYLE="margin-bottom: 0cm"><FONT FACE="Helvetica, sans-serif">ECURSES
 Set to the root-directory of the ecurses installation (e.g:</FONT></P>
-<P LANG="en-GB" STYLE="margin-bottom: 0in"><FONT FACE="Helvetica, sans-serif">~/libs/eiffel/ecurses)</FONT></P>
-<P LANG="en-GB" STYLE="margin-bottom: 0in"><BR>
+<P LANG="en-GB" STYLE="margin-bottom: 0cm"><FONT FACE="Helvetica, sans-serif">~/libs/eiffel/ecurses)</FONT></P>
+<P LANG="en-GB" STYLE="margin-bottom: 0cm"><BR>
 </P>
-<P LANG="en-GB" STYLE="margin-bottom: 0in"><FONT FACE="Helvetica, sans-serif">PDCURSES
+<P LANG="en-GB" STYLE="margin-bottom: 0cm"><FONT FACE="Helvetica, sans-serif">PDCURSES
 Set to the root-directory of the pdcurses installation (e.g:</FONT></P>
-<P LANG="en-GB" STYLE="margin-bottom: 0in"><FONT FACE="Helvetica, sans-serif">c:\libs\c\pdcurses)</FONT></P>
-<P LANG="en-GB" STYLE="margin-bottom: 0in"><BR>
+<P LANG="en-GB" STYLE="margin-bottom: 0cm"><FONT FACE="Helvetica, sans-serif">c:\libs\c\pdcurses)</FONT></P>
+<P LANG="en-GB" STYLE="margin-bottom: 0cm"><BR>
 </P>
-<P LANG="en-GB" STYLE="margin-bottom: 0in"><FONT FACE="Helvetica, sans-serif">SMARTEIFFELDIR
-Set to the root-directory of the SmartEiffel instalation (e.g:
-~/SmartEiffel)</FONT></P>
-<P LANG="en-GB" STYLE="margin-bottom: 0in"><BR>
+<H2 CLASS="western">2.4 Compile support library</H2>
+<P LANG="en-GB" STYLE="margin-bottom: 0cm"><BR>
 </P>
-<P LANG="en-GB" STYLE="margin-bottom: 0in"><FONT FACE="Helvetica, sans-serif"><B>2.4
-Compile support library</B></FONT></P>
-<P LANG="en-GB" STYLE="margin-bottom: 0in"><BR>
-</P>
-<P LANG="en-GB" STYLE="margin-bottom: 0in"><FONT FACE="Helvetica, sans-serif">C
+<P LANG="en-GB" STYLE="margin-bottom: 0cm"><FONT FACE="Helvetica, sans-serif">C
 files are in the spec/Clib directory. The spec/&lt;compiler&gt;/&lt;platform&gt;</FONT></P>
-<P LANG="en-GB" STYLE="margin-bottom: 0in"><FONT FACE="Helvetica, sans-serif">directory
+<P LANG="en-GB" STYLE="margin-bottom: 0cm"><FONT FACE="Helvetica, sans-serif">directory
 contains ad hoc makefiles.</FONT></P>
-<P LANG="en-GB" STYLE="margin-bottom: 0in"><BR>
+<P LANG="en-GB" STYLE="margin-bottom: 0cm"><BR>
 </P>
-<P LANG="en-GB" STYLE="margin-bottom: 0in"><FONT FACE="Helvetica, sans-serif">windows
+<P LANG="en-GB" STYLE="margin-bottom: 0cm"><FONT FACE="Helvetica, sans-serif"><B>windows</B>
 A makefile (Makefile) is provided for MSVC compiler. Library</FONT></P>
-<P LANG="en-GB" STYLE="margin-bottom: 0in"><FONT FACE="Helvetica, sans-serif">name
+<P LANG="en-GB" STYLE="margin-bottom: 0cm"><FONT FACE="Helvetica, sans-serif">name
 is ecurses_c.lib.</FONT></P>
-<P LANG="en-GB" STYLE="margin-bottom: 0in"><BR>
+<P LANG="en-GB" STYLE="margin-bottom: 0cm"><BR>
 </P>
-<P LANG="en-GB" STYLE="margin-bottom: 0in"><FONT FACE="Helvetica, sans-serif">linux
+<P LANG="en-GB" STYLE="margin-bottom: 0cm"><FONT FACE="Helvetica, sans-serif"><B>linux</B>
  A makefile (Makefile) is provided for Linux .  Type &quot;make all&quot;
 in order to build the library libecurses_c.a.</FONT></P>
-<P LANG="en-GB" STYLE="margin-bottom: 0in"><BR>
+<P LANG="en-GB" STYLE="margin-bottom: 0cm"><BR>
 </P>
-<P LANG="en-GB" STYLE="margin-bottom: 0in"><FONT FACE="Helvetica, sans-serif">This
+<P LANG="en-GB" STYLE="margin-bottom: 0cm"><FONT FACE="Helvetica, sans-serif">This
 support library is necessary to compile and link ECurses programs .</FONT></P>
-<P LANG="en-GB" STYLE="margin-bottom: 0in"><BR>
+<P LANG="en-GB" STYLE="margin-bottom: 0cm"><BR>
 </P>
-<P LANG="en-GB" STYLE="margin-bottom: 0in; page-break-before: always">
+<P LANG="en-GB" STYLE="margin-bottom: 0cm; page-break-before: always">
 <BR>
 </P>
-<P LANG="en-GB" STYLE="margin-bottom: 0in"><FONT FACE="Helvetica, sans-serif"><B>3
-Usage</B></FONT></P>
-<P LANG="en-GB" STYLE="margin-bottom: 0in"><BR>
+<H1 CLASS="western">3 Usage</H1>
+<P LANG="en-GB" STYLE="margin-bottom: 0cm"><BR>
 </P>
-<P LANG="en-GB" STYLE="margin-bottom: 0in"><FONT FACE="Helvetica, sans-serif">This
+<P LANG="en-GB" STYLE="margin-bottom: 0cm"><FONT FACE="Helvetica, sans-serif">This
 section gives an overview of what are the main abstractions of</FONT></P>
-<P LANG="en-GB" STYLE="margin-bottom: 0in"><FONT FACE="Helvetica, sans-serif">ECurses.</FONT></P>
-<P LANG="en-GB" STYLE="margin-bottom: 0in"><BR>
+<P LANG="en-GB" STYLE="margin-bottom: 0cm"><FONT FACE="Helvetica, sans-serif">ECurses.</FONT></P>
+<P LANG="en-GB" STYLE="margin-bottom: 0cm"><BR>
 </P>
-<P LANG="en-GB" STYLE="margin-bottom: 0in"><FONT FACE="Helvetica, sans-serif"><B>3.1
-Hello World !</B></FONT></P>
-<P LANG="en-GB" STYLE="margin-bottom: 0in"><BR>
+<H2 CLASS="western">3.1 Hello World !</H2>
+<P LANG="en-GB" STYLE="margin-bottom: 0cm"><BR>
 </P>
-<P LANG="en-GB" STYLE="margin-bottom: 0in"><FONT FACE="Courier, monospace"><FONT SIZE=2>class</FONT></FONT></P>
-<P LANG="en-GB" STYLE="margin-bottom: 0in">    <FONT FACE="Courier, monospace"><FONT SIZE=2>HELLO_WORLD</FONT></FONT></P>
-<P LANG="en-GB" STYLE="margin-bottom: 0in"><BR>
+<PRE>class
+    HELLO_WORLD
+
+inherit
+    CURSES_APPLICATION
+
+creation
+    make
+
+feature
+
+    make is
+        do
+            initialize
+            standard_window.move (standard_window.height // 2,                             standard_window.width // 2)
+            standard_window.put_string (&quot;Hello, World&quot;)
+            standard_window.move (standard_window.height-1, 0)
+            standard_window.put_string (&quot;Press any key....&quot;)
+            standard_window.read_character
+        end
+
+end -- class  HELLO_WORLD
+</PRE><P LANG="en-GB" STYLE="margin-bottom: 0cm">
+ 
 </P>
-<P LANG="en-GB" STYLE="margin-bottom: 0in"><FONT FACE="Courier, monospace"><FONT SIZE=2>inherit</FONT></FONT></P>
-<P LANG="en-GB" STYLE="margin-bottom: 0in">    <FONT FACE="Courier, monospace"><FONT SIZE=2>CURSES_APPLICATION</FONT></FONT></P>
-<P LANG="en-GB" STYLE="margin-bottom: 0in"><BR>
-</P>
-<P LANG="en-GB" STYLE="margin-bottom: 0in"><FONT FACE="Courier, monospace"><FONT SIZE=2>creation</FONT></FONT></P>
-<P LANG="en-GB" STYLE="margin-bottom: 0in">    <FONT FACE="Courier, monospace"><FONT SIZE=2>make</FONT></FONT></P>
-<P LANG="en-GB" STYLE="margin-bottom: 0in"><BR>
-</P>
-<P LANG="en-GB" STYLE="margin-bottom: 0in"><FONT FACE="Courier, monospace"><FONT SIZE=2>feature</FONT></FONT></P>
-<P LANG="en-GB" STYLE="margin-bottom: 0in"><BR>
-</P>
-<P LANG="en-GB" STYLE="margin-bottom: 0in">    <FONT FACE="Courier, monospace"><FONT SIZE=2>make
-is</FONT></FONT></P>
-<P LANG="en-GB" STYLE="margin-bottom: 0in">        <FONT FACE="Courier, monospace"><FONT SIZE=2>do</FONT></FONT></P>
-<P LANG="en-GB" STYLE="margin-bottom: 0in">            <FONT FACE="Courier, monospace"><FONT SIZE=2>initialize</FONT></FONT></P>
-<P LANG="en-GB" STYLE="margin-bottom: 0in">           
-<FONT FACE="Courier, monospace"><FONT SIZE=2>standard_window.move
-(standard_window.height // 2,                            
-standard_window.width // 2)</FONT></FONT></P>
-<P LANG="en-GB" STYLE="margin-bottom: 0in">           
-<FONT FACE="Courier, monospace"><FONT SIZE=2>standard_window.put_string
-(&quot;Hello, World&quot;)</FONT></FONT></P>
-<P LANG="en-GB" STYLE="margin-bottom: 0in">           
-<FONT FACE="Courier, monospace"><FONT SIZE=2>standard_window.move
-(standard_window.height-1, 0)</FONT></FONT></P>
-<P LANG="en-GB" STYLE="margin-bottom: 0in">           
-<FONT FACE="Courier, monospace"><FONT SIZE=2>standard_window.put_string
-(&quot;Press any key....&quot;)</FONT></FONT></P>
-<P LANG="en-GB" STYLE="margin-bottom: 0in">           
-<FONT FACE="Courier, monospace"><FONT SIZE=2>standard_window.read_character</FONT></FONT></P>
-<P LANG="en-GB" STYLE="margin-bottom: 0in">        <FONT FACE="Courier, monospace"><FONT SIZE=2>end</FONT></FONT></P>
-<P LANG="en-GB" STYLE="margin-bottom: 0in"><BR>
-</P>
-<P LANG="en-GB" STYLE="margin-bottom: 0in"><FONT FACE="Courier, monospace"><FONT SIZE=2>end
--- class  HELLO_WORLD</FONT></FONT></P>
-<P LANG="en-GB" STYLE="margin-bottom: 0in"><BR>
-</P>
-<P LANG="en-GB" STYLE="margin-bottom: 0in"> 
-</P>
-<P LANG="en-GB" STYLE="margin-bottom: 0in"><FONT FACE="Helvetica, sans-serif">CURSES_APPLICATION
+<P LANG="en-GB" STYLE="margin-bottom: 0cm"><FONT FACE="Helvetica, sans-serif">CURSES_APPLICATION
 must be inherited by an application's root class.The first feature to
 be called must be one of the initializers. Initialize is the basic
 one. Others initialize Curses so that it provides soft</FONT></P>
-<P LANG="en-GB" STYLE="margin-bottom: 0in"><FONT FACE="Helvetica, sans-serif">label
+<P LANG="en-GB" STYLE="margin-bottom: 0cm"><FONT FACE="Helvetica, sans-serif">label
 keys at the bottom of the screen. An initialized ECurses application</FONT></P>
-<P LANG="en-GB" STYLE="margin-bottom: 0in"><FONT FACE="Helvetica, sans-serif">has
+<P LANG="en-GB" STYLE="margin-bottom: 0cm"><FONT FACE="Helvetica, sans-serif">has
 a standard_window, a standard_panel, and soft_label_keys.</FONT></P>
-<P LANG="en-GB" STYLE="margin-bottom: 0in"><BR>
+<P LANG="en-GB" STYLE="margin-bottom: 0cm"><BR>
 </P>
-<P LANG="en-GB" STYLE="margin-bottom: 0in"><FONT FACE="Helvetica, sans-serif">CURSES_WINDOW
+<P LANG="en-GB" STYLE="margin-bottom: 0cm"><FONT FACE="Helvetica, sans-serif">CURSES_WINDOW
 is the ``basic'' window class. It has many features whichcannot all
 be enumerated here. They are related to window creationor
 destruction, positioning, update, status, cursor position, color
 setting, window input and output, scrolling, line and border drawing,
 graphic attributes setting, subwindows ...</FONT></P>
-<P LANG="en-GB" STYLE="margin-bottom: 0in"><BR>
+<P LANG="en-GB" STYLE="margin-bottom: 0cm"><BR>
 </P>
-<P LANG="en-GB" STYLE="margin-bottom: 0in; page-break-before: always">
+<P LANG="en-GB" STYLE="margin-bottom: 0cm; page-break-before: always">
 <BR>
 </P>
-<P LANG="en-GB" STYLE="margin-bottom: 0in"><FONT FACE="Helvetica, sans-serif"><B>3.2
-Clusters description</B></FONT></P>
-<P LANG="en-GB" STYLE="margin-bottom: 0in"><BR>
+<H2 CLASS="western">3.2 Clusters description</H2>
+<P LANG="en-GB" STYLE="margin-bottom: 0cm"><BR>
 </P>
-<P LANG="en-GB" STYLE="margin-bottom: 0in"><FONT FACE="Helvetica, sans-serif"><B>3.2.1
-Cluster BASE</B></FONT></P>
-<P LANG="en-GB" STYLE="margin-bottom: 0in"><BR>
+<H3 CLASS="western">3.2.1 Cluster BASE</H3>
+<P LANG="en-GB" STYLE="margin-bottom: 0cm"><BR>
 </P>
-<P LANG="en-GB" STYLE="margin-bottom: 0in"><FONT FACE="Helvetica, sans-serif">CURSES_APPLICATION
+<P LANG="en-GB" STYLE="margin-bottom: 0cm"><FONT FACE="Helvetica, sans-serif">CURSES_APPLICATION
 Inherited by the application's root class. It provides access to the
 standard (default) window and panel.</FONT></P>
-<P LANG="en-GB" STYLE="margin-bottom: 0in"><BR>
+<P LANG="en-GB" STYLE="margin-bottom: 0cm"><BR>
 </P>
-<P LANG="en-GB" STYLE="margin-bottom: 0in"><FONT FACE="Helvetica, sans-serif">CURSES_WINDOW
+<P LANG="en-GB" STYLE="margin-bottom: 0cm"><FONT FACE="Helvetica, sans-serif">CURSES_WINDOW
 Main abstraction. A window is a rectangular portion on the screen.
 Internally, each window has a cell-memory where input/output
 operations occurs. Actual screen i/o occur only when a window is
 refreshed. A window can have several subwindows. Each subwindow is a
 window of its own excepted that it shares the same cell-memory as its
 parent: refreshing the parent refreshes all the subwindows.</FONT></P>
-<P LANG="en-GB" STYLE="margin-bottom: 0in"><BR>
+<P LANG="en-GB" STYLE="margin-bottom: 0cm"><BR>
 </P>
-<P LANG="en-GB" STYLE="margin-bottom: 0in"><FONT FACE="Helvetica, sans-serif">CURSES_ERROR_HANDLING
+<P LANG="en-GB" STYLE="margin-bottom: 0cm"><FONT FACE="Helvetica, sans-serif">CURSES_ERROR_HANDLING
 Interface through which each low-level Curses call transits. Provides
 handling of return codes.</FONT></P>
-<P LANG="en-GB" STYLE="margin-bottom: 0in"><BR>
+<P LANG="en-GB" STYLE="margin-bottom: 0cm"><BR>
 </P>
-<P LANG="en-GB" STYLE="margin-bottom: 0in"><FONT FACE="Helvetica, sans-serif">CURSES_PAD
+<P LANG="en-GB" STYLE="margin-bottom: 0cm"><FONT FACE="Helvetica, sans-serif">CURSES_PAD
 A pad is a rectangular area which is viewed through a view, i.e. a
 smaller-than-the-pad rectangle. The view is displayed on the</FONT></P>
-<P LANG="en-GB" STYLE="margin-bottom: 0in"><FONT FACE="Helvetica, sans-serif">screen.
+<P LANG="en-GB" STYLE="margin-bottom: 0cm"><FONT FACE="Helvetica, sans-serif">screen.
 A pad can be larger than the terminal screen, but its view cannot.</FONT></P>
-<P LANG="en-GB" STYLE="margin-bottom: 0in"><BR>
+<P LANG="en-GB" STYLE="margin-bottom: 0cm"><BR>
 </P>
-<P LANG="en-GB" STYLE="margin-bottom: 0in"><FONT FACE="Helvetica, sans-serif">CURSES_PANEL
+<P LANG="en-GB" STYLE="margin-bottom: 0cm"><FONT FACE="Helvetica, sans-serif">CURSES_PANEL
 A panel is a window which can be moved, hidden, shown.Panels can be
 overlapped, while windows cannot easily.</FONT></P>
-<P LANG="en-GB" STYLE="margin-bottom: 0in"><BR>
+<P LANG="en-GB" STYLE="margin-bottom: 0cm"><BR>
 </P>
-<P LANG="en-GB" STYLE="margin-bottom: 0in"><FONT FACE="Helvetica, sans-serif">CURSES_SOFT_LABEL_KEYS
+<P LANG="en-GB" STYLE="margin-bottom: 0cm"><FONT FACE="Helvetica, sans-serif">CURSES_SOFT_LABEL_KEYS
 Soft label keys, viewable at the bottom of the screen. Several soft
 label keys organizations are available at initialization., but they
 are limited to the capabilities of the library (PDCurses or NCurses)
 or of the terminal.</FONT></P>
-<P LANG="en-GB" STYLE="margin-bottom: 0in"><BR>
+<P LANG="en-GB" STYLE="margin-bottom: 0cm"><BR>
 </P>
-<P LANG="en-GB" STYLE="margin-bottom: 0in"><FONT FACE="Helvetica, sans-serif">CURSES_SYSTEM
+<P LANG="en-GB" STYLE="margin-bottom: 0cm"><FONT FACE="Helvetica, sans-serif">CURSES_SYSTEM
 Curses state an behaviour not related to a pad, panel</FONT></P>
-<P LANG="en-GB" STYLE="margin-bottom: 0in"><FONT FACE="Helvetica, sans-serif">or
+<P LANG="en-GB" STYLE="margin-bottom: 0cm"><FONT FACE="Helvetica, sans-serif">or
 window. </FONT>
 </P>
-<P LANG="en-GB" STYLE="margin-bottom: 0in"><BR>
+<P LANG="en-GB" STYLE="margin-bottom: 0cm"><BR>
 </P>
-<P LANG="en-GB" STYLE="margin-bottom: 0in"><FONT FACE="Helvetica, sans-serif">SHARED_CURSES_SYSTEM
+<P LANG="en-GB" STYLE="margin-bottom: 0cm"><FONT FACE="Helvetica, sans-serif">SHARED_CURSES_SYSTEM
 The ``Curses system'' is a singleton accessible to all ECurses
 abstractions.</FONT></P>
-<P LANG="en-GB" STYLE="margin-bottom: 0in"><BR>
+<P LANG="en-GB" STYLE="margin-bottom: 0cm"><BR>
 </P>
-<P LANG="en-GB" STYLE="margin-bottom: 0in"><FONT FACE="Helvetica, sans-serif"><B>3.2.2
-Cluster SPEC</B> </FONT>
+<H3 CLASS="western"><B>3.2.2 Cluster SPEC</B> 
+</H3>
+<P LANG="en-GB" STYLE="margin-bottom: 0cm"><BR>
 </P>
-<P LANG="en-GB" STYLE="margin-bottom: 0in"><BR>
-</P>
-<P LANG="en-GB" STYLE="margin-bottom: 0in"><FONT FACE="Helvetica, sans-serif">CURSES_ATTRIBUTE_CONSTANTS
+<P LANG="en-GB" STYLE="margin-bottom: 0cm"><FONT FACE="Helvetica, sans-serif">CURSES_ATTRIBUTE_CONSTANTS
 Output attribute constants, like blink, underline.</FONT></P>
-<P LANG="en-GB" STYLE="margin-bottom: 0in"><BR>
+<P LANG="en-GB" STYLE="margin-bottom: 0cm"><BR>
 </P>
-<P LANG="en-GB" STYLE="margin-bottom: 0in"><FONT FACE="Helvetica, sans-serif">CURSES_CHARACTER_CONSTANTS
+<P LANG="en-GB" STYLE="margin-bottom: 0cm"><FONT FACE="Helvetica, sans-serif">CURSES_CHARACTER_CONSTANTS
 Constants reflecting  special terminal characters like graphics
 blocks, etc...</FONT></P>
-<P LANG="en-GB" STYLE="margin-bottom: 0in"><BR>
+<P LANG="en-GB" STYLE="margin-bottom: 0cm"><BR>
 </P>
-<P LANG="en-GB" STYLE="margin-bottom: 0in"><FONT FACE="Helvetica, sans-serif">CURSES_COLOR_CONSTANTS
+<P LANG="en-GB" STYLE="margin-bottom: 0cm"><FONT FACE="Helvetica, sans-serif">CURSES_COLOR_CONSTANTS
 Color constants</FONT></P>
-<P LANG="en-GB" STYLE="margin-bottom: 0in"><BR>
+<P LANG="en-GB" STYLE="margin-bottom: 0cm"><BR>
 </P>
-<P LANG="en-GB" STYLE="margin-bottom: 0in"><FONT FACE="Helvetica, sans-serif">CURSES_KEY_CONSTANTS
+<P LANG="en-GB" STYLE="margin-bottom: 0cm"><FONT FACE="Helvetica, sans-serif">CURSES_KEY_CONSTANTS
 Constants that reflect key codes like function keys, cursor keys,
 keypad keys.</FONT></P>
-<P LANG="en-GB" STYLE="margin-bottom: 0in"><BR>
+<P LANG="en-GB" STYLE="margin-bottom: 0cm"><BR>
 </P>
-<P LANG="en-GB" STYLE="margin-bottom: 0in"><FONT FACE="Helvetica, sans-serif">CURSES_*_API
+<P LANG="en-GB" STYLE="margin-bottom: 0cm"><FONT FACE="Helvetica, sans-serif">CURSES_*_API
 Those classes encapsulate the external features accessing the various
 aspects of the Curses library.</FONT></P>
-<P LANG="en-GB" STYLE="margin-bottom: 0in"><BR>
+<P LANG="en-GB" STYLE="margin-bottom: 0cm"><BR>
 </P>
-<P LANG="en-GB" STYLE="margin-bottom: 0in"><FONT FACE="Helvetica, sans-serif"><B>3.2.3
-Cluster UTILITY </B></FONT>
+<H3 CLASS="western">3.2.3 Cluster UTILITY 
+</H3>
+<P LANG="en-GB" STYLE="margin-bottom: 0cm"><BR>
 </P>
-<P LANG="en-GB" STYLE="margin-bottom: 0in"><BR>
-</P>
-<P LANG="en-GB" STYLE="margin-bottom: 0in"><FONT FACE="Helvetica, sans-serif">CURSES_EVENT_MANAGER
+<P LANG="en-GB" STYLE="margin-bottom: 0cm"><FONT FACE="Helvetica, sans-serif">CURSES_EVENT_MANAGER
 Basic event management logic. This class is intented to be inherited
 and redefined.</FONT></P>
-<P LANG="en-GB" STYLE="margin-bottom: 0in"><BR>
+<P LANG="en-GB" STYLE="margin-bottom: 0cm"><BR>
 </P>
-<P LANG="en-GB" STYLE="margin-bottom: 0in"><FONT FACE="Helvetica, sans-serif">CURSES_FRAME_PANEL
+<P LANG="en-GB" STYLE="margin-bottom: 0cm"><FONT FACE="Helvetica, sans-serif">CURSES_FRAME_PANEL
 Panel with a border and a clipped client area (borders are not
 overwritten). </FONT>
 </P>
-<P LANG="en-GB" STYLE="margin-bottom: 0in"><BR>
+<P LANG="en-GB" STYLE="margin-bottom: 0cm"><BR>
 </P>
-<P LANG="en-GB" STYLE="margin-bottom: 0in"><FONT FACE="Helvetica, sans-serif"><B>4
-Questions and Answers</B></FONT></P>
-<P LANG="en-GB" STYLE="margin-bottom: 0in"><BR>
+<H1 CLASS="western">4 Questions and Answers</H1>
+<P LANG="en-GB" STYLE="margin-bottom: 0cm"><BR>
 </P>
-<P LANG="en-GB" STYLE="margin-bottom: 0in"><FONT FACE="Helvetica, sans-serif"><B>4.1
-Status of the library</B></FONT></P>
-<P LANG="en-GB" STYLE="margin-bottom: 0in"><BR>
+<H2 CLASS="western">4.1 Status of the library</H2>
+<P LANG="en-GB" STYLE="margin-bottom: 0cm"><BR>
 </P>
-<P LANG="en-GB" STYLE="margin-bottom: 0in"><FONT FACE="Helvetica, sans-serif">It
+<P LANG="en-GB" STYLE="margin-bottom: 0cm"><FONT FACE="Helvetica, sans-serif">It
 is the first publicly available version. Work still has to be done in
 various directions like : assertions, documentation, tests. Still, it
 works...</FONT></P>
-<P LANG="en-GB" STYLE="margin-bottom: 0in"><BR>
+<P LANG="en-GB" STYLE="margin-bottom: 0cm"><BR>
 </P>
-<P LANG="en-GB" STYLE="margin-bottom: 0in"><FONT FACE="Helvetica, sans-serif">ECurses
+<P LANG="en-GB" STYLE="margin-bottom: 0cm"><FONT FACE="Helvetica, sans-serif">ECurses
 has not been tested systematically. It has been used to develop</FONT></P>
-<P LANG="en-GB" STYLE="margin-bottom: 0in"><FONT FACE="Helvetica, sans-serif">some
+<P LANG="en-GB" STYLE="margin-bottom: 0cm"><FONT FACE="Helvetica, sans-serif">some
 nice terminal applications. Only those features necessary to theses
 applications has been tested.</FONT></P>
-<P LANG="en-GB" STYLE="margin-bottom: 0in"><BR>
+<P LANG="en-GB" STYLE="margin-bottom: 0cm"><BR>
 </P>
-<P LANG="en-GB" STYLE="margin-bottom: 0in"><FONT FACE="Helvetica, sans-serif">ECurses
+<P LANG="en-GB" STYLE="margin-bottom: 0cm"><FONT FACE="Helvetica, sans-serif">ECurses
 does not provide access to all the features of Curses. Applications
 need to be developed to get interesting feedback and evolution of
 this library.</FONT></P>
-<P LANG="en-GB" STYLE="margin-bottom: 0in"><BR>
+<P LANG="en-GB" STYLE="margin-bottom: 0cm"><BR>
 </P>
-<P LANG="en-GB" STYLE="margin-bottom: 0in"><FONT FACE="Helvetica, sans-serif"><B>4.2
-C wrapping</B></FONT></P>
-<P LANG="en-GB" STYLE="margin-bottom: 0in"><BR>
+<H2 CLASS="western">4.2 C wrapping</H2>
+<P LANG="en-GB" STYLE="margin-bottom: 0cm"><BR>
 </P>
-<P LANG="en-GB" STYLE="margin-bottom: 0in"><FONT FACE="Helvetica, sans-serif">On
+<P LANG="en-GB" STYLE="margin-bottom: 0cm"><FONT FACE="Helvetica, sans-serif">On
 the C side, Curses functions are implemented either as functions</FONT></P>
-<P LANG="en-GB" STYLE="margin-bottom: 0in"><FONT FACE="Helvetica, sans-serif">or
+<P LANG="en-GB" STYLE="margin-bottom: 0cm"><FONT FACE="Helvetica, sans-serif">or
 as macros. Library implementors make their own choice : a function</FONT></P>
-<P LANG="en-GB" STYLE="margin-bottom: 0in"><FONT FACE="Helvetica, sans-serif">implemented
+<P LANG="en-GB" STYLE="margin-bottom: 0cm"><FONT FACE="Helvetica, sans-serif">implemented
 as a macro in PDCurses is actually a function in NCurses.</FONT></P>
-<P LANG="en-GB" STYLE="margin-bottom: 0in"><FONT FACE="Helvetica, sans-serif">That's
+<P LANG="en-GB" STYLE="margin-bottom: 0cm"><FONT FACE="Helvetica, sans-serif">That's
 why we have chosen for simple C wrapping rules applicable to</FONT></P>
-<P LANG="en-GB" STYLE="margin-bottom: 0in"><FONT FACE="Helvetica, sans-serif">both
+<P LANG="en-GB" STYLE="margin-bottom: 0cm"><FONT FACE="Helvetica, sans-serif">both
 implementations.</FONT></P>
-<P LANG="en-GB" STYLE="margin-bottom: 0in"><BR>
+<P LANG="en-GB" STYLE="margin-bottom: 0cm"><BR>
 </P>
-<P LANG="en-GB" STYLE="margin-bottom: 0in"><FONT FACE="Helvetica, sans-serif">We
+<P LANG="en-GB" STYLE="margin-bottom: 0cm"><FONT FACE="Helvetica, sans-serif">We
 also wanted this wrapping to be as portable as possible among Eiffel</FONT></P>
-<P LANG="en-GB" STYLE="margin-bottom: 0in"><FONT FACE="Helvetica, sans-serif">compilers.</FONT></P>
-<P LANG="en-GB" STYLE="margin-bottom: 0in"><BR>
+<P LANG="en-GB" STYLE="margin-bottom: 0cm"><FONT FACE="Helvetica, sans-serif">compilers.</FONT></P>
+<P LANG="en-GB" STYLE="margin-bottom: 0cm"><BR>
 </P>
-<P LANG="en-GB" STYLE="margin-bottom: 0in"><FONT FACE="Helvetica, sans-serif">For
+<P LANG="en-GB" STYLE="margin-bottom: 0cm"><FONT FACE="Helvetica, sans-serif">For
 each &quot;function&quot; F that can be called, a c_ecurses_F
 function is defined. This function basically cares that argument
 types are converted</FONT></P>
-<P LANG="en-GB" STYLE="margin-bottom: 0in"><FONT FACE="Helvetica, sans-serif">the
+<P LANG="en-GB" STYLE="margin-bottom: 0cm"><FONT FACE="Helvetica, sans-serif">the
 right way.</FONT></P>
-<P LANG="en-GB" STYLE="margin-bottom: 0in"><BR>
+<P LANG="en-GB" STYLE="margin-bottom: 0cm"><BR>
 </P>
-<P LANG="en-GB" STYLE="margin-bottom: 0in"><FONT FACE="Helvetica, sans-serif">This
+<P LANG="en-GB" STYLE="margin-bottom: 0cm"><FONT FACE="Helvetica, sans-serif">This
 mechanism is tedious (to type) but rather straightforward. External</FONT></P>
-<P LANG="en-GB" STYLE="margin-bottom: 0in"><FONT FACE="Helvetica, sans-serif">clauses
+<P LANG="en-GB" STYLE="margin-bottom: 0cm"><FONT FACE="Helvetica, sans-serif">clauses
 are simple, like defined in ETL (hope that VE can handle it...) :</FONT></P>
-<P LANG="en-GB" STYLE="margin-bottom: 0in"><BR>
+<P LANG="en-GB" STYLE="margin-bottom: 0cm"><BR>
 </P>
-<P LANG="en-GB" STYLE="margin-bottom: 0in"><FONT FACE="Helvetica, sans-serif">Eiffel
+<P LANG="en-GB" STYLE="margin-bottom: 0cm"><FONT FACE="Helvetica, sans-serif">Eiffel
 side (example)</FONT></P>
-<P LANG="en-GB" STYLE="margin-bottom: 0in"><BR>
+<P LANG="en-GB" STYLE="margin-bottom: 0cm"><BR>
 </P>
-<P LANG="en-GB" STYLE="margin-bottom: 0in"><FONT FACE="Courier, monospace"><FONT SIZE=2 STYLE="font-size: 10pt">F
-(w : POINTER; y, x : INTEGER): INTEGER is</FONT></FONT></P>
-<P LANG="en-GB" STYLE="margin-bottom: 0in"><FONT FACE="Courier, monospace"><FONT SIZE=2 STYLE="font-size: 10pt">	external
-&quot;C&quot;</FONT></FONT></P>
-<P LANG="en-GB" STYLE="margin-bottom: 0in"><FONT FACE="Courier, monospace"><FONT SIZE=2 STYLE="font-size: 10pt">	alias
-&quot;c_ecurses_F&quot;</FONT></FONT></P>
-<P LANG="en-GB" STYLE="margin-bottom: 0in"><FONT FACE="Courier, monospace"><FONT SIZE=2 STYLE="font-size: 10pt">end</FONT></FONT></P>
-<P LANG="en-GB" STYLE="margin-bottom: 0in"><BR>
+<PRE STYLE="margin-left: 2.2cm">F (w : POINTER; y, x : INTEGER): INTEGER is
+	external &quot;C&quot;
+	alias &quot;c_ecurses_F&quot;
+end
+</PRE><P STYLE="margin-bottom: 0cm">
+C side</P>
+<PRE>
+EIF_INTEGER c_ecurses_F (EIF_POINTER w, EIF_INTEGER y, EIF_INTEGER x)
+{
+    return (EIF_INTEGER) F((WINDOW*)w, (int)y,  (int) x);
+}
+</PRE><P STYLE="margin-bottom: 0cm">
+This C wrapping has been implemented for all CURSES_*_API classes.</P>
+<P STYLE="margin-bottom: 0cm"><BR>
 </P>
-<P LANG="en-GB" STYLE="margin-bottom: 0in"><FONT FACE="Helvetica, sans-serif">C
-side</FONT></P>
-<P LANG="en-GB" STYLE="margin-bottom: 0in"><BR>
+<H2 CLASS="western">4.3 Portability</H2>
+<P LANG="en-GB" STYLE="margin-bottom: 0cm"><BR>
 </P>
-<P LANG="en-GB" STYLE="margin-bottom: 0in"><FONT FACE="Courier, monospace"><FONT SIZE=2 STYLE="font-size: 10pt">EIF_INTEGER
-c_ecurses_F (EIF_POINTER w, EIF_INTEGER y, EIF_INTEGER x)</FONT></FONT></P>
-<P LANG="en-GB" STYLE="margin-bottom: 0in"><FONT FACE="Courier, monospace"><FONT SIZE=2 STYLE="font-size: 10pt">{</FONT></FONT></P>
-<P LANG="en-GB" STYLE="margin-bottom: 0in">    <FONT FACE="Courier, monospace"><FONT SIZE=2 STYLE="font-size: 10pt">return
-(EIF_INTEGER) F((WINDOW*)w, (int)y,  (int) x);</FONT></FONT></P>
-<P LANG="en-GB" STYLE="margin-bottom: 0in"><FONT FACE="Courier, monospace"><FONT SIZE=2 STYLE="font-size: 10pt">}</FONT></FONT></P>
-<P LANG="en-GB" STYLE="margin-bottom: 0in"><BR>
-</P>
-<P LANG="en-GB" STYLE="margin-bottom: 0in"><FONT FACE="Helvetica, sans-serif">This
-C wrapping has been implemented for all CURSES_*_API classes.</FONT></P>
-<P LANG="en-GB" STYLE="margin-bottom: 0in"><BR>
-</P>
-<P LANG="en-GB" STYLE="margin-bottom: 0in"><FONT FACE="Helvetica, sans-serif"><B>4.3
-Portability</B></FONT></P>
-<P LANG="en-GB" STYLE="margin-bottom: 0in"><BR>
-</P>
-<P LANG="en-GB" STYLE="margin-bottom: 0in"><FONT FACE="Helvetica, sans-serif">There
+<P LANG="en-GB" STYLE="margin-bottom: 0cm"><FONT FACE="Helvetica, sans-serif">There
 are two kind of portability :</FONT></P>
-<P LANG="en-GB" STYLE="margin-bottom: 0in"><BR>
+<P LANG="en-GB" STYLE="margin-bottom: 0cm"><BR>
 </P>
-<P LANG="en-GB" STYLE="margin-bottom: 0in"><FONT FACE="Helvetica, sans-serif">1.
-Curses library portability</FONT></P>
-<P LANG="en-GB" STYLE="margin-bottom: 0in"><BR>
+<OL>
+	<LI><P STYLE="margin-bottom: 0cm">Curses library portability</P>
+	<LI><P STYLE="margin-bottom: 0cm">Eiffel portability</P>
+</OL>
+<P LANG="en-GB" STYLE="margin-bottom: 0cm"><BR>
 </P>
-<P LANG="en-GB" STYLE="margin-bottom: 0in"><FONT FACE="Helvetica, sans-serif"><B>2.
-Eiffel portability</B></FONT></P>
-<P LANG="en-GB" STYLE="margin-bottom: 0in"><BR>
-</P>
-<P LANG="en-GB" STYLE="margin-bottom: 0in"><FONT FACE="Helvetica, sans-serif">ECurses
+<P LANG="en-GB" STYLE="margin-bottom: 0cm"><FONT FACE="Helvetica, sans-serif">ECurses
 has been tested with PDCurses on Windows and NCurses on Linux.</FONT></P>
-<P LANG="en-GB" STYLE="margin-bottom: 0in"><BR>
+<P LANG="en-GB" STYLE="margin-bottom: 0cm"><BR>
 </P>
-<P LANG="en-GB" STYLE="margin-bottom: 0in"><FONT FACE="Helvetica, sans-serif">ECurses
+<P LANG="en-GB" STYLE="margin-bottom: 0cm"><FONT FACE="Helvetica, sans-serif">ECurses
 has been compiled using ISE Eiffel version 4.4 on Linux (Caldera 2.3,
 kernel 2.210, glibc2.1, egcs 2.91.66), version 4.3 and 4.4 on</FONT></P>
-<P LANG="en-GB" STYLE="margin-bottom: 0in"><FONT FACE="Helvetica, sans-serif">Windows
+<P LANG="en-GB" STYLE="margin-bottom: 0cm"><FONT FACE="Helvetica, sans-serif">Windows
 (MSVC Compiler). </FONT>
 </P>
-<P LANG="en-GB" STYLE="margin-bottom: 0in"><BR>
+<P LANG="en-GB" STYLE="margin-bottom: 0cm"><BR>
 </P>
-<P LANG="en-GB" STYLE="margin-bottom: 0in"><FONT FACE="Helvetica, sans-serif">Ecurses
+<P LANG="en-GB" STYLE="margin-bottom: 0cm"><FONT FACE="Helvetica, sans-serif">Ecurses
 has been compiled using SmartEiffel version 1.1 on Linux</FONT></P>
-<P LANG="en-GB" STYLE="margin-bottom: 0in"><FONT FACE="Helvetica, sans-serif">(Caldera
+<P LANG="en-GB" STYLE="margin-bottom: 0cm"><FONT FACE="Helvetica, sans-serif">(Caldera
 2.3, kernel 2.210,glibc2.1, egcs 2.91.66), version 1.1</FONT></P>
-<P LANG="en-GB" STYLE="margin-bottom: 0in"><FONT FACE="Helvetica, sans-serif">on
+<P LANG="en-GB" STYLE="margin-bottom: 0cm"><FONT FACE="Helvetica, sans-serif">on
 Windows (MSVC Compiler).</FONT></P>
-<P LANG="en-GB" STYLE="margin-bottom: 0in"><BR>
+<P LANG="en-GB" STYLE="margin-bottom: 0cm"><BR>
 </P>
-<P LANG="en-GB" STYLE="margin-bottom: 0in"><FONT FACE="Helvetica, sans-serif"><B>4.4
-Console and X terminal emulations</B></FONT></P>
-<P LANG="en-GB" STYLE="margin-bottom: 0in"><BR>
+<H2 CLASS="western">4.4 Console and X terminal emulations</H2>
+<P LANG="en-GB" STYLE="margin-bottom: 0cm"><BR>
 </P>
-<P LANG="en-GB" STYLE="margin-bottom: 0in"><FONT FACE="Helvetica, sans-serif">Curses
+<P LANG="en-GB" STYLE="margin-bottom: 0cm"><FONT FACE="Helvetica, sans-serif">Curses
 applications are verrrry sensible to the choice of good TERMCAPS
 entries. Before saying ``it does not work'', verify your console or
 terminal settings.</FONT></P>
-<P LANG="en-GB" STYLE="margin-bottom: 0in"><BR>
+<P LANG="en-GB" STYLE="margin-bottom: 0cm"><BR>
 </P>
-<P LANG="en-GB" STYLE="margin-bottom: 0in"><FONT FACE="Helvetica, sans-serif">Some
+<P LANG="en-GB" STYLE="margin-bottom: 0cm"><FONT FACE="Helvetica, sans-serif">Some
 X terminal emulations won't give expected behaviour to your
 applications.</FONT></P>
-<P LANG="en-GB" STYLE="margin-bottom: 0in"><FONT FACE="Helvetica, sans-serif">Some
+<P LANG="en-GB" STYLE="margin-bottom: 0cm"><FONT FACE="Helvetica, sans-serif">Some
 characters do not appear because they do not exist in the used</FONT></P>
-<P LANG="en-GB" STYLE="margin-bottom: 0in"><FONT FACE="Helvetica, sans-serif">font.
+<P LANG="en-GB" STYLE="margin-bottom: 0cm"><FONT FACE="Helvetica, sans-serif">font.
 Some keys are not recognized because of an incorrect termcap</FONT></P>
-<P LANG="en-GB" STYLE="margin-bottom: 0in"><FONT FACE="Helvetica, sans-serif">entry.</FONT></P>
-<P LANG="en-GB" STYLE="margin-bottom: 0in"><BR>
+<P LANG="en-GB" STYLE="margin-bottom: 0cm"><FONT FACE="Helvetica, sans-serif">entry.</FONT></P>
+<P LANG="en-GB" STYLE="margin-bottom: 0cm"><BR>
 </P>
-<P LANG="en-GB" STYLE="margin-bottom: 0in"><FONT FACE="Helvetica, sans-serif">Terminal
+<P LANG="en-GB" STYLE="margin-bottom: 0cm"><FONT FACE="Helvetica, sans-serif">Terminal
 emulators like xterm or xterm-color are known to work best.</FONT></P>
-<P LANG="en-GB" STYLE="margin-bottom: 0in"><FONT FACE="Helvetica, sans-serif">Running
+<P LANG="en-GB" STYLE="margin-bottom: 0cm"><FONT FACE="Helvetica, sans-serif">Running
 your application in console mode can help you see how it should</FONT></P>
-<P LANG="en-GB" STYLE="margin-bottom: 0in"><FONT FACE="Helvetica, sans-serif">work
+<P LANG="en-GB" STYLE="margin-bottom: 0cm"><FONT FACE="Helvetica, sans-serif">work
 in your X terminal emulator.</FONT></P>
-<P LANG="en-GB" STYLE="margin-bottom: 0in"><BR>
+<P LANG="en-GB" STYLE="margin-bottom: 0cm"><BR>
 </P>
-<P LANG="en-GB" STYLE="margin-bottom: 0in"><FONT FACE="Helvetica, sans-serif"><B>4.5
-Reading from the keyboard</B></FONT></P>
-<P LANG="en-GB" STYLE="margin-bottom: 0in"><BR>
+<H2 CLASS="western">4.5 Reading from the keyboard</H2>
+<P LANG="en-GB" STYLE="margin-bottom: 0cm"><BR>
 </P>
-<P LANG="en-GB" STYLE="margin-bottom: 0in"><FONT FACE="Helvetica, sans-serif">A
+<P LANG="en-GB" STYLE="margin-bottom: 0cm"><FONT FACE="Helvetica, sans-serif">A
 CURSES_WINDOW object has features like read_character and read_line.</FONT></P>
-<P LANG="en-GB" STYLE="margin-bottom: 0in"><FONT FACE="Helvetica, sans-serif">A
+<P LANG="en-GB" STYLE="margin-bottom: 0cm"><FONT FACE="Helvetica, sans-serif">A
 read_character always give two results : last_character, and
 last_key,</FONT></P>
-<P LANG="en-GB" STYLE="margin-bottom: 0in"><FONT FACE="Helvetica, sans-serif">which
+<P LANG="en-GB" STYLE="margin-bottom: 0cm"><FONT FACE="Helvetica, sans-serif">which
 is an integer representing the key code.</FONT></P>
-<P LANG="en-GB" STYLE="margin-bottom: 0in"><BR>
+<P LANG="en-GB" STYLE="margin-bottom: 0cm"><BR>
 </P>
-<P LANG="en-GB" STYLE="margin-bottom: 0in"><FONT FACE="Helvetica, sans-serif">If
+<P LANG="en-GB" STYLE="margin-bottom: 0cm"><FONT FACE="Helvetica, sans-serif">If
 you want to test for key codes, do not forget to
 enable_metacharacters</FONT></P>
-<P LANG="en-GB" STYLE="margin-bottom: 0in"><FONT FACE="Helvetica, sans-serif">on
+<P LANG="en-GB" STYLE="margin-bottom: 0cm"><FONT FACE="Helvetica, sans-serif">on
 a window so that function or cursor keys end up in one code value.</FONT></P>
-<P LANG="en-GB" STYLE="margin-bottom: 0in"><FONT FACE="Helvetica, sans-serif">Otherwise,
+<P LANG="en-GB" STYLE="margin-bottom: 0cm"><FONT FACE="Helvetica, sans-serif">Otherwise,
 you should get an escape sequence. </FONT>
 </P>
-<P LANG="en-GB" STYLE="margin-bottom: 0in"><BR>
+<P LANG="en-GB" STYLE="margin-bottom: 0cm"><BR>
 </P>
-<P LANG="en-GB" STYLE="margin-bottom: 0in"><FONT FACE="Helvetica, sans-serif">If
+<P LANG="en-GB" STYLE="margin-bottom: 0cm"><FONT FACE="Helvetica, sans-serif">If
 the keypad is to be used, use the feature enable_keypad.</FONT></P>
-<P LANG="en-GB" STYLE="margin-bottom: 0in"><BR>
+<P LANG="en-GB" STYLE="margin-bottom: 0cm"><BR>
 </P>
-<P LANG="en-GB" STYLE="margin-bottom: 0in"><FONT FACE="Helvetica, sans-serif"><B>5
-TODO</B></FONT></P>
-<P LANG="en-GB" STYLE="margin-bottom: 0in"><BR>
+<H1 CLASS="western">5 TODO</H1>
+<P LANG="en-GB" STYLE="margin-bottom: 0cm"><BR>
 </P>
-<P LANG="en-GB" STYLE="margin-bottom: 0in"><FONT FACE="Helvetica, sans-serif">*
+<P LANG="en-GB" STYLE="margin-bottom: 0cm"><FONT FACE="Helvetica, sans-serif">*
 Software contracts could be extended and better reflect features</FONT></P>
-<P LANG="en-GB" STYLE="margin-bottom: 0in">  <FONT FACE="Helvetica, sans-serif">specifications.
+<P LANG="en-GB" STYLE="margin-bottom: 0cm">  <FONT FACE="Helvetica, sans-serif">specifications.
 </FONT>
 </P>
-<P LANG="en-GB" STYLE="margin-bottom: 0in"><BR>
+<P LANG="en-GB" STYLE="margin-bottom: 0cm"><BR>
 </P>
-<P LANG="en-GB" STYLE="margin-bottom: 0in"><FONT FACE="Helvetica, sans-serif">*
+<P LANG="en-GB" STYLE="margin-bottom: 0cm"><FONT FACE="Helvetica, sans-serif">*
 Documentation and sample programs should allow people to use ECurses,</FONT></P>
-<P LANG="en-GB" STYLE="margin-bottom: 0in">  <FONT FACE="Helvetica, sans-serif">without
+<P LANG="en-GB" STYLE="margin-bottom: 0cm">  <FONT FACE="Helvetica, sans-serif">without
 knowing much of Curses.</FONT></P>
-<P LANG="en-GB" STYLE="margin-bottom: 0in"><BR>
+<P LANG="en-GB" STYLE="margin-bottom: 0cm"><BR>
 </P>
-<P LANG="en-GB" STYLE="margin-bottom: 0in"><FONT FACE="Helvetica, sans-serif"><B>6
-Copyright</B></FONT></P>
-<P LANG="en-GB" STYLE="margin-bottom: 0in"><BR>
+<H1 CLASS="western">6 Copyright</H1>
+<P LANG="en-GB" STYLE="margin-bottom: 0cm"><BR>
 </P>
-<P LANG="en-GB" STYLE="margin-bottom: 0in"><FONT FACE="Helvetica, sans-serif">This
+<P LANG="en-GB" STYLE="margin-bottom: 0cm"><FONT FACE="Helvetica, sans-serif">This
 document and the ECurses library are licensed under the terms</FONT></P>
-<P LANG="en-GB" STYLE="margin-bottom: 0in"><FONT FACE="Helvetica, sans-serif">of
+<P LANG="en-GB" STYLE="margin-bottom: 0cm"><FONT FACE="Helvetica, sans-serif">of
 the Eiffel Forum Freeware License, version 2. Please refer to  the
 file licence.txt in this package or at
 <A HREF="http://www.gnu.org/licences/eiffel-forum-licence-2.html">http://www.gnu.org/licences/eiffel-forum-licence-2.html</A></FONT></P>
-<P LANG="en-GB" STYLE="margin-bottom: 0in"><BR>
+<P LANG="en-GB" STYLE="margin-bottom: 0cm"><BR>
 </P>
-<P LANG="en-GB" STYLE="margin-bottom: 0in; page-break-before: always">
-<BR>
+<H1 CLASS="western">References</H1>
+<P LANG="en-GB" STYLE="margin-bottom: 0cm"><BR>
 </P>
-<P LANG="en-GB" STYLE="margin-bottom: 0in"><BR>
+<P LANG="en-GB" STYLE="margin-bottom: 0cm"><FONT FACE="Helvetica, sans-serif">Ncurses</FONT></P>
+<P LANG="en-GB" STYLE="margin-bottom: 0cm"><FONT FACE="Helvetica, sans-serif"><A HREF="http://www.gnu.org/software/ncurses/ncurses.html">http://www.gnu.org/software/ncurses/ncurses.html</A></FONT></P>
+<P LANG="en-GB" STYLE="margin-bottom: 0cm"><FONT FACE="Helvetica, sans-serif"><A HREF="http://en.wikipedia.org/wiki/Ncurses">http://en.wikipedia.org/wiki/Ncurses</A></FONT></P>
+<P LANG="en-GB" STYLE="margin-bottom: 0cm"><BR>
 </P>
-<P LANG="en-GB" STYLE="margin-bottom: 0in"><FONT FACE="Helvetica, sans-serif"><B>7
-Appendix - Patching PDCurses</B></FONT></P>
-<P LANG="en-GB" STYLE="margin-bottom: 0in"><BR>
+<P LANG="en-GB" STYLE="margin-bottom: 0cm"><FONT FACE="Helvetica, sans-serif">``Writing
+programs with NCURSES'' by Eric S. Raymond and Zeyd M. Ben-Halim.</FONT></P>
+<P LANG="en-GB" STYLE="margin-bottom: 0cm"><FONT FACE="Helvetica, sans-serif"><A HREF="http://invisible-island.net/ncurses/ncurses-intro.html">http://invisible-island.net/ncurses/ncurses-intro.html</A></FONT></P>
+<P LANG="en-GB" STYLE="margin-bottom: 0cm"><BR>
 </P>
-<P LANG="en-GB" STYLE="margin-bottom: 0in"><FONT FACE="Helvetica, sans-serif">Let
-$PDCURSES be the PDCurses installation directory.</FONT></P>
-<P LANG="en-GB" STYLE="margin-bottom: 0in"><BR>
-</P>
-<P LANG="en-GB" STYLE="margin-bottom: 0in"><FONT FACE="Helvetica, sans-serif">Edit
-the file $PDCURSES/panel/panel.c.</FONT></P>
-<P LANG="en-GB" STYLE="margin-bottom: 0in"><BR>
-</P>
-<P LANG="en-GB" STYLE="margin-bottom: 0in"><FONT FACE="Helvetica, sans-serif">Function
-__panel_is_linked do not return correct error codes. The first</FONT></P>
-<P LANG="en-GB" STYLE="margin-bottom: 0in"><FONT FACE="Helvetica, sans-serif">return
-instruction should return OK, the second one should return</FONT></P>
-<P LANG="en-GB" STYLE="margin-bottom: 0in"><FONT FACE="Helvetica, sans-serif">ERR.</FONT></P>
-<P LANG="en-GB" STYLE="margin-bottom: 0in"><BR>
-</P>
-<P LANG="en-GB" STYLE="margin-bottom: 0in"><FONT FACE="Helvetica, sans-serif">Here
-is the difference report of diff -p panel.c panel.c.old : The</FONT></P>
-<P LANG="en-GB" STYLE="margin-bottom: 0in"><FONT FACE="Helvetica, sans-serif">last
-lines are the buggy ones.</FONT></P>
-<P LANG="en-GB" STYLE="margin-bottom: 0in"><BR>
-</P>
-<P LANG="en-GB" STYLE="margin-bottom: 0in"><FONT FACE="Courier, monospace"><FONT SIZE=2 STYLE="font-size: 10pt">***
-panel.c     Sat Jul  3 15:49:40 1999</FONT></FONT></P>
-<P LANG="en-GB" STYLE="margin-bottom: 0in"><FONT FACE="Courier, monospace"><FONT SIZE=2 STYLE="font-size: 10pt">---
-panel.c.old Sat Jul  3 15:52:22 1999</FONT></FONT></P>
-<P LANG="en-GB" STYLE="margin-bottom: 0in"><FONT FACE="Courier, monospace"><FONT SIZE=2 STYLE="font-size: 10pt">***************
-register PANEL *pan2 = __bottom_panel;</FONT></FONT></P>
-<P LANG="en-GB" STYLE="margin-bottom: 0in"><FONT FACE="Courier, monospace"><FONT SIZE=2 STYLE="font-size: 10pt">***
-346,355 ****</FONT></FONT></P>
-<P LANG="en-GB" STYLE="margin-bottom: 0in">        <FONT FACE="Courier, monospace"><FONT SIZE=2 STYLE="font-size: 10pt">while(pan2)</FONT></FONT></P>
-<P LANG="en-GB" STYLE="margin-bottom: 0in">        <FONT FACE="Courier, monospace"><FONT SIZE=2 STYLE="font-size: 10pt">{</FONT></FONT></P>
-<P LANG="en-GB" STYLE="margin-bottom: 0in">                <FONT FACE="Courier, monospace"><FONT SIZE=2 STYLE="font-size: 10pt">if(pan2
-== pan)</FONT></FONT></P>
-<P LANG="en-GB" STYLE="margin-bottom: 0in"><FONT FACE="Courier, monospace"><FONT SIZE=2 STYLE="font-size: 10pt">!
-                      return(OK);</FONT></FONT></P>
-<P LANG="en-GB" STYLE="margin-bottom: 0in">                <FONT FACE="Courier, monospace"><FONT SIZE=2 STYLE="font-size: 10pt">pan2
-= pan2-&gt;above;</FONT></FONT></P>
-<P LANG="en-GB" STYLE="margin-bottom: 0in">        <FONT FACE="Courier, monospace"><FONT SIZE=2 STYLE="font-size: 10pt">}</FONT></FONT></P>
-<P LANG="en-GB" STYLE="margin-bottom: 0in"><FONT FACE="Courier, monospace"><FONT SIZE=2 STYLE="font-size: 10pt">!
-      return(ERR);</FONT></FONT></P>
-<P LANG="en-GB" STYLE="margin-bottom: 0in">  <FONT FACE="Courier, monospace"><FONT SIZE=2 STYLE="font-size: 10pt">}
-    /* end of __panel_is_linked */</FONT></FONT></P>
-<P LANG="en-GB" STYLE="margin-bottom: 0in"> 
-<FONT FACE="Courier, monospace"><FONT SIZE=2 STYLE="font-size: 10pt">/*+-------------------------------------------------------------------------</FONT></FONT></P>
-<P LANG="en-GB" STYLE="margin-bottom: 0in"><FONT FACE="Courier, monospace"><FONT SIZE=2 STYLE="font-size: 10pt">---
-346,355 ----</FONT></FONT></P>
-<P LANG="en-GB" STYLE="margin-bottom: 0in">        <FONT FACE="Courier, monospace"><FONT SIZE=2 STYLE="font-size: 10pt">while(pan2)</FONT></FONT></P>
-<P LANG="en-GB" STYLE="margin-bottom: 0in">        <FONT FACE="Courier, monospace"><FONT SIZE=2 STYLE="font-size: 10pt">{</FONT></FONT></P>
-<P LANG="en-GB" STYLE="margin-bottom: 0in">                <FONT FACE="Courier, monospace"><FONT SIZE=2 STYLE="font-size: 10pt">if(pan2
-== pan)</FONT></FONT></P>
-<P LANG="en-GB" STYLE="margin-bottom: 0in"><FONT FACE="Courier, monospace"><FONT SIZE=2 STYLE="font-size: 10pt">!
-                      return(1);</FONT></FONT></P>
-<P LANG="en-GB" STYLE="margin-bottom: 0in">                <FONT FACE="Courier, monospace"><FONT SIZE=2 STYLE="font-size: 10pt">pan2
-= pan2-&gt;above;</FONT></FONT></P>
-<P LANG="en-GB" STYLE="margin-bottom: 0in">        <FONT FACE="Courier, monospace"><FONT SIZE=2 STYLE="font-size: 10pt">}</FONT></FONT></P>
-<P LANG="en-GB" STYLE="margin-bottom: 0in"><FONT FACE="Courier, monospace"><FONT SIZE=2 STYLE="font-size: 10pt">!
-      return(OK);</FONT></FONT></P>
-<P LANG="en-GB" STYLE="margin-bottom: 0in">  <FONT FACE="Courier, monospace"><FONT SIZE=2 STYLE="font-size: 10pt">}
-    /* end of __panel_is_linked */</FONT></FONT></P>
-<P LANG="en-GB" STYLE="margin-bottom: 0in"> 
-<FONT FACE="Courier, monospace"><FONT SIZE=2 STYLE="font-size: 10pt">/*+-------------------------------------------------------------------------</FONT></FONT></P>
-<P LANG="en-GB" STYLE="margin-bottom: 0in"><BR>
-</P>
-<P LANG="en-GB" STYLE="margin-bottom: 0in"><FONT FACE="Helvetica, sans-serif">Edit
-the file $PDCURSES/curses.h. </FONT>
-</P>
-<P LANG="en-GB" STYLE="margin-bottom: 0in"><BR>
-</P>
-<P LANG="en-GB" STYLE="margin-bottom: 0in"><FONT FACE="Helvetica, sans-serif">The
-macro pechochar at line 1946 is defined as follows : </FONT>
-</P>
-<P LANG="en-GB" STYLE="margin-bottom: 0in"><BR>
-</P>
-<P LANG="en-GB" STYLE="margin-bottom: 0in"><FONT FACE="Helvetica, sans-serif">#define
-pechochar(w,c) (waddch(w, (chtype)c)==ERR?ERR:prefresh(w))</FONT></P>
-<P LANG="en-GB" STYLE="margin-bottom: 0in"><BR>
-</P>
-<P LANG="en-GB" STYLE="margin-bottom: 0in"><FONT FACE="Helvetica, sans-serif">This
-fails during compilation because prefresh needs 7 actual parameters!</FONT></P>
-<P LANG="en-GB" STYLE="margin-bottom: 0in"><FONT FACE="Helvetica, sans-serif">I
-don't now how to provide those parameters so i decided to delete</FONT></P>
-<P LANG="en-GB" STYLE="margin-bottom: 0in"><FONT FACE="Helvetica, sans-serif">the
-refresh until someone finds what to do in this case. This could</FONT></P>
-<P LANG="en-GB" STYLE="margin-bottom: 0in"><FONT FACE="Helvetica, sans-serif">alter
-behaviour of CURSES_PAD on win32.</FONT></P>
-<P LANG="en-GB" STYLE="margin-bottom: 0in"><BR>
-</P>
-<P LANG="en-GB" STYLE="margin-bottom: 0in"><FONT FACE="Courier, monospace"><FONT SIZE=2 STYLE="font-size: 10pt">#define
-pechochar(w,c) (waddch(w, (chtype)c)==ERR?ERR:prefresh(w))</FONT></FONT></P>
-<P LANG="en-GB" STYLE="margin-bottom: 0in"><BR>
-</P>
-<P LANG="en-GB" STYLE="margin-bottom: 0in"><FONT FACE="Helvetica, sans-serif">References</FONT></P>
-<P LANG="en-GB" STYLE="margin-bottom: 0in"><BR>
-</P>
-<P LANG="en-GB" STYLE="margin-bottom: 0in"><FONT FACE="Helvetica, sans-serif">``Writing
-programs with NCURSES'' by Eric S. Raymond and Zeyd M.
-Ben-Halim.ftp://ftp.clark.net/pub/dickey/ncurses/ncurses-intro.html</FONT></P>
-<P LANG="en-GB" STYLE="margin-bottom: 0in"><BR>
-</P>
-<P LANG="en-GB" STYLE="margin-bottom: 0in"><FONT FACE="Helvetica, sans-serif">man
+<P LANG="en-GB" STYLE="margin-bottom: 0cm"><FONT FACE="Helvetica, sans-serif">man
 pages for NCurses</FONT></P>
-<P LANG="en-GB" STYLE="margin-bottom: 0in"><BR>
+<P LANG="en-GB" STYLE="margin-bottom: 0cm"><BR>
 </P>
-<P LANG="en-GB" STYLE="margin-bottom: 0in"><FONT FACE="Helvetica, sans-serif">A
-Hacker's Guide to NCURSES by
-ftp://ftp.clark.net/pub/dickey/ncurses/hackguide.html</FONT></P>
-<P LANG="en-GB" STYLE="margin-bottom: 0in"><BR>
+<P STYLE="margin-bottom: 0cm"><FONT FACE="Helvetica, sans-serif"><SPAN LANG="en-GB">A
+Hacker's Guide to NCURSES by </SPAN>Eric S. Raymond</FONT></P>
+<P LANG="en-GB" STYLE="margin-bottom: 0cm">
+<FONT FACE="Helvetica, sans-serif"><A HREF="http://invisible-island.net/ncurses/hackguide.html">http://invisible-island.net/ncurses/hackguide.html</A></FONT></P>
+<P LANG="en-GB" STYLE="margin-bottom: 0cm"><BR>
 </P>
-<P LANG="en-GB" STYLE="margin-bottom: 0in"><FONT FACE="Helvetica, sans-serif">NCurses
+<P LANG="en-GB" STYLE="margin-bottom: 0cm"><FONT FACE="Helvetica, sans-serif">NCurses
 FAQ</FONT></P>
-<P LANG="en-GB" STYLE="margin-bottom: 0in"><FONT FACE="Helvetica, sans-serif">ftp://ftp.clark.net/pub/dickey/ncurses/ncurses.faq.html</FONT></P>
+<P LANG="en-GB" STYLE="margin-bottom: 0cm"><FONT FACE="Helvetica, sans-serif"><A HREF="http://invisible-island.net/ncurses/ncurses.faq.html">http://invisible-island.net/ncurses/ncurses.faq.html</A></FONT></P>
+<DIV TYPE=FOOTER>
+	<P ALIGN=CENTER STYLE="margin-top: 0.5cm; margin-bottom: 0cm">Page <SDFIELD TYPE=PAGE SUBTYPE=RANDOM FORMAT=PAGE>8</SDFIELD>
+	of <SDFIELD TYPE=DOCSTAT SUBTYPE=PAGE FORMAT=PAGE>8</SDFIELD></P>
+</DIV>
 </BODY>
 </HTML>

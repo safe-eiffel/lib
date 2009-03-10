@@ -1,0 +1,95 @@
+<?xml version="1.0"?>
+
+<project name="ecurses_build" default="help">
+
+	<description>
+		system: "ECURSES parent project file."
+
+		library: "ECURSES : Eiffel CURSES Library. Project SAFE."
+		copyright: "Copyright (C) 1999-2009 Paul G. Crismer, Eric Fafchamps
+		license: "Eiffel Forum License v2 (see forum.txt)"
+		date: "$Date$"
+
+	</description>
+
+	<inherit>
+		<parent location="${GOBO}/misc/eiffel.eant">
+			<redefine target="init"/>
+			<redefine target="prepare_compile"/>
+			<redefine target="help"/>
+			<redefine target="install"/>
+			<redefine target="clean"/>
+			<redefine target="clobber"/>
+		</parent>
+	</inherit>
+
+<!-- Implementation -->
+
+	<target name="init">
+		<precursor/>
+		<geant target="check_ecurses_variables"/>
+	</target>
+
+	<target name="check_ecurses_variables">
+		<echo message="ERROR: GOBO_EIFFEL must be set." unless="${GOBO_EIFFEL}"/>
+		<echo message="WARNING: ECURSES variable not set" unless="${ECURSES}"/>
+		<echo message="WARNING: GOBO_CC variable not set. Must be msc|bcc|gcc|lcc" unless="${GOBO_CC}"/>
+	</target>
+
+	<target unless="${GOBO_OS}=windows" name="prepare_compile" depend="init">
+		<description>
+			Prepare compilation : check for C libraries, and compile them if necessary
+		</description>
+		<set name="eiffel" value="${GOBO_EIFFEL}"/>
+		<!-- Check for C libraries -->
+		
+		<!-- Compile them if necessary -->
+                <exec executable="make"  dir="${ECURSES}/src/spec/${eiffel}/${GOBO_OS}"/>
+        </target>
+
+	<target if="${GOBO_OS}=windows" name="prepare_compile_windows" depend="init">
+		<description>
+			Prepare compilation : check for C libraries, and compile them if necessary
+		</description>
+		<set name="eiffel" value="${GOBO_EIFFEL}"/>
+		<!-- Check for C libraries -->
+		                
+		<!-- Compile them if necessary -->
+                <exec executable="nmake -f makefile" dir="${ECURSES}/src/spec/${eiffel}/${GOBO_OS}" if="${GOBO_CC}=msc"/>
+   
+        </target>
+
+	<target name="install" depend="compile_libs">
+		<description>
+			Call 'geant' with the same target ${target}
+			in all subdirectories.
+		</description>
+	
+	</target>
+	
+        <target name="compile_libs" depend="prepare_compile, prepare_compile_windows">
+	</target>
+		
+	<target name="help">
+		<echo message="   geant install"/>
+		<echo message="   geant compile_libs"/>
+		<echo message="   geant clean"/>
+		<echo message="   geant clobber"/>
+	</target>
+
+	<target name="clean">
+		<set name="target" value="clean"/>
+		<geant target="do_all"/>
+	</target>
+
+
+	<target name="clobber">
+		<set name="target" value="clobber"/>
+		<geant target="do_all"/>
+	</target>
+	
+<!-- Implementation -->
+
+	<target name="do_all">
+	</target>
+</project>

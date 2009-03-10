@@ -1,3 +1,8 @@
+Version 1.2 2009-03-xx
+
+	* build automation through build.eant files
+	* 
+
 Version  - 21 decembre 2003
 
 	doc :
