@@ -55,6 +55,7 @@ feature
 	    end
 
 feature {NONE} -- helper procedure
+
 	handle_curses_call ( code : INTEGER; message : STRING) is
 	    do
 		last_error := code
@@ -65,8 +66,8 @@ feature {NONE} -- helper procedure
 
 end -- class CURSES_ERROR_HANDLING
 -----------------------------------------------------------
--- Copyright (C) 1999 Paul G. Crismer, Eric Fafchamps
--- Licensed under Eiffel Forum Freeware License, version 1
+-- Copyright (C) 1999-2009 Paul G. Crismer, Eric Fafchamps
+-- Licensed under Eiffel Forum Freeware License, version 2
 -- (see forum.txt)
 -----------------------------------------------------------
 

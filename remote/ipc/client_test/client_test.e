@@ -67,7 +67,7 @@ feature {ANY}
 end -- class CLIENT_TEST
 
 -----------------------------------------------------------
--- Copyright (C) 2001 Paul G. Crismer, Eric Fafchamps
--- Licensed under Eiffel Forum Freeware License, version 1
+-- Copyright (C) 1999-2009 Paul G. Crismer, Eric Fafchamps
+-- Licensed under Eiffel Forum Freeware License, version 2
 -- (see forum.txt)
 -----------------------------------------------------------

@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 
-<system name="ncurses">
+<system name="curses">
 	<description>
 		system:      "NCURSES TEST using ECURSES"
 

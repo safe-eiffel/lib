@@ -27,7 +27,7 @@ feature -- Commands
 			top : INTEGER
 			width : INTEGER
 		do
-			!!hello.make(5)
+			create hello.make(5)
 
 			window.refresh
 			window.put_string ("There are ")
@@ -120,7 +120,7 @@ feature {NONE} -- Implementation
 
 end -- class COLOR_TEST
 -----------------------------------------------------------
--- Copyright (C) 1999 Paul G. Crismer, Eric Fafchamps
--- Licensed under Eiffel Forum Freeware License, version 1
+-- Copyright (C) 1999-2009 Paul G. Crismer, Eric Fafchamps
+-- Licensed under Eiffel Forum Freeware License, version 2
 -- (see forum.txt)
 -----------------------------------------------------------

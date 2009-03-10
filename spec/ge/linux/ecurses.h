@@ -3,7 +3,7 @@
  *
  * Released under the Eiffel Forum Licence, or the LGPL
  *
- * Author : Paul G. Crismer (pgcrism@ibm.net)
+ * Author : Paul G. Crismer (pgcrism @ users . sourceforge . net)
  *
  * $Version: $
  * $Date$

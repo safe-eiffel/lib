@@ -1,13 +1,13 @@
-/* 
+/*
  * Include file for ecurses, the eiffel library to (N)Curses
  *
  * Released under the Eiffel Forum Licence, or the LGPL
- * 
- * Author : Paul G. Crismer (pgcrism@ibm.net)
- * 
+ *
+ * Author : Paul G. Crismer (pgcrism @ users . sourceforge . net)
+ *
  * $Version: $
  * $Date$
- * 
+ *
 */
 #include <curses.h>
 #include <curspriv.h>
@@ -19,6 +19,6 @@
 #define enoecho				noecho()
 #define getattrs(w)			((w)->_attrs)
 #define TABSIZE	(stdscr->_tabsize)
-#define wchgat(w,n,attr,color,opt)	PDC_chg_attrs( (w) , (attr | color) , ((w)->_cury) , ((w)->_curx) , ((w)->_cury), (((w)->_curx) + n) )	
+#define wchgat(w,n,attr,color,opt)	PDC_chg_attrs( (w) , (attr | color) , ((w)->_cury) , ((w)->_curx) , ((w)->_cury), (((w)->_curx) + n) )
 #define getbkgd(win)			((win)->_bkgd)
 #define	slk_attr()			getattrs (SP->slk_winptr)

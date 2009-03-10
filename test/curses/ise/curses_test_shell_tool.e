@@ -17,7 +17,7 @@ feature -- Basic routines
 		local
 			execution_environment: EXECUTION_ENVIRONMENT
 		do
-			!!execution_environment
+			create execution_environment
 			execution_environment.system (s)
 		end
 

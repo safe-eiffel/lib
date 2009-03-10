@@ -2,7 +2,7 @@ indexing
 	description: "Objects that shares memory between processes"
 
 	library: "ECURSES : Eiffel Curses wrapping Library. Project SAFE."
-	copyright: "Copyright (c) 2001-2006, Paul G. Crismer and others"
+	copyright: "Copyright (C) 1999-2009 Paul G. Crismer, Eric Fafchamps
 	license: "Eiffel Forum License v2 (see forum.txt)"
 
 	date: "$Date$";
