@@ -10,7 +10,8 @@ create
 	make_non_conformant_pid,
 	make_could_not_create_object,
 	make_could_not_find_adapter,
-	make_could_not_refresh_object
+	make_could_not_refresh_object,
+	make_connection_error
 
 feature {NONE} -- Initialization
 
@@ -111,6 +112,24 @@ feature {NONE} -- Initialization
 			code_set: code = code_could_not_refresh_object
 		end
 
+	make_connection_error (datastore_name : STRING; a_code : INTEGER; a_message : STRING) is
+			-- Connection failed to `datastore_name' : error `a_code' with `a_message'.
+		require
+			datastore_name_not_void: datastore_name /= Void
+			a_message_not_void: a_message /= Void
+		do
+			default_template := tpl_connection_error
+			code := code_connection_error
+			create parameters.make (1, 4)
+			parameters.put (code, 1)
+			parameters.put (datastore_name, 2)
+			parameters.put (a_code.out, 3)
+			parameters.put (a_message, 4)
+		ensure
+			default_template_set: default_template = tpl_connection_error
+			code_set: code = code_connection_error
+		end
+
 feature {NONE} -- Implementation
 
 	code : STRING
@@ -122,11 +141,13 @@ feature {NONE} -- Implementation
 	tpl_could_not_create_object : STRING is "[$1] {$2}.$3 : Could not create object of type {$4}"
 	tpl_could_not_find_adapter : STRING is "[$1] {$2}.$3 : Could not find adapter for persistent class '$4'"
 	tpl_could_not_refresh_object : STRING is "[$1] {$2}.refresh : Could not refresh object '$3' - No data found"
+	tpl_connection_error : STRING is "[$1] Connection to '$2' failed : error $3 '$4'"
 
-	code_datastore_error : STRING is 		"EPOM-E-DSERR"
-	code_non_conformant_pid : STRING is		"EPOM-E-NCPID"
+	code_datastore_error : STRING is 		    "EPOM-E-DSERR"
+	code_non_conformant_pid : STRING is		    "EPOM-E-NCPID"
 	code_could_not_create_object : STRING is	"EPOM-E-CNCOB"
 	code_could_not_find_adapter : STRING is		"EPOM-E-CNFAD"
 	code_could_not_refresh_object : STRING is	"EPOM-E-CNROB"
+	code_connection_error : STRING is           "EPOM-E-CNXER"
 
 end

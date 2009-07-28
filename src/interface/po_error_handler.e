@@ -84,4 +84,16 @@ feature -- Basic operations
 			create error.make_could_not_refresh_object (an_adapter, object)
 		end
 
+	report_connection_error (datastore_name  : STRING; a_code : INTEGER; a_message : STRING) is
+			-- Datastore connection error to `datastore_name' : error `a_code' with `a_message'.
+		require
+			datastore_name_not_void: datastore_name /= Void
+			a_message_not_void: a_message /= Void
+		local
+			error : PO_ERROR
+		do
+			create error.make_connection_error (datastore_name, a_code, a_message)
+			report_error (error)
+		end
+
 end

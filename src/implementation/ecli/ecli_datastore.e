@@ -28,6 +28,7 @@ feature {NONE} -- Initialisation
 		do
 			session_impl := a_session
 			create adapters_impl.make
+			create error_handler.make_null
 		ensure
 			session_set: session_impl = a_session
 			adapters_not_void: adapters /= Void and then adapters.is_empty
@@ -47,6 +48,8 @@ feature -- Access
 			Result := adapters_impl
 		end
 
+	error_handler : PO_ECLI_ERROR_HANDLER
+
 feature -- Element change
 
 	set_simple_login_strategy (login : ECLI_SIMPLE_LOGIN) is
@@ -57,6 +60,12 @@ feature -- Element change
 			session.set_login_strategy (login)
 		ensure
 			login_strategy_set: session.login_strategy = login
+		end
+
+	set_error_handler (an_error_handler : like error_handler) is
+			-- 	<Precursor>
+		do
+			error_handler := an_error_handler
 		end
 
 feature -- Status report
@@ -89,9 +98,22 @@ feature -- Status setting
 
 	connect is
 			-- Connect to datastore.
+		local
+			l_simple_login : ECLI_SIMPLE_LOGIN
+			l_datastore_name : STRING
+			l_error_code : INTEGER_32
+			l_error_message : STRING
 		do
 			session.connect
-			on_connected
+			if session.is_connected then
+				on_connected
+			else
+				l_simple_login ?= session.login_strategy
+				l_datastore_name := l_simple_login.datasource_name
+				l_error_code := session.native_code
+				l_error_message := session.diagnostic_message
+				error_handler.report_connection_error (l_datastore_name, l_error_code, l_error_message)
+			end
 		end
 
 	disconnect is
