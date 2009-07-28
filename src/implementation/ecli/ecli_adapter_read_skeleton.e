@@ -65,7 +65,7 @@ feature {NONE} -- Framework - Basic operations
 			a_pid_not_void: a_pid /= Void
 		deferred
 		ensure
-			bound_parameters: read_cursor.bound_parameters
+			bound_parameters: read_cursor.has_parameters implies read_cursor.bound_parameters
 		end
 
 feature {NONE} -- Framework - Factory
