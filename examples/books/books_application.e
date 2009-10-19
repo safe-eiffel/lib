@@ -10,6 +10,7 @@ inherit
 
 	BOOKS_DATASTORE_ACCESS
 
+	KL_SHARED_ARGUMENTS
 create
 
 	make
@@ -19,18 +20,30 @@ feature -- Initialization
 	make is
 			-- Creation procedure.
 		do
-			initialize_persistence_framework
-			if is_persistence_framework_initialized then
-				populate
-				borrow_copy_to_borrower ("1", 1, 1)
-				borrow_copy_to_borrower ("1", 2, 2)
-				show
-				delete_copy ("1", 1)
-				store.disconnect
+			if arguments.argument_count >= 3 then
+				datasource := arguments.argument (1)
+				user := arguments.argument (2)
+				password := arguments.argument (3)
+				initialize_persistence_framework (datasource, user, password)
+				if is_persistence_framework_initialized then
+					populate
+					borrow_copy_to_borrower ("1", 1, 1)
+					borrow_copy_to_borrower ("1", 2, 2)
+					show
+					delete_copy ("1", 1)
+					store.disconnect
+				end
+			else
+				print ("Not enough arguments%N")
+				print_usage
 			end
 		end
 
 feature -- Access
+
+	datasource : STRING
+	user : STRING
+	password : STRING
 
 	last_book : BOOK
 
@@ -86,6 +99,15 @@ feature -- Basic operations
 
 
 feature -- Implementation
+
+	print_usage is
+		do
+			print("[
+Usage: books <datasource_name> <user_name> <password>
+
+	Note: you need table creation privileges
+]")
+		end
 
 	populate_books is
 			-- Populate books.

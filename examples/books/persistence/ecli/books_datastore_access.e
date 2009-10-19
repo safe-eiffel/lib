@@ -27,7 +27,7 @@ feature -- Status report
 
 feature -- Basic operations
 
-	initialize_persistence_framework is
+	initialize_persistence_framework (datasource_name, user_name, user_password : STRING) is
 		require
 			not_initialized: not is_persistence_framework_initialized
 		local
@@ -36,18 +36,18 @@ feature -- Basic operations
 			manager : PO_MANAGER_IMPL
 		do
 			create session.make_default
-			create simple_login.make("books", "","")
+			create simple_login.make(datasource_name, user_name, user_password)
 			session.set_login_strategy (simple_login)
 			create store.make (session)
 			store.connect
-			verify_table_existence
-			if not table_exists then
-				create_table
-			end
-			if table_exists then
-				create manager.make
-				set_manager (manager)
-				if store.is_connected then
+			if store.is_connected then
+				verify_table_existence
+				if not table_exists then
+					create_table
+				end
+				if table_exists then
+					create manager.make
+					set_manager (manager)
 					create {BOOK_ADAPTER_ECLI}book_adapter.make (store)
 					book_adapter.enable_cache_on_write
 					book_adapter.enable_cache_on_read
@@ -57,9 +57,13 @@ feature -- Basic operations
 					create {COPY_ADAPTER_ECLI}copy_adapter.make (store)
 					pom.add_adapter (copy_adapter)
 					is_persistence_framework_initialized := True
+
 				else
-					print ("Error connecting to database%N")
+					print ("Error: Expected tables do not exist%N")
 				end
+			else
+				print ("Error connecting to database%N")
+				print (store.session.diagnostic_message)
 			end
 		end
 
