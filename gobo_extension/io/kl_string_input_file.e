@@ -2,16 +2,15 @@ indexing
 
 	description:
 
-	    "Objects that..."
+	    "KL_TEXT_INPUT_FILE instances reading from a STRING instance."
 
-	usage: ""
-	quality: ""
-	refactoring: ""
+	author: "Paul G. Crismer"
 
-	status: "see notice at end of class";
-	date: "$Date$";
-	revision: "$Revision$";
-	author: ""
+	library: "SAFE Kernel/Gobo extensions"
+
+	date: "$Date$"
+	revision: "$Revision$"
+	licensing: "See notice at end of class"
 
 class
 	KL_STRING_INPUT_FILE
@@ -229,10 +228,10 @@ invariant
 	stream_attached: stream /= Void
 	target_string_attached: target_string /= Void
 
-end -- class KL_STRING_INPUT_FILE
+end 
 
 --
---    copyright: "Groupe S (c)"
---    licence: "All rights reserved. Duplication and distribution prohibited."
+-- Copyright: 2009, Paul G. Crismer, <pgcrism@users.sourceforge.net>
+-- Released under the Eiffel Forum License <www.eiffel-forum.org>
+-- See file <forum.txt>
 --
---    source: "$Source: F:/CVSRoot/doc/Se2000/Projet/Standards/full.e.tpl,v ";
