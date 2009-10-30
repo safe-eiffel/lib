@@ -12,8 +12,12 @@ class
 feature {NONE} -- Implementation
 
 	show_title_xy (x, y : DOUBLE; title : STRING; d : PDF_DOCUMENT; p : PDF_PAGE) is
+			-- Put `title' on page `p' of document `d', at coordinates (`x', `y')
 		require
-			not p.is_text_mode
+			d_attached: d /= Void
+			p_attached: p /= Void
+			p_not_in_text_mode: not p.is_text_mode
+			title_not_void: title /= Void
 		do
 			p.begin_text
 			p.move_text_origin (x, y)
@@ -22,14 +26,18 @@ feature {NONE} -- Implementation
 		ensure
 			not p.is_text_mode
 		end
-		
+
 	show_title (s : STRING; d : PDF_DOCUMENT; p : PDF_PAGE) is
-			-- 
+			-- Put title `s' on page `p' of document `d' at current text coordinates.
+		require
+			s_not_void: s /= Void
+			d_not_void: d /= Void
+			p_not_void: p /= Void
 		local
 			old_leading, old_font_size : DOUBLE
 			old_font : PDF_FONT
 		do
-			old_leading := p.text_leading			
+			old_leading := p.text_leading
 			old_font := p.current_font
 			old_font_size := p.current_font_size
 			d.find_font ("Helvetica", d.Encoding_standard)
@@ -46,6 +54,9 @@ feature {NONE} -- Implementation
 		end
 
 	put_space_after (p : PDF_PAGE) is
+			-- Move down a quarter inch
+		require
+			p_not_void: p /= Void
 		do
 			-- move down a quarter inch
 			p.move_text_origin (0, -18)
@@ -53,15 +64,20 @@ feature {NONE} -- Implementation
 
 
 	show_control_point (p : PDF_PAGE; x, y : DOUBLE) is
+			-- Draw a control point (small box, 3 points large) on `p', centered at (`x',`y').
+		require
+			p_not_void: p /= Void
 		do
 			p.gsave
 			p.set_line_width (0)
 			box_centered (p, x, y, 3)
 			p.grestore
 		end
-		
+
 	box_centered (p: PDF_PAGE; x, y, w : DOUBLE) is
-			-- draws a box, centered at x,y and of width y
+			-- draws a box, centered at (`x',`'y') and of width `y'
+		require
+			p_not_void: p /= Void
 		do
 			p.gsave
 			p.rectangle (x-(w/2), y-(w/2), w, w)
@@ -70,23 +86,31 @@ feature {NONE} -- Implementation
 		end
 
 	center_label (x, y : DOUBLE; label : STRING; p : PDF_PAGE) is
-			-- 
+			-- Draw `label' centered at (`x',`y') on page `p'
+		require
+			p_not_void: p /= Void
+			label_not_void: label /= Void
 		do
 			p.begin_text
 			p.move_text_origin (x - p.string_width (label)/2, y)
 			p.put_string (label)
-			p.end_text			
+			p.end_text
 		end
 
 	show_star (x, y , r: DOUBLE; p : PDF_PAGE) is
-			-- 
+			-- Show a star, centered at (`x', `y') with radius `r'.
+			-- Filled and stroked.
+		require
+			p_not_void: p /= Void
 		do
 			put_star (x, y, r, p)
 			p.fill_then_stroke
 		end
 
 	put_star (x, y, r : DOUBLE; p : PDF_PAGE) is
-			-- 
+			-- Draw a star in a new path, centered at (`x', `y') with radius `r'.
+		require
+			p_not_void: p /= Void
 		local
 			d4pi_5, d2pi_5, x_4pi_5, y_4pi_5, x_2pi_5, y_2pi_5 : DOUBLE
 			math : EPDF_MATH
@@ -108,9 +132,6 @@ feature {NONE} -- Implementation
 			p.lineto (x + r*x_4pi_5, y - r * y_4pi_5)
 			p.close_path
 		end
-		
-invariant
-	invariant_clause: True -- Your invariant here
 
 end -- class TEST_HELPER
 --

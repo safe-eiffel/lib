@@ -37,7 +37,10 @@ feature -- Initialization
 		end
 		
 	test_gray (d : PDF_DOCUMENT; p : PDF_PAGE) is
-			-- 
+			-- Test gray variations.
+		require
+			d_not_void: d /= Void
+			p_not_void: p /= Void
 		local
 			gray : INTEGER
 		do
@@ -53,7 +56,10 @@ feature -- Initialization
 		end
 	
 	test_color (d : PDF_DOCUMENT; p : PDF_PAGE) is
-			-- 
+			-- Test color variations.
+		require
+			d_not_void: d /= Void
+			p_not_void: p /= Void
 		local
 			r, g, b : INTEGER
 		do
@@ -83,7 +89,10 @@ feature -- Initialization
 		end
 	
 	test_circles (d : PDF_DOCUMENT; p : PDF_PAGE) is
-			-- 
+			-- Test various methods for drawing circles.
+		require
+			d_not_void: d /= Void
+			p_not_void: p /= Void
 		do
 			show_title_xy (100, 130, "Circles", d, p)
 			p.set_font (d.last_font, 8)
@@ -104,7 +113,10 @@ feature -- Initialization
 		end
 		
 	test_winding_fill (d : PDF_DOCUMENT; p : PDF_PAGE) is
-			-- 
+			-- Test `winding' fill method.
+		require
+			d_not_void: d /= Void
+			p_not_void: p /= Void
 		do
 			p.gsave
 			show_title_xy (100, 130, "Fill - NonZero Winding Number rule", d,p)
@@ -115,7 +127,10 @@ feature -- Initialization
 		end
 		
 	test_even_odd_fill (d : PDF_DOCUMENT; p : PDF_PAGE) is
-			-- 
+			-- Test `even odd' fill method.
+		require
+			d_not_void: d /= Void
+			p_not_void: p /= Void
 		do
 			p.gsave
 			show_title_xy (100, 130, "Fill - Even Odd rule", d,p)
@@ -127,7 +142,10 @@ feature -- Initialization
 		end
 	
 	test_fill (d : PDF_DOCUMENT; p : PDF_PAGE) is
-			-- 
+			-- Test fill operations.
+		require
+			d_not_void: d /= Void
+			p_not_void: p /= Void
 		do
 			p.gsave
 			p.translate (150, 0)
@@ -140,7 +158,10 @@ feature -- Initialization
 		end
 		
 	show_ring1 (x, y, r : DOUBLE; p : PDF_PAGE) is
-			-- 
+			-- Show a ring centered at (`x', `y'), with radius `r'.  Ring hole radius is r/2.
+			-- use 'circle' operation.
+		require
+			p_not_void: p /= Void
 		do
 			p.circle (x, y, r)
 			p.circle (x, y, r/2)
@@ -148,7 +169,10 @@ feature -- Initialization
 		end
 	
 	show_ring2 (x, y, r : DOUBLE; p : PDF_PAGE) is
-			--
+			-- Show a ring centered at (`x', `y'), with radius `r'.  Ring hole radius is r/2.
+			-- use 'circle_2' operation.
+		require
+			p_not_void: p /= Void
 		do
 			p.circle (x, y, r)
 			p.circle_2 (x, y, r/2)
@@ -157,6 +181,8 @@ feature -- Initialization
 		
 		
 	show_gray (gray : INTEGER; p : PDF_PAGE) is	
+		require
+			p_not_void: p /= Void
 		local
 			row, column : DOUBLE
 			actual_gray : DOUBLE
@@ -173,6 +199,8 @@ feature -- Initialization
 
 	show_color (r, g, b : INTEGER; p : PDF_PAGE) is
 			-- 
+		require
+			p_attached: p /= Void
 		local
 			row, column : DOUBLE
 			actual_r, actual_g, actual_b : DOUBLE

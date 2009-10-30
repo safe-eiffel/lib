@@ -11,11 +11,11 @@ inherit
 	XS_IMPORTED_UINT32_ROUTINES
 
 	KL_SHARED_FILE_SYSTEM
-	
+
 feature -- Basic operations
 
 	do_test (document : PDF_DOCUMENT; images_outline : PDF_OUTLINE_ITEM) is
-			-- 
+			--
 		local
 			page : PDF_PAGE
 			image, alpha, image2 : PDF_IMAGE
@@ -31,7 +31,7 @@ feature -- Basic operations
 			-- create red image with alpha
 			from
 				i := 1
-				c := UINT32_.left_shift (255, 16)
+				c := UINT32_.c_left_shift (255, 16)
 				j := 1
 			until
 				i > image.height
@@ -53,13 +53,13 @@ feature -- Basic operations
 			--
 			-- compose page
 			-- begin text mode
-			page.begin_text	
+			page.begin_text
 			-- set font + size
-			page.set_font (document.last_font, 36)		
+			page.set_font (document.last_font, 36)
 			-- move text origin to (left edge + 1 inch, upper edge - 1 inch - fontsize)
-			page.move_text_origin ((page.mediabox.width - image.width - 4) /2 , page.mediabox.height / 2 + 2)			
+			page.move_text_origin ((page.mediabox.width - image.width - 4) /2 , page.mediabox.height / 2 + 2)
 			-- show text
-			page.put_string ("Hello World !")		
+			page.put_string ("Hello World !")
 			-- end text mode
 			page.end_text
 			page.gsave
@@ -97,16 +97,16 @@ feature -- Basic operations
 				page.set_text_origin (100 + 2 * image.width, j)
 				page.put_string (images.item (i+1))
 				page.end_text
-				page.grestore				
+				page.grestore
 				j := j - image.height - 5
 				i := i + 2
 			end
 			check page.save_level = 0 end
 		end
-		
+
 	images : ARRAY [STRING] is
-			-- 
-		once 
+			--
+		once
 			Result := <<
 			    "basn0g01.png", "1-bit grayscale",
 			    "basn0g02.png", "2-bit grayscale",
@@ -127,5 +127,5 @@ feature -- Basic operations
 		end
 
 	images_dir : STRING is "images"
-	
+
 end -- class TEST_IMAGES
