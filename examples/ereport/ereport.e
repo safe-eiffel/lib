@@ -332,7 +332,7 @@ feature -- Basic operations
 			block.margins.set_right (centimeters (1))
 			a_document.append_block (block)
 
-			create image.make_from_png ("C:\User\eiffel\safe\safe\lib\ecli\examples\books\data\nvc.png", a_document)
+			create image.make_from_png (execution_environment.interpreted_string ("${ECLI}\examples\books\data\nvc.png"), a_document)
 			image.set_width (centimeters (10))
 			create red.make_rgb (255, 0, 0)
 			create border_constants.make_none
@@ -382,7 +382,7 @@ is a very effective way of dealing with oneself and with
 other people.
 ]")
 
-			create image.make_from_png (nvc_image_file, a_document)
+			create image.make_from_png (execution_environment.interpreted_string (nvc_image_file), a_document)
 			image.set_width (cm (5))
 
 			row.put (image, 1)
@@ -460,7 +460,7 @@ is a very effective way of dealing with oneself and with
 other people.
 ]")
 
-			create image.make_from_png (nvc_image_file, a_document)
+			create image.make_from_png (execution_environment.interpreted_string (nvc_image_file), a_document)
 			image.set_width (cm (2))
 
 			row.put (image, 1)
@@ -468,6 +468,6 @@ other people.
 			Result := a_table
 		end
 
-	nvc_image_file : STRING is "C:\User\eiffel\safe\safe\lib\ecli\examples\books\data\nvc.png"
+	nvc_image_file : STRING is "${ECLI}\examples\books\data\nvc.png"
 
 end -- class EREPORT
