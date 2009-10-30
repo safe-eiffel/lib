@@ -1,9 +1,9 @@
 indexing
 	description: "C allocated pointer : contains a reference to something else."
 	author: "Paul G. Crismer"
-	
+
 	library: "XS_C : eXternal Support C"
-	
+
 	date: "$Date$"
 	revision: "$Revision$"
 	licensing: "See notice at end of class"
@@ -13,17 +13,17 @@ class
 
 inherit
 	XS_C_MEMORY
-	
+
 create
 	make
-			
+
 feature -- Initialization
 
 	make is
 		do
 			handle := c_memory_allocate (item_size)
 		end
-		
+
 feature -- Access
 
 	item : POINTER is
@@ -36,10 +36,14 @@ feature -- Access
 		do
 			Result := c_memory_get_int32 (handle)
 		end
-		
+
 feature -- Measurement
-	
-	item_size : INTEGER is do Result := 4 end
+
+	item_size : INTEGER is
+		external "C inline"
+		alias
+			"return (sizeof(EIF_POINTER));"
+		end
 
 feature -- Element change
 
@@ -48,10 +52,10 @@ feature -- Element change
 		do
 			c_memory_put_pointer (handle, value)
 		end
-		
+
 invariant
 	handle_not_default_pointer: handle /= default_pointer
-	
+
 end -- class XS_C_POINTER
 --
 -- Copyright: 2003, Paul G. Crismer, <pgcrism@users.sourceforge.net>
