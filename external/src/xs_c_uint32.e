@@ -86,7 +86,7 @@ feature -- Access
 				s_index = 0
 			loop
 				if s.item (s_index) /= '0' then
-					put (set_bit (item, bit_index))
+					put (c_set_bit (item, bit_index))
 				end
 				s_index := s_index - 1
 				bit_index := bit_index + 1
@@ -121,89 +121,90 @@ feature -- Comparison
 			if other = Current then
 				Result := True
 			else
-				Result := (eq(item, other.item) /= 0)
+				Result := (c_eq(item, other.item) /= 0)
 			end
 		end
 
 	infix "<" (other : like Current) : BOOLEAN is
 		do
-			Result := (lt (item, other.item) /= 0)
+			Result := (c_lt (item, other.item) /= 0)
 		end
 
 feature -- Basic operations
 
-	infix "*" (other : like Current) : like Current is
+	times alias "*" (other : like Current) : like Current is
 			-- Current multiplied by `other'.
 		do
 			create Result.make
-			Result.put (multiply (item, other.item))
+			Result.put (c_multiply (item, other.item))
 		end
-	infix "+" (other : like Current) : like Current is
+
+	added alias "+" (other : like Current) : like Current is
 			-- Current added with `other'.
 		do
 			create Result.make
-			Result.put (add (item, other.item))
+			Result.put (c_add (item, other.item))
 		end
 
-	infix "-" (other : like Current) : like Current is
+	subtracted alias "-" (other : like Current) : like Current is
 			-- Current - other.
 		do
 			create Result.make
-			Result.put (subtract(item, other.item))
+			Result.put (c_subtract(item, other.item))
 		end
 
-	infix "//" (other : like Current) : like Current is
+	integer_divided alias "//" (other : like Current) : like Current is
 			-- Current // other.
 		do
 			create Result.make
-			Result.put (divide (item, other.item))
+			Result.put (c_divide (item, other.item))
 		end
 
-	infix "\\" (other :like Current) : like Current is
+	remainder alias "\\" (other :like Current) : like Current is
 			-- Current \\ other.
 		do
 			create Result.make
-			Result.put (remainder (item, other.item))
+			Result.put (c_remainder (item, other.item))
 		end
 
-	infix "|<<" (n : INTEGER) : like Current is
+	left_shifted alias "|<<" (n : INTEGER) : like Current is
 		require
 			n_within_limits: n >= 0 and n <= bit_count
 		do
 			create Result.make
-			Result.put (left_shift (item, n))
+			Result.put (c_left_shift (item, n))
 		end
 
-	infix "|>>" (n : INTEGER) : like Current is
+	right_shifted alias "|>>" (n : INTEGER) : like Current is
 		require
 			n_within_limits: n >= 0 and n <= bit_count
 		do
 			create Result.make
-			Result.put (right_shift (item, n))
+			Result.put (c_right_shift (item, n))
 		end
 
-	infix "and" (other : like Current) : like Current is
+	binary_and alias "and" (other : like Current) : like Current is
 		do
 			create Result.make
-			Result.put (u_and (item, other.item))
+			Result.put (c_u_and (item, other.item))
 		end
 
-	infix "or" (other : like Current) : like Current is
+	binary_or alias "or" (other : like Current) : like Current is
 		do
 			create Result.make
-			Result.put (u_or (item, other.item))
+			Result.put (c_u_or (item, other.item))
 		end
 
-	infix "xor" (other : like Current) : like Current is
+	binary_xor alias "xor" (other : like Current) : like Current is
 		do
 			create Result.make
-			Result.put (u_xor (item, other.item))
+			Result.put (c_u_xor (item, other.item))
 		end
 
-	prefix "not" : like Current is
+	unary_not alias "not" : like Current is
 		do
 			create Result.make
-			Result.put (u_not (item))
+			Result.put (c_u_not (item))
 		end
 
 feature -- Conversion
@@ -220,7 +221,7 @@ feature -- Conversion
 			until
 				bit_index = 0
 			loop
-				if get_bit (item, bit_index) > 0 then
+				if c_get_bit (item, bit_index) > 0 then
 					Result.append_character ('1')
 					significant_digit := True
 				else

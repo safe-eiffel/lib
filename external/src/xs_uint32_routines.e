@@ -18,91 +18,91 @@ inherit
 
 feature -- Basic operations
 
-	add (e1 : INTEGER; e2 : INTEGER)  : INTEGER is
+	c_add (e1 : INTEGER; e2 : INTEGER)  : INTEGER is
 			-- Unsigned `e1' + `e2'
 		external "C"
 		alias "c_u_add32"
 		end
 
-	subtract (e1 : INTEGER; e2 : INTEGER)  : INTEGER is
+	c_subtract (e1 : INTEGER; e2 : INTEGER)  : INTEGER is
 			-- Unsigned `e1' - `e2'
 		external "C"
 		alias "c_u_subtract32"
 		end
 
-	divide (e1 : INTEGER; e2 : INTEGER)  : INTEGER is
+	c_divide (e1 : INTEGER; e2 : INTEGER)  : INTEGER is
 			-- Unsigned `e1' / `e2'
 		external "C"
 		alias "c_u_divide32"
 		end
 
-	multiply (e1 : INTEGER; e2 : INTEGER)  : INTEGER is
+	c_multiply (e1 : INTEGER; e2 : INTEGER)  : INTEGER is
 			-- Unsigned `e1' * `e2'
 		external "C"
 		alias "c_u_multiply32"
 		end
 
-	remainder (e1 : INTEGER; e2 : INTEGER)  : INTEGER is
+	c_remainder (e1 : INTEGER; e2 : INTEGER)  : INTEGER is
 			-- Unsigned `e1' \\ `e2'
 		external "C"
 		alias "c_u_remainder32"
 		end
 
-	left_shift (e1 : INTEGER; e2 : INTEGER)  : INTEGER is
+	c_left_shift (e1 : INTEGER; e2 : INTEGER)  : INTEGER is
 			-- Unsigned `e1' << `e2'
 		external "C"
 		alias "c_u_left_shift32"
 		end
 
-	right_shift (e1 : INTEGER; e2 : INTEGER)  : INTEGER is
+	c_right_shift (e1 : INTEGER; e2 : INTEGER)  : INTEGER is
 			-- Unsigned `e1' >> `e2'
 		external "C"
 		alias "c_u_right_shift32"
 		end
 
-	u_and (e1 : INTEGER; e2 : INTEGER)  : INTEGER is
+	c_u_and (e1 : INTEGER; e2 : INTEGER)  : INTEGER is
 			-- Unsigned `e1' & `e2'
 		external "C"
 		alias "c_u_and32"
 		end
 
-	u_or (e1 : INTEGER; e2 : INTEGER)  : INTEGER is
+	c_u_or (e1 : INTEGER; e2 : INTEGER)  : INTEGER is
 			-- Unsigned `e1' | `e2'
 		external "C"
 		alias "c_u_or32"
 		end
 
-	u_xor (e1 : INTEGER; e2 : INTEGER)  : INTEGER is
+	c_u_xor (e1 : INTEGER; e2 : INTEGER)  : INTEGER is
 			-- Unsigned `e1' ^ `e2'
 		external "C"
 		alias "c_u_xor32"
 		end
 
-	u_not  (e1 : INTEGER)  : INTEGER is
+	c_u_not  (e1 : INTEGER)  : INTEGER is
 			-- Unsigned ~`e1'
 		external "C"
 		alias "c_u_not32"
 		end
 
-	lt (e1 : INTEGER; e2 : INTEGER)  : INTEGER is
+	c_lt (e1 : INTEGER; e2 : INTEGER)  : INTEGER is
 			-- Unsigned `e1' < `e2'
 		external "C"
 		alias "c_u_lt32"
 		end
 
-	eq (e1 : INTEGER; e2 : INTEGER)  : INTEGER is
+	c_eq (e1 : INTEGER; e2 : INTEGER)  : INTEGER is
 			-- Unsigned `e1' = `e2'
 		external "C"
 		alias "c_u_eq32"
 		end
 
-	set_bit (el,  n : INTEGER) : INTEGER is
+	c_set_bit (el,  n : INTEGER) : INTEGER is
 			-- set n-th bit of e1
 		external "C"
 		alias "c_u_setbit32"
 		end
 
-	get_bit (el,  n : INTEGER) : INTEGER is
+	c_get_bit (el,  n : INTEGER) : INTEGER is
 			-- get n-th bit of e1
 		external "C"
 		alias "c_u_getbit32"
@@ -146,8 +146,8 @@ feature -- Conversion
 				i > count
 			loop
 				nibble := hexadecimal_digits.index_of (CHARACTER_.as_lower (hexadecimal_string.item (i)), 1) - 1
-				Result := left_shift (Result, 4)
-				Result := u_or (Result, nibble)
+				Result := c_left_shift (Result, 4)
+				Result := c_u_or (Result, nibble)
 				i := i + 1
 			end
 		end
@@ -167,9 +167,9 @@ feature -- Conversion
 			until
 				v = 0
 			loop
-				nibble := u_and (v, mask)
+				nibble := c_u_and (v, mask)
 				s.append_character (hexadecimal_digit (nibble, upper_case))
-				v := right_shift (v, 4)
+				v := c_right_shift (v, 4)
 			end
 			from
 				v := s.count
