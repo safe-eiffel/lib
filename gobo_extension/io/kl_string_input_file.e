@@ -32,7 +32,7 @@ create
 feature {NONE} -- Initialization
 
 	make (a_string : STRING)
-
+			-- Make with `a_string' as `target_string'.
 		do
 			target_string := a_string
 			create stream.make (target_string)
@@ -43,10 +43,13 @@ feature {NONE} -- Initialization
 feature -- Access
 
 	target_string : STRING_8
+			-- Target string where file content is read.
 
 	name : STRING = "STRING"
+			-- <Precursor>
 
 	time_stamp: INTEGER = 0
+			-- <Precursor>
 
 	last_string: STRING_8
 			-- <Precursor>
@@ -63,6 +66,7 @@ feature -- Access
 feature -- Measurement
 
 	count : INTEGER_32
+			-- <Precursor>
 		do
 			Result := target_string.count
 		end
@@ -73,14 +77,11 @@ feature -- Status report
 
 	is_open_read : BOOLEAN
 			-- <Precursor>
-		do
-			Result := True
-		end
 
 	is_closed : BOOLEAN
 			-- <Precursor>
 		do
-			Result := False
+			Result := not is_open_read
 		end
 
 	exists : BOOLEAN
@@ -142,13 +143,13 @@ feature -- Basic operations
 	open_read
 			-- <Precursor>
 		do
-
+			is_open_read := True
 		end
 
 	close
 			-- <Precursor>
 		do
-
+			is_open_read := False
 		end
 
 	read_character
@@ -188,34 +189,37 @@ feature -- Inapplicable
 	make_file (a_name: STRING_8)
 			-- <Precursor>
 		do
-
+			-- NOT IMPLEMENTED
 		end
 
 	delete
 			-- <Precursor>
 		do
-
+			-- NOT IMPLEMENTED
 		end
 
 	concat (a_filename: STRING_8)
 			-- <Precursor>
 		do
-
+			-- NOT IMPLEMENTED
 		end
 
 	copy_file (new_name : STRING_8)
+			-- <Precursor>
 		do
-
+			-- NOT IMPLEMENTED
 		end
 
 	change_name (new_name : STRING_8)
+			-- <Precursor>
 		do
-
+			-- NOT IMPLEMENTED
 		end
 
 	same_physical_file (other_name: STRING_8) : BOOLEAN
+			-- <Precursor>
 		do
-
+			-- NOT IMPLEMENTED
 		end
 
 feature -- Constants

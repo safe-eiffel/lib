@@ -20,8 +20,6 @@ inherit
 	KI_BINARY_OUTPUT_FILE
 		rename
 			make as make_file
---		redefine
---			is_closable
 		end
 
 create
@@ -31,6 +29,7 @@ create
 feature {NONE} -- Initialization
 
 	make (a_string: STRING_8)
+			-- Make using a_string as `target_string'.
 		do
 			target_string := a_string
 			create stream.make (target_string)
@@ -41,6 +40,7 @@ feature {NONE} -- Initialization
 feature -- Access
 
 	target_string : STRING_8
+			-- Target where file content is output.
 
 	name: STRING = "STRING"
 
@@ -60,18 +60,22 @@ feature -- Comparison
 feature -- Status report
 
 	exists: BOOLEAN
+			-- <Precursor>
 		do
 			Result := True
 		end
 
 	is_closed : BOOLEAN
+			-- <Precursor>
 		do
 			Result := not is_open_write
 		end
 
 	is_open_write: BOOLEAN
+			-- <Precursor>
 
 	is_readable : BOOLEAN
+			-- <Precursor>
 		do
 			Result := False
 		end
@@ -97,31 +101,37 @@ feature -- Miscellaneous
 feature -- Basic operations
 
 	close
+			-- <Precursor>
 		do
 			is_open_write := False
 		end
 
 	flush
+			-- <Precursor>
 		do
 			stream.flush
 		end
 
 	open_append
+			-- <Precursor>
 		do
 
 		end
 
 	open_write
+			-- <Precursor>
 		do
 			is_open_write := True
 		end
 
 	put_character (c: CHARACTER_8)
+			-- <Precursor>
 		do
 			stream.put_character (c)
 		end
 
 	put_string (a_string: STRING_8)
+			-- <Precursor>
 		do
 			stream.put_string (a_string)
 		end
@@ -132,42 +142,42 @@ feature -- Inapplicable
 
 	concat (a_filename: STRING_8)
 		do
-
+			-- NOT IMPLEMENTED
 		end
 
 	copy_file (new_name : STRING_8)
 		do
-
+			-- NOT IMPLEMENTED
 		end
 
 	change_name (new_name: STRING_8)
 		do
-
+			-- NOT IMPLEMENTED
 		end
 
 	delete
 		do
-
+			-- NOT IMPLEMENTED
 		end
 
 	make_file (a_name : STRING_8)
 		do
-
+			-- NOT IMPLEMENTED
 		end
 
 	recursive_open_append
 		do
-
+			open_append
 		end
 
 	recursive_open_write
 		do
-
+			open_write
 		end
 
 	same_physical_file (other_name: STRING_8) : BOOLEAN
 		do
-
+			-- NOT IMPLEMENTED
 		end
 
 feature -- Constants
@@ -181,7 +191,7 @@ invariant
 	stream_attached: stream /= Void
 	target_string_attached: target_string /= Void
 
-end 
+end
 
 --
 -- Copyright: 2009, Paul G. Crismer, <pgcrism@users.sourceforge.net>
