@@ -1,7 +1,7 @@
 indexing
 
-	description: 
-	
+	description:
+
 		"4-uples"
 
 	library: "FO - Formatting Objects in Eiffel. Project SAFE."
@@ -11,7 +11,7 @@ indexing
 
 class
 	FO_TUPLE_4
-	
+
 inherit
 	ANY
 		redefine
@@ -44,7 +44,7 @@ feature -- Initialization
 			right_set: right = a_right
 			top_set: top = a_top
 		end
-		
+
 feature -- Access
 
 	right: FO_MEASUREMENT
@@ -55,10 +55,10 @@ feature -- Access
 
 	bottom: FO_MEASUREMENT
 		-- bottom coordinate of left bottom corner.
-		
+
 	top: FO_MEASUREMENT
 		-- top coordinate of top right corner.
-		
+
 feature -- Status report
 
 	valid_right (new_right: FO_MEASUREMENT) : BOOLEAN is
@@ -96,12 +96,9 @@ feature -- Status report
 	valid_rectangle (new_left, new_bottom, new_right, new_top : FO_MEASUREMENT) : BOOLEAN is
 			-- Is this a valid rectangle ?
 		do
---			if new_left /= Void and new_bottom /= Void and new_right /= Void and new_top /= Void then
---				Result := new_left <= new_right and new_bottom <= new_top
---			end
 			Result := True
 		end
-		
+
 feature -- Element change
 
 	set_right (new_right: FO_MEASUREMENT) is
@@ -150,12 +147,12 @@ feature -- Comparison
 		do
 			Result := right.is_equal (other.right) and left.is_equal (other.left) and bottom.is_equal (other.bottom) and top.is_equal (other.top)
 		end
-		
+
 invariant
 
 	top_not_void: top /= Void
 	bottom_not_void: bottom /= Void
 	left_not_void: left /= Void
 	right_not_void: right /= Void
-	
+
 end
