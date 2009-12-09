@@ -93,7 +93,6 @@ feature -- Comparison
 		end
 
 invariant
-	invariant_clause: True -- Your invariant here
 	red_within_bounds: red >= 0 and red <= 255
 	green_within_bounds: green >= 0 and green <= 255
 	blue_within_bounds: blue >= 0 and blue <= 255
