@@ -45,8 +45,8 @@ feature -- Basic operations
 				until
 					end_of_input or else done
 				loop
-					read_word
-					if not end_of_input and then last_string.is_equal ("\patterns{") then
+					read_tex_word
+					if not end_of_input and then last_tex_word.substring_index("\patterns{",1)=1 then
 						done := True
 					end
 				end
@@ -61,24 +61,26 @@ feature -- Basic operations
 	read_pattern is
 		do
 			read_tex_word
-			if last_string.is_equal("}") then
+			if last_tex_word.is_equal("}") then
 				end_of_patterns := True
 				search_for_hyphenation
 			end
 			if (not end_of_file or not end_of_patterns) and then last_string.count > 0 then
-				analyze_pattern
+				analyze_pattern (last_tex_word)
 			end
 		end
 
 	read_hyphenation is
 		do
 			read_tex_word
-			if last_string.is_equal ("}") then
+			if last_tex_word.is_equal ("}") then
 				end_of_hyphenation := True
 			end
 		end
 
 feature {NONE} -- Implementation
+
+	last_tex_word : STRING
 
 	read_tex_word is
 			-- Read tex word, skip comments
@@ -93,6 +95,7 @@ feature {NONE} -- Implementation
 					read_word
 				end
 			end
+			last_tex_word := last_string.twin
 		end
 
 	hyphenation_regex : RX_PCRE_REGULAR_EXPRESSION is
@@ -112,7 +115,7 @@ feature {NONE} -- Implementation
 			from
 				do_nothing
 			until
-				end_of_file or else hyphenation_regex.matches (last_string)
+				end_of_file or else hyphenation_regex.matches (last_tex_word)
 			loop
 				hyphenation_regex.wipe_out
 				read_tex_word
@@ -122,7 +125,7 @@ feature {NONE} -- Implementation
 			end
 		end
 
-	analyze_pattern is
+	analyze_pattern (a_pattern : STRING)  is
 		local
 			pattern_index : INTEGER
 			i : INTEGER
@@ -137,16 +140,16 @@ feature {NONE} -- Implementation
 				pattern_index := 1
 				n := '0'
 			until
-				i > last_string.count
+				i > a_pattern.count
 			loop
-				c := last_string.item (i)
+				c := a_pattern.item (i)
 				inspect c
 				when '0'..'9' then
 					n := c
 					i := i + 1
 				when '\' then
-					c1 := last_string.item (i + 1)
-					c2 := last_string.item (i + 2)
+					c1 := a_pattern.item (i + 1)
+					c2 := a_pattern.item (i + 2)
 					k := translate_character (c1,c2)
 					i := i + 3
 				else
@@ -241,4 +244,3 @@ feature {NONE} -- Implementation
 		end
 
 end
-

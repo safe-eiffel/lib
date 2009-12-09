@@ -59,6 +59,7 @@ feature -- Access
 		require
 			n_positive: n > 0
 			n_less_text_count: n <= item_text.count
+			not_item_empty: not item_empty
 		local
 			count, i : INTEGER
 			c : DS_LIST_CURSOR[FO_INLINE]
@@ -119,6 +120,8 @@ feature -- Status report
 		do
 			Result := word_off
 		end
+
+	item_empty : BOOLEAN
 
 feature -- Status setting
 
@@ -220,7 +223,9 @@ feature -- Basic operations
 			end
 			--| always one character too far
 			wcount := wcount - 1
-			if wcount <= item_text.count then
+			if wcount = 0 then
+				keep_head_zero
+			elseif wcount <= item_text.count then
 				keep_head (wcount)
 			end
 		ensure
@@ -274,6 +279,39 @@ feature -- Basic operations
 			word_text_head: word_text.is_equal ((old word_text).substring (1, wcount))
 		end
 
+	keep_head_zero is
+		do
+			remaining_subword_begin := item_character (1)
+			remaining_subword_end := word_end
+			remaining_subword_width := item_width
+			remaining_subword_height := item_height
+			remaining_subword_text := item_text.substring (1, item_text.count)
+			create word_width.make_zero
+			word_end := word_begin.twin
+			word_text := ""
+			from
+				item_inlines.start
+			until
+				item_inlines.off or else item_inlines.item_for_iteration = word_end.inline
+			loop
+				item_inlines.forth
+			end
+			create {DS_LINKED_LIST[FO_INLINE]}remaining_subword.make
+			if word_end.inline = remaining_subword_begin.inline then
+				remaining_subword.put_last (word_end.inline)
+			end
+			--| save then remove inlines for remaining_subword							
+			from
+				item_inlines.forth
+			until
+				item_inlines.off
+			loop
+				remaining_subword.put_last (item_inlines.item_for_iteration)
+				item_inlines.remove_at
+			end
+			item_empty := True
+		end
+
 --	keep_head_hyphenated (prefix_end : INTEGER; hyphen : CHARACTER) is
 --		do
 --			keep_head (prefix_end)
@@ -290,7 +328,7 @@ feature -- Basic operations
 				-- One inline from begin to end
 				pos_begin := item_begin.position
 				pos_end := item_end.position.min (item_end.inline.count)
-				if pos_begin <= pos_end then
+				if not item_empty and then pos_begin <= pos_end then
 					line.add_inline (item_begin.inline.substring (pos_begin,pos_end))
 				else
 					do_nothing
@@ -322,11 +360,13 @@ feature -- Basic operations
 
 	start is
 		do
+			item_empty := False
 			word_start
 		end
 
 	forth is
 		do
+			item_empty := False
 			word_forth
 		end
 
@@ -396,10 +436,15 @@ feature {NONE} -- Implementation
 				word_begin := remaining_subword_begin
 				word_end := remaining_subword_end
 				word_inlines := remaining_subword
-				remaining_subword := Void
 				word_text := remaining_subword_text
 				word_width := remaining_subword_width
 				word_height := remaining_subword_height
+				remaining_subword := Void
+				remaining_subword_begin := Void
+				remaining_subword_end := Void
+				remaining_subword_height := Void
+				remaining_subword_text := Void
+				remaining_subword_width := Void
 			else
 				create {DS_LINKED_LIST[FO_INLINE]}word_inlines.make
 				create word_end.make (word_begin.inline, word_begin.position)
@@ -431,6 +476,10 @@ feature {NONE} -- Implementation
 					end
 				end
 				if not word_off then
+					if word_end /= Void and then word_begin.inline = word_end.inline
+						and then word_begin.position = word_begin.inline.count and then word_end.position < word_begin.position then
+						word_off := True
+					end
 	--			print (word_text)
 	--			print (c_new_line)
 	--			io.read_line
@@ -468,6 +517,7 @@ feature {NONE} -- Implementation
 	handle_nl_state (c : CHARACTER) is
 		do
 			word_finish
+			create word_width.make_zero
 			word_state := state_start
 			set_last_char (c)
 		end
@@ -516,7 +566,9 @@ feature {NONE} -- Implementation
 				word_end.back
 			else
 				create next_word_begin.make (word_end.inline, 1)
-				word_end := last_word_end
+				if last_word_end /= Void then
+					word_end := last_word_end
+				end
 			end
 			word_done := True
 		end
@@ -547,6 +599,8 @@ feature {NONE} -- Implementation
 				if not internal_cursor.off then
 					if word_end.position - 1 > 0 then
 						create last_word_end.make (word_end.inline, word_end.position - 1)
+					else
+						last_word_end := word_end.twin
 					end
 					word_end.make (internal_cursor.item, 1)
 				else
