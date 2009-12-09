@@ -88,7 +88,7 @@ feature -- Basic operations
 		require
 			region_not_void: region /= Void
 			region_width_positive: region.width.sign = 1
-			is_renderable: is_renderable (region)
+--			is_renderable: is_renderable (region)
 		do
 			last_region := region
 			is_prerendered := True
