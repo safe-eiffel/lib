@@ -196,51 +196,53 @@ feature -- Basic operations
 			create last_rendered_region.set (
 				region.left, region.top, region.right, region.top)
 			render_cursor := Void
-			if not (is_prerendered and then last_region.is_equal (region)) then
-				pre_render (available_region)
-			end
-			must_render_rows := True
-			if header_row /= Void then
-				-- Start rendering header_row
-				set_render_inside
-				set_rendering_header
-				header_row.render_start (document, available_region)
-				if header_row.is_render_after then
-					create post_render_region.set (available_region.left, header_row.last_rendered_region.bottom, available_region.right, header_row.last_rendered_region.top)
-					header_row.post_render (document, post_render_region)
-					last_rendered_region := last_rendered_region.merged (header_row.last_rendered_region)
-					available_region := available_region.shrinked_top (header_row.last_rendered_region.height)
-				else
-					must_render_rows := False
+			if available_region.height.sign = 1 and then available_region.width.sign = 1 then
+				if not (is_prerendered and then last_region.is_equal (region)) then
+					pre_render (available_region)
 				end
-			end
-			if must_render_rows then
-				--| render rows until one of them cannot be rendered.
-				from
+				must_render_rows := True
+				if header_row /= Void then
+					-- Start rendering header_row
 					set_render_inside
-					set_rendering_rows
-					render_cursor := rows.new_cursor
-					render_cursor.start
-				until
-					render_cursor.off or else done
-				loop
-					render_cursor.item.render_start (document, available_region)
-					if render_cursor.item.last_rendered_region /= Void then
-						create post_render_region.set (available_region.left, render_cursor.item.last_rendered_region.bottom, available_region.right, render_cursor.item.last_rendered_region.top)
-						render_cursor.item.post_render (document, post_render_region)
-						last_rendered_region := last_rendered_region.merged (render_cursor.item.last_rendered_region)
-						available_region := available_region.shrinked_top (render_cursor.item.last_rendered_region.height)
+					set_rendering_header
+					header_row.render_start (document, available_region)
+					if header_row.is_render_after then
+						create post_render_region.set (available_region.left, header_row.last_rendered_region.bottom, available_region.right, header_row.last_rendered_region.top)
+						header_row.post_render (document, post_render_region)
+						last_rendered_region := last_rendered_region.merged (header_row.last_rendered_region)
+						available_region := available_region.shrinked_top (header_row.last_rendered_region.height)
 					else
-						do_nothing
-					end
-					if not render_cursor.item.is_render_after then
-						done := True
-					else
-						render_cursor.forth
+						must_render_rows := False
 					end
 				end
-				if render_cursor.off then
-					set_render_after
+				if must_render_rows then
+					--| render rows until one of them cannot be rendered.
+					from
+						set_render_inside
+						set_rendering_rows
+						render_cursor := rows.new_cursor
+						render_cursor.start
+					until
+						render_cursor.off or else done
+					loop
+						render_cursor.item.render_start (document, available_region)
+						if render_cursor.item.last_rendered_region /= Void then
+							create post_render_region.set (available_region.left, render_cursor.item.last_rendered_region.bottom, available_region.right, render_cursor.item.last_rendered_region.top)
+							render_cursor.item.post_render (document, post_render_region)
+							last_rendered_region := last_rendered_region.merged (render_cursor.item.last_rendered_region)
+							available_region := available_region.shrinked_top (render_cursor.item.last_rendered_region.height)
+						else
+							do_nothing
+						end
+						if not render_cursor.item.is_render_after then
+							done := True
+						else
+							render_cursor.forth
+						end
+					end
+					if render_cursor.off then
+						set_render_after
+					end
 				end
 			end
 			last_region := region
@@ -282,13 +284,16 @@ feature -- Basic operations
 				loop
 					if render_cursor.item.is_render_inside then
 						render_cursor.item.render_forth (document, available_region)
-					else
+					elseif render_cursor.item.is_render_before then
+						render_cursor.item.pre_render (available_region)
 						render_cursor.item.render_start (document, available_region)
 					end
-					create post_render_region.set (available_region.left, render_cursor.item.last_rendered_region.bottom, available_region.right, render_cursor.item.last_rendered_region.top)
-					render_cursor.item.post_render (document, render_cursor.item.last_rendered_region)
-					last_rendered_region := last_rendered_region.merged (render_cursor.item.last_rendered_region)
-					available_region := available_region.shrinked_top (render_cursor.item.last_rendered_region.height)
+					if not render_cursor.item.is_render_before then
+						create post_render_region.set (available_region.left, render_cursor.item.last_rendered_region.bottom, available_region.right, render_cursor.item.last_rendered_region.top)
+						render_cursor.item.post_render (document, render_cursor.item.last_rendered_region)
+						last_rendered_region := last_rendered_region.merged (render_cursor.item.last_rendered_region)
+						available_region := available_region.shrinked_top (render_cursor.item.last_rendered_region.height)
+					end
 					if not render_cursor.item.is_render_after then
 						done := True
 					else
@@ -365,7 +370,12 @@ feature {NONE} -- Implementation
 				l_top := a_region.top
 				l_bottom := a_region.bottom - margins.bottom
 			end
-			create available_region.set (l_left, l_bottom, l_right, l_top)
+			create available_region.make
+			if available_region.valid_rectangle (l_left, l_bottom, l_right, l_top) then
+				available_region.set (l_left, l_bottom, l_right, l_top)
+			else
+				available_region.set (l_left.max (l_right), l_bottom.max (l_top), l_right.max (l_left), l_top.max (l_bottom))
+			end
 		ensure
 			available_region_not_void: available_region /= Void
 		end

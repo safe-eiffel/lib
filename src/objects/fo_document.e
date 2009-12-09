@@ -498,7 +498,11 @@ feature {NONE} -- Implementation
 			loop
 				-- append_page_break
 				append_break
-				renderable.render_forth (Current, available_render_region)
+				if renderable.is_render_inside then
+					renderable.render_forth (Current, available_render_region)
+				else
+					renderable.render_start (Current, available_render_region)
+				end
 				if renderable.last_rendered_region /= Void then
 					renderable.post_render (Current, renderable.last_rendered_region)
 				end
@@ -575,10 +579,14 @@ feature {NONE} -- Implementation
 
 	last_unbreakable : FO_UNBREAKABLE
 
+	old_next_section : FO_SECTION
+
 	setup_page is
 		local
 			page : FO_PAGE
 		do
+			old_next_section := next_section
+
 			if next_section /= Void then
 				current_section := next_section
 				next_section := Void
@@ -608,7 +616,7 @@ feature {NONE} -- Implementation
 		ensure
 			page_rectangle_set: page_rectangle = current_section.page_rectangle
 			margins_set: margins = current_section.margins
-			current_section_old_next: current_section = old next_section
+			current_section_old_next: (old next_section) /= Void implies (current_section = old next_section)
 		end
 
 	setup_available_region is

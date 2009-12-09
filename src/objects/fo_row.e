@@ -255,6 +255,7 @@ feature {FO_DOCUMENT, FO_BORDERABLE, FO_TABLE} -- Basic operations
 		local
 			i : INTEGER
 			one_inside, all_after : BOOLEAN
+			current_item : FO_RENDERABLE
 		do
 			compute_regions (region)
 			from
@@ -265,7 +266,12 @@ feature {FO_DOCUMENT, FO_BORDERABLE, FO_TABLE} -- Basic operations
 			until i > items.upper
 			loop
 				if not items.item (i).is_render_after then
-					items.item (i).render_forth (document, render_regions.item (i))
+					current_item := items.item (i)
+					if current_item.is_render_before then
+						current_item.render_start (document, render_regions.item (i))
+					elseif current_item.is_render_inside then
+						current_item.render_forth (document, render_regions.item (i))
+					end
 					all_after := all_after and items.item (i).is_render_after
 					one_inside := one_inside or items.item (i).is_render_inside
 					if last_rendered_region = Void then

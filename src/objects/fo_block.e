@@ -421,6 +421,9 @@ feature {FO_DOCUMENT, FO_RENDERABLE} -- Basic operations
 				l_top := a_region.top
 				l_bottom := a_region.bottom - margins.bottom
 			end
+			if (l_top - l_bottom).sign = -1 then
+				l_top := l_bottom
+			end
 			create available_region.set (l_left, l_bottom, l_right, l_top)
 		ensure
 			available_region_not_void: available_region /= Void
@@ -642,7 +645,7 @@ feature {NONE} -- Implementation
 				until
 					word_cursor.off
 					or else current_height + text_leading.max (word_cursor.item_height) > region.height
-					or else current_width + word_cursor.item_width > line_width
+					or else line.width + word_cursor.item_width > line_width
 					--| until next word makes line too long
 				loop
 					if word_cursor.item_text.item (1) = c_new_line then
@@ -662,7 +665,7 @@ feature {NONE} -- Implementation
 					else
 						word_cursor.append_item (line)
 					end
-					current_width := current_width + word_cursor.item_width
+					current_width := line.width
 					word_cursor.forth
 				end
 				--| if next word too long
