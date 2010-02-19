@@ -25,7 +25,6 @@ feature {NONE} -- Initialization
 			-- Initialize `Current'.
 		local
 			a_table : FO_TABLE
-			title : FO_BLOCK
 			back_link : FO_BLOCK
 			current_outline : FO_OUTLINE_NODE
 		do

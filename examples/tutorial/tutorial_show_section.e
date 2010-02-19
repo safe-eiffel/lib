@@ -24,7 +24,6 @@ feature {NONE} -- Initialization
 	execute is
 			-- Initialize `Current'.
 		local
-			a_writer : FO_DOCUMENT_WRITER
 			margins : FO_MARGINS
 			block : FO_BLOCK
 			i : INTEGER
