@@ -87,9 +87,9 @@ feature {NONE} -- Initialization
 			code := code_could_not_find_adapter
 			create parameters.make (1, 4)
 			parameters.put (code, 1)
-			parameters.put (a_persistent_class_name, 2)
+			parameters.put (a_class, 2)
 			parameters.put (a_routine, 3)
-			parameters.put (a_class, 4)
+			parameters.put (a_persistent_class_name, 4)
 		ensure
 			default_template_set: default_template = tpl_could_not_find_adapter
 			code_set: code = code_could_not_find_adapter
