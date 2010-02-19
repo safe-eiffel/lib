@@ -22,8 +22,10 @@ feature -- Initialization
 		local
 			medium : PDF_OUTPUT_MEDIUM
 			file : KI_BINARY_OUTPUT_FILE
+			otf: OPEN_TYPE_FONT_FILE
 		do
 			print ("show_epdf application%N")
+			test_open_type
 			create document.make
 			top := document.default_mediabox.ury
 			setup_document
@@ -48,6 +50,15 @@ feature -- Initialization
 		end
 
 feature -- Basic operations
+
+	otff : OPEN_TYPE_FONT_FILE
+
+	test_open_type
+		do
+			create otff.make ("c:\windows\fonts\arialbi.ttf")
+			otff.open_read
+		end
+
 
 	test_graphics is
 			--
