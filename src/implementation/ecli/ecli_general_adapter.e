@@ -84,7 +84,7 @@ feature {PO_ADAPTER} -- Basic operations
 			--|TODO redefine in descendant classes
 		end
 
-feature {NONE} -- Implementation
+feature {PO_ADAPTER} -- Implementation
 
 	write_query : ECLI_QUERY
 

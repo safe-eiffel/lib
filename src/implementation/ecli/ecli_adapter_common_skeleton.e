@@ -112,7 +112,7 @@ feature -- Basic operations
 	exists (a_pid: PO_PID): BOOLEAN is
 			-- Does an object identified by `a_pid' exist? Uses `Sql_exists'.
 		local
-			the_pid: like last_pid
+			pid_like_last_pid : like last_pid
 		do
 			create last_cursor.make
 			last_object := default_value
@@ -122,9 +122,9 @@ feature -- Basic operations
 			end
 
 			status.reset
-			the_pid ?= a_pid
-			if the_pid /= Void and then is_pid_valid (the_pid) then
-				init_parameters_for_exists (the_pid)
+			pid_like_last_pid ?= a_pid
+			if pid_like_last_pid /= Void then
+				init_parameters_for_exists (pid_like_last_pid)
 				exists_cursor.execute
 				if exists_cursor.is_ok then
 					Result :=  exists_test (exists_cursor)
@@ -134,7 +134,8 @@ feature -- Basic operations
 					error_handler.report_datastore_error (generator, "exists", exists_cursor.native_code, exists_cursor.diagnostic_message)
 				end
 			else
-				error_handler.report_non_conformant_pid (generator, "exists", persistent_class_name, a_pid.persistent_class_name)
+				status.set_framework_error (status.error_non_conformant_pid)
+				error_handler.report_non_conformant_pid (generator, "exists", "[like last_pid]", a_pid.generator)
 			end
 		end
 
