@@ -89,6 +89,38 @@ feature -- Status report
 	found_key : BOOLEAN
 			-- Has the key of the last search operation been found ?
 
+feature -- Iteration
+
+	do_all (an_action: PROCEDURE [ANY, TUPLE [G]]) is
+			-- <Precursor>
+		do
+		end
+
+	do_if (an_action: PROCEDURE [ANY, TUPLE [G]]; a_test: FUNCTION [ANY, TUPLE [G], BOOLEAN]) is
+			-- <Precursor>
+		do
+		end
+
+	there_exists (a_test: FUNCTION [ANY, TUPLE [G], BOOLEAN]): BOOLEAN is
+			-- <Precursor>
+		do
+		end
+
+	for_all (a_test: FUNCTION [ANY, TUPLE [G], BOOLEAN]): BOOLEAN is
+			-- <Precursor>
+		do
+		end
+
+	do_all_with_key (an_action: PROCEDURE [ANY, TUPLE [G, STRING]]) is
+			-- <Precursor>
+		do
+		end
+
+	do_if_with_key (an_action: PROCEDURE [ANY, TUPLE [G, STRING]]; a_test: FUNCTION [ANY, TUPLE [G, STRING], BOOLEAN]) is
+			-- <Precursor>
+		do
+		end
+
 feature -- Comparison
 
 	is_equal (other: like Current): BOOLEAN is
