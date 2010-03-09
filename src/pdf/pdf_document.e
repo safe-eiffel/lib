@@ -499,7 +499,6 @@ feature {NONE} -- Implementation
 			last_encoding_created: last_encoding /= Void
 		end
 
-
 	create_font (font_name : STRING; encoding : PDF_CHARACTER_ENCODING) is
 			-- create a font of name `font_name' font with `encoding'
 		require
