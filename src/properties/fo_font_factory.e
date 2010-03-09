@@ -51,6 +51,12 @@ feature {NONE} -- Initialization
 			add_font ("Courier-Bold", "Courier", "bold", "")
 			add_font ("Courier-Oblique", "Courier", "", "italic")
 			add_font ("Courier-BoldOblique", "Courier", "bold", "italic")
+			
+			add_font ("Symbol", "Symbol", "","")
+			add_font ("Symbol-Bold", "Symbol", "bold", "")
+			add_font ("Symbol-Oblique", "Symbol", "", "italic")
+			add_font ("Symbol-BoldOblique", "Symbol", "bold", "italic")
+
 		end
 
 feature -- Access

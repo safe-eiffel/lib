@@ -87,6 +87,7 @@ feature {NONE} -- Initialization
 feature -- Access
 
 	error_handler : UT_ERROR_HANDLER
+			-- Error handler.
 
 	last_document : FO_DOCUMENT
 			-- Last created document.
@@ -141,6 +142,45 @@ feature -- Status report
 			Result := section_catalog.has (name)
 		end
 
+feature -- Factory
+
+	new_block (an_initial_content, a_style : STRING) : FO_BLOCK
+			-- New block with `an_initial_content' for rendering according to `a_style'.
+		require
+			an_initial_content_not_void: an_initial_content /= Void
+			a_style_not_void: a_style /= Void
+		do
+			create_block (a_style)
+			last_block.append (new_inline (an_initial_content, a_style))
+			Result := last_block
+		ensure
+			new_block_not_void: Result /= Void
+		end
+
+	new_inline (an_initial_content, a_style : STRING) : FO_INLINE
+			-- New inline with `an_initial_content' for rendering according to `a_style'.
+		require
+			an_initial_content_not_void: an_initial_content /= Void
+			a_style_not_void: a_style /= Void
+		do
+			create_inline (a_style)
+			last_inline.append_string (an_initial_content)
+			Result := last_inline
+		ensure
+			new_inline_not_void: Result /= Void
+		end
+
+	new_section (a_style : STRING) : FO_SECTION
+			-- New section for rendering using `a_style'.
+		require
+			a_style_not_void: a_style /= Void
+		do
+			create_section (a_style)
+			Result := last_section
+		ensure
+			new_section_not_void: Result /= Void
+		end
+
 feature -- Basic operations
 
 	create_document (a_writer : FO_DOCUMENT_WRITER) is
@@ -150,14 +190,21 @@ feature -- Basic operations
 			a_writer_not_void: a_writer /= Void
 		local
 			l_rectangle : FO_RECTANGLE
+			l_margins : FO_MARGINS
 			section : XFOCFG_SECTION
 		do
 			section_catalog.search ("default")
 			if section_catalog.found then
 				section := section_catalog.found_item
 				l_rectangle := x_new_page_rectangle (section.page, error_handler)
+				create last_document.make_rectangle (l_rectangle, a_writer)
+				if section.margins /= Void then
+					l_margins := x_new_margins (section.margins, error_handler)
+					last_document.set_margins (l_margins)
+				end
+			else
+				create last_document.make (a_writer)
 			end
-			create last_document.make_rectangle (l_rectangle, a_writer)
 		ensure
 			last_document_not_void: last_document /= Void
 		end

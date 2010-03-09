@@ -68,12 +68,8 @@ feature {NONE} -- Initialization
 
 	make_default is
 			-- Make with default margins and default inline.
-		local
-			inline : FO_INLINE
 		do
 			make (shared_defaults.block_margins)
-			create inline.make ("")
-			append (inline)
 		ensure
 			default_margins: margins.is_equal (shared_defaults.block_margins)
 			empty_inline: inlines.count = 1 and then inlines.first.text.is_empty
@@ -83,6 +79,8 @@ feature {NONE} -- Initialization
 			-- Make with `new_margins' with left justification.
 		require
 			new_margins: new_margins /= Void
+		local
+			inline : FO_INLINE
 		do
 			margins := new_margins
 			create background_color.make_rgb (255,255,255)
@@ -91,10 +89,13 @@ feature {NONE} -- Initialization
 			create max_font_width.points (0)
 			make_borders_none
 			create text_leading.points (0)
+			create inline.make ("")
+			append (inline)
 		ensure
 			margins_set: margins = new_margins
 			is_left_justified: is_left_justified
 			leading_zero: text_leading.is_zero
+			empty_inline: inlines.count = 1 and then inlines.first.text.is_empty
 		end
 
 	make_right (new_margins : FO_MARGINS) is
@@ -108,6 +109,7 @@ feature {NONE} -- Initialization
 			margins_set: margins = new_margins
 			is_right_justified: is_right_justified
 			leading_zero: text_leading.is_zero
+			empty_inline: inlines.count = 1 and then inlines.first.text.is_empty
 		end
 
 	make_center (new_margins : FO_MARGINS) is
@@ -121,6 +123,7 @@ feature {NONE} -- Initialization
 			leading_zero: text_leading.is_zero
 			margins_set: margins = new_margins
 			is_center_justified: is_center_justified
+			empty_inline: inlines.count = 1 and then inlines.first.text.is_empty
 		end
 
 feature -- Access
