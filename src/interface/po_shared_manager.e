@@ -15,7 +15,7 @@ feature -- Access
 	persistence_manager : PO_MANAGER is
 			-- Persistence manager singleton.
 		do
-			Result := cell.item
+			Result := shared_po_manager_cell.item
 		ensure
 			Result /= Void
 		end
@@ -27,14 +27,14 @@ feature {PO_LAUNCHER} -- Status setting
 		require
 			manager_not_void: manager /= Void
 		do
-			cell.put (manager)
+			shared_po_manager_cell.put (manager)
 		ensure
 			persistence_manager_set: persistence_manager = manager
 		end
 
 feature {NONE} -- Implementation
 
-	cell : DS_CELL[PO_MANAGER] is
+	shared_po_manager_cell : DS_CELL[PO_MANAGER] is
 			-- The singleton.
 		once
 			create Result.make (Void)
@@ -42,6 +42,6 @@ feature {NONE} -- Implementation
 
 invariant
 
-	cell_not_void: cell /= Void
+	cell_not_void: shared_po_manager_cell /= Void
 
 end
