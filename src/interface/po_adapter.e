@@ -83,7 +83,7 @@ feature -- Access
 	error_handler : PO_ERROR_HANDLER is
 		deferred
 		end
-		
+
 feature {PO_ADAPTER, PO_CURSOR, PO_REFERENCE, PO_PERSISTENT, PO_REFERENCE_ACCESS} -- Framework - Access
 
 	last_pid : PO_PID is
@@ -221,7 +221,7 @@ feature {PO_LAUNCHER} -- Element change
 		deferred
 		ensure
 			datastore_set: datastore = a_datastore
-			adapter_registered_to_datastore: datastore.adapters.has (Current.as_adapter_persistent)
+			adapter_registered_to_datastore: datastore.adapters.has (Current)
 		end
 
 feature -- Basic operations
@@ -343,14 +343,14 @@ feature -- Contract support
 			is_cached_implies_is_persistent: Result implies object.is_persistent
 		end
 
-	as_adapter_persistent : PO_ADAPTER[PO_PERSISTENT] is
-			-- Contract support for ISE 5.5.
-			-- Should disappear when 'reference' keyword usage is dropped.
-		do
-			Result ?= Current
-		ensure
-			result_not_void: Result /= Void
-		end
+--	as_adapter_persistent : PO_ADAPTER[PO_PERSISTENT] is
+--			-- Contract support for ISE 5.5.
+--			-- Should disappear when 'reference' keyword usage is dropped.
+--		do
+--			Result ?= Current
+--		ensure
+--			result_not_void: Result /= Void
+--		end
 
 feature {PO_REFERENCE} -- Framework - Factory
 
@@ -368,7 +368,7 @@ invariant
 
 	class_name_defined: persistent_class_name /= Void and then not persistent_class_name.is_empty
 	datastore_exists : datastore /= Void
-	registered_to_datastore: datastore.adapters.has (Current.as_adapter_persistent)
+	registered_to_datastore: datastore.adapters.has (Current)
 	valid_last_pid: last_pid /= Void implies is_pid_valid (last_pid)
 	last_cursor_not_void: last_cursor /= Void
 	error_handler_not_void: error_handler /= Void

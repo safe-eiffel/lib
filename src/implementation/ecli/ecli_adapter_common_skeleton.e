@@ -101,7 +101,7 @@ feature {PO_LAUNCHER} -- Element change
 	set_datastore (a_datastore: ECLI_DATASTORE) is
 		do
 			datastore := a_datastore
-			datastore.register_adapter (as_adapter_persistent)
+			datastore.register_adapter (Current)
 			if datastore.is_connected then
 				on_adapter_connected
 			end
