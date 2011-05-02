@@ -51,7 +51,7 @@ feature -- Basic operations
 					create {BOOK_ADAPTER_ECLI}book_adapter.make (store)
 					book_adapter.enable_cache_on_write
 					book_adapter.enable_cache_on_read
---					pom.add_adapter (book_adapter)
+					pom.add_adapter (book_adapter)
 					create {BORROWER_ADAPTER_ECLI}borrower_adapter.make (store)
 					pom.add_adapter (borrower_adapter)
 					create {COPY_ADAPTER_ECLI}copy_adapter.make (store)
