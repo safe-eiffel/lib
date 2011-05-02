@@ -27,6 +27,8 @@ feature -- Basic operations
 
 	read (a_pid: like last_pid) is
 			-- Read an object identified by `a_pid' using `read_cursor'.
+		local
+			l_pid : like last_pid
 		do
 			last_object := default_value
 			create last_cursor.make
@@ -40,13 +42,19 @@ feature -- Basic operations
 				end
 			end
 			if not is_enabled_cache_on_read or else not cache.found then
-				init_parameters_for_read (a_pid)
-				read_cursor.execute
-				if read_cursor.is_ok then
-					load_results (read_cursor, a_pid)
+				l_pid ?= a_pid
+				if l_pid /= Void then
+					init_parameters_for_read (a_pid)
+					read_cursor.execute
+					if read_cursor.is_ok then
+						load_results (read_cursor, a_pid)
+					else
+						status.set_datastore_error (read_cursor.native_code, read_cursor.diagnostic_message)
+						error_handler.report_datastore_error (generator, "read", read_cursor.native_code, read_cursor.diagnostic_message)
+					end
 				else
-					status.set_datastore_error (read_cursor.native_code, read_cursor.diagnostic_message)
-					error_handler.report_datastore_error (generator, "read", read_cursor.native_code, read_cursor.diagnostic_message)
+					status.set_framework_error (status.error_non_conformant_pid)
+					error_handler.report_non_conformant_pid (generator, "read", "[like last_pid]", a_pid.generator)
 				end
 			end
 		end
