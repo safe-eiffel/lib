@@ -29,7 +29,6 @@
 		<cluster name="persistence" prefix="books_">
 			<!-- <option name="abstract" value="true"/> -->
 			<cluster name="ecli"/>
-			<!-- <cluster name="eiffelstore" if="${EIFFELSTORE}"/> -->
 		</cluster>
 	</cluster>
 
