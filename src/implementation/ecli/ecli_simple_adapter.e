@@ -161,7 +161,7 @@ feature -- Basic operations
 			row_cursor.start
 			if row_cursor.is_ok then
 				if not row_cursor.off then
-					if row_cursor.item ("EXISTS_COUNT").to_integer > 0 then
+					if row_cursor.item ("EXISTS_COUNT").as_integer > 0 then
 						Result := True
 					end
 				end
