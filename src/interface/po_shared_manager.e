@@ -36,7 +36,7 @@ feature {NONE} -- Implementation
 
 	shared_po_manager_cell : DS_CELL[PO_MANAGER] is
 			-- The singleton.
-		once
+		once ("PROCESS")
 			create Result.make (Void)
 		end
 
