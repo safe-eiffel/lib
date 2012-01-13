@@ -3,7 +3,7 @@ indexing
 	description: "PDF Cross reference section. (PDFReference 3.4.3).%N%
 		% The cross-reference table contains information that permits random access to indirect %
 		% objects within the file, so that the entire file need not be read to locate any particular object."
-	note: "This XREF is limited to one subsection"
+	nota_bene: "This XREF is limited to one subsection"
 	author: "Paul G. Crismer"
 	licence: "Release under the Eiffel Forum licence.  See file 'forum.txt'."
 
