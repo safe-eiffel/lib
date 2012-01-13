@@ -1,7 +1,7 @@
 indexing
 
 	description: "Objects isomorphic to 'justification' elements"
-	note: "Generated class : DO NOT EDIT!"
+	nota_bene: "Generated class : DO NOT EDIT!"
 	generated: "2006/01/15 12:26:08.968"
 
 class XFOCFG_JUSTIFICATION

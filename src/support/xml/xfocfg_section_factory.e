@@ -1,7 +1,7 @@
 indexing
 
 	description: "Factory of XFOCFG_SECTION objects."
-	note: "Generated class; DO NOT MODIFY"
+	nota_bene: "Generated class; DO NOT MODIFY"
 	author: "XSD_GEN"
 	generated: "2006/01/15 12:26:07.484"
 
