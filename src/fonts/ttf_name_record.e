@@ -62,7 +62,11 @@ feature -- Access
 
 	name (storage : STRING) : UC_STRING
 		do
-			create Result.make_from_utf16 ( storage.substring (name_offset + 1, name_offset + name_count))
+			if platform_id = 0 or else platform_id = 3 then
+				create Result.make_from_utf16 ( storage.substring (name_offset + 1, name_offset + name_count))
+			else
+				create Result.make_from_string ( storage.substring (name_offset + 1, name_offset + name_count))
+			end
 		end
 
 feature -- Measurement

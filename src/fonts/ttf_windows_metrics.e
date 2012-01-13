@@ -59,88 +59,88 @@ feature {NONE} -- Initialization
 		local
 			i : INTEGER
 		do
-	otf.read_natural_16
-	version := otf.last_natural_16
-	otf.read_integer_16
-	xavgcharwidth := otf.last_integer_16
-	otf.read_natural_16
-	usweightclass := otf.last_natural_16
-	otf.read_natural_16
-	uswidthclass := otf.last_natural_16
-	otf.read_natural_16
-	fstype := otf.last_natural_16
-	otf.read_integer_16
-	ysubscriptxsize := otf.last_integer_16
-	otf.read_integer_16
-	ysubscriptysize := otf.last_integer_16
-	otf.read_integer_16
-	ysubscriptxoffset := otf.last_integer_16
-	otf.read_integer_16
-	ysubscriptyoffset := otf.last_integer_16
-	otf.read_integer_16
-	ysuperscriptxsize := otf.last_integer_16
-	otf.read_integer_16
-	ysuperscriptysize := otf.last_integer_16
-	otf.read_integer_16
-	ysuperscriptxoffset := otf.last_integer_16
-	otf.read_integer_16
-	ysuperscriptyoffset := otf.last_integer_16
-	otf.read_integer_16
-	ystrikeoutsize := otf.last_integer_16
-	otf.read_integer_16
-	ystrikeoutposition := otf.last_integer_16
-	otf.read_integer_16
-	sfamilyclass := otf.last_integer_16
-	create panose.make (1,10)
-	from
-		i := 1
-	until
-		i > panose.upper
-	loop
-		otf.read_natural_8
-		panose[i] := otf.last_natural_8
-		i := i + 1
-	end
-	otf.read_natural_32
-	ulunicoderange1 := otf.last_natural_32
-	otf.read_natural_32
-	ulunicoderange2 := otf.last_natural_32
-	otf.read_natural_32
-	ulunicoderange3 := otf.last_natural_32
-	otf.read_natural_32
-	ulunicoderange4 := otf.last_natural_32
-	otf.read_string (4)
-	achvendid := otf.last_string.twin
-	otf.read_natural_16
-	fsselection := otf.last_natural_16
-	otf.read_natural_16
-	usfirstcharindex := otf.last_natural_16
-	otf.read_natural_16
-	uslastcharindex := otf.last_natural_16
-	otf.read_integer_16
-	stypoascender := otf.last_integer_16
-	otf.read_integer_16
-	stypodescender := otf.last_integer_16
-	otf.read_integer_16
-	stypolinegap := otf.last_integer_16
-	otf.read_natural_16
-	uswinascent := otf.last_natural_16
-	otf.read_natural_16
-	uswindescent := otf.last_natural_16
-	otf.read_natural_32
-	ulcodepagerange1 := otf.last_natural_32
-	otf.read_natural_32
-	ulcodepagerange2 := otf.last_natural_32
-	otf.read_integer_16
-	sxheight := otf.last_integer_16
-	otf.read_integer_16
-	scapheight := otf.last_integer_16
-	otf.read_natural_16
-	usdefaultchar := otf.last_natural_16
-	otf.read_natural_16
-	usbreakchar := otf.last_natural_16
-	otf.read_natural_16
-	usmaxcontext := otf.last_natural_16
+			otf.read_natural_16
+			version := otf.last_natural_16
+			otf.read_integer_16
+			xavgcharwidth := otf.last_integer_16
+			otf.read_natural_16
+			usweightclass := otf.last_natural_16
+			otf.read_natural_16
+			uswidthclass := otf.last_natural_16
+			otf.read_natural_16
+			fstype := otf.last_natural_16
+			otf.read_integer_16
+			ysubscriptxsize := otf.last_integer_16
+			otf.read_integer_16
+			ysubscriptysize := otf.last_integer_16
+			otf.read_integer_16
+			ysubscriptxoffset := otf.last_integer_16
+			otf.read_integer_16
+			ysubscriptyoffset := otf.last_integer_16
+			otf.read_integer_16
+			ysuperscriptxsize := otf.last_integer_16
+			otf.read_integer_16
+			ysuperscriptysize := otf.last_integer_16
+			otf.read_integer_16
+			ysuperscriptxoffset := otf.last_integer_16
+			otf.read_integer_16
+			ysuperscriptyoffset := otf.last_integer_16
+			otf.read_integer_16
+			ystrikeoutsize := otf.last_integer_16
+			otf.read_integer_16
+			ystrikeoutposition := otf.last_integer_16
+			otf.read_integer_16
+			sfamilyclass := otf.last_integer_16
+			create panose.make (1,10)
+			from
+				i := 1
+			until
+				i > panose.upper
+			loop
+				otf.read_natural_8
+				panose[i] := otf.last_natural_8
+				i := i + 1
+			end
+			otf.read_natural_32
+			ulunicoderange1 := otf.last_natural_32
+			otf.read_natural_32
+			ulunicoderange2 := otf.last_natural_32
+			otf.read_natural_32
+			ulunicoderange3 := otf.last_natural_32
+			otf.read_natural_32
+			ulunicoderange4 := otf.last_natural_32
+			otf.read_string (4)
+			achvendid := otf.last_string.twin
+			otf.read_natural_16
+			fsselection := otf.last_natural_16
+			otf.read_natural_16
+			usfirstcharindex := otf.last_natural_16
+			otf.read_natural_16
+			uslastcharindex := otf.last_natural_16
+			otf.read_integer_16
+			stypoascender := otf.last_integer_16
+			otf.read_integer_16
+			stypodescender := otf.last_integer_16
+			otf.read_integer_16
+			stypolinegap := otf.last_integer_16
+			otf.read_natural_16
+			uswinascent := otf.last_natural_16
+			otf.read_natural_16
+			uswindescent := otf.last_natural_16
+			otf.read_natural_32
+			ulcodepagerange1 := otf.last_natural_32
+			otf.read_natural_32
+			ulcodepagerange2 := otf.last_natural_32
+			otf.read_integer_16
+			sxheight := otf.last_integer_16
+			otf.read_integer_16
+			scapheight := otf.last_integer_16
+			otf.read_natural_16
+			usdefaultchar := otf.last_natural_16
+			otf.read_natural_16
+			usbreakchar := otf.last_natural_16
+			otf.read_natural_16
+			usmaxcontext := otf.last_natural_16
 		end
 
 feature -- Access
