@@ -102,11 +102,12 @@ feature -- Implementation
 
 	print_usage is
 		do
-			print("[
-Usage: books <datasource_name> <user_name> <password>
+			print("{
+	Usage: books <datasource_name> <user_name> <password>
 
 	Note: you need table creation privileges
-]")
+}"
+)
 		end
 
 	populate_books is
