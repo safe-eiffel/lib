@@ -20,6 +20,7 @@ feature -- Initialization
 	make is
 			-- Creation procedure.
 		local
+			pdfotf : PDF_OPENTYPE_FONT
 			medium : PDF_OUTPUT_MEDIUM
 			file : KI_BINARY_OUTPUT_FILE
 			otf: OPEN_TYPE_FONT_FILE
@@ -54,9 +55,23 @@ feature -- Basic operations
 	otff : OPEN_TYPE_FONT_FILE
 
 	test_open_type
+		local
+			f1, f2, f3, f4, f5, f6 : TTF_F2DOT14
 		do
-			create otff.make ("c:\windows\fonts\arialbi.ttf")
+			create f1.make ({NATURAL_16}0x7fff)
+			print (f1.as_real_32)
+			create f2.make (0x7000)
+			create f3.make (0x0001)
+			create f4.make (0x0000)
+			create f5.make (0xffff)
+			print (f5.as_real_32)
+			create f6.make (0x8000)
+			print (f6.as_real_32)
+
+			create otff.make ("c:\windows\fonts\calibri.ttf")
 			otff.open_read
+
+
 		end
 
 
