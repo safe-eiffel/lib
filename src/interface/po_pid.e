@@ -1,13 +1,17 @@
 indexing
 
 	description:
+	"[
+		Persistent Identifiers.
+		Identify the persistent state of persistent objects.
+		PID instances are opaque to client applications.
+	 ]"
 
-		"Persistent Identifiers. %N%
-	 %Identify the persistent state of persistent objects.  %N%
-	 %PID instances are opaque to client applications."
-
-	usage: "* Inherit from it.%N%
-		   %* Implement deferred features."		
+	usage:
+	"[
+		* Inherit from it.
+		* Implement deferred features.
+	]"
 
 	copyright: "Copyright (c) 2004, Paul G. Crismer and others"
 	license: "Eiffel Forum License v2 (see forum.txt)"
@@ -21,32 +25,26 @@ inherit
 		redefine
 			is_equal
 		end
-		
+
 feature -- Access			
 
-	class_name: STRING is
-		obsolete "[2004-08-26] Use `persistent_class_name' instead."
-		do
-			Result := persistent_class_name
-		end
-
-	persistent_class_name: STRING is
+	persistent_class_name: READABLE_STRING_8 is
 			-- Name of class for persistence that this PID identifies.
 			-- Used by PO_REFERENCE to obtain an adapter
 		deferred
 		end
-		
+
 feature -- Conversion
 
 	to_string : STRING is
 			-- Stringified PID made by appending.
 			-- class_name and any other identifying query separated by some separator character like ',' or '|'
-		obsolete "Use as_string instead." 
+		obsolete "Use as_string instead."
 		do
 			Result := as_string
 		ensure
 			result_not_void: Result /= Void
-			class_name_substring: Result.substring (1,persistent_class_name.count).is_equal (persistent_class_name) 
+			class_name_substring: Result.substring (1,persistent_class_name.count).is_equal (persistent_class_name)
 		end
 
 	as_string : STRING is
@@ -55,9 +53,9 @@ feature -- Conversion
 		deferred
 		ensure
 			result_not_void: Result /= Void
-			class_name_substring: Result.substring (1,persistent_class_name.count).is_equal (persistent_class_name) 
+			class_name_substring: Result.substring (1,persistent_class_name.count).is_equal (persistent_class_name)
 		end
-			
+
 feature -- Comparison
 
 	is_equal (other : like Current) : BOOLEAN is
@@ -80,5 +78,5 @@ feature -- Inapplicable
 invariant
 
 	class_name_is_defined: persistent_class_name /= Void and then not persistent_class_name.is_empty
-	
+
 end
