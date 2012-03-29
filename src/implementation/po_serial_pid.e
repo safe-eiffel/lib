@@ -1,6 +1,7 @@
 note
 	description: "[
-		Typed Persistent Identifiers implemented using serial numbers."
+		Typed Persistent Identifiers implemented using serial numbers.
+		]"
 
 	copyright: "Copyright (c) 2012, Paul G. Crismer and others"
 	license: "Eiffel Forum License v2 (see forum.txt)"
