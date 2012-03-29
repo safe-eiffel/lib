@@ -1,4 +1,4 @@
-indexing
+note
 	description: "C allocated 16 bits integer (short)."
 	author: "Paul G. Crismer"
 
@@ -19,7 +19,7 @@ create
 
 feature -- Access
 
-	item : INTEGER is
+	item : INTEGER
 			-- item
 		do
 			Result := c_memory_get_int16 (handle)
@@ -27,14 +27,14 @@ feature -- Access
 
 feature -- Measurement
 
-	item_size : INTEGER is do Result := 2 end
+	item_size : INTEGER do Result := 2 end
 
-	minimum_value : INTEGER is -32768
-	maximum_value : INTEGER is 32767
+	minimum_value : INTEGER = -32768
+	maximum_value : INTEGER = 32767
 
 feature -- Element change
 
-	put (value : INTEGER) is
+	put (value : INTEGER)
 			-- put `value'
 		do
 			c_memory_put_int16 (handle, value)

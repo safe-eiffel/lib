@@ -1,4 +1,4 @@
-indexing
+note
 	description: "Access to UINT32 routines"
 	author: "Paul G. Crismer"
 	
@@ -13,7 +13,7 @@ class
 	
 feature -- Basic operations
 
-	UINT32_ : XS_UINT32_ROUTINES is
+	UINT32_ : XS_UINT32_ROUTINES
 		once
 			create Result
 		end

@@ -1,4 +1,4 @@
-indexing
+note
 	description: "Routines that give access to C memory."
 	author: "Paul G. Crismer"
 
@@ -13,7 +13,7 @@ class
 
 feature {NONE} -- Implementation
 
-	c_memory_put_char (pointer : POINTER; c : CHARACTER)  is
+	c_memory_put_char (pointer : POINTER; c : CHARACTER)
 		require
 			valid_pointer: pointer /= default_pointer
 		external "C"
@@ -22,7 +22,7 @@ feature {NONE} -- Implementation
 			char_set: c_memory_get_char (pointer) = c
 		end
 
-	c_memory_put_int8 (pointer : POINTER; v : INTEGER)  is
+	c_memory_put_int8 (pointer : POINTER; v : INTEGER)
 		require
 			valid_pointer: pointer /= default_pointer
 			int8_limits: v >= -128 and v < 128
@@ -32,7 +32,7 @@ feature {NONE} -- Implementation
 			int8_set: c_memory_get_int8 (pointer) = v
 		end
 
-	c_memory_put_int16 (pointer : POINTER; v : INTEGER) is
+	c_memory_put_int16 (pointer : POINTER; v : INTEGER)
 		require
 			valid_pointer: pointer /= default_pointer
 			int16_limits: v >= -16384 and v < 16384
@@ -42,7 +42,7 @@ feature {NONE} -- Implementation
 			int16_set: c_memory_get_int16 (pointer) = v
 		end
 
-	c_memory_put_uint8 (pointer : POINTER; v : INTEGER)  is
+	c_memory_put_uint8 (pointer : POINTER; v : INTEGER)
 		require
 			valid_pointer: pointer /= default_pointer
 			uint8_limits: v >= 0 and v < 256
@@ -52,7 +52,7 @@ feature {NONE} -- Implementation
 			uint8_set: c_memory_get_uint8 (pointer) = v
 		end
 
-	c_memory_put_uint16 (pointer : POINTER; v : INTEGER) is
+	c_memory_put_uint16 (pointer : POINTER; v : INTEGER)
 		require
 			valid_pointer: pointer /= default_pointer
 			uint16_limits: v >= 0 and v < 65536
@@ -62,7 +62,7 @@ feature {NONE} -- Implementation
 			uint16_set: c_memory_get_uint16 (pointer) = v
 		end
 
-	c_memory_put_uint32 (pointer : POINTER; v : NATURAL_32) is
+	c_memory_put_uint32 (pointer : POINTER; v : NATURAL_32)
 		require
 			valid_pointer: pointer /= default_pointer
 			uint32_limits: v >= {NATURAL_32}.min_value and v <= {NATURAL_32}.max_value
@@ -72,7 +72,7 @@ feature {NONE} -- Implementation
 			uint32_set: c_memory_get_uint32 (pointer) = v
 		end
 
-	c_memory_put_int32 (pointer : POINTER; v : INTEGER) is
+	c_memory_put_int32 (pointer : POINTER; v : INTEGER)
 		require
 			valid_pointer: pointer /= default_pointer
 		external "C"
@@ -81,7 +81,7 @@ feature {NONE} -- Implementation
 			int32_set: c_memory_get_int32 (pointer) = v
 		end
 
-	c_memory_put_int64 (pointer : POINTER; v : INTEGER_64) is
+	c_memory_put_int64 (pointer : POINTER; v : INTEGER_64)
 		require
 			valid_pointer: pointer /= default_pointer
 		external "C"
@@ -90,7 +90,7 @@ feature {NONE} -- Implementation
 			int64_set: c_memory_get_int64 (pointer) = v
 		end
 
-	c_memory_put_real (pointer : POINTER; v : REAL)  is
+	c_memory_put_real (pointer : POINTER; v : REAL)
 		require
 			valid_pointer: pointer /= default_pointer
 		external "C"
@@ -99,7 +99,7 @@ feature {NONE} -- Implementation
 			real_set: c_memory_get_real (pointer) = v
 		end
 
-	c_memory_put_double (pointer : POINTER; v : DOUBLE) is
+	c_memory_put_double (pointer : POINTER; v : DOUBLE)
 		require
 			valid_pointer: pointer /= default_pointer
 		external "C"
@@ -108,7 +108,7 @@ feature {NONE} -- Implementation
 			double_set: c_memory_get_double (pointer) = v
 		end
 
-	c_memory_put_pointer (pointer : POINTER; v : POINTER) is
+	c_memory_put_pointer (pointer : POINTER; v : POINTER)
 		require
 			valid_pointer: pointer /= default_pointer
 		external "C"
@@ -117,14 +117,14 @@ feature {NONE} -- Implementation
 			pointer_set: c_memory_get_pointer (pointer) = v
 		end
 
-	c_memory_get_char (pointer : POINTER) : CHARACTER is
+	c_memory_get_char (pointer : POINTER) : CHARACTER
 		require
 			valid_pointer: pointer /= default_pointer
 		external "C"
 		alias "c_memory_get_char"
 		end
 
-	c_memory_get_int8 (pointer : POINTER) : INTEGER is
+	c_memory_get_int8 (pointer : POINTER) : INTEGER
 		require
 			valid_pointer: pointer /= default_pointer
 		external "C"
@@ -133,7 +133,7 @@ feature {NONE} -- Implementation
 			int8: Result >= -128 and Result < 128
 		end
 
-	c_memory_get_int16 (pointer : POINTER) : INTEGER is
+	c_memory_get_int16 (pointer : POINTER) : INTEGER
 		require
 			valid_pointer: pointer /= default_pointer
 		external "C"
@@ -142,7 +142,7 @@ feature {NONE} -- Implementation
 			int16: Result >= -16384 and Result < 16384
 		end
 
-	c_memory_get_uint8 (pointer : POINTER) : INTEGER is
+	c_memory_get_uint8 (pointer : POINTER) : INTEGER
 		require
 			valid_pointer: pointer /= default_pointer
 		external "C"
@@ -151,7 +151,7 @@ feature {NONE} -- Implementation
 			uint8: Result >= 0 and Result < 256
 		end
 
-	c_memory_get_uint16 (pointer : POINTER) : INTEGER is
+	c_memory_get_uint16 (pointer : POINTER) : INTEGER
 		require
 			valid_pointer: pointer /= default_pointer
 		external "C"
@@ -160,7 +160,7 @@ feature {NONE} -- Implementation
 			uint16: Result >= 0 and Result < 32768
 		end
 
-	c_memory_get_uint32 (pointer : POINTER) : NATURAL_32 is
+	c_memory_get_uint32 (pointer : POINTER) : NATURAL_32
 		require
 			valid_pointer: pointer /= default_pointer
 		external "C"
@@ -169,35 +169,35 @@ feature {NONE} -- Implementation
 			uint32: Result >= {NATURAL_32}.min_value and Result < {NATURAL_32}.max_value
 		end
 
-	c_memory_get_int32 (pointer : POINTER) : INTEGER is
+	c_memory_get_int32 (pointer : POINTER) : INTEGER
 		require
 			valid_pointer: pointer /= default_pointer
 		external "C"
 		alias "c_memory_get_int32"
 		end
 
-	c_memory_get_int64 (pointer : POINTER) : INTEGER_64 is
+	c_memory_get_int64 (pointer : POINTER) : INTEGER_64
 		require
 			valid_pointer: pointer /= default_pointer
 		external "C"
 		alias "c_memory_get_int64"
 		end
 
-	c_memory_get_real (pointer : POINTER) : REAL is
+	c_memory_get_real (pointer : POINTER) : REAL
 		require
 			valid_pointer: pointer /= default_pointer
 		external "C"
 		alias "c_memory_get_real"
 		end
 
-	c_memory_get_double (pointer : POINTER) : DOUBLE is
+	c_memory_get_double (pointer : POINTER) : DOUBLE
 		require
 			valid_pointer: pointer /= default_pointer
 		external "C"
 		alias "c_memory_get_double"
 		end
 
-	c_memory_get_pointer (pointer : POINTER) : POINTER is
+	c_memory_get_pointer (pointer : POINTER) : POINTER
 		require
 			valid_pointer: pointer /= default_pointer
 		external "C"

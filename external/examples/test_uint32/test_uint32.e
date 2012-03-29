@@ -1,4 +1,4 @@
-indexing
+note
 	description: "Objects that test XS_UINT32 class"
 	author: "Paul G. Crismer"
 
@@ -18,7 +18,7 @@ create
 
 feature
 
-	make is
+	make
 		do
 			test_from_integer
 			test_from_hex
@@ -29,9 +29,9 @@ feature
 
 	res, other : UNSIGNED_32
 
-	one : UNSIGNED_32 is once Result := Result.from_integer (1) end
+	one : UNSIGNED_32 once Result := Result.from_integer (1) end
 
-	test_from_integer is
+	test_from_integer
 			-- from_integer (a_value: INTEGER): like Current
 		do
 			value := value.from_integer (123)
@@ -41,7 +41,7 @@ feature
 			
 		end
 
-	test_from_hex is
+	test_from_hex
 			-- from_hex (a_string: STRING): like Current
 		do
 			value := value.from_hex ("80000001")
@@ -52,7 +52,7 @@ feature
 			check_equal ("from_hex3", "1e", value.as_hexadecimal_string)
 		end
 
-	test_is_equal is
+	test_is_equal
 			-- --		is_equal (other: like Current): BOOLEAN
 		do
 			res := value
@@ -109,7 +109,7 @@ feature
 --		infix "|>>" (count: INTEGER): like Current
 --		right_shifted (count: INTEGER): like Current
 
-	check_equal (tag, expected, got : STRING) is
+	check_equal (tag, expected, got : STRING)
 			--
 		do
 			print (tag)

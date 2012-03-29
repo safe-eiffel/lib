@@ -1,6 +1,6 @@
 CC = cl
-ISE_PLATFORM=windows
-CFLAGS = -c -Ox -W2 -I$(ISE_EIFFEL)\studio\spec\$(ISE_PLATFORM)\include -I.
+ISE_PLATFORM=$(ISE_PLATFORM)
+CFLAGS = -c -Ox -W2 -I"$(ISE_EIFFEL)\studio\spec\$(ISE_PLATFORM)\include" -I.
 OBJ = xs_c_msc.obj
 
 all:: xs_c_var clean xs_c_msc.lib

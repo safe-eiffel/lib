@@ -1,4 +1,4 @@
-indexing
+note
 	description: "Tools for Eiffel/External (to C) communication"
 	author: "Paul G. Crismer"
 	date: "$Date$"
@@ -13,7 +13,7 @@ inherit
 
 feature -- Basic operations
 
-	string_to_pointer (s : STRING) : POINTER is
+	string_to_pointer (s : STRING) : POINTER
 			-- pointer to "C" version of 's'
 		local
 			a : ANY
@@ -22,13 +22,13 @@ feature -- Basic operations
 			Result := pointer($a)
 		end
 
-	pointer_to_string (p : POINTER) : STRING is
+	pointer_to_string (p : POINTER) : STRING
 		do
 			create Result.make (0)
 			Result.from_c (p)
 		end
 
-	string_copy_from_pointer (s : STRING; p : POINTER) is
+	string_copy_from_pointer (s : STRING; p : POINTER)
 			-- copy 'C' string at `p' into `s'
 		do
 			s.from_c (p)
@@ -36,7 +36,7 @@ feature -- Basic operations
 		
 feature {NONE} -- Implementation
 
-		pointer (ptr : POINTER) : POINTER is
+		pointer (ptr : POINTER) : POINTER
 			do
 				Result := ptr
 			end

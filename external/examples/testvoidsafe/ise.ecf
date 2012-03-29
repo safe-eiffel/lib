@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
-<system xmlns="http://www.eiffel.com/developers/xml/configuration-1-8-0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.eiffel.com/developers/xml/configuration-1-8-0 http://www.eiffel.com/developers/xml/configuration-1-8-0.xsd" name="testvoidsafe" uuid="349F4985-0386-459C-A946-C7F4DF7A6146">
+<system xmlns="http://www.eiffel.com/developers/xml/configuration-1-9-0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.eiffel.com/developers/xml/configuration-1-9-0 http://www.eiffel.com/developers/xml/configuration-1-9-0.xsd" name="testvoidsafe" uuid="349F4985-0386-459C-A946-C7F4DF7A6146">
 	<target name="testvoidsafe">
 		<root class="TESTVOIDSAFE" feature="make"/>
-		<option trace="false" profile="false" debug="false" warning="true" is_attached_by_default="true" void_safety="all">
+		<option trace="false" profile="false" debug="false" warning="true" full_class_checking="true" is_attached_by_default="true" void_safety="all" syntax="transitional">
 			<assertions/>
 		</option>
 		<setting name="console_application" value="true"/>
 		<external_library location="$(SAFE_KERNEL)\external\src\spec\ise\windows\xs_c_msc.lib"/>
-		<library name="base" location="${ISE_LIBRARY}\library\base\base.ecf" readonly="true"/>
-		<library name="time" location="${ISE_LIBRARY}\library\time\time.ecf" readonly="true"/>
+		<library name="base" location="${ISE_LIBRARY}\library\base\base-safe.ecf" readonly="true"/>
+		<library name="time" location="${ISE_LIBRARY}\library\time\time-safe.ecf" readonly="true"/>
 		<cluster name="ds_structure" location="${GOBO}\library\structure\">
 			<cluster name="ds_container" location="$|container\"/>
 			<cluster name="ds_dispenser" location="$|dispenser\"/>

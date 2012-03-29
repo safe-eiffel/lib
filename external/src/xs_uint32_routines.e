@@ -1,4 +1,4 @@
-indexing
+note
 	description: "UINT 32 routines"
 	author: "Paul G. Crismer"
 
@@ -18,91 +18,91 @@ inherit
 
 feature -- Basic operations
 
-	c_add (e1 : INTEGER; e2 : INTEGER)  : INTEGER is
+	c_add (e1 : INTEGER; e2 : INTEGER)  : INTEGER
 			-- Unsigned `e1' + `e2'
 		external "C"
 		alias "c_u_add32"
 		end
 
-	c_subtract (e1 : INTEGER; e2 : INTEGER)  : INTEGER is
+	c_subtract (e1 : INTEGER; e2 : INTEGER)  : INTEGER
 			-- Unsigned `e1' - `e2'
 		external "C"
 		alias "c_u_subtract32"
 		end
 
-	c_divide (e1 : INTEGER; e2 : INTEGER)  : INTEGER is
+	c_divide (e1 : INTEGER; e2 : INTEGER)  : INTEGER
 			-- Unsigned `e1' / `e2'
 		external "C"
 		alias "c_u_divide32"
 		end
 
-	c_multiply (e1 : INTEGER; e2 : INTEGER)  : INTEGER is
+	c_multiply (e1 : INTEGER; e2 : INTEGER)  : INTEGER
 			-- Unsigned `e1' * `e2'
 		external "C"
 		alias "c_u_multiply32"
 		end
 
-	c_remainder (e1 : INTEGER; e2 : INTEGER)  : INTEGER is
+	c_remainder (e1 : INTEGER; e2 : INTEGER)  : INTEGER
 			-- Unsigned `e1' \\ `e2'
 		external "C"
 		alias "c_u_remainder32"
 		end
 
-	c_left_shift (e1 : INTEGER; e2 : INTEGER)  : INTEGER is
+	c_left_shift (e1 : INTEGER; e2 : INTEGER)  : INTEGER
 			-- Unsigned `e1' << `e2'
 		external "C"
 		alias "c_u_left_shift32"
 		end
 
-	c_right_shift (e1 : INTEGER; e2 : INTEGER)  : INTEGER is
+	c_right_shift (e1 : INTEGER; e2 : INTEGER)  : INTEGER
 			-- Unsigned `e1' >> `e2'
 		external "C"
 		alias "c_u_right_shift32"
 		end
 
-	c_u_and (e1 : INTEGER; e2 : INTEGER)  : INTEGER is
+	c_u_and (e1 : INTEGER; e2 : INTEGER)  : INTEGER
 			-- Unsigned `e1' & `e2'
 		external "C"
 		alias "c_u_and32"
 		end
 
-	c_u_or (e1 : INTEGER; e2 : INTEGER)  : INTEGER is
+	c_u_or (e1 : INTEGER; e2 : INTEGER)  : INTEGER
 			-- Unsigned `e1' | `e2'
 		external "C"
 		alias "c_u_or32"
 		end
 
-	c_u_xor (e1 : INTEGER; e2 : INTEGER)  : INTEGER is
+	c_u_xor (e1 : INTEGER; e2 : INTEGER)  : INTEGER
 			-- Unsigned `e1' ^ `e2'
 		external "C"
 		alias "c_u_xor32"
 		end
 
-	c_u_not  (e1 : INTEGER)  : INTEGER is
+	c_u_not  (e1 : INTEGER)  : INTEGER
 			-- Unsigned ~`e1'
 		external "C"
 		alias "c_u_not32"
 		end
 
-	c_lt (e1 : INTEGER; e2 : INTEGER)  : INTEGER is
+	c_lt (e1 : INTEGER; e2 : INTEGER)  : INTEGER
 			-- Unsigned `e1' < `e2'
 		external "C"
 		alias "c_u_lt32"
 		end
 
-	c_eq (e1 : INTEGER; e2 : INTEGER)  : INTEGER is
+	c_eq (e1 : INTEGER; e2 : INTEGER)  : INTEGER
 			-- Unsigned `e1' = `e2'
 		external "C"
 		alias "c_u_eq32"
 		end
 
-	c_set_bit (el,  n : INTEGER) : INTEGER is
+	c_set_bit (el,  n : INTEGER) : INTEGER
 			-- set n-th bit of e1
 		external "C"
 		alias "c_u_setbit32"
 		end
 
-	c_get_bit (el,  n : INTEGER) : INTEGER is
+	c_get_bit (el,  n : INTEGER) : INTEGER
 			-- get n-th bit of e1
 		external "C"
 		alias "c_u_getbit32"
@@ -110,7 +110,7 @@ feature -- Basic operations
 
 feature -- Conversion
 
-	as_signed_8 (n : INTEGER) : INTEGER is
+	as_signed_8 (n : INTEGER) : INTEGER
 			-- `n' as a signed 8
 		require
 			n_unsigned8: n >= 0 and n <= 255
@@ -120,7 +120,7 @@ feature -- Conversion
 			result_signed8: Result >= - 128 and Result <= 127
 		end
 
-	as_signed_16 (n : INTEGER) : INTEGER is
+	as_signed_16 (n : INTEGER) : INTEGER
 			-- `n' as a signed 16
 		require
 			n_unsigned_16: n >= 0 and n <= 65535
@@ -130,7 +130,7 @@ feature -- Conversion
 			result_signed16: Result >= -32768 and Result <= 32767
 		end
 
-	hexadecimal_to_integer (hexadecimal_string : STRING) : INTEGER is
+	hexadecimal_to_integer (hexadecimal_string : STRING) : INTEGER
 			-- `hexadecimal_string' as integer
 		require
 			hexadecimal_string_not_void: hexadecimal_string /= Void
@@ -152,7 +152,7 @@ feature -- Conversion
 			end
 		end
 
-	append_hexadecimal_integer (integer : INTEGER; string : STRING; upper_case : BOOLEAN) is
+	append_hexadecimal_integer (integer : INTEGER; string : STRING; upper_case : BOOLEAN)
 			-- Append 'value' as hexadecimal in `string' in upper/lower case.
 		local
 			s : STRING
@@ -183,7 +183,7 @@ feature -- Conversion
 
 feature -- Status report
 
-	is_hexadecimal_string (string : STRING) : BOOLEAN is
+	is_hexadecimal_string (string : STRING) : BOOLEAN
 			-- Is `string' composed of [0-9A-Fa-f]+ ?
 		require
 			string_not_void: string /= Void
@@ -210,7 +210,7 @@ feature -- Status report
 
 feature {NONE}  -- Implementation
 
-	hexadecimal_digit (n : INTEGER; upper_case : BOOLEAN) : CHARACTER is
+	hexadecimal_digit (n : INTEGER; upper_case : BOOLEAN) : CHARACTER
 		require
 			n_positive: n > 0
 			n_less_16: n < 16
@@ -221,7 +221,7 @@ feature {NONE}  -- Implementation
 			end
 		end
 
-	hexadecimal_digits : STRING is
+	hexadecimal_digits : STRING
 		once
 			Result := "0123456789abcdef" -- <<'0','1','2','3','4','5','6','7','8','9','a','b','c','d','e','f'>>
 		end

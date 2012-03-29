@@ -1,4 +1,4 @@
-indexing
+note
 	description: "C allocated strings"
 	author: "Paul G. Crismer"
 
@@ -37,7 +37,7 @@ create
 
 feature {NONE} -- Initialization
 
-	make (a_capacity : INTEGER) is
+	make (a_capacity : INTEGER)
 			-- make for `a_capacity' characters
 		require
 			a_capacity_positive: a_capacity >= 0
@@ -55,7 +55,7 @@ feature {NONE} -- Initialization
 			shared_when_empty: (a_capacity = 0) implies (Current = empty_string or else (is_shared and then handle = empty_string.handle))
 		end
 
-	make_from_string (s : STRING) is
+	make_from_string (s : STRING)
 			-- make from `s'
 		require
 			s_not_void: s /= Void
@@ -71,7 +71,7 @@ feature {NONE} -- Initialization
 			is_copy: as_string.is_equal (s)
 		end
 
-	make_from_pointer (p : POINTER; a_capacity : INTEGER) is
+	make_from_pointer (p : POINTER; a_capacity : INTEGER)
 			-- make from externally allocated pointer and manage it
 		require
 			p_not_default: p /= default_pointer
@@ -88,7 +88,7 @@ feature {NONE} -- Initialization
 
 feature -- Initialization
 
-	make_shared_from_pointer (p : POINTER; a_capacity : INTEGER) is
+	make_shared_from_pointer (p : POINTER; a_capacity : INTEGER)
 			-- have access to `p' as a string, sharing pointer
 		require
 			p_not_default: p /= default_pointer
@@ -109,7 +109,7 @@ feature -- Access
 	capacity : INTEGER
 			-- string capacity
 
-	count : INTEGER is
+	count : INTEGER
 			-- Count of characters in string.
 			do
 				if internal_count >= 0 then
@@ -119,7 +119,7 @@ feature -- Access
 				end
 			end
 
-	item (c : INTEGER) : CHARACTER is
+	item (c : INTEGER) : CHARACTER
 		require
 			c_within_limits: c >= 1 and c <= capacity
 			valid: is_valid
@@ -127,7 +127,7 @@ feature -- Access
 			Result := INTEGER_.to_character (c_memory_get_uint8 (c_memory_pointer_plus (handle, c - 1)))
 		end
 
-	item_integer (c: INTEGER) : INTEGER is
+	item_integer (c: INTEGER) : INTEGER
 		require
 			c_within_limits: c >= 1 and c <= capacity
 			valid: is_valid
@@ -135,7 +135,7 @@ feature -- Access
 			Result := c_memory_get_uint8 (c_memory_pointer_plus (handle, c - 1))
 		end
 
-	substring (i_start, i_end : INTEGER) : STRING is
+	substring (i_start, i_end : INTEGER) : STRING
 			-- substring made of characters [i_start..i_end]
 		require
 			i_start_ok: i_start > 0 and i_start <= i_end
@@ -154,7 +154,7 @@ feature -- Access
 			end
 		end
 
-	copy_substring_to (i_start, i_end : INTEGER; string : STRING) is
+	copy_substring_to (i_start, i_end : INTEGER; string : STRING)
 			-- copy substring [i_start..i_end] to string
 		require
 			i_start_ok: i_start > 0 and i_start <= i_end
@@ -167,7 +167,7 @@ feature -- Access
 			string_set: string.is_equal (substring (i_start, i_end))
 		end
 
-	append_substring_to (i_start, i_end : INTEGER; string : STRING) is
+	append_substring_to (i_start, i_end : INTEGER; string : STRING)
 			-- append substring [i_start..i_end] to string
 		require
 			i_start_ok: i_start > 0 and i_start <= i_end
@@ -195,13 +195,13 @@ feature -- Status report
 
 	is_released : BOOLEAN
 
-	is_empty : BOOLEAN is
+	is_empty : BOOLEAN
 			-- Is this an empty C string ?
 		do
 			Result := count = 0
 		end
 
-	equal_string (s : STRING) : BOOLEAN is
+	equal_string (s : STRING) : BOOLEAN
 			-- Are the strings equal ?
 		require
 			s_not_void: s /= Void
@@ -216,7 +216,7 @@ feature -- Status report
 			definition_empty: s.count = 0 implies Result = True
 		end
 
-	is_string_type (s : STRING) : BOOLEAN is
+	is_string_type (s : STRING) : BOOLEAN
 			-- Is `s' of type STRING ?
 		require
 			s_not_void: s /= Void
@@ -229,7 +229,7 @@ feature -- Status report
 
 feature -- Element change
 
-	wipe_out is
+	wipe_out
 		do
 			put ('%U', 1)
 			internal_count := 0
@@ -237,7 +237,7 @@ feature -- Element change
 			is_empty: is_empty
 		end
 
-	put (c : CHARACTER; index : INTEGER) is
+	put (c : CHARACTER; index : INTEGER)
 			-- put `c' at `index'
 		require
 			valid_index: index >= 1 and index <= capacity
@@ -253,7 +253,7 @@ feature -- Element change
 
 feature -- Conversion
 
-	as_string : STRING is
+	as_string : STRING
 			-- Current converted to a STRING
 		require
 			valid: is_valid
@@ -274,7 +274,7 @@ feature -- Conversion
 
 feature -- Constants
 
-	empty_string : XS_C_STRING is
+	empty_string : XS_C_STRING
 			-- empty string
 		once
 			create Result.set_empty
@@ -282,7 +282,7 @@ feature -- Constants
 
 feature -- Comparison
 
-	is_equal (other : like Current) : BOOLEAN is
+	is_equal (other : like Current) : BOOLEAN
 			-- is 'other' equal to current ?
 		do
 			if other = Current or else handle = other.handle then
@@ -296,7 +296,7 @@ feature -- Comparison
 
 feature -- Element change
 
-	from_string (s : STRING) is
+	from_string (s : STRING)
 			-- Copy `s' into Current
 		require
 			s_not_void: s /= Void
@@ -320,7 +320,7 @@ feature -- Element change
 			count_set: count = s.count
 		end
 
-	from_substring (s : STRING; i_start, i_end : INTEGER) is
+	from_substring (s : STRING; i_start, i_end : INTEGER)
 			-- Copy `s' into Current
 		require
 			s_not_void: s /= Void
@@ -348,7 +348,7 @@ feature -- Element change
 			internal_count_set: internal_count = i_end - i_start + 1
 		end
 
-	dispose is
+	dispose
 			--
 		do
 			if not is_shared and handle /= default_pointer then
@@ -356,7 +356,7 @@ feature -- Element change
 			end
 		end
 
-	release is
+	release
 		require
 			handle_valide: handle /= default_pointer
 			not_shared: not is_shared
@@ -370,7 +370,7 @@ feature -- Element change
 
 feature -- Basic operations
 
-	copy_to (s : STRING) is
+	copy_to (s : STRING)
 			-- copy 'Current' to `s'
 		local
 			length : INTEGER
@@ -386,7 +386,7 @@ feature -- Basic operations
 
 feature {NONE} -- Implementation
 
-	set_empty is
+	set_empty
 		do
 			if empty_string /= Void then
 				make_shared_from_pointer (empty_string.handle, 0)
@@ -396,7 +396,7 @@ feature {NONE} -- Implementation
 			end
 		end
 
-	external_string_length (a_handle : POINTER) : INTEGER is
+	external_string_length (a_handle : POINTER) : INTEGER
 		local
 			index : INTEGER
 		do

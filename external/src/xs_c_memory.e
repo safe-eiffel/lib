@@ -1,4 +1,4 @@
-indexing
+note
 	description: "Objects that give access to C memory"
 	author: "Paul G. Crismer"
 	
@@ -24,11 +24,11 @@ feature -- Access
 
 	handle : POINTER
 	
-	to_external : POINTER is do Result := handle end
+	to_external : POINTER do Result := handle end
 	
 feature -- Status report
 
-	is_valid : BOOLEAN is
+	is_valid : BOOLEAN
 			-- is this valid memory ?
 		do
 			Result := handle /= default_pointer
@@ -36,33 +36,33 @@ feature -- Status report
 		
 feature {NONE} -- Implementation
 
-	dispose is
+	dispose
 			-- free external resources
 		do
 			c_memory_free (handle)
 		end
 		
-	c_memory_pointer_plus (pointer : POINTER; offset : INTEGER) : POINTER is
+	c_memory_pointer_plus (pointer : POINTER; offset : INTEGER) : POINTER
 		external "C"
 		alias "c_memory_pointer_plus"
 		end
 
-	c_memory_copy (destination : POINTER; source : POINTER; length : INTEGER) is
+	c_memory_copy (destination : POINTER; source : POINTER; length : INTEGER)
 		external "C"
 		alias "c_memory_copy"
 		end
 
-	c_memory_allocate (size : INTEGER) : POINTER is
+	c_memory_allocate (size : INTEGER) : POINTER
 		external "C"
 		alias "c_memory_allocate"
 		end
 
-	c_memory_resize (block : POINTER; size : INTEGER) : POINTER is
+	c_memory_resize (block : POINTER; size : INTEGER) : POINTER
 		external "C"
 		alias "c_memory_resize"
 		end
 
- 	c_memory_free (pointer : POINTER) is
+ 	c_memory_free (pointer : POINTER)
 		external "C"
 		alias "c_memory_free"
 		end 

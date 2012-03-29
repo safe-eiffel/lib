@@ -1,4 +1,4 @@
-indexing
+note
 	description: "Objects that give access to C allocated items."
 	author: "Paul G. Crismer"
 	
@@ -18,7 +18,7 @@ feature {NONE} -- Initialization
 
 feature -- Initialization
 
-	make is
+	make
 			-- make item
 		do
 			handle := c_memory_allocate (item_size)
@@ -26,7 +26,7 @@ feature -- Initialization
 		
 feature -- Access
 
-	item : G is
+	item : G
 			-- item
 		deferred
 		ensure
@@ -35,26 +35,26 @@ feature -- Access
 
 feature -- Measurement
 	
-	item_size : INTEGER is
+	item_size : INTEGER
 			-- size in bytes of an item
 		deferred
 		ensure
 			positive_size: Result > 0
 		end
 
-	minimum_value : G is
+	minimum_value : G
 			-- minimum value for sur a type
 		deferred
 		end
 		
-	maximum_value : G is
+	maximum_value : G
 			-- maximum value for sur a type
 		deferred
 		end
 
 feature -- Element change
 
-	put (value : G) is
+	put (value : G)
 			-- put `value' at `index'
 		require
 			value_within_bounds: value >= minimum_value and value <= maximum_value

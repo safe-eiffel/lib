@@ -1,4 +1,4 @@
-indexing
+note
 	description: "C allocated arrays of 8 bits integers."
 	author: "Paul G. Crismer"
 
@@ -19,7 +19,7 @@ create
 
 feature -- Access
 
-	item (index : INTEGER) : INTEGER is
+	item (index : INTEGER) : INTEGER
 			-- item at `index'
 		local
 			item_ptr : POINTER
@@ -30,11 +30,11 @@ feature -- Access
 
 feature -- Measurement
 
-	item_size : INTEGER is do Result := 1 end
+	item_size : INTEGER do Result := 1 end
 
 feature -- Element change
 
-	put (value : INTEGER; index : INTEGER) is
+	put (value : INTEGER; index : INTEGER)
 			-- put `value' at `index'
 		local
 			item_ptr : POINTER

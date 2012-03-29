@@ -1,4 +1,4 @@
-indexing
+note
 	description: "C allocated 32 bits unsigned integer."
 	author: "Paul G. Crismer"
 
@@ -49,7 +49,7 @@ create
 
 feature -- Access
 
-	make_from_integer (value : INTEGER) is
+	make_from_integer (value : INTEGER)
 			-- Create from `value'.
 		do
 			make
@@ -58,7 +58,7 @@ feature -- Access
 			item_set: item = value
 		end
 
-	make_from_hexadecimal_string (s: STRING) is
+	make_from_hexadecimal_string (s: STRING)
 			-- Create from `s'.
 		require
 			s_exists: s /= Void
@@ -69,7 +69,7 @@ feature -- Access
 			put (STRING_.hexadecimal_to_integer (s))
 		end
 
-	make_from_binary_string (s: STRING) is
+	make_from_binary_string (s: STRING)
 			-- Create from `s'.
 		require
 			s_exists: s /= Void
@@ -95,12 +95,12 @@ feature -- Access
 
 feature -- Measurement
 
-	bit_count : INTEGER is 32
-	hexadecimal_count : INTEGER is 8
+	bit_count : INTEGER = 32
+	hexadecimal_count : INTEGER = 8
 
 feature -- Element change
 
-	put_natural_32 (v : NATURAL_32) is
+	put_natural_32 (v : NATURAL_32)
 		do
 			c_memory_put_uint32 (handle, v)
 		ensure
@@ -109,14 +109,14 @@ feature -- Element change
 
 feature -- Conversion
 
-	as_natural_32 : NATURAL_32 is
+	as_natural_32 : NATURAL_32
 		do
 			Result := c_memory_get_uint32 (handle)
 		end
 
 feature -- Comparison
 
-	is_equal (other : like Current) : BOOLEAN is
+	is_equal (other : like Current) : BOOLEAN
 		do
 			if other = Current then
 				Result := True
@@ -125,49 +125,49 @@ feature -- Comparison
 			end
 		end
 
-	infix "<" (other : like Current) : BOOLEAN is
+	is_less alias "<" (other : like Current) : BOOLEAN
 		do
 			Result := (c_lt (item, other.item) /= 0)
 		end
 
 feature -- Basic operations
 
-	times alias "*" (other : like Current) : like Current is
+	times alias "*" (other : like Current) : like Current
 			-- Current multiplied by `other'.
 		do
 			create Result.make
 			Result.put (c_multiply (item, other.item))
 		end
 
-	added alias "+" (other : like Current) : like Current is
+	added alias "+" (other : like Current) : like Current
 			-- Current added with `other'.
 		do
 			create Result.make
 			Result.put (c_add (item, other.item))
 		end
 
-	subtracted alias "-" (other : like Current) : like Current is
+	subtracted alias "-" (other : like Current) : like Current
 			-- Current - other.
 		do
 			create Result.make
 			Result.put (c_subtract(item, other.item))
 		end
 
-	integer_divided alias "//" (other : like Current) : like Current is
+	integer_divided alias "//" (other : like Current) : like Current
 			-- Current // other.
 		do
 			create Result.make
 			Result.put (c_divide (item, other.item))
 		end
 
-	remainder alias "\\" (other :like Current) : like Current is
+	remainder alias "\\" (other :like Current) : like Current
 			-- Current \\ other.
 		do
 			create Result.make
 			Result.put (c_remainder (item, other.item))
 		end
 
-	left_shifted alias "|<<" (n : INTEGER) : like Current is
+	left_shifted alias "|<<" (n : INTEGER) : like Current
 		require
 			n_within_limits: n >= 0 and n <= bit_count
 		do
@@ -175,7 +175,7 @@ feature -- Basic operations
 			Result.put (c_left_shift (item, n))
 		end
 
-	right_shifted alias "|>>" (n : INTEGER) : like Current is
+	right_shifted alias "|>>" (n : INTEGER) : like Current
 		require
 			n_within_limits: n >= 0 and n <= bit_count
 		do
@@ -183,25 +183,25 @@ feature -- Basic operations
 			Result.put (c_right_shift (item, n))
 		end
 
-	binary_and alias "and" (other : like Current) : like Current is
+	binary_and alias "and" (other : like Current) : like Current
 		do
 			create Result.make
 			Result.put (c_u_and (item, other.item))
 		end
 
-	binary_or alias "or" (other : like Current) : like Current is
+	binary_or alias "or" (other : like Current) : like Current
 		do
 			create Result.make
 			Result.put (c_u_or (item, other.item))
 		end
 
-	binary_xor alias "xor" (other : like Current) : like Current is
+	binary_xor alias "xor" (other : like Current) : like Current
 		do
 			create Result.make
 			Result.put (c_u_xor (item, other.item))
 		end
 
-	unary_not alias "not" : like Current is
+	unary_not alias "not" : like Current
 		do
 			create Result.make
 			Result.put (c_u_not (item))
@@ -209,7 +209,7 @@ feature -- Basic operations
 
 feature -- Conversion
 
-	to_binary_string : STRING is
+	to_binary_string : STRING
 			-- Current to binary string.
 		local
 			bit_index : INTEGER
@@ -236,7 +236,7 @@ feature -- Conversion
 			end
 		end
 
-	to_hexadecimal_string : STRING is
+	to_hexadecimal_string : STRING
 			-- Current to hexadecimal string.
 		local
 			significant_digit : BOOLEAN
@@ -275,7 +275,7 @@ feature -- Conversion
 
 feature -- Element change
 
-	put_byte ( v, index : INTEGER) is
+	put_byte ( v, index : INTEGER)
 			-- put unsigned byte `v' at `index'.
 		require
 			valid_v: v >= 0 and v < 256
@@ -286,7 +286,7 @@ feature -- Element change
 			byte_set: byte (index) = v
 		end
 
-	byte (index : INTEGER) : INTEGER is
+	byte (index : INTEGER) : INTEGER
 			-- unsigned byte at `index'.
 		require
 			valid_index: index >= 1 and index <= 4

@@ -1,22 +1,22 @@
-indexing
+note
 	description: "C allocated arrays of `item_size' bytes items."
 	author: "Paul G. Crismer"
-	
+
 	library: "XS_C : eXternal Support C"
-	
+
 	date: "$Date$"
 	revision: "$Revision$"
 	licensing: "See notice at end of class"
 
 deferred class
-	XS_C_ARRAY [G]
+	XS_C_ARRAY [G -> attached ANY]
 
 inherit
 	XS_C_MEMORY
-	
+
 feature {NONE} -- Initialization
 
-	make (a_capacity : INTEGER) is
+	make (a_capacity : INTEGER)
 			-- create for `a_capacity' elements
 		require
 			valid_capacity: a_capacity > 0
@@ -26,10 +26,10 @@ feature {NONE} -- Initialization
 		ensure
 			capacity_set: capacity = a_capacity
 		end
-		
+
 feature -- Access
 
-	item (index : INTEGER) : G is
+	item (index : INTEGER) : G
 			-- item at `index'
 		require
 			valid_index: index >= lower and index <= upper
@@ -42,33 +42,33 @@ feature -- Measurement
 	capacity : INTEGER
 			-- capacity of array
 
-	count : INTEGER is 
+	count : INTEGER
 			-- number of elements
-		do 
-			Result := capacity 
+		do
+			Result := capacity
 		end
-	
-	item_size : INTEGER is
+
+	item_size : INTEGER
 			-- size in bytes of an item
 		deferred
 		ensure
 			positive_size: Result > 0
 		end
 
-	lower : INTEGER is 1
+	lower : INTEGER = 1
 			-- lower index
-			
-	upper : INTEGER is
+
+	upper : INTEGER
 			-- upper index
 		do
 			Result := capacity
 		ensure
 			definition: Result = capacity
 		end
-		
+
 feature -- Element change
 
-	put (value : G; index : INTEGER) is
+	put (value : G; index : INTEGER)
 			-- put `value' at `index'
 		require
 			valid_index: index >= lower and index <= upper
@@ -79,14 +79,14 @@ feature -- Element change
 
 feature {NONE} -- Implementation
 
-	item_pointer (index : INTEGER) : POINTER is
+	item_pointer (index : INTEGER) : POINTER
 			-- pointer of `index'-th item
 		do
 			Result := c_memory_pointer_plus (handle, (index - 1) * item_size)
 		end
 invariant
 	valid: is_valid
-	
+
 end -- class XS_C_ARRAY
 --
 -- Copyright: 2003, Paul G. Crismer, <pgcrism@users.sourceforge.net>

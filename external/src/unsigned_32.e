@@ -1,4 +1,4 @@
-indexing
+note
 	description: "Unsigned 32 values."
 	author: "Paul G. Crismer"
 	date: "$Date$"
@@ -32,7 +32,7 @@ inherit
 		
 feature -- Access
 
-	item, infix "@" (index : INTEGER) : INTEGER is
+	item, infix "@" (index : INTEGER) : INTEGER
 			-- `index'-th bit.
 		require
 			index_within_bounds: index >= 1 and then index <= 32
@@ -42,7 +42,7 @@ feature -- Access
 		
 feature -- Measurement
 
-	is_hexadecimal_string (string : STRING) : BOOLEAN is
+	is_hexadecimal_string (string : STRING) : BOOLEAN
 			-- Is `string' composed of [0-9A-Fa-f]+ ?
 		require
 			string_not_void: string /= Void
@@ -64,7 +64,7 @@ feature -- Transformation
 
 feature -- Comparison
 
-	infix "<" (other : like Current) : BOOLEAN is
+	infix "<" (other : like Current) : BOOLEAN
 			-- Is Current less than `other'?
 		do
 			if Uint32_.lt (value, other.value) /= 0 then
@@ -72,7 +72,7 @@ feature -- Comparison
 			end
 		end
 
-	is_equal (other: like Current) : BOOLEAN is
+	is_equal (other: like Current) : BOOLEAN
 		do
 			if Uint32_.eq (value, other.value) /= 0 then
 				Result := True
@@ -81,30 +81,30 @@ feature -- Comparison
 
 feature -- Conversion
 
-	out : STRING is
+	out : STRING
 		do
 			Result := as_hexadecimal_string
 		end
 		
-	as_integer : INTEGER is
+	as_integer : INTEGER
 			-- Current as a signed INTEGER
 		do
 			Result := value
 		end
 	
-	as_integer_16 : INTEGER is
+	as_integer_16 : INTEGER
 			-- Current as a signed 16 bit INTEGER
 		do
 			Result := Uint32_.as_signed_16 (value)
 		end
 	
-	as_integer_8 : INTEGER is
+	as_integer_8 : INTEGER
 			-- Current as a signed 8 bit INTEGER
 		do
 			Result := Uint32_.as_signed_8 (value)
 		end
 
-	as_hexadecimal_string : STRING is
+	as_hexadecimal_string : STRING
 			-- Current as an hexadecimal string.
 		do
 			create Result.make (8)
@@ -114,7 +114,7 @@ feature -- Conversion
 			definition: Result /= Void and then UINT32_.hexadecimal_to_integer (Result) = as_integer
 		end
 		
-	from_integer (a_value : INTEGER) : like Current is
+	from_integer (a_value : INTEGER) : like Current
 		local
 			save : INTEGER
 		do
@@ -126,14 +126,14 @@ feature -- Conversion
 			definition: Result.as_integer = a_value
 		end
 		
-	from_double (a_value : DOUBLE) : UNSIGNED_32 is
+	from_double (a_value : DOUBLE) : UNSIGNED_32
 		do
 			Result := from_integer (a_value.truncated_to_integer)
 		ensure
 			definition: Result.as_integer = a_value.truncated_to_integer
 		end
 		
-	from_hex (a_string : STRING) : like Current is
+	from_hex (a_string : STRING) : like Current
 		local
 			save : INTEGER
 		do
@@ -147,61 +147,61 @@ feature -- Conversion
 		
 feature -- Basic operations
 
-	infix "+" (other : like Current) : like Current is
+	infix "+" (other : like Current) : like Current
 			-- Unsigned addition of Current with `other'.
 		do
 			Result.set_value (Uint32_.add (value, other.value))
 		end
 
-	infix "-" (other : like Current) : like Current is
+	infix "-" (other : like Current) : like Current
 			-- Unsigned subtraction of Current with `other'.
 		do
 			Result.set_value (Uint32_.subtract (value, other.value))
 		end
 
-	infix "*" (other : like Current) : like Current is
+	infix "*" (other : like Current) : like Current
 			-- Unsigned multiplication of Current with `other'.
 		do
 			Result.set_value (Uint32_.multiply (value, other.value))
 		end
 
-	infix "//" (other : like Current) : like Current is
+	infix "//" (other : like Current) : like Current
 			-- Unsigned division of Current with `other'.
 		do
 			Result.set_value (Uint32_.divide (value, other.value))
 		end
 		
-	infix "\\" (other : like Current) : like Current is
+	infix "\\" (other : like Current) : like Current
 			-- Unsigned remainder of dividing Current by `other'.
 		do
 			Result.set_value (Uint32_.remainder (value, other.value))
 		end
 		
-	infix "and" (other : like Current) : like Current is
+	infix "and" (other : like Current) : like Current
 			-- Unsigned and of Current with `other'.
 		do
 			Result.set_value (Uint32_.u_and (value, other.value))
 		end
 		
-	infix "or" (other : like Current) : like Current is
+	infix "or" (other : like Current) : like Current
 			-- Unsigned or of Current with `other'.
 		do
 			Result.set_value (Uint32_.u_or (value, other.value))
 		end
 		
-	infix "xor" (other : like Current) : like Current is
+	infix "xor" (other : like Current) : like Current
 			-- Unsigned or of Current with `other'.
 		do
 			Result.set_value (Uint32_.u_xor (value, other.value))
 		end
 
-	prefix "not" : like Current is
+	prefix "not" : like Current
 			-- binary complement of Current.
 		do
 			Result.set_value (Uint32_.u_not (value))
 		end		
 	
-	left_shifted, infix "|<<" (count : INTEGER) : like Current is
+	left_shifted, infix "|<<" (count : INTEGER) : like Current
 			-- Current left shifted by `count' bits.
 		require
 			count_within_limits: count >= 0 and then count <=32
@@ -209,7 +209,7 @@ feature -- Basic operations
 			Result.set_value (Uint32_.left_shift (value, count))
 		end
 
-	right_shifted, infix "|>>" (count : INTEGER) : like Current is
+	right_shifted, infix "|>>" (count : INTEGER) : like Current
 			-- Current right shifted by `count' bits.
 		require
 			count_within_limits: count >= 0 and then count <=32
@@ -225,7 +225,7 @@ feature {UNSIGNED_32} -- Implementation
 
 	value : INTEGER
 	
-	set_value (a_value : INTEGER) is
+	set_value (a_value : INTEGER)
 			-- Set `value' to `a_value'.
 		do
 			value := a_value
