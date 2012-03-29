@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<system xmlns="http://www.eiffel.com/developers/xml/configuration-1-8-0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.eiffel.com/developers/xml/configuration-1-8-0 http://www.eiffel.com/developers/xml/configuration-1-8-0.xsd" name="testvoidsafe" uuid="349F4985-0386-459C-A946-C7F4DF7A6146">
+	<target name="testvoidsafe">
+		<root class="TESTVOIDSAFE" feature="make"/>
+		<option trace="false" profile="false" debug="false" warning="true" is_attached_by_default="true" void_safety="all">
+			<assertions/>
+		</option>
+		<setting name="console_application" value="true"/>
+		<external_library location="$(SAFE_KERNEL)\external\src\spec\ise\windows\xs_c_msc.lib"/>
+		<library name="base" location="${ISE_LIBRARY}\library\base\base.ecf" readonly="true"/>
+		<library name="time" location="${ISE_LIBRARY}\library\time\time.ecf" readonly="true"/>
+		<cluster name="ds_structure" location="${GOBO}\library\structure\">
+			<cluster name="ds_container" location="$|container\"/>
+			<cluster name="ds_dispenser" location="$|dispenser\"/>
+			<cluster name="ds_list" location="$|list\"/>
+			<cluster name="ds_set" location="$|set\"/>
+			<cluster name="ds_sort" location="$|sort\"/>
+			<cluster name="ds_support" location="$|support\"/>
+			<cluster name="ds_table" location="$|table\"/>
+		</cluster>
+		<cluster name="dt_time" location="${GOBO}\library\time\">
+			<cluster name="dt_clock" location="$|clock\"/>
+			<cluster name="dt_date" location="$|date\"/>
+			<cluster name="dt_stopwatch" location="$|stopwatch\"/>
+			<cluster name="dt_time_zone" location="$|time_zone\"/>
+		</cluster>
+		<cluster name="kl_kernel" location="${GOBO}\library\kernel\">
+			<cluster name="kl_basic" location="$|basic\"/>
+			<cluster name="kl_io" location="$|io\"/>
+			<cluster name="kl_misc" location="$|misc\"/>
+			<cluster name="kl_unicode" location="$|unicode\"/>
+			<cluster name="kl_support" location="$|support\"/>
+			<cluster name="kl_spec" location="$|spec\">
+				<cluster name="kl_spec_ise" location="$|ise\"/>
+			</cluster>
+		</cluster>
+		<cluster name="test1" location="${SAFE_KERNEL}\external\examples\testvoidsafe\"/>
+		<cluster name="ut_utility" location="${GOBO}\library\utility\">
+			<cluster name="ut_error" location="$|error\"/>
+			<cluster name="ut_formatter" location="$|formatter\"/>
+			<cluster name="ut_config" location="$|config\"/>
+			<cluster name="ut_support" location="$|support\"/>
+			<cluster name="ut_transcoder" location="$|transcoder\"/>
+			<cluster name="ut_uri" location="$|uri\"/>
+		</cluster>
+		<cluster name="xs_c_src" location="${SAFE_KERNEL}\external\src\">
+			<cluster name="xs_c_spec" location="$|spec\">
+				<cluster name="xs_c_compiler_ise" location="$|ise\"/>
+			</cluster>
+		</cluster>
+	</target>
+</system>

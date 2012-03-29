@@ -1,0 +1,40 @@
+<?xml version="1.0"?>
+
+<system name="testvoidsafe">
+	<description>
+		system:      "XS_C test application for UINT32"
+
+		author:      "Paul G. Crismer [pgcrism@users.sourceforge.net]"
+		copyright:   "Copyright (c) 2002-2006, Paul G. Crismer and others"
+		license:     "Eiffel Forum Freeware License v1 (see forum.txt)"
+		date:        "$Date $"
+		revision:    "$Revision$"
+	</description>
+
+	<root class="testvoidsafe" creation="make"/>
+
+	<option unless="${DEBUG}">
+		<option name="assertion" value="none"/>
+		<option name="finalize" value="true" unless="${GOBO_EIFFEL}=ve"/>
+		<option name="attached_by_default" value="true"/>
+		<option name="void_safety" value="on_demand"/>
+	</option>
+	<option if="${DEBUG}">
+		<option name="assertion" value="all"/>
+		<option name="finalize" value="false"/>
+	</option>
+	<option if="${GOBO_OS}=windows">
+		<option name="linker" value="microsoft" if="${GOBO_EIFFEL}=ve"/>
+	</option>
+
+	<cluster name="test1" location="${SAFE_KERNEL}/external/examples/testvoidsafe"/>
+
+	<mount location="${SAFE_KERNEL}/external/library.xace"/>
+
+	<mount location="${GOBO}/library/time/library.xace"/>
+	<mount location="${GOBO}/library/kernel/library.xace"/>
+	<mount location="${GOBO}/library/structure/library.xace"/>
+	<mount location="${GOBO}/library/utility/library.xace"/>
+	<mount location="${GOBO}/library/kernel.xace"/>
+
+</system>
