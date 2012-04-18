@@ -28,7 +28,7 @@ inherit
 
 feature -- Access			
 
-	persistent_class_name: READABLE_STRING_8 is
+	persistent_class_name: STRING is
 			-- Name of class for persistence that this PID identifies.
 			-- Used by PO_REFERENCE to obtain an adapter
 		deferred
