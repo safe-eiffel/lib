@@ -10,6 +10,8 @@ class
 inherit
 	XS_C_ITEM[INTEGER_64]
 
+	KL_SHARED_PLATFORM
+
 create
 	make
 
@@ -30,8 +32,14 @@ feature -- Measurement
 
 	item_size : INTEGER do Result := 8 end
 
-	minimum_value : INTEGER_64 -- is -2147483648
-	maximum_value : INTEGER_64 -- is 2147483647
+	minimum_value : INTEGER_64
+		once
+			Result := platform.minimum_integer_64
+		end-- is -2147483648
+	maximum_value : INTEGER_64
+		once
+			Result := platform.maximum_integer_64
+		end-- is 2147483647
 
 feature -- Element change
 
