@@ -56,6 +56,7 @@ feature -- Element change
 			-- Safe setting of login strategy
 		require
 			login_not_void: login /= Void
+			not_connected: not is_connected
 		do
 			session.set_login_strategy (login)
 		ensure
