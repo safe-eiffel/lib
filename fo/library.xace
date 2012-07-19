@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<library name="library_fo" location="${SAFE}/lib/fo">
+
+	<description>
+		library : "Eiffel Formatting objects"
+		depends: "EPDF, GOBO"
+		copyright: "Copyright (c) 2006-, Paul G. Crismer and others"
+		license: "Eiffel Forum License v2 (see forum.txt)"
+		date: "$Date$"
+	</description>
+	
+	<cluster name="library_fo" location="${SAFE}/lib/fo" prefix="fo_">
+		<option unless="${DEBUG}">
+			<option name="assertion" value="none"/>
+			<option name="finalize" value="true" unless="${GOBO_EIFFEL}=ve"/>
+		</option>
+		<option if="${DEBUG}">
+			<option name="assertion" value="all"/>
+			<option name="finalize" value="false"/>
+		</option>
+		<option name="abstract" value="true"/>
+		<cluster name="src">
+			<cluster name="objects"/>
+			<cluster name="properties"/>
+			<cluster name="support">
+				<cluster name="xml"/>
+			</cluster>
+		</cluster>
+	</cluster>
+</library>

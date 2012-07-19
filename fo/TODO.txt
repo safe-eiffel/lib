@@ -1,0 +1,14 @@
+
+- Coloring Table cells
+
+	+ need to render virtually (without drawing anything on the page) to calculate the actual 
+	  rendered rectangle of items
+	+ Then (1) color the cell, (2) draw on page
+	
+- Multicolumn sections
+	+ provide metrics for columns : width + space between
+	+ two level break : column break, then page break
+
+- Table of content entries (left pane of PDF window)
+
+- Links (GOTO actions) => implies enhancing ePDF.

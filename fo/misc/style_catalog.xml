@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+
+<!-- Sample document configuration -->
+
+<document>
+	<section name="default">
+		<page height="29.7cm" width="21cm" orientation="portrait"/>
+		<margins left="2cm" right="2cm" bottom="2cm" top="2cm"/>
+	</section>
+	<section name="Section 1">
+		<page height="29.7cm" width="21cm" orientation="portrait"/>
+		<margins left="2cm" right="2cm" bottom="2cm" top="2cm"/>
+	</section>
+	<style name="Heading 1">
+		<margins left="0cm" right="0cm" bottom="12pt" top="1pt"/>
+		<font family="Helvetica" style="" weight="bold" size="20pt" stretch="1.5"/>
+		<justification value="left"/>
+	</style>
+	<style name="Heading 2">
+		<margins left="0.5cm" right="0.5cm" bottom="6pt" top="12pt"/>
+		<font family="Helvetica" style="" weight="bold" size="16pt"/>
+		<justification value="left"/>
+	</style>
+	<style name="Heading 3">
+		<margins left="1cm" right="0.5cm" bottom="6pt" top="3pt"/>
+		<font family="Helvetica" style="" weight="bold" size="14pt"/>
+		<justification value="left"/>
+	</style>
+	<style name="Table Heading">
+		<margins left="0cm" right="0.25cm" bottom="6pt" top="6pt"/>
+		<font family="Times" style="" weight="bold" size="12pt"/>
+		<justification value="left"/>
+	</style>
+	<style name="Table Row">
+		<margins left="0cm" right="0.25cm" bottom="2pt" top="0pt"/>
+		<font family="Times" style="" weight="" size="12pt" stretch=""/>
+		<justification value="left"/>
+	</style>
+	<style name="Normal">
+		<margins left="0cm" right="+0.5cm" bottom="+12pt" top="6pt"/>
+		<font family="Helvetica" size="12pt"/>
+		<justification value="left"/>
+	</style>
+	<style name="Task summary">
+		<margins left="0cm" right="0.5cm" bottom="0.5cm" top="0.25cm"/>
+		<font family="Helvetica" weight="bold" size="9pt"/>
+		<justification value="left"/>
+	</style>
+	<style name="Activity detail">
+		<margins left="0cm" right="0pt" bottom="0cm" top="0pt"/>
+		<font family="Times" size="10pt"/>
+		<justification value="left"/>
+	</style>
+	<style name="Activity duration">
+		<margins left="0cm" right="0.5cm" bottom="0cm" top="0pt"/>
+		<font family="Times" size="10pt"/>
+		<justification value="right"/>
+	</style>
+
+	<style name="Day heading">
+		<margins left="0cm" right="0.5cm" bottom="6pt" top="12pt"/>
+		<font family="Helvetica" style="" weight="bold" size="12pt"/>
+		<justification value="left"/>
+	</style>
+
+	<style name="Day detail">
+		<margins left="0cm" right="0pt" bottom="0cm" top="0pt"/>
+		<font family="Times" size="10pt"/>
+		<justification value="left"/>
+	</style>
+	<style name="Day duration">
+		<margins left="1.5cm" right="0.5cm" bottom="0cm" top="0pt"/>
+		<font family="Times" size="10pt"/>
+		<justification value="right"/>
+	</style>
+
+	<style name="Task heading">
+		<margins left="0.2cm" right="0.2cm" bottom="6pt" top="12pt"/>
+		<font family="Helvetica" style="" weight="bold" size="12pt"/>
+		<justification value="left"/>
+	</style>
+
+	<style name="Task detail">
+		<margins left="0.2cm" right="0.2cm" bottom="3pt" top="1pt"/>
+		<font family="Helvetica" style="" weight="" size="10pt"/>
+		<justification value="left"/>
+	</style>
+
+	<style name="Task total">
+		<margins left="0.2cm" right="0.2cm" bottom="6pt" top="6pt"/>
+		<font family="Helvetica" style="" weight="bold" size="10pt"/>
+		<justification value="left"/>
+	</style>
+</document>
