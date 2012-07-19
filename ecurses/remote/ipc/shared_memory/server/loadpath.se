@@ -1,0 +1,9 @@
+.\
+${ECURSES}\base\
+${ECURSES}\remote\codification
+${ECURSES}\remote\ipc\shared_memory
+${ECURSES}\spec
+${ECURSES}\spec\se
+${ECURSES}\utility\
+${GOBO}\library\loadpath.se
+${SAFE_ERROR_HANDLING}\src\loadpath.se

@@ -1,0 +1,71 @@
+system
+	client_test
+
+root
+	CLIENT_TEST: make
+
+default
+	assertion(require)
+	arguments("3000")
+	arguments(" ")
+	disabled_debug(yes)
+	debug(no)
+	line_generation(no)
+	profile(no)
+	trace(no)
+	il_verifiable(yes)
+	msil_generation_type("exe")
+	check_vape(yes)
+	console_application(yes)
+	address_expression(no)
+	array_optimization(yes)
+	dead_code_removal(yes)
+	dynamic_runtime(no)
+	exception_trace(no)
+	inlining(yes)
+	inlining_size("10")
+	multithreaded(no)
+
+
+-- EiffelBase
+
+cluster
+	root_cluster:		"."
+
+
+	ecurses:		"$ECURSES"
+
+	remote (ecurses):	"$\remote"
+		
+	ipc (remote): "$\ipc"
+	
+	shared_memory (ipc): "$\shared_memory"
+	
+	all base:		"$ISE_EIFFEL\library\base"
+		exclude
+			"desc"; "table_eiffel3"; 
+		end
+
+	thread:		"$ISE_EIFFEL\library\thread"
+
+	gobo_kernel:		"$GOBO\library\kernel"
+
+	gobo_ise_kernel:		"$GOBO\library\kernel\spec\ise"
+
+	all gobo_structures:		"$GOBO\library\structure"
+
+	all gobo_util:		"$GOBO\library\utility"
+
+external
+
+
+	object:
+		"$ECURSES\remote\ipc\C\ipc_c.lib"
+
+end
+
+-----------------------------------------------------------
+-- Copyright (C) 2001 Paul G. Crismer, Eric Fafchamps
+-- Licensed under Eiffel Forum Freeware License, version 1
+-- (see forum.txt)
+-----------------------------------------------------------

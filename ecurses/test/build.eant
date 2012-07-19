@@ -1,0 +1,80 @@
+<?xml version="1.0"?>
+
+<project name="example" default="help">
+
+	<description>
+		description: "Eiffel Ant file for ECURSES test applications"
+
+
+		library: "ECURSES : Eiffel CURSES Library. Project SAFE."
+		copyright: "Copyright (C) 1999-2009 Paul G. Crismer, Eric Fafchamps
+		license: "Eiffel Forum License v2 (see forum.txt)"
+		date: "$Date$"
+
+	</description>
+
+	<target name="help">
+		<echo message="usage:"/>
+		<echo message="   geant install"/>
+		<echo message="   geant compile"/>
+		<echo message="   geant clean"/>
+		<echo message="   geant clobber"/>
+	</target>
+
+	<target name="install" depend="init">
+		<description>
+			Install the ECURSES examples.
+		</description>
+
+		<set name="target" value="install"/>
+		<geant target="do_all"/>
+	</target>
+
+	<target name="compile" depend="init">
+		<description>
+			Compile the ECURSES examples.
+		</description>
+
+		<set name="target" value="compile"/>
+		<geant target="do_all"/>
+	</target>
+
+	<target name="clean" depend="init">
+		<description>
+			Remove intermediary generated files.
+		</description>
+
+		<set name="target" value="clean"/>
+		<geant target="do_all"/>
+	</target>
+
+	<target name="clobber" depend="init">
+		<description>
+			Remove all generated files.
+		</description>
+
+		<set name="target" value="clobber"/>
+		<geant target="do_all"/>
+	</target>
+
+
+<!-- Implementation -->
+
+	<target name="init">
+		<!-- do nothing -->
+	</target>
+
+	<target name="do_all">
+		<description>
+			Call 'geant' with the same target ${target}
+			in all subdirectories.
+		</description>
+
+		<geant file="build.eant" target="${target}" dir="compile_test"/>
+		<geant file="build.eant" target="${target}" dir="curses"/>
+		<geant file="build.eant" target="${target}" dir="hello"/>
+		<geant file="build.eant" target="${target}" dir="pad"/>
+		<geant file="build.eant" target="${target}" dir="slk"/>
+</target>
+
+</project>

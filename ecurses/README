@@ -1,0 +1,26 @@
+                  eCurses : an Eiffel binding to *Curses
+
+
+                     Paul G. Crismer, Eric Fafchamps 
+            <pgcrism@users.sourceforge.net>, <efa@users.sourceforge.net>
+
+eCurses is an Eiffel binding to *Curses.
+Whit this library it is possible to write nice console applications with
+features like scrolling, cursor positioning, various character attributes,
+color, windows.
+
+This version of eCurses has been developed and tested with
+
+    * ISE Eiffel version 5.2 (Linux or Windows)
+    * SmartEiffel version 1.1 (Linux or Windows)
+    * Linux	  : NCURSES 5.2
+      Windows     : PDCurses 2.4
+
+
+*** Installation
+
+Please refer to ..ecurses/doc/ecurses.txt
+
+*** Copyright 
+
+Please refer to ..ecurses/doc/license.txt
