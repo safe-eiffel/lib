@@ -1,0 +1,77 @@
+<?xml version="1.0"?>
+
+<project name="safe_kernel" default="help">
+
+	<description>
+		system: "SAFE_KERNEL runtime building project file."
+		copyright: "Copyright (c) 2003, Paul G. Crismer"
+		license: "Eiffel Forum Freeware License v1 (see forum.txt)"
+		date: "$Date$"
+		revision: "$Revision$"
+	</description>
+
+	<inherit>
+		<parent location="${GOBO}/misc/eiffel.eant">
+			<redefine target="init"/>
+			<redefine target="install"/>
+			<redefine target="help"/>
+			<redefine target="clean"/>
+		</parent>
+	</inherit>
+
+
+<!-- Implementation -->
+
+	<target name="init">
+		<precursor/>
+		<geant target="check_safe_variables"/>
+	</target>
+
+	<target name="check_safe_variables">
+		<echo message="WARNING: SAFE_KERNEL variable must point to the SAFE project kernel library." unless="${SAFE_KERNEL}"/>
+		<echo message="WARNING: GOBO_CC variable not set. Must be msc|bcc|gcc|lcc" unless="${GOBO_CC}"/>
+		<echo message="WARNING: GOBO_OS variable not set." unless="${GOBO_OS}"/>
+		<echo message="WARNING: GOBO_EIFFEL variable not set." unless="${GOBO_EIFFEL}"/>
+		<echo message="WARNING: BCC_DIR variable not set." if="${GOBO_CC}=bcc" unless="${BCC_DIR}"/>
+		<echo message="WARNING: VE_BIN variable not set." if="${GOBO_EIFFEL}=ve" unless="${VE_BIN}"/>
+		<echo message="WARNING: SMARTEIFFELDIR variable not set." if="${GOBO_EIFFEL}=se" unless="${SMARTEIFFELDIR}"/>
+		<set name="eiffel" value="${GOBO_EIFFEL}"/>
+	</target>
+
+	<target name="install" depend="init">
+		<description>
+			Prepare compilation : check for C libraries, and compile them if necessary
+		</description>
+		<!-- Check for C libraries -->
+		
+		<!-- Compile them if necessary -->
+
+		
+		<!-- <available resource="${SAFE_KERNEL}/external/src/spec/${eiffel}/${GOBO_OS}/xs_c_${GOBO_CC}.lib" variable="safe_kernel_lib_exists" if="${GOBO_OS}=windows"/> -->
+		<exec executable="nmake -f makefile.mak" dir="${SAFE_KERNEL}\external\src\spec\${eiffel}\${GOBO_OS}" if="${GOBO_CC}=msc" unless="${safe_kernel_lib_exists}"/>
+		<exec executable="make -f makefile.bcc" dir="${SAFE_KERNEL}/external/src/spec/${eiffel}/${GOBO_OS}" if="${GOBO_CC}=bcc" unless="${safe_kernel_lib_exists}"/>
+		<exec executable="make -f makefile.lcc SMARTEIFFELDIR=${SMARTEIFFELDIR} xs_c_lcc.lib" dir="${SAFE_KERNEL}/external/src/spec/${eiffel}/${GOBO_OS}" if="${GOBO_CC}=lcc" unless="${safe_kernel_lib_exists}"/>
+		<exec executable="make " dir="${SAFE_KERNEL}/external/src/spec/${eiffel}/${GOBO_OS}" if="${GOBO_CC}=gcc" unless="${safe_kernel_lib_exists}"/>
+	</target>
+	<target name="clean" depend="init">
+		<description>
+			Clean all intermediate files
+		</description>
+		<!-- Check for C libraries -->
+		
+		<!-- Compile them if necessary -->
+
+		
+		<!-- <available resource="${SAFE_KERNEL}/external/src/spec/${eiffel}/${GOBO_OS}/xs_c_${GOBO_CC}.lib" variable="safe_kernel_lib_exists" if="${GOBO_OS}=windows"/> -->
+		<exec executable="nmake -f makefile.mak clean" dir="${SAFE_KERNEL}\external\src\spec\${eiffel}\${GOBO_OS}" if="${GOBO_CC}=msc" unless="${safe_kernel_lib_exists}"/>
+		<exec executable="make -f makefile.bcc clean " dir="${SAFE_KERNEL}/external/src/spec/${eiffel}/${GOBO_OS}" if="${GOBO_CC}=bcc" unless="${safe_kernel_lib_exists}"/>
+		<exec executable="make -f makefile.lcc SMARTEIFFELDIR=${SMARTEIFFELDIR} clean" dir="${SAFE_KERNEL}/external/src/spec/${eiffel}/${GOBO_OS}" if="${GOBO_CC}=lcc" unless="${safe_kernel_lib_exists}"/>
+		<exec executable="make " dir="${SAFE_KERNEL}/external/src/spec/${eiffel}/${GOBO_OS}" if="${GOBO_CC}=gcc" unless="${safe_kernel_lib_exists}"/>
+	</target>
+	<target name="help">
+		<echo message="Usage :"/>
+		<echo message="  geant install"/>
+		<echo message="  geant clean"/>
+		<echo message=""/>
+	</target>
+</project>

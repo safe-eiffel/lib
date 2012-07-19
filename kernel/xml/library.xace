@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<library xmlns="" xmlns:ns1="" name="safe_xml_support">
+	<description>
+		description: "Reusable XML Classes. Layer on top of GOBO-xml."	
+	</description>	
+
+
+	<cluster name="xml" location="${SAFE_KERNEL}/xml" prefix="safe_">
+		<option name="assertion" value="all" if="${DEBUG}"/>
+		<cluster name="xsd">
+			<option name="assertion" value="all" if="${DEBUG}"/>
+		</cluster>
+	</cluster>
+</library>
