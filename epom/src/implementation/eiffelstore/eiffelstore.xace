@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+
+<library name="store" location="${ISE_EIFFEL}/library/store">
+
+	<description>
+		description: "Cluster definition for ISE EiffelStore classes"
+		thanks: "Modified version of GOBO library.xace files"
+	</description>
+
+	<cluster name="store" location="${ISE_EIFFEL}/library/store" prefix="eiffelstore_">
+		<option name="abstract" value="true"/>
+		<cluster name="interface"/>
+		<cluster name="support"/>
+		<cluster name="dbms" prefix="estore_dbms_">
+			<cluster name="support"/>
+			<cluster name="rdbms">
+				<cluster name="odbc"/>
+			</cluster>
+		</cluster>
+		<option>
+			<option name="header" value="${ISE_EIFFEL}/library/store/dbms/rdbms/odbc/Clib"/>
+			<option name="link" value="${ISE_EIFFEL}/library/store/spec/$(ISE_C_COMPILER)/lib/odbc_store.lib"/>
+			<option name="link" value="ODBC32.LIB"/>
+		</option>
+	</cluster>
+	<cluster name="eiffel_time" location="${ISE_EIFFEL}/library/time" prefix="eiffel_time_">
+		<cluster name="format">
+			<cluster name="english"/>
+		</cluster>
+	</cluster>
+</library>
+
+

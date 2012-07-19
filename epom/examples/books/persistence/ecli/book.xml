@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<modules>
+<parameter_map>
+	<parameter name="isbn" table="BOOK" column="isbn" sample="12345"/> 
+		<parameter name="title" table="BOOK" column="title" sample="Toto"/> 
+		<parameter name="author" table="BOOK" column="author" sample="toto"/> 
+</parameter_map>
+<access  type="exists" name="BOOK_EXIST">
+	<description>
+		description: "Does a book exists?"
+	</description>
+	<sql>select count(*) as exists_count from BOOK where isbn = ?isbn
+	</sql>
+	<parameter_set extends="BOOK_ID">
+		<parameter name="isbn"/> 
+	</parameter_set>
+	<result_set extends="EXISTS_COUNT"/>
+</access>
+<access  type="read" name="BOOK_READ_BY_ISBN">
+	<description>
+		description: "read book by isbn"
+	</description>
+	<sql>select isbn, title, author from BOOK where isbn = ?isbn
+	</sql>
+	<parameter_set extends="BOOK_ID">
+		<parameter name="isbn"/> 
+	</parameter_set>
+	<result_set extends="BOOK_ROW"/>
+</access>
+<access  type="extended" name="BOOK_READ_BY_TITLE" >
+	<description>
+		description: "read book by title"
+	</description>
+	<sql>select isbn, title, author from book where title like ?title
+	</sql>
+	<parameter_set>
+		<parameter name="title"/> 
+	</parameter_set>
+	<result_set extends="BOOK_ROW"/>
+</access>
+
+<access  type="update" name="BOOK_UPDATE">
+	<description>
+		description: "delete book"
+	</description>
+	<sql>update book set title = ?title , author = ?author where isbn = ?isbn	</sql>
+	<parameter_set extends="BOOK_MODIFY_PARAMETERS">
+		<parameter name="isbn" /> 
+		<parameter name="title"/> 
+		<parameter name="author" /> 
+	</parameter_set>
+</access>
+<access  type="write" name="BOOK_WRITE">
+	<description>
+		description: "Write book"
+	</description>
+	<sql>insert into book values (?isbn, ?title, ?author)	</sql>
+	<parameter_set extends="BOOK_MODIFY_PARAMETERS">
+		<parameter name="isbn"/> 
+		<parameter name="title"/> 
+		<parameter name="author"/> 
+	</parameter_set>
+</access>
+<access  type="delete" name="BOOK_DELETE">
+	<description>
+		description: "delete book"
+	</description>
+	<sql>delete from book where isbn = ?isbn
+	</sql>
+	<parameter_set extends="BOOK_ID">
+		<parameter name="isbn"/> 
+	</parameter_set>
+</access>
+</modules>
