@@ -1,0 +1,43 @@
+# Makefile for zlib.  Modified for lcc-win32 by Paul G. Crismer  2003-08-19
+# (This Makefile is directly derived from Makefile.gcc)
+# Copyright (C) 1995-1998 Jean-loup Gailly.
+# For conditions of distribution and use, see copyright notice in zlib.h 
+
+# To compile, or to compile and test, type:
+# 
+#   make -f makefile.lcc;  make -f makefile.lcc test
+# 
+# To install libz.a, zconf.h and zlib.h type:
+# 
+#    make -f zlib_makefile.lcc
+# 
+
+CC=lcc
+
+CFLAGS=-g2
+CP=copy 
+RM=del
+LDLIBS=
+LD=link
+LDSHARED=
+
+INCL=zlib.h zconf.h
+LIBS=zlib_lcc.lib
+
+AR=lcclib
+
+SRCDIR=
+
+OBJS = adler32.obj compress.obj crc32.obj gzio.obj uncompr.obj deflate.obj trees.obj \
+zutil.obj inflate.obj infblock.obj inftrees.obj infcodes.obj infutil.obj inffast.obj
+
+TEST_OBJS = example.obj minigzip.obj
+
+zlib_lcc.lib : $(OBJS)
+	$(AR) /out:$@ $(OBJS)
+
+clean:
+	$(RM) *.d
+	$(RM) *.obj
+	$(RM) *.exe
+	$(RM) zlib_lcc.lib

@@ -1,0 +1,479 @@
+**
+**
+** The "starred" features have been 'tested' by the various TEST* classes
+**
+**
+
+feature -- Access
+
+*	character_spacing: DOUBLE
+			-- Tc
+			-- (from PDF_TEXT_STATE)
+
+	color_space: INTEGER
+			-- current color space
+			-- (from PDF_GRAPHICS_STATE)
+
+	ctm: PDF_TRANSFORMATION_MATRIX
+			-- current transformation matrix
+			-- (from PDF_GRAPHICS_STATE)
+
+	current_x: DOUBLE
+			-- current point x
+			-- (from PDF_GRAPHICS_STATE)
+
+	current_y: DOUBLE
+			-- current point y
+			-- (from PDF_GRAPHICS_STATE)
+
+*	dash_array: PDF_ARRAY [INTEGER]
+			-- The line dash pattern controls the pattern of dashes and gaps used to stroke paths.
+			-- It is specified by a dash array and a dash phase. The dash array’s elements are
+			-- numbers that specify the lengths of alternating dashes and gaps.
+			-- (operator 'd')
+			-- (from PDF_GRAPHICS_STATE)
+
+*	dash_phase: INTEGER
+			-- the dash phase specifies the distance into the dash pattern at which to start the dash.
+			-- The elements of both the dash array and the dash phase are expressed in user space units.
+			-- (operator 'd')
+			-- (from PDF_GRAPHICS_STATE)
+
+*	current_font: PDF_FONT
+			-- Tf
+			-- (from PDF_TEXT_STATE)
+
+*	current_font_size: DOUBLE
+			-- Tfs
+			-- (from PDF_TEXT_STATE)
+
+	gray: DOUBLE
+			-- gray index for non-stroking operations
+			-- useful when color_space = color_space_gray
+			-- (from PDF_GRAPHICS_STATE)
+		ensure -- from PDF_GRAPHICS_STATE
+			between_black_an_white: 0 <= Result and Result <= 1
+
+	gray_stroke: DOUBLE
+			-- gray index for stroking operations
+			-- useful when color_space = color_space_g
+			-- (from PDF_GRAPHICS_STATE)
+		ensure -- from PDF_GRAPHICS_STATE
+			between_black_an_white: 0 <= Result and Result <= 1
+
+*	horizontal_scaling: DOUBLE
+			-- Th -  percentage : default = 100
+			-- (from PDF_TEXT_STATE)
+
+
+*	line_cap: INTEGER
+			-- A code specifying the shape of the endpoints for any open path that
+			-- is stroked (see “Line Cap Style” on page 139). Initial value: 0, for
+			-- square butt caps. (operator 'J')
+			-- (from PDF_GRAPHICS_STATE)
+
+*	line_join: INTEGER
+			-- A code specifying the shape of joints between connected segments
+			-- of a stroked path (see “Line Join Style” on page 140). Initial value:0, for mitered joins.
+			-- (operator 'j')
+			-- (from PDF_GRAPHICS_STATE)
+
+*	line_width: DOUBLE
+			-- The thickness, in user space units, of paths to be stroked (see “Line
+			-- Width” on page 139). Initial value: 1.0. (operator 'w')
+			-- (from PDF_GRAPHICS_STATE)
+
+	line_x: INTEGER
+			-- x origin of current line
+			-- (from PDF_TEXT_STATE)
+
+	line_y: INTEGER
+			-- y origin of current line
+			-- (from PDF_TEXT_STATE)
+
+	mediabox: PDF_RECTANGLE
+			-- rectangle describing the size of the medium
+
+	medium_rotation: INTEGER
+			-- number of degrees the medium must be rotated when displayed or printed
+			-- must be a multiple of 90
+			--	current_font : PDF_FONT
+			--	current_font_size : DOUBLE
+
+	miter_limit: DOUBLE
+			-- The maximum length of mitered line joins for stroked paths (see
+			-- “Miter Limit” on page 140). This parameter limits the length of “spikes” produced when line segments join at sharp angles.
+			-- Initial value: 10.0, for a miter cutoff below approximately 11.5 degrees.
+			-- (operator 'M')
+			-- (from PDF_GRAPHICS_STATE)
+
+
+	path_origin_x: DOUBLE
+			-- (from PDF_GRAPHICS_STATE)
+
+	path_origin_y: DOUBLE
+			-- (from PDF_GRAPHICS_STATE)
+
+*	render_mode: INTEGER
+			-- render mode
+			-- (from PDF_TEXT_STATE)
+
+*	rgb: ARRAY [DOUBLE]
+			-- rgb color for non-stroking operations
+			-- (from PDF_GRAPHICS_STATE)
+		require -- from PDF_GRAPHICS_STATE
+			color_space = color_space_rgb
+		ensure -- from PDF_GRAPHICS_STATE
+			Result /= void
+			Result.lower = 1
+			Result.upper = 3
+
+	rgb_stroke: ARRAY [DOUBLE]
+			-- rgb color for stroking operations
+			-- (from PDF_GRAPHICS_STATE)
+		require -- from PDF_GRAPHICS_STATE
+			color_space = color_space_rgb
+		ensure -- from PDF_GRAPHICS_STATE
+			Result /= void
+			Result.lower = 1
+			Result.upper = 3
+
+*	text_leading: DOUBLE
+			-- Tl
+			-- (from PDF_TEXT_STATE)
+
+*	text_rise: DOUBLE
+			-- Trise
+			-- (from PDF_TEXT_STATE)
+
+*	text_state: PDF_TEXT_STATE
+			-- (from PDF_GRAPHICS_STATE)
+
+*	text_x: INTEGER
+			-- x origin of current text
+			-- (from PDF_TEXT_STATE)
+
+*	text_y: INTEGER
+			-- y origin of current text
+			-- invariant: text_y = line_y
+			-- (from PDF_TEXT_STATE)
+
+*	tlm: PDF_TRANSFORMATION_MATRIX
+			-- text line matrix
+			-- (from PDF_TEXT_STATE)
+
+*	tm: PDF_TRANSFORMATION_MATRIX
+			-- text matrix
+			-- holds intermediate x and y value during printing...
+			-- (from PDF_TEXT_STATE)
+
+*	word_spacing: DOUBLE
+			-- Tw
+			-- (from PDF_TEXT_STATE)
+		
+feature -- Element change
+
+	add_stream (a_document: PDF_DOCUMENT)
+			--
+		require
+			a_document /= void
+		ensure
+			contents.has (current_stream)
+			current_stream = a_document.last_stream
+
+*	set_font (a_font: PDF_FONT; a_size: DOUBLE)
+		ensure -- from PDF_TEXT_STATE_OPERATORS
+			current_font_size = a_size
+
+	set_mediabox (a_box: PDF_RECTANGLE)
+			-- set 'a_box' as mediabox
+		require
+			exists: a_box /= void
+		ensure
+			set: mediabox = a_box
+
+	set_medium_rotation (r: INTEGER)
+			-- rotate medium
+		require
+			multiple_90: (r \\ 90) = 0
+		ensure
+			medium_rotation_set: medium_rotation = r
+	
+	
+feature -- Miscellaneous
+
+*	Bevel_join: INTEGER is 2
+			-- Bevel join. The two segments are finished with butt
+			-- caps (see “Line Cap Style” on page 139) and the
+			-- resulting notch beyond the ends of the segments is
+			-- filled with a triangle.
+			-- (from PDF_GRAPHICS_STATE)
+
+*	Butt_cap: INTEGER is 0
+			-- Butt cap. The stroke is squared off at the endpoint of
+			-- the path. There is no projection beyond the end of
+			-- the path.
+			-- (from PDF_GRAPHICS_STATE)
+
+	Color_space_gray: INTEGER is 1
+			-- /DeviceGray
+			-- (from PDF_GRAPHICS_STATE)
+
+	Color_space_rgb: INTEGER is 2
+			-- /DeviceRGB
+			-- (from PDF_GRAPHICS_STATE)
+
+*	Miter_join: INTEGER is 0
+			-- Miter join. The outer edges of the strokes for the two
+			-- segments are extended until they meet at an angle, as
+			-- in a picture frame. If the segments meet at too sharp
+			-- an angle (as defined by the miter limit parameter—
+			-- see “Miter Limit,”), a bevel join is used instead.
+			-- (from PDF_GRAPHICS_STATE)
+
+*	Projecting_square_cap: INTEGER is 2
+			-- Projecting square cap. The stroke continues beyond
+			-- the endpoint of the path for a distance equal to half
+			-- the line width and is then squared off.
+			-- (from PDF_GRAPHICS_STATE)
+
+*	Round_cap: INTEGER is 1
+			-- Round cap. A semicircular arc with a diameter equal
+			-- to the line width is drawn around the endpoint and
+			-- filled in.
+			-- (from PDF_GRAPHICS_STATE)
+
+*	Round_join: INTEGER is 1
+			-- Round join. A circle with a diameter equal to the line
+			-- width is drawn around the point where the two
+			-- segments meet and is filled in, producing a rounded
+			-- corner.
+			-- Note: If path segments shorter than half the line width
+			-- meet at a sharp angle, an unintended “wrong side” of
+			-- the circle may appear.
+			-- (from PDF_GRAPHICS_STATE)
+	
+feature -- Basic operations
+
+*	begin_text
+		require -- from PDF_GRAPHICS_STATE_OPERATORS
+			no_embedding: not text_mode
+		ensure -- from PDF_GRAPHICS_STATE_OPERATORS
+			text_mode
+		ensure then
+			line_x = 0
+			line_y = 0
+			text_x = 0
+			text_y = 0
+
+*	bezier_1 (cx1, cy1, cx2, cy2, px, py: DOUBLE)
+		ensure -- from PDF_GRAPHICS_STATE_OPERATORS
+			current_x = px
+			current_y = py
+
+*	bezier_2 (cx2, cy2, px, py: DOUBLE)
+		ensure -- from PDF_GRAPHICS_STATE_OPERATORS
+			current_x = px
+			current_y = py
+
+*	bezier_3 (cx1, cy1, px, py: DOUBLE)
+		ensure -- from PDF_GRAPHICS_STATE_OPERATORS
+			current_x = px
+			current_y = py
+
+	close_path
+		ensure -- from PDF_GRAPHICS_STATE_OPERATORS
+			current_x = path_origin_x
+			current_y = path_origin_y
+
+*	end_text
+			-- end text mode
+		require -- from PDF_GRAPHICS_STATE_OPERATORS
+			text_mode
+		ensure -- from PDF_GRAPHICS_STATE_OPERATORS
+			not text_mode
+
+	fill
+
+	fill_then_stroke
+
+*	grestore
+		require -- from PDF_GRAPHICS_STATE_OPERATORS
+			not text_mode
+
+*	gsave
+		require -- from PDF_GRAPHICS_STATE_OPERATORS
+			not text_mode
+
+*	lineto (x, y: DOUBLE)
+		ensure -- from PDF_GRAPHICS_STATE_OPERATORS
+			current_x = x
+			current_y = y
+
+*	move (x, y: DOUBLE)
+		ensure -- from PDF_GRAPHICS_STATE_OPERATORS
+			current_x = x
+			current_y = y
+			path_origin_x = x
+			path_origin_y = y
+
+*	rectangle (x, y, w, h: INTEGER)
+		ensure -- from PDF_GRAPHICS_STATE_OPERATORS
+			current_x = x
+			current_y = y + h
+
+	rotate (theta: DOUBLE)
+
+	scale (sx, sy: DOUBLE)
+
+	set_gray (a_gray: DOUBLE)
+		require -- from PDF_GRAPHICS_STATE_OPERATORS
+			black: a_gray >= 0.0
+			white: a_gray <= 1.0
+		ensure then
+			gray = a_gray
+
+	set_gray_stroke (a_gray: DOUBLE)
+		require -- from PDF_GRAPHICS_STATE_OPERATORS
+			black: a_gray >= 0.0
+			white: a_gray <= 1.0
+		ensure then
+			gray_stroke = a_gray
+
+	set_rgb_color (r, g, b: DOUBLE)
+		require -- from PDF_GRAPHICS_STATE_OPERATORS
+			r_level: 0.0 <= r and r <= 1.0
+			g_level: 0.0 <= g and g <= 1.0
+			b_level: 0.0 <= b and b <= 1.0
+
+	set_rgb_color_stroke (r, g, b: DOUBLE)
+		require -- from PDF_GRAPHICS_STATE_OPERATORS
+			r_level: 0.0 <= r and r <= 1.0
+			g_level: 0.0 <= g and g <= 1.0
+			b_level: 0.0 <= b and b <= 1.0
+
+	skew (alpha, beta: DOUBLE)
+
+*	stroke
+
+*	translate (a_tx, a_ty: DOUBLE)
+	
+	
+feature -- Basic operations - Graphics
+
+*	set_line_dash (array: ARRAY [INTEGER]; phase: INTEGER)
+		ensure -- from PDF_GRAPHICS_STATE_OPERATORS
+			dash_array = array
+			dash_phase = phase
+
+*	set_line_cap (c: INTEGER)
+		require -- from PDF_GRAPHICS_STATE_OPERATORS
+			within_range: c = butt_cap or c = round_cap or c = projecting_square_cap
+		ensure -- from PDF_GRAPHICS_STATE_OPERATORS
+			line_cap = c
+
+*	set_line_join (j: INTEGER)
+		ensure -- from PDF_GRAPHICS_STATE_OPERATORS
+			line_join = j
+
+*	set_line_width (w: DOUBLE)
+		require -- from PDF_GRAPHICS_STATE_OPERATORS
+			non_negative: w >= 0
+		ensure -- from PDF_GRAPHICS_STATE_OPERATORS
+			line_width = w
+
+	set_miter_limit (m: DOUBLE)
+		ensure -- from PDF_GRAPHICS_STATE_OPERATORS
+			miter_limit = m
+	
+feature -- Basic operations - Text
+
+*	move_text_origin (x, y: DOUBLE)
+			-- begin a new line, with an (x,y) offset from the previous one
+		require -- from PDF_TEXT_STATE_OPERATORS
+			text_mode
+		ensure -- from PDF_TEXT_STATE_OPERATORS
+			line_x = old line_x + x
+			line_y = old line_y + y
+			text_x = line_x
+			text_y = line_y
+
+*	put_new_line
+
+*	put_new_line_string (s: STRING)
+			--
+		require -- from PDF_TEXT_STATE_OPERATORS
+			text_mode
+
+*	put_string (s: STRING)
+		require -- from PDF_TEXT_STATE_OPERATORS
+			text_mode
+
+*	set_character_spacing (s: DOUBLE)
+		ensure -- from PDF_TEXT_STATE_OPERATORS
+			character_spacing = s
+
+*	set_horizontal_scaling (s: DOUBLE)
+		ensure -- from PDF_TEXT_STATE_OPERATORS
+			horizontal_scaling = s
+
+*	set_render_mode (a_mode: INTEGER)
+		require -- from PDF_TEXT_STATE_OPERATORS
+			good_mode: a_mode >= render_fill_text and a_mode <= render_clip
+			clipping_constraint: (text_mode and is_render_mode_clipping) implies (a_mode >= render_fill_n_clip and a_mode <= render_clip)
+		ensure -- from PDF_TEXT_STATE_OPERATORS
+			mode_set: render_mode = a_mode
+
+*	set_text_leading (l: DOUBLE)
+		ensure -- from PDF_TEXT_STATE_OPERATORS
+			text_leading = l
+
+*	set_text_rise (r: DOUBLE)
+		ensure -- from PDF_TEXT_STATE_OPERATORS
+			text_rise = r
+
+*	set_word_spacing (w: DOUBLE)
+		ensure -- from PDF_TEXT_STATE_OPERATORS
+			word_spacing = w
+	
+feature -- Constants
+
+*	Render_clip: INTEGER is 6
+			-- (from PDF_TEXT_STATE)
+
+*	Render_fill_n_clip: INTEGER is 3
+			-- (from PDF_TEXT_STATE)
+
+*	Render_fill_text: INTEGER is 0
+			-- (from PDF_TEXT_STATE)
+
+*	Render_fill_then_stroke_n_clip: INTEGER is 5
+			-- (from PDF_TEXT_STATE)
+
+*	Render_fill_then_stroke_text: INTEGER is 2
+			-- (from PDF_TEXT_STATE)
+
+-	Render_invisible: INTEGER is 2
+			-- (from PDF_TEXT_STATE)
+
+*	Render_stroke_n_clip: INTEGER is 4
+			-- (from PDF_TEXT_STATE)
+
+*	Render_stroke_text: INTEGER is 1
+			-- (from PDF_TEXT_STATE)
+	
+feature -- Status Report
+
+	Is_page: BOOLEAN is True
+	
+invariant
+
+		-- from ANY
+	reflexive_equality: standard_is_equal (Current)
+	reflexive_conformance: conforms_to (Current)
+		-- from PDF_OBJECT
+	non_negative_number: number >= 0
+		-- from PDF_TEXT_STATE
+	text_y = line_y
+
+end -- class PDF_PAGE

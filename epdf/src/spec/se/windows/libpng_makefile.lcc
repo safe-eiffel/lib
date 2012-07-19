@@ -1,0 +1,70 @@
+# makefile for libpng using lcc-win32 (generic, static library)
+# modified by Paul G. Crismer from makefile.gcc
+# Copyright (C) 2000 Cosmin Truta
+# Copyright (C) 1995 Guy Eric Schalnat, Group 42, Inc.
+# For conditions of distribution and use, see copyright notice in png.h
+
+# Location of the zlib library and include files
+ZLIBINC = ..\zlib
+ZLIBLIB = ..\zlib\zlib.lib
+
+# Compiler, linker, lib and other tools
+CC = lcc
+LD = lcclnk
+AR = lcclib 
+RANLIB = echo 
+RM = del
+
+CDEBUG = 
+LDDEBUG =
+CRELEASE = -g2
+LDRELEASE =
+CFLAGS = -I$(ZLIBINC) $(CRELEASE)
+LDFLAGS = libpng_lcc$(A) $(ZLIBLIB) 
+
+# File extensions
+O=.obj
+A=.lib
+E=.exe
+
+# Variables
+OBJS = png$(O) pngerror$(O) pngget$(O) pngmem$(O) pngpread$(O) \
+	pngread$(O) pngrio$(O) pngrtran$(O) pngrutil$(O) pngset$(O) \
+	pngtrans$(O) pngwio$(O) pngwrite$(O) pngwtran$(O) pngwutil$(O)
+
+# Targets
+all: libpng_lcc$(A) pngtest$(E)
+
+libpng_lcc$(A): $(OBJS)
+	$(AR) /out:$@ $(OBJS)
+	$(RANLIB) $@
+
+test: pngtest$(E)
+	pngtest$(E)
+
+pngtest$(E): pngtest$(O) libpng_lcc$(A)
+	$(LD) -o $@ pngtest$(O) $(LDFLAGS)
+
+clean:
+	$(RM) *$(O) 
+	$(RM) libpng_lcc$(A) 
+	$(RM) pngtest$(E) 
+	$(RM) pngout.png
+
+png$(O): png.h pngconf.h
+pngerror$(O): png.h pngconf.h
+pngget$(O): png.h pngconf.h
+pngmem$(O): png.h pngconf.h
+pngpread$(O): png.h pngconf.h
+pngread$(O): png.h pngconf.h
+pngrio$(O): png.h pngconf.h
+pngrtran$(O): png.h pngconf.h
+pngrutil$(O): png.h pngconf.h
+pngset$(O): png.h pngconf.h
+pngtest$(O): png.h pngconf.h
+pngtrans$(O): png.h pngconf.h
+pngwio$(O): png.h pngconf.h
+pngwrite$(O): png.h pngconf.h
+pngwtran$(O): png.h pngconf.h
+pngwutil$(O): png.h pngconf.h
+

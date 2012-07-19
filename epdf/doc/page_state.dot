@@ -1,0 +1,20 @@
+digraph page_operations_mode {
+
+	node [shape = doublecircle]; 
+	
+	i [label="Initial"];
+	
+	node [shape=box];
+	pg [label="Page\nDefinition"];
+	pth [label="Path"];
+	clp [label="Clipping"];
+	txt [label="Text"];
+	
+	i -> pg;
+	pg -> pth;
+	pth -> pg;
+	pth -> clp;
+	pg -> txt;
+	txt -> pg;
+	
+}

@@ -1,0 +1,56 @@
+**
+** ??? Concepts
+** Notes after reading the Adobe PDF Reference Library
+**
+**
+
+1) Document
+
+The main concept is the "Document" (PDF_DOCUMENT).
+It is the creator of every PDF 'object'.
+
+The most visible constituent of a document is the set of its pages.
+The pages are contained in a tree-structure made of PDF_PAGES.
+Every individual page (PDF_PAGE) has a pages-tree parent.
+
+The non-visible constituents of a Document mostly are some kind of
+resources or parameters : fonts, default media size, ...
+
+2) Page
+Every single page is constituted by one ore more streams (PDF_STREAM) of graphical operations.
+
+Non graphical attributes are the page's own media size.
+
+??? Description by "needs" (non-yagni).
+- create a document
+- set various document level attributes
+	* fonts (find_font) -OK-
+	* default page size
+- (DONE) The concept of "pages" (i.e. pages tree node) does not need to be exposed.
+  Pages can generated "on the fly" during the to_pdf conversion.
+  This is more interesting since it can produce balanced trees.
+   (need to examine an algorithm for that)
+   
+* Symbol + ZapfDingbats encodings ! -OK-
+
+- create a page
+- set various text or graphics state attributes (select a font font the page)
+	* set_font (PDF_FONT, size) -OK-
+	
+- draw on the page
+- create another page
+- finish the document (print it)
+
+(Yagni?) Page attribute that are inheritable from a pages tree node :
+	- Resources
+	- MediaBox
+	- CropBox
+	- Rotate
+	
+Justification :
+Count the number of words in line (word_count) and adjust the character spacing :
+character_spacing = (box width - line width) / word_count
+
+
+!!! There is no need to bother people with streams... 
+

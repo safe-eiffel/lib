@@ -1,0 +1,29 @@
+system
+	gen_type1
+
+root
+	ROOT_CLASS: "make"
+
+default
+	assertion (require)
+	multithreaded (no)
+	console_application (no)
+	dynamic_runtime (no)
+	dead_code_removal (yes)
+	profile (no)
+	line_generation (no)
+	array_optimization (no)
+	inlining (no)
+	inlining_size ("10")
+
+
+cluster
+	
+	root_cluster: "C:\User\Eiffel\pdfeiffel\tools\gen_type1"
+
+		-- EiffelBase
+	library base:				"$ISE_EIFFEL/library/base"
+		exclude
+			"table_eiffel3";"desc"
+		end
+end

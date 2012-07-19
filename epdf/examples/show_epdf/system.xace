@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+
+<system name="SHOW_EPDF">
+	<description>
+		system:      "Show application for ePDF"
+		author:      "Paul G. Crismer"
+		copyright:   "Copyright (c) 2001, Paul G. Crismer and others"
+		license:     "Eiffel Forum Freeware License v1 (see forum.txt)"
+		date:        "$Date$"
+		revision:    "$Revision$"
+	</description>
+
+	<root class="SHOW_EPDF" creation="make"/>
+	<cluster name="show_epdf" location="${EPDF}/examples/show_epdf"/>
+	<option name="msil_generation" value="true" if="${GOBO_DOTNET}"/>
+	<option unless="${DEBUG}">
+		<option name="assertion" value="none"/>
+		<option name="finalize" value="true" unless="${GOBO_EIFFEL}=ve"/>
+	</option>
+	<option if="${DEBUG}">
+		<option name="assertion" value="all"/>
+		<option name="finalize" value="false"/>
+	</option>	
+	<mount location="${EPDF}/library.xace"/>
+	<option if="${GOBO_OS}=windows">
+		<option name="link" value="libc.lib" if="${GOBO_EIFFEL}=ve"/>
+		<option name="link" value="/entry:_mainCRTStartup" if="${GOBO_EIFFEL}=ve"/>
+	</option>
+</system>

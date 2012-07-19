@@ -1,0 +1,113 @@
+**
+**
+** Those are notes written down when reading the Adobe PDF reference manual
+**
+**
+
+Outlines (optional)
+
+	minimal 
+		<</Type /Outlines
+		  /Count 0
+		>>
+		
+Page 
+	Le page dictionary doit avoir un Procedure set array
+	dans son dictionnaire de ressources
+
+	Type
+	Parent
+	Resources <<peut être vide>> <<>>
+	MediaBox [0 0 612 792]
+	Content (optionnel)
+
+
+(DONE) Text state operators
+
+	set_character_spacing (n : REAL) ?n>=0 !character_spacing=n out: "n Tc"
+	set_word_spacing (n : REAL) ?n>=0 !word_spacing=n out: "n Tw"
+	set_horizontal_scaling (p: REAL) ?p>=0 !horizontal_scaling=p out: "p Tz"
+	set_text_leading (n : REAL) ?n>=0 !text_leading=n out: "n TL"
+	set_font (name : STRING; size : REAL) ?name exists in page's font dictionary !current_font=name, current_font_size=s out: "name size Tf"
+	set_rendering_mode (m : INTEGER) ?m>=0 !rendering_mode=m out: "m Tr"
+	set_text_rise (r : REAL) ?n>=0 !text_rise=r out: "r Ts"
+
+state
+	character_spacing
+	word_spacing
+	horizontal_scaling
+	text_leading
+	current_font_name
+	current_font_siz
+	rendering_mode
+	text_rise
+
+rendering_mode
+	0	Fill text
+	1	Stroke text
+	2	Fill, then stroke
+	3	invisible (no fill, no stroke)
+	4	fill text and add to path for clipping
+	5	stroke text and add to path for clipping
+	6	fill, then stroke and add to path for clipping
+	7	add text to path for clipping
+
+Text positioning operators
+
+	move_text_origin (x,y : REAL)  out:"x y Td"
+	(NOT done) move to start of next line, set y as current text leading and offset (x,y) from current line out:"x y TD"
+	put_new_line : by (0, text leading) out: "T*"
+	set_text_matrix (a, b, c, d, e, f : REAL) ... out: "a b c d e f Tm"
+
+Text showing operators
+
+	put_string (s : STRING) show text beginning at current line out:"s Tj"
+	put_new_line_string (s : STRING) move to next line and put string out: "s '"
+	(Not done) set current word and character spacing, move to next line and show out:"w c s \""
+	(Not done)  "[...] TJ"
+
+
+Current Transformation Matrix
+
+	Translate (tx, ty) : [1 0 0 1 tx ty]
+	Scale (sx, sy) : [sx 0 0 sy 0 0]
+	Rotate (a) : [cos(a) sin(a) -sin	(a) cos(a) 0 0]
+	Skew (a, b) : [1 tan(a) tan(b) 1 0 0]
+
+	out: "a b c d e f cm" modify CTM by contaenating the specified matrix
+	set_line_width (l : DOUBLE) out: "l w"
+	set_line_cap (c : INTEGER) out: "c J"
+	set_line_joint (l : INTEGER) out: "l j"
+	set_miter_limit (m : DOUBLE) out: "m M"
+	gsave out:"q"
+	grestore out:"Q" 	
+
+CTM (current transformation matrix) = user space to device transformation
+TM (text matrix) = text space to user space
+
+
+*** Font Metrics
+
+	PDF_DOCUMENT.find_font (nom : STRING)
+	! last_font : PDF_FONT
+
+	PDF_FONT <- PDF_<font_name>
+
+
+* Decoding AFM
+
+	search for "FontName"
+	search for "StartCharMetrics" number_of_lines
+	decode metrics line :
+	C code ; -- ignored 3 w
+	WX width ; -- kept 3 w
+	N name ; -- kept 3 w
+	B bounding box ; -- ignored 6 w
+
+	read number_of_lines lines
+
+	widths : ARRAY[INTEGER] is
+		once
+			Result := << ..... >>
+		end
+

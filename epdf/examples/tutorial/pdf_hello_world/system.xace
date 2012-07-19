@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+
+<system name="pdf_hello_world">
+	<description>
+		system:      "Show application for ePDF"
+		author:      "Paul G. Crismer"
+		copyright:   "Copyright (c) 2001, Paul G. Crismer and others"
+		license:     "Eiffel Forum Freeware License v1 (see forum.txt)"
+		date:        "$Date$"
+		revision:    "$Revision$"
+	</description>
+
+	<root class="PDF_HELLO_WORLD" creation="make"/>
+	<option unless="$DEBUG">
+		<option name="assertion" value="none"/>
+		<option name="finalize" value="true" unless="${GOBO_EIFFEL}=ve"/>
+	</option>
+	<option if="${DEBUG}">
+		<option name="assertion" value="all"/>
+		<option name="finalize" value="false"/>
+	</option>
+
+
+	<cluster name="pdf_hello_world" location="${EPDF}/examples/tutorial/pdf_hello_world"/>
+	<mount location="${EPDF}/library.xace"/>
+	<mount location="${GOBO}/library/library.xace"/>
+	<mount location="${GOBO}/library/kernel.xace"/>
+</system>
