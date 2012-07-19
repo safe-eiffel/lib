@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+
+<system name="qa_example">
+	<description>
+		system:      "ECLI qa_example; sample usage of query_assistant."
+
+		library: "ECLI : Eiffel Call Level Interface (ODBC) Library. Project SAFE."
+		copyright: "Copyright (c) 2001-2006, Paul G. Crismer and others"
+		license: "Eiffel Forum License v2 (see forum.txt)"
+		date: "$Date$"
+
+	</description>
+
+	<root class="QA_EXAMPLE" creation="make"/>
+	<option unless="${DEBUG}">
+		<option name="assertion" value="none"/>
+		<option name="finalize" value="true" unless="${GOBO_EIFFEL}=ve"/>
+	</option>
+	<option if="${DEBUG}">
+		<option name="assertion" value="all"/>
+		<option name="finalize" value="false"/>
+	</option>
+	<option if="${GOBO_OS}=windows">
+		<option name="linker" value="microsoft" if="${GOBO_EIFFEL}=ve"/>
+	</option>
+
+	<cluster name="isql" location="${ECLI}/examples/qa_example"/>
+
+	<mount location="${ECLI}/library.xace"/>
+
+</system>

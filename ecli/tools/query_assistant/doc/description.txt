@@ -1,0 +1,99 @@
+Query Assistant
+
+Query Assistant generates access modules from "access descriptions".
+
+An "access module" has a name and is desbribed by associating an SQL query, a comment, and hints
+about the content of the parameter set and the content of the result set.
+
+Why give hints about the SQL query ?  
+
+Parameter sets.
+
+Most ODBC drivers are unable to describe query parameters reliably.
+Each parameter has a name and is described through a reference column (table, column). 
+
+Many different SQL related to the same tables or views do have parameter sets
+with many commonalities.  Parameter sets can be factored out through an "extends" attribute.
+They extend a common virtual parameter set.
+
+Result set
+
+Result sets can be described automatically by ODBC drivers.
+Their commonalities can be factored out trough an "extends" attribute.
+Those result sets extend a common virtual result set.
+
+Generated classes
+
+Each access module leads to three classes
+
+1) Cursor class - encapsulates the SQL query; 
+2) Parameters class - hold parameter values
+3) Results class - hold result values
+
+Usage of generated classes.
+
+Let
+	p be an instance of C_PARAMETERS
+	c be an instance of C a cursor class
+	r be an instance of C_RESULTS
+	
+Scenario
+
+1. instantiate c
+2. instantiate p
+3. give values to p attributes
+4. associate p to c
+5. execute c and start iterating on result set if any
+6. current row values are obtained from c.item which is of type r
+
+
+Generation of of "access routines" class:
+class <name_prefix>_ACCESS_ROUTINES
+inherit
+ PO_STATUS_USE
+ PO_STATUS_MANAGEMENT
+
+
+feature --Access
+ last_object : PO_PERSISTENT
+ last_cursor : PO_CURSOR[like last_object]
+
+feature --Status report
+ is_error : BOOLEAN
+
+
+ do_<module_name> (cursor : <module_name>,
+	signature des paramètres)
+	local
+		parameters: <module_name_parameters>
+	do
+		create parameters.make
+		@foreach parameter
+			parameters.<parameter_name>.set_item (<parameter>)
+		cursor.set_parameters_object(parameters)
+		from
+			cursor.start
+			status.reset
+		until
+			status.is_error or else not cursor.is_ok or else cursor.off
+		loop
+			extend_cursor_from_<module_results> (cursor.item)
+			cursor.forth
+		end		
+		if cursor.is_error then
+			status.set_datastore_error (...)
+		elseif cursor.is_ok and cursor.has_information_message then
+			status.set_datastore_warning (...)
+		end
+		
+	end
+
+extend_cursor_from_<module_results> (row : <module_results>)
+	require
+		row_not_void
+	deferred
+	ensure
+		last_cursor_extended
+	end
+	
+GRRR: part du principe que c'est pour créer des objets.

@@ -1,0 +1,44 @@
+<?xml version="1.0"?>
+
+<system name="query_assistant">
+	<description>
+		system: "query_assistant: Access modules Generator"
+
+
+		library: "ECLI : Eiffel Call Level Interface (ODBC) Library. Project SAFE."
+		copyright: "Copyright (c) 2001-2006, Paul G. Crismer and others"
+		license: "Eiffel Forum License v2 (see forum.txt)"
+		date: "$Date$"
+
+	</description>
+
+	<root class="ACCESS_GEN" creation="make"/>
+	<option unless="${DEBUG}">
+		<option name="assertion" value="none"/>
+		<option name="garbage_collector" value="none"/>
+		<option name="finalize" value="true" unless="${GOBO_EIFFEL}=ve"/>
+	</option>
+	<option if="${DEBUG}">
+		<option name="assertion" value="all"/>
+		<option name="garbage_collector" value="none"/>
+		<option name="finalize" value="false"/>
+	</option>
+	<option if="${GOBO_DOTNET}">
+		<option name="msil_generation" value="true"/>
+		<option name="line_generation" value="true"/>
+	</option>
+
+	<cluster name="root_cluster" location="${ECLI}/tools/query_assistant/src" prefix="qa">
+		<cluster name="data"/>
+		<cluster name="error"/>
+		<cluster name="generation"/>
+		<cluster name="module"/>
+		<cluster name="xml"/>
+	</cluster>
+	
+	<mount location="${ECLI}/support/codegen/library.xace"/>
+	
+	<mount location="${ECLI}/library.xace"/>	
+	<mount location="${GOBO}/library/library.xace"/>
+	<mount location="${GOBO}/library/kernel.xace"/>
+</system>

@@ -1,0 +1,238 @@
+2012-02-06	pgcrism
+	* Port to 64 bits:
+		Reviewed External API.
+		Experimented with inlining C code.
+		
+	!! On 64 bits platform, the size of the data is expressed in 64 bits; 
+	   However ECLI has an limited the size of data to 32 bits to stay compatible with 32 bits implementation.
+	   
+2012-01-13	pgcrism
+	* Support for smallint - INTEGER_16
+
+2011-12-22	pgcrism
+	* [FIX] Added environment Variables ODBC32LIBPATH and 
+		ODBCCP32LIBPATH to cope with Windows SDK7.1 linking error - 
+		
+		"The ODBC team investigated and confirmed that the issue exists in the version of ODBCCP32.LIB that 
+		is included with Visual Studio 2010 and the Windows 7 SDK. 
+		Two workarounds are currently available. 
+		One is using /MD instead of /MT. 
+		The other is to use the version of ODBCCP32.LIB from the Vista SDK. 
+		I hope one of these workarounds will help you.
+		Mike Robinson
+		Program Manager
+		Windows SDK Team"
+		
+		The added environment variables allow one to use the Vista SDK libraries. (This solution is fully working).
+
+		TODO:
+		 use those environment variables to target the SDK 6 librarires
+
+2011-09-05	pgcrism
+	* Fix: ECLI_STATEMENT: execute/bind_parameters only when parameters_count > 0
+
+2010-12-20
+	* New error reporting in ECLI_STATUS descendant classes
+	* New "stream" datatypes; you do not have to know the size on long (varchar or binary) data before reading/writing.
+	* Query Assistant:
+	  - support of output parameters
+	  - new options: -straigth = generate without any type inference on database data
+	                 -force_string = all character data are declared as ECLI_STRING_LONGVARCHAR (no fixed lenght anymore)
+
+2009-03-05
+	* Build automation:
+		- ${ECLI}/build.eant - install => compiles libraries and tools
+		- ${ECLI}/examples/build.eant  => allows compilation of all sample applications
+	* Moved clisql to ${ECLI}/tools/isql
+	* More ECMA367 compliance work (excepted attached mechanisms).
+	* Reworked documentation, especially the tutorial.
+	
+2008-10-28
+	* Query Assistant: 		Version 1.3
+		added option -allow_integer_64 : supported INTEGER_64 datatype only if requested.
+
+2008-08-07
+	* ECLI_STRING_VALUE : fixed problem when retrieving strings with embedded NULL characters in them.
+
+2008-07-11
+
+	* ECLI_INTEGER_64 supported (Warning: Oracle driver does not support bindings with Integer_64).	
+	* Query Assistant : dropped usage of expat parser - just the Eiffel one.
+	* ECMA-367 minor changes.
+	
+2007-11-10
+	* Time tracing facility in ECLI_TRACER that outputs the time needed for executing a query.
+
+2006-03-22
+	* renamed $ECLI/ecli.eant as build.eant + defined targets 'install' and 'compile_libs'.
+	
+2006-01-*
+	* ODBC/CLI API tracing : ECLI_SESSION.set_api_trace_filename, ECLI_SESSION.enable_api_tracing, ECLI_SESSION.disable_api_tracing.
+
+2005-12-*
+	* Complete review of test1 application.
+	* Added ECLI_DBMS_INFORMATION - equivalent of SQLGetInfo
+	
+2005-12-07
+	* ECLI_SESSION: Added getting/setting various connection attributes : login_timeout, connection_timeout, network_packet_size, tracing API (ODBC) low level calls.
+	
+2005-01-07
+	* Procedure calls are now fully tested.
+	* Support of multiple result sets : go_after finishes sweeping through the current result-set, finish finishes sweeping through all pending result sets.
+	* New connection protocol, using an ECLI_LOGIN_STRATEGY whith descendants
+	  - ECLI_SIMPLE_LOGIN (data source name, user name, password)
+	  - ECLI_DRIVER_LOGIN (using a connection string and possibly a windowed dialog)
+	* New ECLI_DRIVERS_CURSOR and ECLI_DRIVER classes. 
+	
+2004-06-22
+	* License is now Eiffel Forum v2.
+	* New indexing clause format to standardize with the format of GOBO.
+	
+2004-05-14
+	* Refactored ECLI_VALUE hierarchy
+	* Introduced sending/getting long data : ECLI_FILE_VALUE and descendants
+	  
+2004-05-05
+	* Bug fixes: 
+		- ECLI_DATA_SOURCES_CURSOR.get_diagnostics Result is not initialized
+		- ECLI_STATUS.get_diagnostics : impl_cli_state not renitialized
+	* New features:
+		- XS_C_STRING : 'wipe_out' added, 'put' fixed.
+
+2003-09-10
+	* New class ECLI_STORED_PROCEDURE allowing usage of input, output and input/output parameters
+	* New metadata classes : ECLI_PROCEDURES_CURSOR, ECLI_PROCEDURE, ECLI_PROCEDURE_COLUMNS_CURSOR, ECLI_PROCEDURE_COLUMN
+	* New classes : ECLI_BINARY, ECLI_VARBINARY, ECLI_LONGVARBINARY
+	
+2003-07-04
+	* ECLI_VALUE.as_* replace now ECLI_VALUE.to_* conversion routines
+		Original routines are make obsolete
+	* ECLI_VALUE.convertible_as_* replace now ECLI_VALUE.convertible_to* routines
+		Original routines are made obsolete
+	
+2003-05-05
+!!!	* ECLI_VALUE.as_string now *replaces* ECLI_VALUE.to_string to ensure .NET compatibility
+	* Transaction isolation
+		- new class ECLI_TRANSACTION_ISOLATION
+		- read/write implemented by ECLI_SESSION.transaction_isolation and ECLI_SESSION.set_transaction_isolation
+	* ECLI_TIMESTAMP.decimal_digits is now 0, unless specifically set through ECLI_TIMESTAMP.set_decimal_digits
+	* Prepared migration of ECLI to .NET : created support for external values
+	  with classes XS_C_*; This prevents using the '$' operator.
+	* Query assistant heavily reworked, still in alpha state.
+	
+2003-03-10
+	* ECLI_VALUE descendants implement correct 'copy' and 'is_equal' features.	  
+	
+2003-02-28
+	* 'metadata' cluster provides various cursors on metadata : tables, columns, types, procedures,
+	  primary keys, foreign keys, data sources, ...
+
+	* clisql now is a real command line interactive sql, useful in production environments
+	
+!!!	* ECLI_VALUE and its heirs have been revisited.  ECLI_GENERIC_VALUE [G] is a proper descendant
+	  with feature 'item' that can be expanded or not.  If 'item' is a reference, it always is the
+	  same reference -> beware of aliasing problems.
+	                  **** WARNING **** 
+	                  *****************
+	  ECLI_VALUE descendants 'item' features that return a reference
+	  always return the SAME reference. BEWARE OF ALIASING PROBLEMS.
+	  THIS IS A MAJOR CHANGE with respect to THE PREVIOUS SEMANTICS.
+	
+	* Reviewed sample applications :
+		'test1' does not use manifest arrays anymore (to prevent runtime problems with SmartEiffel)
+		'test_rowset' has been revisited to show how error handling could be done; more useful messages.
+		'isql' has been renamed 'clisql' to prevent name clashes with other known tools.
+		'test_values' can check good behavior of ECLI_VALUE and ECLI_ARRAYED_VALUE heir classes
+	* ECLI_ROWSET_MODIFIER : preconditions reviewed, various bug fixes
+	* STRING.append usage has been dropped; using ELKS feature 'append_string' now.
+	
+2003-01-01
+	* Added ECLI_SESSION.is_bind_arrayed_results_capable + updated ECLI_ROWSET_CURSOR preconditions on 'open' and 'open_prepared'
+	* Corrected problem with ECLI_STATEMENT.parameters_count when there were parameters without name
+	* ECLI_ARRAYED_VALUE.set_null is now correctly redefined
+	* ECLI_ARRAYED_BUFFER_FACTORY.value_factory is not a 'once' function anymore.  It is now a simulated "once per object".
+	* ECLI_ROWSET_CURSOR.row_count is bound and updated within 'fetch_next_row'.  GC is temporarily disabled to avoid problems with moving GCs.
+	* Various pre/post-conditions fixed/updated
+	
+2002-09-28
+	* Added 'arrayed' operations (ECLI_ROWSET_CURSOR, ECLI_ROWSET_MODIFIER)
+	  and values (ECLI_ARRAYED_VALUE and descendants)
+	* Reviewed parsing of SQL to find parameters.
+	* X/OPEN CLI/ODBC constants are now defined in Eiffel constant classes
+	  see $ECLI/src/spec/constants
+	* class ECLI_TYPE_CODES renamed ECLI_TYPES_CONSTANTS
+	* usage of ELKS STRING.keep_head
+	
+2001-09-15
+	* TEST1 now traces its output if asked on the command line.
+	* SmallEiffel-build systems now report error messages (error fixed).
+ 
+2001-09-06
+	* ISQL implementation of COMMIT, ROLLBACK and BEGIN.
+		TODO: read until _eof_ or quit
+
+2001-08-31
+	* Port to Visual Eiffel 3.2 Linux
+	* Added Trace capability : output can be read and executed by ISQL
+	* Tested with PostgreSQL 7.1.3 and UnixODBC 2.0.9
+	* Added ISE5.0/Borland makefile for C glue library
+	* Fixed problem with SmallEiffel : getting error messages is now possible
+
+2001-08-26
+	* added makefile for ISE5/Borland in %ECLI%\src\spec\ise\windows
+	* isql now executes commands ended by ; no need for a ; as the first and
+	  single character on a line.
+
+2001-07-19
+	* is_transaction_capable, ECLI_TRANSACTION_CAPABILITY_CONSTANTS
+
+2001-05-11
+	* attach/release are now obsolete, use open/close instead
+	* port to Visual Eiffel 3.2
+	* updated tutorial
+	* usage of GOBO 2.0 and its time cluster : DT_DATE, DT_TIME, DT_DATE_TIME
+	
+2000-11-03
+	* fixed segmentation violation problems
+	* added features 'attach' and 'release' to ECLI_SESSION and ECLI_STATEMENT
+	* updated tutorial
+
+2000-10-14
+	* added a tutorial - tutorial.html
+
+2000-09-06
+
+	* eclibuild.sh	- Helps compile projects using SmallEiffel on Unix
+	* all examples applications have been revisited
+	
+2000-08-10
+	* ECLIBUILD.BAT - Helps compile projects that use ECLI and SmallEiffel
+	* test_Xaction	- Exercises transaction capabilities
+	* added support for LONGVARCHAR, in memory (no stream).
+
+** ECLI 0001 Beta 5 **
+
+   !!!  Query assistant - 'Query Assistant' for ECLI allows a developer to generate classes
+	that encapsulate a cursor on a SQL 'SELECT' query.
+     +  Structure reorganization
+     +  Refactoring (contracts, anchored types, ...)
+
+2000-07-30
+	* made some cleaning
+	* updated the documentation
+	* port to smalleiffel
+
+2000-07-29
+	* query_assistant tool
+	* query assistant test and example
+
+2000-07-21
+	* Added 'value_anchor'.  In ECLI_STATEMENT, 'ECLI_VALUE' is replaced by 'like value_anchor'
+
+2000-07-13
+	* ECLI_VALUE 'loads' or 'puts' itself to a statement.  This will allow long data to be read/written.
+		see 'read_result', 'put_parameter'
+	* ECLI_VALUE 'binds' itself to a statement.
+		see 'bind_as_parameter'
+2000-07-07
+	Changed structure of ECLI directories.

@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<system xmlns="http://www.eiffel.com/developers/xml/configuration-1-5-0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.eiffel.com/developers/xml/configuration-1-5-0 http://www.eiffel.com/developers/xml/configuration-1-5-0.xsd" name="guisql" uuid="A8297D11-D097-4B90-B2EE-9D2197C79125">
+	<target name="guisql">
+		<root class="GUISQL" feature="make_and_launch"/>
+		<option trace="false" profile="false" debug="false" warning="true" syntax="transitional">
+			<assertions precondition="true"/>
+			<warning name="export_class_missing" enabled="false"/>
+			<warning name="old_verbatim_strings" enabled="false"/>
+			<warning name="syntax" enabled="false"/>
+			<warning name="vjrv" enabled="false"/>
+		</option>
+		<setting name="address_expression" value="false"/>
+		<setting name="array_optimization" value="false"/>
+		<setting name="check_vape" value="true"/>
+		<setting name="cls_compliant" value="true"/>
+		<setting name="dead_code_removal" value="true"/>
+		<setting name="dotnet_naming_convention" value="false"/>
+		<setting name="dynamic_runtime" value="false"/>
+		<setting name="exception_trace" value="false"/>
+		<setting name="il_verifiable" value="true"/>
+		<setting name="inlining" value="false"/>
+		<setting name="inlining_size" value="4"/>
+		<setting name="line_generation" value="false"/>
+		<setting name="msil_generation" value="false"/>
+		<setting name="msil_generation_type" value="exe"/>
+		<setting name="multithreaded" value="false"/>
+		<external_object location="$(ECLI)\src\spec\ise\windows\ecli_msc.lib"/>
+		<external_object location="ODBC32.lib"/>
+		<external_object location="ODBCCP32.lib"/>
+		<external_object location="$(SAFE_KERNEL)\external\src\spec\ise\windows\xs_c_msc.lib"/>
+		<library name="base" location="$ISE_LIBRARY\library\base\base.ecf"/>
+		<library name="gobo_kernel" location="$ISE_LIBRARY\library\gobo\gobo_kernel.ecf"/>
+		<library name="gobo_math" location="$ISE_LIBRARY\library\gobo\gobo_math.ecf"/>
+		<library name="gobo_string" location="$ISE_LIBRARY\library\gobo\gobo_string.ecf"/>
+		<library name="gobo_structure" location="$ISE_LIBRARY\library\gobo\gobo_structure.ecf"/>
+		<library name="gobo_time" location="$ISE_LIBRARY\library\gobo\gobo_time.ecf"/>
+		<library name="vision2" location="$ISE_LIBRARY\library\vision2\vision2.ecf"/>
+		<cluster name="ecli_ecli" location="${ECLI}\src\">
+			<cluster name="ecli_abstract" location="$|abstract\"/>
+			<cluster name="ecli_data" location="$|data\">
+				<cluster name="ecli_arrayed" location="$|arrayed\"/>
+			</cluster>
+			<cluster name="ecli_pattern" location="$|pattern\"/>
+			<cluster name="ecli_spec" location="$|spec\">
+				<cluster name="ecli_compiler_ise" location="$|ise\"/>
+				<cluster name="ecli_constants" location="$|constants\"/>
+			</cluster>
+			<cluster name="ecli_metadata" location="$|metadata\"/>
+			<cluster name="ecli_support" location="$|support\"/>
+		</cluster>
+		<cluster name="guisql" location="${ECLI}\examples\guisql\"/>
+		<cluster name="ise" location="${ISE_EIFFEL}\library\"/>
+		<cluster name="isql" location="${ECLI}\tools\isql\">
+			<cluster name="commands" location="$|commands\"/>
+		</cluster>
+		<cluster name="xs_c_src" location="${SAFE_KERNEL}\external\src\">
+			<cluster name="xs_c_spec" location="$|spec\">
+				<cluster name="xs_c_compiler_ise" location="$|ise\"/>
+			</cluster>
+		</cluster>
+	</target>
+</system>

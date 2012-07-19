@@ -1,0 +1,122 @@
+** TODO **
+
+* Before releasing 2.2
+
+- REM  0 : verify documentation
+- REM  0 : verify samples (enough information to compile and go)
+- REM  0 : samples : factor code for arguments passing and version/banner message ???
+	CONS  4
+		A - arguments passing
+		B - banner
+		C - version
+		D - usage
+	application	A	B	C	D
+	transact	Pos	Proc(1)	-	Inline
+	test1		Keyed	Inline	-	Proc(2)
+	test_rowset	Keyed	-	-	Proc(3)
+	test_procedures	Pos	Inline	-	Proc(4)
+	test_gc		Pos	-	-	Inline
+	test_decimal_*	Pos	-	-	Inline
+	qa_example	Pos	-	-	Inline
+	isql		Keyed	Proc(5)	_	Proc(6)
+
+	Pos: Positional - dsn user pwd
+	Keyed: -dsn <dsn> -user <user> -pwd <pwd>
+
+	Inline: within other code
+	Proc: within specific procedure
+
+	1 : TRANSACT.show_initial_message
+	2 : TEST1.print_usage
+	3 : TEST_ROWSET.print_usage
+	4 : TEST_PROCEDURES.print_usage
+	5 : ISQL.print_banner
+	6 : ISQL.print_usage
+
+- REM  0 : samples : factor code for database/SQL syntax selection.
+	Delayed.
+
+- REM  2 : Package things + release.
+
+FUNCTIONALITY
+
+	Getting various metadata :
+	* Table statistics (information on indexes)
+
+DEPLOYMENT
+
+	Portability
+	* Test 'query_assistant' on Linux
+	* Test 'test_Xaction' on Linux
+
+DOCUMENTATION
+
+	More examples to do (???)
+
+DATA TYPES/VALUES
+
+	Implement other data values
+
+	* TINYINT 
+	* BIT
+
+TESTING
+
+Test cases
+
+	
+REFACTORING/IMPROVEMENTS
+
+Refactoring
+
+
+********* DONE **************
+
+General
+	** DONE 2003-04 Starting to create an eiffel.eant file that checks for various variable names and for external libraries
+
+Functionality
+
+	** DONE 2008-xx-xx : BIGINT aka ECLI_INTEGER_64
+	** DONE 2006-01-xx : DBMS information - capabilities, various metadata
+	** DONE 2006-01-xx : Type catalog
+	** DONE 2005-xx-xx : Procedures + multiple result sets
+	** DONE 2000-07-28 : Result-set metadata, 
+	** DONE 2002-07-xx : Tables/Columns metadata
+	** DONE 2002-07-xx : SQL Datatypes metadata.
+	** DONE 2003-03-xx : Primary/Foreign-keys catalog metadata,
+
+	** DONE 2002-09-26 : Allow Bulk data transfers
+	   A cursor is not a single line, but an array of lines. 
+	   This is interesting for performance reasons. (Nice to have).
+	   
+Portability 
+
+	** DONE 2008-xx-xx : Port to Gobo Eiffel Compiler v3.9
+	** DONE: 2003-01 Port to Visual Eiffel - make changes so that the error with an anchored declaration can be avoided.
+	** DONE 2000-06-22 ** using UnixODBC : www.unixodbc.org
+
+Documentation
+
+	** DONE 2009-03-09 : Tutorial written with Open Office
+	** DONE 2006-02-27 : Index of classes
+	** DONE 2000-10-14 : Tutorial
+	** DONE 2000-07-28 : isql, query_assistant, test1, qa_example **
+
+Data types/values
+
+	** DONE 2006-01-xx : Long Variable Data as streams (file)
+	** DONE 2005-xx-xx : BINARY, VARBINARY, LONGBINARY, LONGVARBINARY
+	** DONE 2000-07-28 : ECLI_VALUE gets/puts itself to an active ECLI_STATEMENT.  It allows an easy implementation of long data in descendants of ECLI_VALUE.
+	** DONE 2002-07-xx : Time, 
+	** DONE 2000-08-10 : LONGVARCHAR has been implemented
+
+Refactoring
+
+	** DONE 2000-07-28 : 
+	(+) ECLI_VALUE gets/puts itself to an active statement, 
+	(+) cursor state, class contracts... **
+
+	** 2001-05-11  :
+	External Memory + object disposal : prevent segmentation violation.
+	Usage of open/close on ECLI_SESSION and ECLI_STATEMENT
