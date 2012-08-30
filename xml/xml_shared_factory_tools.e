@@ -1,4 +1,4 @@
-indexing
+note
 	description: "Access to shared XML factory tools"
 	author: "Paul G. Crismer"
 	date: "$Date$"
@@ -9,7 +9,7 @@ class
 
 feature -- Access
 
-	xml_tools : XML_FACTORY_TOOLS is
+	xml_tools : XML_FACTORY_TOOLS
 			-- xml factory tools
 		once
 			create Result

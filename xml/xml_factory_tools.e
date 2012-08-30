@@ -1,4 +1,4 @@
-indexing
+note
 	description: "XML factory tools and conversion routines"
 	author: ""
 	date: "$Date$"
@@ -33,7 +33,7 @@ feature -- Miscellaneous
 
 feature -- Basic operations
 
-	to_string (text : STRING) : STRING is
+	to_string (text : STRING) : STRING
 			-- `text' converted to STRING
 		do
 			if text /= Void then
@@ -41,7 +41,7 @@ feature -- Basic operations
 			end
 		end
 		
-	to_date (text : STRING) : DT_DATE is
+	to_date (text : STRING) : DT_DATE
 			-- `text' converted to DT_DATE
 		local
 			string : STRING
@@ -54,7 +54,7 @@ feature -- Basic operations
 			end
 		end
 		
-	to_date_time (text : STRING) : DT_DATE is
+	to_date_time (text : STRING) : DT_DATE
 			-- `text' converted to DT_DATE_TIME
 		local
 			string : STRING
@@ -67,7 +67,7 @@ feature -- Basic operations
 			end
 		end
 
-	to_time (text : STRING) : DT_TIME is
+	to_time (text : STRING) : DT_TIME
 			-- `text' converted to DT_TIME
 		local
 			string : STRING
@@ -80,7 +80,7 @@ feature -- Basic operations
 			end
 		end
 		
-	to_integer (text : STRING) : INTEGER_REF is
+	to_integer (text : STRING) : INTEGER_REF
 			-- `text' converted to INTEGER_REF
 		local
 			string : STRING			
@@ -93,7 +93,7 @@ feature -- Basic operations
 			end
 		end
 
-	to_integer_64 (text : STRING) : INTEGER_64_REF is
+	to_integer_64 (text : STRING) : INTEGER_64_REF
 			-- `text' converted to INTEGER_64_REF
 		local
 			string : STRING			
@@ -106,7 +106,7 @@ feature -- Basic operations
 			end
 		end
 		
-	to_double (text : STRING) : DOUBLE_REF is
+	to_double (text : STRING) : DOUBLE_REF
 			-- `text' converted to DOUBLE_REF
 		local
 			string : STRING
@@ -125,8 +125,8 @@ feature -- Inapplicable
 
 feature {NONE} -- Implementation
 
-	xsd_date : XSD_DATE is once create Result end
-	xsd_time : XSD_TIME is once create Result end
-	xsd_date_time : XSD_DATE_TIME is once create Result end
+	xsd_date : XSD_DATE once create Result end
+	xsd_time : XSD_TIME once create Result end
+	xsd_date_time : XSD_DATE_TIME once create Result end
 	
 end -- class XML_FACTORY_TOOLS

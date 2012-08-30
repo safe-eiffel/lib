@@ -1,4 +1,4 @@
-indexing
+note
 	description: 
 	
 		"Objects that compare DS_PAIRs whose first element is a SRT_TUPLE"
@@ -33,7 +33,7 @@ feature -- Access
 	
 feature -- Status report
 
-	less_than (a , b: DS_PAIR[SRT_TUPLE,G]): BOOLEAN is
+	less_than (a , b: DS_PAIR[SRT_TUPLE,G]): BOOLEAN
 		do
 			first_comparator.compare (a.first, b.first)
 			last_result := first_comparator.last_result

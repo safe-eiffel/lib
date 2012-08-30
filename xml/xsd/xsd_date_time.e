@@ -1,4 +1,4 @@
-indexing
+note
 	description: "Types xsd:dateTime"
 	author: "Paul G. Crismer"
 	date: "$Date$"
@@ -33,7 +33,7 @@ feature -- Measurement
 
 feature -- Status report
 
-	is_valid (text : STRING) : BOOLEAN is
+	is_valid (text : STRING) : BOOLEAN
 			-- Is `text' representing a valid dateTime ?
 		do
 			Result := is_valid_date (date_part (text)) and then is_valid_time (time_part (text))
@@ -53,7 +53,7 @@ feature -- Transformation
 
 feature -- Conversion
 
-	to_date_time (text : STRING) : DT_DATE_TIME is
+	to_date_time (text : STRING) : DT_DATE_TIME
 			-- DT_DATE_TIME object obtained from `text'.
 		require
 			text_not_void: text /= Void
@@ -69,7 +69,7 @@ feature -- Conversion
 			result_not_void: Result /= Void
 		end
 
-	formatted (dt : DT_DATE_TIME) : STRING is
+	formatted (dt : DT_DATE_TIME) : STRING
 			-- String object obtained by formatting `dt' accordingly to ISO 8601.
 		require
 			dt_not_void: dt /= Void
@@ -91,18 +91,18 @@ feature -- Inapplicable
 
 feature {NONE} -- Implementation
 
-	date_time_separator : CHARACTER is 'T'
+	date_time_separator : CHARACTER = 'T'
 	
-	date_literal_length : INTEGER is 10
+	date_literal_length : INTEGER = 10
 	
-	date_part (s : STRING) : STRING is
+	date_part (s : STRING) : STRING
 		require
 			s_not_void: s /= Void
 		do
 			Result := s.substring (1, date_literal_length)
 		end
 		
-	time_part (s : STRING) : STRING is
+	time_part (s : STRING) : STRING
 		require
 			s_not_void: s /= Void
 		do

@@ -1,4 +1,4 @@
-indexing
+note
 	description: 
 	
 		"Objects that compare SRT_TUPLE"
@@ -25,13 +25,13 @@ feature -- Access
 	
 feature -- Status report
 
-	less_than (a , b: like item_anchor): BOOLEAN is
+	less_than (a , b: like item_anchor): BOOLEAN
 		do
 			compare (a,b)
 			Result := last_result = -1				
 		end
 
-	break_index (a, b : like item_anchor) : INTEGER is
+	break_index (a, b : like item_anchor) : INTEGER
 		require
 			arguments_ok: a /= Void and b /= Void
 			conformance : a.conforms_to (b)
@@ -40,7 +40,7 @@ feature -- Status report
 			Result := last_break_index
 		end
 
-	breaked (a, b : like item_anchor) : BOOLEAN is
+	breaked (a, b : like item_anchor) : BOOLEAN
 		require
 			arguments_ok: a /= Void and b /= Void
 			conformance : a.conforms_to (b)
@@ -52,7 +52,7 @@ feature -- Status report
 		 
 feature -- Status setting
 
-	compare (a, b : SRT_TUPLE) is
+	compare (a, b : SRT_TUPLE)
 		local
 			i, count : INTEGER
 		do
@@ -88,12 +88,12 @@ feature -- Status setting
 
 feature {NONE} -- Implementation
 
-	index (i : INTEGER) : INTEGER is
+	index (i : INTEGER) : INTEGER
 		do
 			Result := i
 		end
 
-	index_count (t : SRT_TUPLE) : INTEGER is
+	index_count (t : SRT_TUPLE) : INTEGER
 		do
 			Result := t.count
 		end

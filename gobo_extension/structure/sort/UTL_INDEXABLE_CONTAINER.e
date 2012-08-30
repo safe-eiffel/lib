@@ -1,4 +1,4 @@
-indexing
+note
 	description: "indexable container"
 	author: "Paul G. Crismer"
 	date: "$Date$"
@@ -10,7 +10,7 @@ deferred class
 
 feature -- Initialisation
 
-	make (element_count : INTEGER) is
+	make (element_count : INTEGER)
 		do
 			create container.make (1, element_count)
 		ensure
@@ -18,7 +18,7 @@ feature -- Initialisation
 		end
 			
 
-	make_from_array (a : ARRAY[G]) is
+	make_from_array (a : ARRAY[G])
 		require
 			a /= Void
 		do
@@ -30,7 +30,7 @@ feature -- Initialisation
 		end
 
 
-	item (index : INTEGER) : G is
+	item (index : INTEGER) : G
 			-- 'index'th item
 		require
 			valid_index: valid_index (index)
@@ -40,19 +40,19 @@ feature -- Initialisation
 
 feature -- Measurement
 
-	lower : INTEGER is
+	lower : INTEGER
 			-- lower element index
 		do
 			Result := container.lower
 		end
 		
-	upper : INTEGER is
+	upper : INTEGER
 			-- upper element index
 		do
 			Result := container.upper
 		end
 		
-	count : INTEGER is
+	count : INTEGER
 			-- number of elements
 		do
 			Result := container.count
@@ -60,14 +60,14 @@ feature -- Measurement
 		
 feature -- Status report
 
-	valid_index (i : INTEGER) : BOOLEAN is
+	valid_index (i : INTEGER) : BOOLEAN
 		do
 			Result := (i >= lower and then i <= upper)
 		ensure
 			Result = (i >= lower and then i <= upper)
 		end
 
-	conforms_item (other : G; index : INTEGER) : BOOLEAN is
+	conforms_item (other : G; index : INTEGER) : BOOLEAN
 			-- does 'other' conform to item 'index'
 		require
 			valid_index: valid_index (index)
@@ -84,7 +84,7 @@ feature -- Status report
 		
 feature -- Status setting
 
-	put (a_value : G; an_index : INTEGER) is
+	put (a_value : G; an_index : INTEGER)
 		require
 			valid_index: valid_index (an_index)
 			conforming_value: conforms_item (a_value, an_index)

@@ -1,4 +1,4 @@
-indexing
+note
 	description: "Abstraction of a composite key, viewed as a tuple of comparable"
 	author: "Paul G. Crismer"
 	date: "$Date$"
@@ -24,7 +24,7 @@ create
 	
 feature -- Status report
 		
-	conforms_to (other : ANY) : BOOLEAN is
+	conforms_to (other : ANY) : BOOLEAN
 			-- does 'other' conform to Current ?
 		local
 			i : INTEGER
@@ -49,7 +49,7 @@ feature -- Status report
 
 feature -- Conversion
 
-	out : STRING is
+	out : STRING
 		local
 			i : INTEGER
 		do

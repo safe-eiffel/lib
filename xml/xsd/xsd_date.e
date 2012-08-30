@@ -1,4 +1,4 @@
-indexing
+note
 	description	: "Types xsd:date."
 
 	library: "-"
@@ -16,7 +16,7 @@ feature -- Measurement
 
 feature -- Status report
 
-	is_valid (text : STRING) : BOOLEAN is
+	is_valid (text : STRING) : BOOLEAN
 			-- Is `text' representing a valid date ?
 		do
 			if Regex.matches (text) then
@@ -38,7 +38,7 @@ feature -- Transformation
 
 feature -- Conversion
 
-	to_date (text : STRING) : DT_DATE is
+	to_date (text : STRING) : DT_DATE
 			-- DT_DATE instance created from `text'.
 		require
 			text_not_void: text /= Void
@@ -63,7 +63,7 @@ feature -- Miscellaneous
 
 feature -- Basic operations
 
-	formatted (d : DT_DATE) : STRING is
+	formatted (d : DT_DATE) : STRING
 			-- String object obtained by formatting `d' according to ISO 8601 rules.
 		require
 			d_not_void: d /= Void
@@ -82,23 +82,23 @@ feature -- Inapplicable
 
 feature {NONE} -- Implementation
 
-	regex : RX_PCRE_REGULAR_EXPRESSION is
+	regex : RX_PCRE_REGULAR_EXPRESSION
 			-- regular expression conforming to xsd:date simple format : no timezone
 		once
 			create Result.make
 			Result.compile (regex_string)
 		end
 		
-	regex_string : STRING is "([0-9][0-9][0-9][0-9])\-([0-9][0-9])\-([0-9][0-9])"
+	regex_string : STRING = "([0-9][0-9][0-9][0-9])\-([0-9][0-9])\-([0-9][0-9])"
 	
-	fi2 : FORMAT_INTEGER is
+	fi2 : FORMAT_INTEGER
 			-- 
 		once
 			create Result.make (2)
 			Result.zero_fill
 		end
 	
-	fi4 : FORMAT_INTEGER is
+	fi4 : FORMAT_INTEGER
 			-- 
 		once
 			create Result.make (4)
