@@ -1,11 +1,11 @@
-indexing
+note
 
 	description:
 	
 			"Cursors over SQL query result set. Starting iteration creates `results' object through `create_buffers'."
 
 	library: "ECLI : Eiffel Call Level Interface (ODBC) Library. Project SAFE."
-	copyright: "Copyright (c) 2001-2006, Paul G. Crismer and others"
+	Copyright: "Copyright (c) 2001-2012, Paul G. Crismer and others"
 	license: "Eiffel Forum License v2 (see forum.txt)"
 	date: "$Date$"
 
@@ -20,7 +20,7 @@ inherit
 		
 feature -- Status report
 
-	real_execution : BOOLEAN is
+	real_execution : BOOLEAN
 		do
 			Result := True
 		end
@@ -28,7 +28,7 @@ feature -- Status report
 			
 feature -- Cursor movement
 
-	start is
+	start
 			-- Start sweeping through cursor, after execution of `sql'
 		require
 			sql_set: sql /= Void
@@ -51,7 +51,7 @@ feature -- Cursor movement
 
 feature {NONE} -- Implementation
 
-	create_buffers is
+	create_buffers
 			-- create all ECLI_VALUE objects
 		deferred
 		ensure
