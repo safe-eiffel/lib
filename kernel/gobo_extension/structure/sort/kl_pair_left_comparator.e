@@ -1,4 +1,4 @@
-indexing
+note
 
 	description: 
 	
@@ -19,7 +19,7 @@ create
 	
 feature {NONE} -- Initialization
 
-	make (a_comparator : like first_comparator) is
+	make (a_comparator : like first_comparator)
 		require
 			a_comparator_not_void: a_comparator /= Void
 		do
@@ -34,7 +34,7 @@ feature -- Access
 	
 feature -- Status report
 
-	less_than (a, b : DS_PAIR[G,K]) : BOOLEAN is
+	less_than (a, b : DS_PAIR[G,K]) : BOOLEAN
 		do
 			Result := first_comparator.less_than (a.first, b.first)
 		end

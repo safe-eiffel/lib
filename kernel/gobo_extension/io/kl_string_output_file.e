@@ -1,4 +1,4 @@
-indexing
+note
 
 	description:
 
@@ -194,7 +194,7 @@ invariant
 end
 
 --
--- Copyright: 2009, Paul G. Crismer, <pgcrism@users.sourceforge.net>
+-- Copyright: 2009-2012, Paul G. Crismer, <pgcrism@users.sourceforge.net>
 -- Released under the Eiffel Forum License <www.eiffel-forum.org>
 -- See file <forum.txt>
 --

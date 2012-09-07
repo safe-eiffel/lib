@@ -1,4 +1,4 @@
-indexing
+note
 	description: 
 	
 		"Objects that iterate over DS_LINEAR[DS_PAIR[SRT_TUPLE, G]] collections; if the collection is sorted, break hierarchy can be checked."
@@ -35,7 +35,7 @@ create
 	
 feature {NONE} -- Initialization
 
-	make (a_container : DS_LIST[like item];a_comparator : KL_PAIR_FIRST_TUPLE_COMPARATOR[G]) is
+	make (a_container : DS_LIST[like item];a_comparator : KL_PAIR_FIRST_TUPLE_COMPARATOR[G])
 		require
 			a_container_not_void: a_container /= Void
 -- a_sorter : DS_SORTER[like item]; 			a_sorter_not_void: a_sorter /= Void
@@ -50,7 +50,7 @@ feature {NONE} -- Initialization
 
 feature -- Access
 
-	item: DS_PAIR [SRT_TUPLE, G] is
+	item: DS_PAIR [SRT_TUPLE, G]
 			-- Item at cursor position
 		do
 			Result := internal_cursor.item
@@ -74,7 +74,7 @@ feature -- Access
 		
 	last_item : like item
 	
-	key : SRT_TUPLE is
+	key : SRT_TUPLE
 		require
 			not_off: not off
 		do
@@ -83,7 +83,7 @@ feature -- Access
 			key_not_void: Result /= Void
 		end
 		
-	value : G is
+	value : G
 		require
 			not_off: not off
 		do
@@ -96,7 +96,7 @@ feature -- Access
 	
 feature -- Status report
 
-	is_breaked : BOOLEAN is
+	is_breaked : BOOLEAN
 		require
 			not_off: not off
 		local
@@ -115,36 +115,36 @@ feature -- Status report
 			first: last_item = Void implies break_index = 1
 		end
 		
-	is_first: BOOLEAN is
+	is_first: BOOLEAN
 			-- Is cursor on first item?
 		do
 			Result := internal_cursor.is_first
 		end
 
-	after: BOOLEAN is
+	after: BOOLEAN
 			-- Is there no valid position to right of cursor?
 		do
 			Result := internal_cursor.after
 		end
 
-	before : BOOLEAN is
+	before : BOOLEAN
 		do
 			Result := internal_cursor.before
 		end
 		
-	off: BOOLEAN is
+	off: BOOLEAN
 			-- Is there no item at cursor position?
 		do
 			Result := internal_cursor.off
 		end
 
-	same_position (other: like Current): BOOLEAN is
+	same_position (other: like Current): BOOLEAN
 			-- Is current cursor at same position as `other'?
 		do
 			Result := internal_cursor.same_position (other.internal_cursor)
 		end
 
-	valid_cursor (other: like Current): BOOLEAN is
+	valid_cursor (other: like Current): BOOLEAN
 			-- Is `other' a valid cursor according
 			-- to current traversal strategy?
 		do
@@ -153,34 +153,34 @@ feature -- Status report
 
 feature -- Element change
 
-	replace (v : like item) is
+	replace (v : like item)
 		do
 			internal_cursor.replace (v)
 		end
 		
 feature -- Cursor movement
 
-	go_to (other: like Current) is
+	go_to (other: like Current)
 			-- Move cursor to `other''s position.
 		do
 			last_item := item
 			internal_cursor.go_to (other.internal_cursor)
 		end
 
-	start is
+	start
 			-- Move cursor to first position.
 		do
 			internal_cursor.start
 		end
 
-	forth is
+	forth
 			-- Move cursor to next position.
 		do
 			last_item := item
 			internal_cursor.forth
 		end
 
-	search_forth (v: like item) is
+	search_forth (v: like item)
 			-- Move to first position at or after current
 			-- position where `item' and `v' are equal.
 			-- (Use `equality_tester''s criterion from `container'
@@ -191,7 +191,7 @@ feature -- Cursor movement
 			internal_cursor.search_forth (v)
 		end
 
-	go_after is
+	go_after
 			-- Move cursor to `after' position.
 		do
 			internal_cursor.go_after
@@ -199,7 +199,7 @@ feature -- Cursor movement
 
 feature -- Duplication
 
-	copy (other: like Current) is
+	copy (other: like Current)
 			-- Copy `other' to current cursor.
 		do
 			if container /= Void and then not off then
@@ -214,7 +214,7 @@ feature -- Duplication
 
 feature -- Comparison
 
-	is_equal (other: like Current): BOOLEAN is
+	is_equal (other: like Current): BOOLEAN
 			-- Are `other' and current cursor at the same position?
 		do
 			if same_type (other) then
@@ -224,7 +224,7 @@ feature -- Comparison
 
 feature {DS_TRAVERSABLE} -- Implementation
 
-	set_next_cursor (a_cursor: like next_cursor) is
+	set_next_cursor (a_cursor: like next_cursor)
 			-- Set `next_cursor' to `a_cursor'.
 		do
 			next_cursor := a_cursor

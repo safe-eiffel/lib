@@ -69,7 +69,7 @@ feature {NONE} -- Implementation
 		
 end -- class XS_C_MEMORY
 --
--- Copyright: 2003, Paul G. Crismer, <pgcrism@users.sourceforge.net>
+-- Copyright: 2003-2012, Paul G. Crismer, <pgcrism@users.sourceforge.net>
 -- Released under the Eiffel Forum License <www.eiffel-forum.org>
 -- See file <forum.txt>
 --

@@ -1,4 +1,4 @@
-indexing
+note
 	description: 
 	
 		"Objects that can compare an arrangement of SRT_TUPLE components"
@@ -22,7 +22,7 @@ create
 		
 feature {NONE} -- Initialization
 
-	make (an_array : ARRAY[INTEGER]; a_prototype : SRT_TUPLE) is
+	make (an_array : ARRAY[INTEGER]; a_prototype : SRT_TUPLE)
 			-- make from 'an_array' according to 'a_prototype' tuple
 		require
 			prototype: a_prototype /= Void
@@ -41,21 +41,21 @@ feature -- Access
 	prototype : SRT_TUPLE 
 		-- prototype tuple
 
-	index_arrangement : ARRAY [INTEGER] is
+	index_arrangement : ARRAY [INTEGER]
 		do
 			Result := arrangement
 		end
 				
 feature -- Status report
 
-	can_compare (a, b : SRT_TUPLE) : BOOLEAN is
+	can_compare (a, b : SRT_TUPLE) : BOOLEAN
 		do
 			Result := (a.conforms_to (prototype) and b.conforms_to (prototype))
 		ensure then
 			prototype_conformance: Result = (a.conforms_to (prototype) and b.conforms_to (prototype))
 		end
 		
-	is_index_arrangement (an_array : ARRAY[INTEGER]; a_prototype : SRT_TUPLE) : BOOLEAN is
+	is_index_arrangement (an_array : ARRAY[INTEGER]; a_prototype : SRT_TUPLE) : BOOLEAN
 			-- does 'an_array' contain an arrangement without repeating values of 1..an_array.count ?
 		require
 			prototype: a_prototype /= Void
@@ -87,13 +87,13 @@ feature -- Status report
 			
 feature {NONE} -- Implementation
 
-	index (i : INTEGER) : INTEGER is
+	index (i : INTEGER) : INTEGER
 		do
 			Result := arrangement @ i
 		end
 
 
-	index_count (t : SRT_TUPLE) : INTEGER is
+	index_count (t : SRT_TUPLE) : INTEGER
 		do
 			Result := arrangement.count
 		end
