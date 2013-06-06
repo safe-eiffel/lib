@@ -5,6 +5,11 @@ compile_ise.ecf
 *.exe
 ecli_*.obj
 ecli_*.lib
-ise.ecf
-ge.xace
-
+*.orig
+*.bak
+*.orig
+*.bak
+clisql
+ecli_c.o
+libecli_c.a
+src/spec/ise/unix

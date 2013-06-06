@@ -4,12 +4,13 @@ note
 	date: "$Date$"
 	revision: "$Revision$"
 	licensing: "See notice at end of class"
+	EIS: "name=Unnamed", "protocol=DOC", "src=http://www.yourwebsite.com"
 class
 	QA_EXAMPLE
 
 inherit
 	KL_IMPORTED_STRING_ROUTINES
-	
+
 create
 
 	make
@@ -21,6 +22,7 @@ feature -- Initialization
 		local
 			args : ARGUMENTS
 			simple_login : ECLI_SIMPLE_LOGIN
+			l_session: attached like session
 		do
 			create args
 			io.put_string ("Selection of registered participants, by remaining amount to pay%N")
@@ -28,26 +30,27 @@ feature -- Initialization
 			if args.argument_count < 3 then
 				io.put_string ("Usage: QA_EXAMPLE <data_source> <user_name> <password>%N")
 			else
-				create session.make_default
+				create l_session.make_default
+				session := l_session
 				create simple_login.make (args.argument (1), args.argument (2), args.argument (3))
 				session.set_login_strategy (simple_login)
 				session.connect
 				if session.has_information_message then
-					io.put_string (session.cli_state) 
+					io.put_string (session.cli_state)
 					io.put_string (session.diagnostic_message)
 				end
 				if session.is_connected then
 					io.put_string ("Connected !!!%N")
 				end
 				-- definition of statement on session
-				create cursor.make (session)
+				create cursor.make (l_session)
 				do_session
 				cursor.close
 				session.disconnect
 				session.close
-			end;
+			end
 		end
-				
+
 	do_session
 		local
 			parameters : PARTICIPANTS_BY_REMAINING_PARAMETERS
@@ -62,7 +65,7 @@ feature -- Initialization
 				io.put_string (last_command)
 				io.put_string (" to pay%N")
 				from
-					parameters.remaining_amount.set_item (last_command.to_double)
+					parameters.remaining_amount.set_item (last_command.to_double.truncated_to_real)
 					cursor.set_parameters_object (parameters)
 					cursor.start
 				until
@@ -78,9 +81,9 @@ feature -- Initialization
 				end
 				read_command
 			end
-			
+
 		end
-		
+
 	print_error
 		do
 			io.put_string ("** ERROR **%N")
@@ -118,16 +121,16 @@ feature -- Basic Operations
 				i := i + 1
 			end
 		end
-			
-			
+
+
 	formatting_buffer : STRING
 		once
-			Result := STRING_.make (1000)
+			Result := STRING_.make_buffer (1000)
 		end
-	
-	session : ECLI_SESSION
-	
-	cursor : PARTICIPANTS_BY_REMAINING
+
+	session : detachable ECLI_SESSION
+
+	cursor : detachable PARTICIPANTS_BY_REMAINING
 
 
 end -- class QA_EXAMPLE

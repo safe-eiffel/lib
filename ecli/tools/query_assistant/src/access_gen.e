@@ -41,8 +41,8 @@ feature {NONE} -- Initialization
 		do
 			Arguments.set_program_name ("query_assistant")
 			create_error_handler
-			process_arguments
 			print_prologue
+			process_arguments
 			if not has_error then
 				if default_catalog /= Void then
 					set_shared_catalog_name (default_catalog)
@@ -67,7 +67,7 @@ feature -- Access
 	access_routines_prefix: STRING
 			-- prefix for naming the access_routines class
 
-	version : STRING = "v1.7"
+	version : STRING = "v1.7.2"
 
 feature -- Element change
 
@@ -421,7 +421,7 @@ feature -- Basic operations
 					default_catalog := value
 					arg_index := arg_index + 2
 				elseif key.is_equal ("-access_routines_prefix") then
-					access_routines_prefix := value
+					set_access_routines_prefix (value)
 					arg_index := arg_index + 2
 				elseif key.is_equal ("-parent_cursor") then
 					default_parent_cursor := value
